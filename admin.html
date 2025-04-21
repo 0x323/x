@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Token Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+ body {
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.container {
+  max-width: 1200px;
+  width: 90%;
+  margin: 20px auto;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-top: 30px;
+  color: #333;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+ input {
+width: 70%;
+padding: 12px;
+margin-top: 10px;
+border-radius: 8px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+font-size: 14px; }
+
+button {
+width: 20%;
+padding: 12px;
+margin-top: 10px;
+border-radius: 15px;
+font-size: 14px;
+border: none;
+cursor: pointer;
+background: #007bff;
+color: white; transition: background 0.3s ease; }
+
+button:hover {
+  background: #0056b3;
+}
+
+input, button {
+  font-size: 14px;
+  padding: 15px 20px;
+}
+
+button.disconnect {
+  background: #dc3545;
+}
+
+button.disconnect:hover {
+  background: #b02a37;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 15px;
+}
+
+.info {
+  background: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 12x;
+  word-break: break-word;
+  color: #333;
+}
+
+hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+/* Responsiveness */
+@media (min-width: 768px) {
+  button {
+    width: 50%;
+  }
+
+  #connectWallet,
+  #disconnectWallet {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+/* Style untuk switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Bola di dalam switch */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* Ketika tombol diaktifkan */
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Styling untuk status mode */
+.status {
+  font-size: 1.2rem;
+  margin-left: 15px;
+  font-weight: bold;
+}
+
+.dark-mode .status {
+  color: #f39c12;
+}
+
+.light-mode .status {
+  color: #007bff;
+}
+
+body.dark-mode {
+  background: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .container {
+  background: #1e1e1e;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode label,
+body.dark-mode .info {
+  color: #ffffff;
+}
+
+body.dark-mode input {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+body.dark-mode button {
+  background: #0d6efd;
+  color: white;
+}
+
+body.dark-mode button.disconnect {
+  background: #bb2d3b;
+}
+
+body.dark-mode button:hover {
+  background: #0b5ed7;
+}
+
+body.dark-mode button.disconnect:hover {
+  background: #9a1f2a;
+}
+
+body.dark-mode .info {
+  background: #2c2c2c;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <label class="switch">
+    <input type="checkbox" id="toggleSwitch" onclick="toggleDarkMode()" />
+    <span class="slider"></span>
+  </label>
+  <span id="modeStatus" class="status">Light Mode</span>
+  
+  <div class="form-group">
+  <h1>Admin Token Dashboard</h1>
+  <p id="walletStatus">Wallet: Not connected</p>
+  <p id="ethBalance">ETH: -</p>
+  <p id="tokenBalance">Token: -</p>
+  <button id="connectWallet">Connect Wallet</button>
+  <button id="disconnectWallet" style="display:none;">Disconnect Wallet</button>
+  <hr />
+  <h2>Approve Contract</h2>
+  <input type="text" id="approveAddress" placeholder="Spender address" />
+  <button id="approveContract">Approve</button>
+  <hr />
+  <h2>Mint Token</h2>
+  <input type="text" id="mintAddress" placeholder="Recipient address" />
+  <input type="number" id="mintAmount" placeholder="Amount to mint" />
+  <button id="mintToken">Mint</button>
+  </div>
+  </div>
+</div>
+  <script>
+    let provider, signer, token, userAddress;
+    const tokenAddress = "0x90eE02427892031477aD8A1D795a135A81693925";
+    const tokenABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"contractAddress","type":"address"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"}],"name":"ContractApproved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"contractAddress","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"approveContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"approvedContracts","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
+    async function connectWallet() {
+      try {
+        if (typeof ethers === "undefined") {
+          alert("Ethers.js gagal dimuat. Periksa koneksi internet atau CDN.");
+          console.error("Ethers.js tidak ditemukan. Pastikan CDN Ethers.js dimuat.");
+          return;
+        }
+        if (!window.ethereum) {
+          alert("MetaMask tidak ditemukan. Silakan instal MetaMask terlebih dahulu.");
+          return;
+        }
+        provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const { chainId } = await provider.getNetwork();
+        if (chainId !== 84532) {
+          try {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x14a34" }],
+            });
+          } catch (switchError) {
+            if (switchError.code === 4902) {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                  {
+                    chainId: "0x14a34",
+                    chainName: "Base Sepolia Testnet",
+                    nativeCurrency: {
+                      name: "ETH",
+                      symbol: "ETH",
+                      decimals: 18,
+                    },
+                    rpcUrls: ["https://sepolia.base.org"],
+                    blockExplorerUrls: ["https://sepolia-explorer.base.org"],
+                  },
+                ],
+              });
+            } else {
+              throw switchError;
+            }
+          }
+        }
+        const accounts = await provider.send("eth_requestAccounts", []);
+        if (!accounts || accounts.length === 0) {
+          alert("Tidak ada akun yang dipilih di MetaMask.");
+          return;
+        }
+        signer = provider.getSigner();
+        userAddress = await signer.getAddress();
+        token = new ethers.Contract(tokenAddress, tokenABI, signer);
+        document.getElementById("walletStatus").innerText = `Wallet: ${userAddress}`;
+        document.getElementById("connectWallet").style.display = "none";
+        document.getElementById("disconnectWallet").style.display = "inline-block";
+        await updateBalances();
+      } catch (error) {
+        let errorMessage = "Gagal konek wallet.";
+        if (error.code === 4001) {
+          errorMessage = "Koneksi ditolak oleh pengguna.";
+        } else if (error.code === -32002) {
+          errorMessage = "Permintaan MetaMask sudah tertunda. Periksa MetaMask.";
+        } else {
+          errorMessage += ` Detail: ${error.message || error}`;
+        }
+        console.error("Gagal konek wallet:", error);
+        alert(errorMessage);
+      }
+    }
+    function disconnectWallet() {
+      provider = null;
+      signer = null;
+      userAddress = null;
+      token = null;
+      document.getElementById("walletStatus").innerText = "Wallet: Not connected";
+      document.getElementById("ethBalance").innerText = "ETH: -";
+      document.getElementById("tokenBalance").innerText = "Token: -";
+      document.getElementById("connectWallet").style.display = "inline-block";
+      document.getElementById("disconnectWallet").style.display = "none";
+    }
+    async function updateBalances() {
+      if (!provider || !signer || !userAddress || !token) return;
+      try {
+        const ethBalance = await provider.getBalance(userAddress);
+        const tokenBalance = await token.balanceOf(userAddress);
+        const decimals = await token.decimals();
+        document.getElementById("ethBalance").innerText = `ETH: ${ethers.utils.formatEther(ethBalance)}`;
+        document.getElementById("tokenBalance").innerText = `Token: ${ethers.utils.formatUnits(tokenBalance, decimals)}`;
+      } catch (err) {
+        console.error("Gagal update balances:", err);
+      }
+    }
+    async function approveContract() {
+      const addr = document.getElementById("approveAddress").value;
+      if (!ethers.utils.isAddress(addr)) return alert("Invalid address");
+      try {
+        const tx = await token.approve(addr, ethers.constants.MaxUint256);
+        await tx.wait();
+        alert("Contract approved successfully!");
+      } catch (err) {
+        console.error("Approve gagal:", err);
+        alert("Approve gagal");
+      }
+    }
+    async function mintToken() {
+      const to = document.getElementById("mintAddress").value;
+      const amount = document.getElementById("mintAmount").value;
+      if (!ethers.utils.isAddress(to)) return alert("Invalid address");
+      try {
+        const decimals = await token.decimals();
+        const tx = await token.mint(to, ethers.utils.parseUnits(amount, decimals));
+        await tx.wait();
+        alert("Token minted successfully!");
+      } catch (err) {
+        console.error("Mint gagal:", err);
+        alert("Mint gagal");
+      }
+    }
+
+    function toggleDarkMode() {
+  const body = document.body;
+  const modeStatus = document.getElementById("modeStatus");
+  const toggleSwitch = document.getElementById("toggleSwitch");
+
+  // Periksa apakah toggle aktif atau tidak
+  if (toggleSwitch.checked) {
+    body.classList.add("dark-mode");
+    body.classList.remove("light-mode");
+    modeStatus.textContent = "Dark Mode";  // Ubah status ke Dark Mode
+  } else {
+    body.classList.add("light-mode");
+    body.classList.remove("dark-mode");
+    modeStatus.textContent = "Light Mode";  // Ubah status ke Light Mode
+  }
+}
+
+// Set default mode ketika halaman pertama kali dimuat
+window.onload = () => {
+  const toggleSwitch = document.getElementById("toggleSwitch");
+  const body = document.body;
+
+  if (body.classList.contains("dark-mode")) {
+    toggleSwitch.checked = true;
+    document.getElementById("modeStatus").textContent = "Dark Mode";
+  } else {
+    document.getElementById("modeStatus").textContent = "Light Mode";
+  }
+};
+    
+    document.getElementById("connectWallet").onclick = connectWallet;
+    document.getElementById("disconnectWallet").onclick = disconnectWallet;
+    document.getElementById("approveContract").onclick = approveContract;
+    document.getElementById("mintToken").onclick = mintToken;
+  </script>
+</body>
+</html>
