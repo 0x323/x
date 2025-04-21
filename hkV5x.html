@@ -2813,21 +2813,29 @@ window.onload = async () => {
     </script>
 
     <script>
-  const dropbtn = document.getElementById('dropbtn');
-  const dropdownContent = document.getElementById('dropdownContent');
-  const arrow = document.getElementById('arrow');
+  const dropdown = document.querySelector('.dropdown');
+  const button = dropdown.querySelector('.dropbtn');
+  const content = dropdown.querySelector('.dropdown-content');
+  const arrow = dropdown.querySelector('.arrow');
 
-  dropbtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Mencegah klik menyebar ke body
-    dropdownContent.classList.toggle('show');
-    arrow.classList.toggle('rotate');
+  let isOpen = false;
+
+  button.addEventListener('click', function (e) {
+    e.preventDefault();
+    isOpen = !isOpen;
+
+    content.style.display = isOpen ? 'block' : 'none';
+    arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    arrow.style.color = isOpen ? '#03a9f4' : '#ccc';
   });
 
-  // Tutup jika klik di luar dropdown
-  window.addEventListener('click', (e) => {
-    if (!document.getElementById('dropdown').contains(e.target)) {
-      dropdownContent.classList.remove('show');
-      arrow.classList.remove('rotate');
+  // Menutup dropdown jika klik di luar
+  window.addEventListener('click', function (e) {
+    if (!dropdown.contains(e.target)) {
+      isOpen = false;
+      content.style.display = 'none';
+      arrow.style.transform = 'rotate(0deg)';
+      arrow.style.color = '#ccc';
     }
   });
     </script>
