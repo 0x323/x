@@ -1,0 +1,21 @@
+<svg width="1600" height="300" viewBox="0 0 1600 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#03a9f4"/>
+      <stop offset="100%" stop-color="#f441a5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 3D extrusion effect: multiple layers behind main text -->
+  <g font-family="Ubuntu, sans-serif" font-size="200" font-weight="700" text-anchor="middle">
+    <!-- Layered 3D steps -->
+    <text x="800" y="190" fill="#111" opacity="0.15">Lotto Chain</text>
+    <text x="801" y="191" fill="#111" opacity="0.15">Lotto Chain</text>
+    <text x="802" y="192" fill="#111" opacity="0.15">Lotto Chain</text>
+    <text x="803" y="193" fill="#111" opacity="0.15">Lotto Chain</text>
+    <text x="804" y="194" fill="#111" opacity="0.15">Lotto Chain</text>
+
+    <!-- Front text with gradient -->
+    <text x="805" y="195" fill="url(#grad1)">Lotto Chain</text>
+  </g>
+</svg>
