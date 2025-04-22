@@ -1177,8 +1177,10 @@ textarea:focus {
       </div>
     </div>
         </div><br>
-        <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
-        <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
+        <input type="text" id="betNumber" placeholder="ex: 5/32/17/56/9" oninput="validateBetNumber()"><br>
+        <input type="number" id="betTimes" placeholder="1 / 69" min="1" max="26" oninput="validateBetTimes()">
+        <label style="font-weight: bold;">Lottoplay</label><br>
+        <input type="checkbox" id="lottoplay" onchange="updateBetPrice()"> x2<br>
         <p id="betWarning" style="color: red;"></p>
         <p id="betPrice" style="color: #00FF66; font-weight: bold;">Cost: 0.000000 ETH</p>
         <button onclick="placeBet()">Submit Ticket</button>
@@ -1797,9 +1799,9 @@ async function updateBalance() {
         }
        
 function updateBetPrice() {
-    let betTimes = document.getElementById("betTimes").value;
-    let ethPrice = (betTimes * 0.000256).toFixed(6); // Hitung harga ETH
-    document.getElementById("betPrice").innerText = `Cost: ${ethPrice} ETH`;
+  const isLottoplay = document.getElementById("lottoplay").checked;
+  let ethPrice = isLottoplay ? (0.000256 * 2).toFixed(6) : (0.000256).toFixed(6);
+  document.getElementById("betPrice").innerText = `Cost: ${ethPrice} ETH`;
 }
 
 // **Place Bet**
@@ -1814,10 +1816,26 @@ async function placeBet() {
     const betPrice = web3.utils.toWei("0.000256", "ether");
     const totalCost = betPrice * times;
 
-    if (!number || number.length < 1 || number.length > 4 || isNaN(times) || times < 1) {
-        alert("Invalid bet input!");
-        return;
-    }
+    const number = document.getElementById("betNumber").value;
+const parts = number.split("/").filter(p => p.trim() !== "");
+const times = parts.length; // Misal ini maksudnya berapa angka yang diinput
+
+// Validasi:
+const isValid = parts.every(part => {
+  const num = parseInt(part);
+  return !isNaN(num) && num >= 1 && num <= 69;
+});
+
+if (
+  parts.length < 1 ||
+  parts.length > 5 || // Misal batas maksimal angka 5
+  !isValid ||
+  isNaN(times) ||
+  times < 1
+) {
+  alert("Invalid bet input!");
+  return;
+}
     
     try {
         document.getElementById("betStatus").innerHTML = `
@@ -1878,21 +1896,32 @@ function validateBetNumber() {
     }
 }
 
-function validateBetTimes() {
-    let betTimesInput = document.getElementById("betTimes");
-    let warning = document.getElementById("betWarning");
+function validateBetNumber() {
+  const input = document.getElementById("betNumber");
+  let result = "";
+  const raw = input.value;
 
-    let value = parseInt(betTimesInput.value, 10); // Konversi ke angka
-
-    if (value < 1) {
-        betTimesInput.value = 1;
-        warning.innerText = "Bet times must be between 1 and 99!";
-    } else if (value > 99) {
-        betTimesInput.value = 99;
-        warning.innerText = "Bet times must be between 1 and 99!";
+  for (let char of raw) {
+    if (!isNaN(char) && char !== " ") {
+      result += char;
+    } else if (char === "/") {
+      result += "/";
     } else {
-        warning.innerText = "";
+      result += "/"; // huruf atau simbol lain langsung jadi /
     }
+  }
+
+  const parts = result.split("/").map(p => p.trim());
+
+  const fixedParts = parts.map(part => {
+    if (part.length === 0) return "";
+    if (part.length > 2) return "/"; // kalau lebih dari 2 digit langsung jadi /
+    const num = parseInt(part);
+    if (isNaN(num) || num < 1 || num > 69) return "/";
+    return num.toString();
+  });
+
+  input.value = fixedParts.join("/").replace(/\/+/g, "/"); // hapus double slash
 }
     
 // **Load User Bets (with Pagination & Last 7 Days Filter)**
