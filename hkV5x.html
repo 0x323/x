@@ -1226,8 +1226,8 @@ textarea:focus {
        <div id="searchStatus" style="min-height: 24px;"></div><br>
        <hr style="background-color: #333333; height: 1px; border: none;">
        <div id="betHistoryContainer" style="position: relative;">
-  <button id="refreshButton" style="position: absolute; top: 0; right: 0; background: #000000; border: none; cursor: pointer;">
-    <img src="img/refresh.svg" class="refresh-icon" style="width: 15px; height: 15px;" />
+  <button id="refreshButton" style="display: none; position: absolute; top: 0; right: 0; background: #000000; border: none; cursor: pointer;">
+  <img src="img/refresh.svg" class="refresh-icon" style="width: 15px; height: 15px;" />
   </button>
   <div id="betHistory" style="padding-top: 30px;"></div>
        </div>
@@ -1238,6 +1238,7 @@ textarea:focus {
      src="img/up.svg" 
      onclick="scrollToTop()" 
      style="
+        display: none;
         width: 25px;
         height: 25px;
         position: fixed;
@@ -1280,13 +1281,15 @@ textarea:focus {
             </table>
         </div>
 
-<div id="menu">
-    <button onclick="openModal('statistics')"><img src="img/pools.svg" alt="Lotto">Statistics</button>
-    <button onclick="window.open('4d', '_blank')"><img src="img/tools.svg" alt="Lotto">Tools</button>
-    <button onclick="openModal('myModal')"><img src="img/mybet.svg" alt="Lotto">Ticket</button>
-    <button onclick="openModal('resultModal')"><img src="img/results.svg" alt="Lotto"> Results</button>
-    <button onclick="window.open('claim', '_blank')"><img src="img/claim.svg" alt="Lotto" style="width: 28px; height: 28px;">Claim</button>
-</div> <!-- Penutupan <div> harus ada di sini -->
+<div id="menu" style="display: none;">
+  <button onclick="openModal('statistics')"><img src="img/pools.svg" alt="Lotto">Statistics</button>
+  <button onclick="window.open('4d', '_blank')"><img src="img/tools.svg" alt="Lotto">Tools</button>
+  <button onclick="openModal('myModal')"><img src="img/mybet.svg" alt="Lotto">Ticket</button>
+  <button onclick="openModal('resultModal')"><img src="img/results.svg" alt="Lotto"> Results</button>
+  <button onclick="window.open('claim', '_blank')">
+    <img src="img/claim.svg" alt="Lotto" style="width: 28px; height: 28px;">Claim
+  </button>
+</div>
        
         <!-- Modal MyBets -->
 <div id="myModal" class="modal">
@@ -1719,6 +1722,10 @@ async function connectWallet() {
             document.getElementById("walletBalance").style.display = "block";
             document.getElementById("connectWallet").style.display = "none";
             document.getElementById("disconnectWallet").style.display = "block";
+            document.getElementById("scrollUpIcon").style.display = "block";
+            document.getElementById("menu").style.display = "block";
+            document.getElementById("refreshButton").style.display = "block";
+        
 
             // Tampilkan ikon notifikasi setelah wallet terhubung
             document.getElementById("notificationIcon").style.display = "block";
