@@ -1057,6 +1057,7 @@ textarea:focus {
 .dropdown-content a:hover {
   background: linear-gradient(90deg, #03a9f4, #f441a5);
   color: #ffffff;
+  border-radius: 0.7em;
 }
 
 .dropdown-content img {
@@ -1198,10 +1199,10 @@ textarea:focus {
             
     <!-- Dropdown Select Chain -->
     <div class="dropdown">
-      <button class="dropbtn">
-        Select Chain <span class="arrow">▼</span>
-      </button>
-      <div class="dropdown-content">
+  <button class="dropbtn" id="dropdownToggle">
+    Pools <span class="arrow">▼</span>
+  </button>
+  <div class="dropdown-content" id="dropdownContent">
         <a href="hk"><img src="img/base.svg"> Base</a>
         <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
         <a href="hkarb"><img src="img/arb.svg"> Arbitrum</a>
