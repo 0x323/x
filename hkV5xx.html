@@ -1197,38 +1197,24 @@ textarea:focus {
   </div>
 </div>
 
-    <!-- Dropdown Pools -->
-<div class="dropdown">
-  <button class="dropbtn" id="dropdownToggle">
-    Pools <span class="arrow">▼</span>
-  </button>
-  <div class="dropdown-content" id="dropdownContent">
-    <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
-    <a href="sgp"><img src="img/sgp.svg"> Singapore (SGP)</a>
-    <a href="syd"><img src="img/syd.svg"> Sydney (SYD)</a>
-    <a href="chi"><img src="img/chi.svg"> China (CHI)</a>
-    <a href="mc"><img src="img/mc.svg"> Cambodia (MC)</a>
-    <a href="be"><img src="img/be.svg"> Bull Eye (BE)</a>
-  </div>
-</div>
             
     <!-- Dropdown Select Chain -->
-    <div class="dropdown">
-  <button class="dropbtn" id="dropdownToggle">
-    Pools <span class="arrow">▼</span>
+<div class="dropdown" id="selectChainDropdown">
+  <button class="dropbtn" onclick="toggleDropdown('selectChainDropdown', 'Select Chain')">
+    Select Chain <span class="arrow">▼</span>
   </button>
-  <div class="dropdown-content" id="dropdownContent">
-        <a href="hk"><img src="img/base.svg"> Base</a>
-        <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
-        <a href="hkarb"><img src="img/arb.svg"> Arbitrum</a>
-        <a href="hkop"><img src="img/op.svg"> Optimis</a>
-        <a href="hkpl"><img src="img/polygon.svg"> Polygon</a>
-        <a href="hkavax"><img src="img/avax.svg"> Avalance</a>
-        <a href="hkopbnb"><img src="img/opbnb.svg"> OpBNB</a>
-        <a href="hketh"><img src="img/eth.svg"> Ethereum</a>
-        <a href="hkcore"><img src="img/core.svg"> Core</a>
-      </div>
-    </div>
+  <div class="dropdown-content">
+    <a href="hk"><img src="img/base.svg"> Base</a>
+    <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
+    <a href="hkarb"><img src="img/arb.svg"> Arbitrum</a>
+    <a href="hkop"><img src="img/op.svg"> Optimis</a>
+    <a href="hkpl"><img src="img/polygon.svg"> Polygon</a>
+    <a href="hkavax"><img src="img/avax.svg"> Avalance</a>
+    <a href="hkopbnb"><img src="img/opbnb.svg"> OpBNB</a>
+    <a href="hketh"><img src="img/eth.svg"> Ethereum</a>
+    <a href="hkcore"><img src="img/core.svg"> Core</a>
+  </div>
+</div>
         </div><br>
         <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
         <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
@@ -2906,6 +2892,47 @@ window.onload = async () => {
       updateButton('Pools', '▼');
       isOpen = false;
     }
+  });
+    </script>
+
+    <script>
+  function toggleDropdown(id, defaultText) {
+    const dropdown = document.getElementById(id);
+    const btn = dropdown.querySelector('.dropbtn');
+    const arrow = dropdown.querySelector('.arrow');
+
+    dropdown.classList.toggle('show');
+
+    // Animasi keluar masuk tombol
+    btn.classList.add('fade-out');
+    setTimeout(() => {
+      if (dropdown.classList.contains('show')) {
+        btn.innerHTML = '× Close';
+      } else {
+        btn.innerHTML = `${defaultText} <span class="arrow">▼</span>`;
+      }
+      btn.classList.remove('fade-out');
+      btn.classList.add('fade-in');
+
+      // Hapus kelas animasi setelah selesai
+      setTimeout(() => {
+        btn.classList.remove('fade-in');
+      }, 300);
+    }, 300);
+  }
+
+  // Klik luar area dropdown untuk menutup
+  window.addEventListener('click', function (e) {
+    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+        const btn = dropdown.querySelector('.dropbtn');
+        if (btn && btn.innerHTML.includes('× Close')) {
+          const label = btn.id === 'selectChainDropdown' ? 'Select Chain' : 'Pools';
+          btn.innerHTML = `${label} <span class="arrow">▼</span>`;
+        }
+      }
+    });
   });
     </script>
        
