@@ -1020,16 +1020,18 @@ textarea:focus {
 }
 
 .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #111;
-      border: 1px solid #03a9f4;
-      min-width: 180px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.6);
-      border-radius: 10px;
-      z-index: 1;
-      margin-top: 5px;
-    }
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #111;
+  border: 1px solid #03a9f4;
+  min-width: 180px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.6);
+  border-radius: 10px;
+  z-index: 10;
+}
 
     .dropdown-content a {
       color: #fff;
