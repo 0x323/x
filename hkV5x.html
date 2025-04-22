@@ -992,21 +992,46 @@ textarea:focus {
       pointer-events: none;
         }
 
+    .button-contain {
+      display: flex;
+      gap: 20px;
+    }
+
     .dropdown {
       position: relative;
       display: inline-block;
     }
 
-    .arrow {
-      font-size: 12px;
-      color: #ccc;
-      transition: transform 0.3s ease, color 0.3s;
+    .dropbtn {
+      background-color: #111;
+      color: #fff;
+      padding: 10px 20px;
+      border: 1px solid #03a9f4;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s, box-shadow 0.3s;
     }
 
-    .dropdown:hover .arrow {
-      transform: rotate(180deg);
-      color: #03a9f4;
+    .dropbtn:hover {
+      background-color: #0a0a0a;
+      box-shadow: 0 0 10px #03a9f4;
     }
+
+    .arrow {
+  width: 12px;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s;
+  filter: brightness(0.8);
+}
+
+.dropdown.show .arrow {
+  transform: rotate(180deg);
+  filter: brightness(1) sepia(1) hue-rotate(190deg) saturate(5);
+}
 
     .dropdown-content {
       display: none;
@@ -1031,17 +1056,22 @@ textarea:focus {
     }
 
     .dropdown-content a:hover {
-      background:linear-gradient(90deg, #03a9f4, #f441a5);
-      color: #ffffff;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
+      background-color: #03a9f4;
+      color: #000;
     }
 
     .dropdown-content img {
-      width: 18px; /* Ukuran gambar sesuai dengan keinginan */
+      width: 18px;
       height: auto;
+    }
+
+    .dropdown.show .dropdown-content {
+      display: block;
+    }
+
+    .dropdown.show .arrow {
+      transform: rotate(180deg);
+      color: #03a9f4;
     }
 
     .scroll-up-icon {
@@ -1143,11 +1173,11 @@ textarea:focus {
         <p id="walletBalance" style="display:none; color: #00ca09;">Balance: 0 ETH</p><br>
         <hr style="background-color: #333333; height: 1px; border: none;">
         <h2>Place Bet</h2><br>
-        <div class="button-container">
+        <div class="button-contain">
     <!-- Dropdown Pools -->
     <div class="dropdown">
-      <button class="dropbtn">
-        Pools <span class="arrow">▼</span>
+      <button class="dropbtn" onclick="toggleDropdown(this)">
+  Pools <img class="arrow" src="img/arrow.svg" />
       </button>
       <div class="dropdown-content">
         <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
@@ -1161,9 +1191,9 @@ textarea:focus {
 
     <!-- Dropdown Select Chain -->
     <div class="dropdown">
-      <button class="dropbtn">
-        Select Chain <span class="arrow">▼</span>
-      </button>
+      <button class="dropbtn" onclick="toggleDropdown(this)">
+  Select Chains<img class="arrow" src="img/arrow.svg" />
+</button>
       <div class="dropdown-content">
         <a href="hk"><img src="img/base.svg"> Base</a>
         <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
@@ -2811,6 +2841,24 @@ window.onload = async () => {
 });
 };
     </script>
+
+    <script>
+    function toggleDropdown(button) {
+      const dropdown = button.parentElement;
+      const allDropdowns = document.querySelectorAll('.dropdown');
+      allDropdowns.forEach(d => {
+        if (d !== dropdown) d.classList.remove('show');
+      });
+      dropdown.classList.toggle('show');
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+      }
+    }
+    </script>
+            
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
