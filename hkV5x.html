@@ -2812,34 +2812,6 @@ window.onload = async () => {
 };
     </script>
 
-    <script>
-  const dropdown = document.querySelector('.dropdown');
-  const button = dropdown.querySelector('.dropbtn');
-  const content = dropdown.querySelector('.dropdown-content');
-  const arrow = dropdown.querySelector('.arrow');
-
-  let isOpen = false;
-
-  button.addEventListener('click', function (e) {
-    e.preventDefault();
-    isOpen = !isOpen;
-
-    content.style.display = isOpen ? 'block' : 'none';
-    arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-    arrow.style.color = isOpen ? '#03a9f4' : '#ccc';
-  });
-
-  // Menutup dropdown jika klik di luar
-  window.addEventListener('click', function (e) {
-    if (!dropdown.contains(e.target)) {
-      isOpen = false;
-      content.style.display = 'none';
-      arrow.style.transform = 'rotate(0deg)';
-      arrow.style.color = '#ccc';
-    }
-  });
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const qrContainer = document.getElementById("qrCanvas");
