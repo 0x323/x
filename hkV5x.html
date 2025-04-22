@@ -1223,7 +1223,7 @@ textarea:focus {
            style="width: 100%; padding: 12px 12px 12px 24px; font-size: 14px; box-sizing: border-box; position: relative; z-index: 0;">
   </div>
         </div>
-       <div id="searchStatus" style="min-height: 24px;"></div><br>
+       <div id="searchStatus" style="min-height: 24px; display: none;"></div><br>
        <hr style="background-color: #333333; height: 1px; border: none;">
        <div id="betHistoryContainer" style="position: relative;">
   <button id="refreshButton" style="display: none; position: absolute; top: 0; right: 0; background: #000000; border: none; cursor: pointer;">
@@ -1722,7 +1722,7 @@ async function connectWallet() {
             document.getElementById("connectWallet").style.display = "none";
             document.getElementById("disconnectWallet").style.display = "block";
             document.getElementById("scrollUpIcon").style.display = "block";
-            document.getElementById("xxx").style.display = "block";
+            document.getElementById("searchStatus").style.display = "block";
             document.getElementById("refreshButton").style.display = "block";
         
 
