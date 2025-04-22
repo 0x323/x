@@ -1044,6 +1044,23 @@ textarea:focus {
       height: auto;
     }
 
+    /* Tombol close di pojok kanan atas */
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Tampilkan dropdown via JavaScript */
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
     .scroll-up-icon {
   opacity: 0;
   visibility: hidden;
@@ -1145,20 +1162,21 @@ textarea:focus {
         <h2>Place Bet</h2><br>
         <div class="button-container">
     <!-- Dropdown Pools -->
-    <div class="dropdown">
-      <button class="dropbtn">
-        Pools <span class="arrow">▼</span>
-      </button>
-      <div class="dropdown-content">
-        <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
-        <a href="sgp"><img src="img/sgp.svg"> Singapore (SGP)</a>
-        <a href="syd"><img src="img/syd.svg"> Sydney (SYD)</a>
-        <a href="chi"><img src="img/chi.svg"> China (CHI)</a>
-        <a href="mc"><img src="img/mc.svg"> Cambodia (MC)</a>
-        <a href="be"><img src="img/be.svg"> Bull Eye (BE)</a>
-      </div>
-    </div>
-
+<div class="dropdown">
+  <button class="dropbtn">
+    Pools <span class="arrow">▼</span>
+  </button>
+  <div class="dropdown-content" id="dropdownContent">
+    <span class="close-btn" onclick="closeDropdown()">×</span>
+    <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
+    <a href="sgp"><img src="img/sgp.svg"> Singapore (SGP)</a>
+    <a href="syd"><img src="img/syd.svg"> Sydney (SYD)</a>
+    <a href="chi"><img src="img/chi.svg"> China (CHI)</a>
+    <a href="mc"><img src="img/mc.svg"> Cambodia (MC)</a>
+    <a href="be"><img src="img/be.svg"> Bull Eye (BE)</a>
+  </div>
+</div>
+            
     <!-- Dropdown Select Chain -->
     <div class="dropdown">
       <button class="dropbtn">
@@ -2814,32 +2832,25 @@ window.onload = async () => {
 
     <script>
   const dropdown = document.querySelector('.dropdown');
-  const button = dropdown.querySelector('.dropbtn');
-  const content = dropdown.querySelector('.dropdown-content');
-  const arrow = dropdown.querySelector('.arrow');
+  const dropbtn = document.querySelector('.dropbtn');
 
-  let isOpen = false;
-
-  button.addEventListener('click', function (e) {
-    e.preventDefault();
-    isOpen = !isOpen;
-
-    content.style.display = isOpen ? 'block' : 'none';
-    arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-    arrow.style.color = isOpen ? '#03a9f4' : '#ccc';
+  dropbtn.addEventListener('click', function(event) {
+    event.stopPropagation(); // biar klik di luar bisa deteksi
+    dropdown.classList.toggle('show');
   });
 
-  // Menutup dropdown jika klik di luar
-  window.addEventListener('click', function (e) {
+  function closeDropdown() {
+    dropdown.classList.remove('show');
+  }
+
+  // Tutup dropdown kalau klik di luar
+  window.addEventListener('click', function(e) {
     if (!dropdown.contains(e.target)) {
-      isOpen = false;
-      content.style.display = 'none';
-      arrow.style.transform = 'rotate(0deg)';
-      arrow.style.color = '#ccc';
+      dropdown.classList.remove('show');
     }
   });
     </script>
-
+       
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const qrContainer = document.getElementById("qrCanvas");
