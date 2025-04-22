@@ -1173,7 +1173,7 @@ textarea:focus {
         <p id="walletBalance" style="display:none; color: #00ca09;">Balance: 0 ETH</p><br>
         <hr style="background-color: #333333; height: 1px; border: none;">
         <h2>Place Bet</h2><br>
-        <div id="dropdownGroup" style="display: none;">
+
   <div class="button-contain">
     <!-- Dropdown Pools -->
     <div class="dropdown">
@@ -1207,7 +1207,6 @@ textarea:focus {
         <a href="hkcore"><img src="img/core.svg"> Core</a>
       </div>
     </div>
-  </div>
         </div>
         </div><br>
         <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
@@ -1725,7 +1724,7 @@ async function connectWallet() {
             document.getElementById("connectWallet").style.display = "none";
             document.getElementById("disconnectWallet").style.display = "block";
             document.getElementById("scrollUpIcon").style.display = "block";
-            document.getElementById("dropdownGroup").style.display = "block";
+            document.getElementById("dropbtn").style.display = "flex";
             document.getElementById("refreshButton").style.display = "block";
         
 
