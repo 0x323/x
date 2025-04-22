@@ -1175,40 +1175,39 @@ textarea:focus {
         <h2>Place Bet</h2><br>
 
   <div class="button-contain">
-    <!-- Dropdown Pools -->
-    <div class="dropdown">
-      <button class="dropbtn" onclick="toggleDropdown(this)">
-        Pools <img class="arrow" src="img/arrow.svg" />
-      </button>
-      <div class="dropdown-content">
-        <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
-        <a href="sgp"><img src="img/sgp.svg"> Singapore (SGP)</a>
-        <a href="syd"><img src="img/syd.svg"> Sydney (SYD)</a>
-        <a href="chi"><img src="img/chi.svg"> China (CHI)</a>
-        <a href="mc"><img src="img/mc.svg"> Cambodia (MC)</a>
-        <a href="be"><img src="img/be.svg"> Bull Eye (BE)</a>
-      </div>
+  <!-- Dropdown Pools -->
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(this)">
+      Pools <img class="arrow" src="img/arrow.svg" />
+    </button>
+    <div class="dropdown-content">
+      <a href="hk"><img src="img/hk.svg" /> Hongkong (HK)</a>
+      <a href="sgp"><img src="img/sgp.svg" /> Singapore (SGP)</a>
+      <a href="syd"><img src="img/syd.svg" /> Sydney (SYD)</a>
+      <a href="chi"><img src="img/chi.svg" /> China (CHI)</a>
+      <a href="mc"><img src="img/mc.svg" /> Cambodia (MC)</a>
+      <a href="be"><img src="img/be.svg" /> Bull Eye (BE)</a>
     </div>
+  </div>
 
-    <!-- Dropdown Select Chain -->
-    <div class="dropdown">
-      <button class="dropbtn" onclick="toggleDropdown(this)">
-        Select Chains <img class="arrow" src="img/arrow.svg" />
-      </button>
-      <div class="dropdown-content">
-        <a href="hk"><img src="img/base.svg"> Base</a>
-        <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
-        <a href="hkarb"><img src="img/arb.svg"> Arbitrum</a>
-        <a href="hkop"><img src="img/op.svg"> Optimis</a>
-        <a href="hkpl"><img src="img/polygon.svg"> Polygon</a>
-        <a href="hkavax"><img src="img/avax.svg"> Avalance</a>
-        <a href="hkopbnb"><img src="img/opbnb.svg"> OpBNB</a>
-        <a href="hketh"><img src="img/eth.svg"> Ethereum</a>
-        <a href="hkcore"><img src="img/core.svg"> Core</a>
-      </div>
+  <!-- Dropdown Select Chain -->
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(this)">
+      Select Chains <img class="arrow" src="img/arrow.svg" />
+    </button>
+    <div class="dropdown-content">
+      <a href="hk"><img src="img/base.svg" /> Base</a>
+      <a href="hkbnb"><img src="img/opbnb.svg" /> Smart Chain</a>
+      <a href="hkarb"><img src="img/arb.svg" /> Arbitrum</a>
+      <a href="hkop"><img src="img/op.svg" /> Optimis</a>
+      <a href="hkpl"><img src="img/polygon.svg" /> Polygon</a>
+      <a href="hkavax"><img src="img/avax.svg" /> Avalance</a>
+      <a href="hkopbnb"><img src="img/opbnb.svg" /> OpBNB</a>
+      <a href="hketh"><img src="img/eth.svg" /> Ethereum</a>
+      <a href="hkcore"><img src="img/core.svg" /> Core</a>
     </div>
-        </div>
-        </div><br>
+  </div>
+  </div><br>
         <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
         <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
         <p id="betWarning" style="color: red;"></p>
