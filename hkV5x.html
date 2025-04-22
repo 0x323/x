@@ -1173,11 +1173,12 @@ textarea:focus {
         <p id="walletBalance" style="display:none; color: #00ca09;">Balance: 0 ETH</p><br>
         <hr style="background-color: #333333; height: 1px; border: none;">
         <h2>Place Bet</h2><br>
-        <div class="button-contain">
+        <div id="dropdownGroup" style="display: none;">
+  <div class="button-contain">
     <!-- Dropdown Pools -->
     <div class="dropdown">
       <button class="dropbtn" onclick="toggleDropdown(this)">
-  Pools <img class="arrow" src="img/arrow.svg" />
+        Pools <img class="arrow" src="img/arrow.svg" />
       </button>
       <div class="dropdown-content">
         <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
@@ -1192,8 +1193,8 @@ textarea:focus {
     <!-- Dropdown Select Chain -->
     <div class="dropdown">
       <button class="dropbtn" onclick="toggleDropdown(this)">
-  Select Chains<img class="arrow" src="img/arrow.svg" />
-</button>
+        Select Chains <img class="arrow" src="img/arrow.svg" />
+      </button>
       <div class="dropdown-content">
         <a href="hk"><img src="img/base.svg"> Base</a>
         <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
@@ -1206,6 +1207,8 @@ textarea:focus {
         <a href="hkcore"><img src="img/core.svg"> Core</a>
       </div>
     </div>
+  </div>
+        </div>
         </div><br>
         <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
         <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
@@ -1722,7 +1725,7 @@ async function connectWallet() {
             document.getElementById("connectWallet").style.display = "none";
             document.getElementById("disconnectWallet").style.display = "block";
             document.getElementById("scrollUpIcon").style.display = "block";
-            document.getElementById("searchGroup").style.display = "block";
+            document.getElementById("dropdownGroup").style.display = "block";
             document.getElementById("refreshButton").style.display = "block";
         
 
