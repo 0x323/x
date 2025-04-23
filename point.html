@@ -6,155 +6,158 @@
     <title>Betting dApp</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-       body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
-        }
+       /* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            padding: 15px;
-            color: white;
-        }
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+h1 {
+    margin: 0;
+    font-size: 36px;
+}
 
-        .hamburger {
-            font-size: 30px;
-            cursor: pointer;
-            display: none;
-        }
+#connectButton, #checkinButton, #setReferralButton, #placeBetButton, #setReferralByIdButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
-        .bet-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+#connectButton:hover, #checkinButton:hover, #setReferralButton:hover, #placeBetButton:hover, #setReferralByIdButton:hover {
+    background-color: #45a049;
+}
 
-        .hero {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
-        .hero h1 {
-            font-size: 36px;
-            color: #4A90E2;
-        }
+#walletInfo, #ethBalanceInfo, #dPointBalanceInfo {
+    font-size: 18px;
+    margin-top: 10px;
+}
 
-        .orange-text {
-            color: #F39C12;
-            text-align: center;
-            margin-top: 20px;
-        }
+#status {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #e74c3c;
+}
 
-        #connectButton, #checkinButton, #disconnectButton {
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-            border-radius: 5px;
-        }
+form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        #connectButton:hover, #checkinButton:hover, #disconnectButton:hover {
-            background-color: #357ABD;
-        }
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
 
-        .hidden {
-            display: none;
-        }
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
 
-        #betForm {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
-        }
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
 
-        #betForm label {
-            font-size: 18px;
-        }
+#referralSection {
+    margin-top: 20px;
+}
 
-        #betForm input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+#referralIdInput {
+    padding: 10px;
+    width: 80%;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
 
-        #placeBetButton {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    margin-top: 20px;
+}
 
-        #placeBetButton:hover {
-            background-color: #218838;
-        }
+footer .social-icons {
+    margin-top: 10px;
+}
 
-        #status {
-            font-size: 16px;
-            margin-top: 20px;
-        }
+footer .social-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 20px;
+    text-decoration: none;
+}
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-            border-radius: 8px;
-        }
+footer .social-icons a:hover {
+    color: #4CAF50;
+}
 
-        .social-icons a {
-            color: white;
-            margin: 0 10px;
-            font-size: 20px;
-            text-decoration: none;
-        }
+.hidden {
+    display: none;
+}
 
-        .social-icons a:hover {
-            color: #4A90E2;
-        }
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
 
-        @media (max-width: 768px) {
-            .bet-container {
-                padding: 15px;
-                margin: 10px;
-            }
+    #referralIdInput {
+        width: 60%;
+    }
 
-            #connectButton, #checkinButton, #disconnectButton, #placeBetButton {
-                width: 100%;
-            }
+    .social-icons a {
+        font-size: 16px;
+    }
 
-            nav {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+    form {
+        padding: 15px;
+    }
+}
 
-            .hamburger {
-                display: block;
-            }
-        }
+@media (max-width: 480px) {
+    #connectButton, #checkinButton, #setReferralButton, #placeBetButton, #setReferralByIdButton {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    input[type="text"], input[type="number"] {
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 14px;
+    }
+}
     </style>
 </head>
 <body>
@@ -197,31 +200,27 @@
 
 <p id="status"></p>
 
-<!-- Referral ID Section (Optional) -->
+<!-- Referral ID Section -->
 <div id="referralSection">
   <input type="text" id="referralIdInput" placeholder="Referral ID" />
   <button id="setReferralButton">Set Referral ID</button>
   <button id="setReferralByIdButton">Use Referral ID</button>
 </div>
       
-        <h2>Place Your Bet</h2>
-        <form id="betForm">
-            <label for="betNumber">Bet Number (1-20 digits):</label>
-            <input type="text" id="betNumber" required><br><br>
-            
-            <label for="betTimes">Bet Times (1-10):</label>
-            <input type="number" id="betTimes" min="1" max="10" required><br><br>
-            
-            <label for="payoutAmount">Payout Amount:</label>
-            <input type="number" id="payoutAmount" required><br><br>
-            
-            <button type="submit" id="placeBetButton">Place Bet</button>
-        </form>
-    </div>
+<h2>Place Your Bet</h2>
+<form id="betForm">
+    <label for="betNumber">Bet Number (1-20 digits):</label>
+    <input type="text" id="betNumber" required><br><br>
+    
+    <label for="betTimes">Bet Times (1-10):</label>
+    <input type="number" id="betTimes" min="1" max="10" required><br><br>
+    
+    <label for="payoutAmount">Payout Amount:</label>
+    <input type="number" id="payoutAmount" required><br><br>
+    
+    <button type="submit" id="placeBetButton">Place Bet</button>
+</form>
 
-    <p id="status"></p>
-
-  <!-- Footer -->
 <footer>
   <p>&copy; 2025 CheckInPoint</p>
   <div class="social-icons">
@@ -234,45 +233,43 @@
 
     <script>
         // Initialize Web3 and contract
-
-      const SepoliaBaseTestnet = {
+        const SepoliaBaseTestnet = {
     chainId: "0x14a34",
-    chainName:"Sepolia Base Testnet",
+    chainName: "Sepolia Base Testnet",
     nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://sepolia.base.org"],
     blockExplorerUrls: ["https://sepolia.basescan.org"]
 };
-        const contractAddress = "0x2CBe7be8ECB9e3CDFe23EAB3c4a47435A742f875";  // Update contract address
+
+const contractAddress = "0x2CBe7be8ECB9e3CDFe23EAB3c4a47435A742f875";  // Update contract address
 const pointTokenAddress = "0x2CBe7be8ECB9e3CDFe23EAB3c4a47435A742f875";  // Update Point Token address
 
-// ABI for the CheckInPoint contract
-const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
-const pointABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
+const contractABI = [/* ABI Array for your contract */];
+const pointABI = [/* ABI Array for point contract */];
 
-      let web3;
+let web3;
 let contract;
 let pointContract;
 let userAccount;
 
-        window.addEventListener("load", async () => {
-            if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
-                try {
-                    // Request account access
-                    await window.ethereum.enable();
-                    const accounts = await web3.eth.getAccounts();
-                    userAccount = accounts[0];
-                    contract = new web3.eth.Contract(contractABI, contractAddress);
-                    console.log("Web3 connected. Account: ", userAccount);
-                } catch (error) {
-                    console.error("User denied account access.");
-                }
-            } else {
-                alert("Please install MetaMask to use this dApp.");
-            }
-        });
+window.addEventListener("load", async () => {
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        try {
+            await window.ethereum.enable();
+            const accounts = await web3.eth.getAccounts();
+            userAccount = accounts[0];
+            contract = new web3.eth.Contract(contractABI, contractAddress);
+            console.log("Web3 connected. Account: ", userAccount);
+        } catch (error) {
+            console.error("User denied account access.");
+        }
+    } else {
+        alert("Please install MetaMask to use this dApp.");
+    }
+});
 
-      async function connectMetaMask() {
+async function connectMetaMask() {
     if (window.ethereum) {
         try {
             await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -342,55 +339,42 @@ async function updateBalances() {
     }
 }
 
-        // Fungsi untuk melakukan taruhan
-        async function placeBet(number, times, payoutAmount) {
-            if (contract && userAccount) {
-                try {
-                    // Validasi input
-                    if (!number || times <= 0 || payoutAmount <= 0) {
-                        alert("Invalid input!");
-                        return;
-                    }
-
-                    const currentDayUTC = Math.floor(Date.now() / (1000 * 60 * 60 * 24)); // Menghitung hari UTC
-
-                    // Mengirim transaksi untuk melakukan taruhan
-                    const tx = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
-                    document.getElementById("status").innerText = "Bet placed successfully!";
-                    console.log("Transaction successful:", tx);
-
-                    updateBalances(); // Update saldo setelah taruhan
-                } catch (error) {
-                    console.error("Failed to place bet:", error);
-                    document.getElementById("status").innerText = "Failed to place bet.";
-                }
+// Fungsi untuk melakukan taruhan
+async function placeBet(number, times, payoutAmount) {
+    if (contract && userAccount) {
+        try {
+            // Validasi input
+            if (!number || times <= 0 || payoutAmount <= 0) {
+                alert("Invalid input!");
+                return;
             }
+
+            // Mengirim transaksi untuk melakukan taruhan
+            const tx = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+            document.getElementById("status").innerText = "Bet placed successfully!";
+            console.log("Transaction successful:", tx);
+
+            updateBalances(); // Update saldo setelah taruhan
+        } catch (error) {
+            console.error("Failed to place bet:", error);
+            document.getElementById("status").innerText = "Failed to place bet.";
         }
+    }
+}
 
-        // Menampilkan saldo
-        async function updateBalances() {
-            if (contract && userAccount) {
-                try {
-                    const balance = await web3.eth.getBalance(userAccount);
-                    console.log("User balance:", web3.utils.fromWei(balance, 'ether'), "ETH");
-                } catch (error) {
-                    console.error("Failed to fetch balance:", error);
-                }
-            }
-        }
+// Menangani pengiriman form taruhan
+document.getElementById("betForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-        // Menangani pengiriman form taruhan
-        document.getElementById("betForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+    const number = document.getElementById("betNumber").value;
+    const times = parseInt(document.getElementById("betTimes").value);
+    const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
 
-            const number = document.getElementById("betNumber").value;
-            const times = parseInt(document.getElementById("betTimes").value);
-            const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
+    placeBet(number, times, payoutAmount);
+});
 
-            placeBet(number, times, payoutAmount);
-        });
-
-      async function checkIn() {
+// Fungsi Check-in
+async function checkIn() {
     if (contract && userAccount) {
         try {
             document.getElementById("status").innerText = "Check-in is being processed...";
@@ -404,7 +388,7 @@ async function updateBalances() {
     }
 }
 
-     function disconnectWallet() {
+function disconnectWallet() {
     userAccount = null;
     document.getElementById("walletAddress").innerText = "-";
     document.getElementById("ethBalance").innerText = "0";
@@ -436,13 +420,7 @@ document.getElementById("setReferralByIdButton").addEventListener("click", async
     const referralId = document.getElementById("referralIdInput").value;
     if (referralId) {
         try {
-            await contract.methods.setReferralById(referralId).send({ from: userAccount });
-            alert("Referral ID used successfully!");
-        } catch (error) {
-            console.error("Failed to use referral ID:", error);
-        }
-    }
-});
+            await contract.methods.setReferralById(referralId
     </script>
 
 </body>
