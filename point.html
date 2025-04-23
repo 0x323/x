@@ -6,199 +6,155 @@
     <title>Betting dApp</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-       /* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
 
-/* Body and Background */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 15px;
+            color: white;
+        }
 
-/* Navbar Styles */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-nav .logo {
-    font-size: 24px;
-    font-weight: bold;
-}
+        .hamburger {
+            font-size: 30px;
+            cursor: pointer;
+            display: none;
+        }
 
-nav .hamburger {
-    font-size: 30px;
-    cursor: pointer;
-}
+        .bet-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
-/* Hero Section */
-.hero {
-    background-color: #3498db;
-    color: white;
-    padding: 60px 20px;
-    text-align: center;
-}
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.hero h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
+        .hero h1 {
+            font-size: 36px;
+            color: #4A90E2;
+        }
 
-/* Heading Style for Bet Section */
-.orange-text {
-    color: #ff5722;
-    text-align: center;
-    margin-top: 30px;
-}
+        .orange-text {
+            color: #F39C12;
+            text-align: center;
+            margin-top: 20px;
+        }
 
-/* Connect Wallet Section */
-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px 0;
-}
+        #connectButton, #checkinButton, #disconnectButton {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 5px;
+        }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
+        #connectButton:hover, #checkinButton:hover, #disconnectButton:hover {
+            background-color: #357ABD;
+        }
 
-/* Input Fields for Bet Form */
-input[type="text"],
-input[type="number"],
-#referralIdInput {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        .hidden {
+            display: none;
+        }
 
-input[type="text"]:focus,
-input[type="number"]:focus {
-    border-color: #3498db;
-    outline: none;
-}
+        #betForm {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
 
-/* Bet Form Styles */
-#betForm {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+        #betForm label {
+            font-size: 18px;
+        }
 
-#betForm label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    display: block;
-}
+        #betForm input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-#betForm button {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    background-color: #ff5722;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 15px;
-}
+        #placeBetButton {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
 
-#betForm button:hover {
-    background-color: #e64a19;
-}
+        #placeBetButton:hover {
+            background-color: #218838;
+        }
 
-/* Status Message */
-#status {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-}
+        #status {
+            font-size: 16px;
+            margin-top: 20px;
+        }
 
-/* Referral Section */
-#referralSection {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 8px;
+        }
 
-#referralSection input {
-    width: 70%;
-}
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+        }
 
-#referralSection button {
-    width: 28%;
-}
+        .social-icons a:hover {
+            color: #4A90E2;
+        }
 
-/* Footer Section */
-footer {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    margin-top: 30px;
-}
+        @media (max-width: 768px) {
+            .bet-container {
+                padding: 15px;
+                margin: 10px;
+            }
 
-footer .social-icons {
-    margin-top: 10px;
-}
+            #connectButton, #checkinButton, #disconnectButton, #placeBetButton {
+                width: 100%;
+            }
 
-footer .social-icons a {
-    color: white;
-    margin: 0 10px;
-    font-size: 24px;
-    text-decoration: none;
-}
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
-footer .social-icons a:hover {
-    color: #3498db;
-}
-
-/* Responsive Layout */
-@media screen and (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .hero h1 {
-        font-size: 28px;
-    }
-
-    #betForm {
-        width: 90%;
-    }
-
-    footer .social-icons {
-        display: flex;
-        justify-content: center;
-    }
-
-    footer .social-icons a {
-        margin: 0 5px;
-    }
-}
+            .hamburger {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
