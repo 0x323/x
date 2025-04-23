@@ -220,7 +220,28 @@ const setAutomaticReferralId = async () => {
         }
     } catch (error) {
         console.error("Error setting automatic referral ID:", error);
-        alert("Failed to set automatic Referral ID.");
+    }
+};
+
+// Tangkap UID dari URL jika ada
+const getUidFromUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("uid");
+};
+
+// Set Referral ID berdasarkan URL jika ada
+const handleReferralFromURL = async () => {
+    const uid = getUidFromUrl();
+    if (!uid || !userAccount) return;
+
+    const currentReferralId = await contract.methods.referrerIdOf(userAccount).call();
+    if (!currentReferralId || currentReferralId === "0x0000000000000000000000000000000000000000") {
+        try {
+            await contract.methods.setReferrer(uid).send({ from: userAccount });
+            console.log("Referral set from URL:", uid);
+        } catch (err) {
+            console.error("Failed to set referral from URL:", err);
+        }
     }
 };
 
