@@ -16,8 +16,12 @@
             <button id="walletButton" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                 Connect Wallet
             </button>
+            <button id="retryButton" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition hidden ml-4">
+                Retry Connection
+            </button>
             <p id="accountInfo" class="mt-4 text-gray-600"></p>
             <p id="networkInfo" class="mt-2 text-gray-600"></p>
+            <p id="connectionStatus" class="mt-2 text-gray-600 hidden"></p>
         </div>
 
         <!-- Token Info -->
@@ -120,7 +124,17 @@
             const referralInputSection = document.getElementById("referralInputSection");
             if (referralInputSection) {
                 referralInputSection.style.display = "none";
+                console.log("Referral input hidden");
             }
+        };
+
+        // Fungsi untuk memperbarui status koneksi
+        const updateConnectionStatus = (message, isError = false) => {
+            const statusElement = document.getElementById("connectionStatus");
+            statusElement.innerText = message;
+            statusElement.className = `mt-2 ${isError ? "text-red-600" : "text-gray-600"}`;
+            statusElement.classList.remove("hidden");
+            console.log("Connection status:", message);
         };
 
         // Periksa dan beralih ke Base Sepolia Testnet
@@ -129,17 +143,19 @@
                 const chainId = await window.ethereum.request({ method: "eth_chainId" });
                 console.log("Current chain ID:", chainId);
                 if (chainId !== BASE_SEPOLIA_CHAIN_ID) {
+                    updateConnectionStatus("Switching to Base Sepolia Testnet...");
                     try {
                         await window.ethereum.request({
                             method: "wallet_switchEthereumChain",
                             params: [{ chainId: BASE_SEPOLIA_CHAIN_ID }],
                         });
                         document.getElementById("networkInfo").innerText = "Network: Base Sepolia Testnet";
+                        updateConnectionStatus("Connected to Base Sepolia Testnet");
                         console.log("Switched to Base Sepolia Testnet");
                     } catch (switchError) {
                         console.error("Switch network error:", switchError);
                         if (switchError.code === 4902) {
-                            // Jaringan belum ditambahkan di MetaMask
+                            updateConnectionStatus("Adding Base Sepolia Testnet...");
                             await window.ethereum.request({
                                 method: "wallet_addEthereumChain",
                                 params: [{
@@ -155,6 +171,7 @@
                                 }],
                             });
                             document.getElementById("networkInfo").innerText = "Network: Base Sepolia Testnet";
+                            updateConnectionStatus("Base Sepolia Testnet added");
                             console.log("Added Base Sepolia Testnet");
                         } else {
                             throw switchError;
@@ -162,12 +179,14 @@
                     }
                 } else {
                     document.getElementById("networkInfo").innerText = "Network: Base Sepolia Testnet";
+                    updateConnectionStatus("Already on Base Sepolia Testnet");
                     console.log("Already on Base Sepolia Testnet");
                 }
             } catch (error) {
                 console.error("Error checking/switching network:", error);
                 document.getElementById("networkInfo").innerText = "Failed to connect to Base Sepolia Testnet";
-                alert("Please switch to Base Sepolia Testnet manually in MetaMask.");
+                updateConnectionStatus("Failed to connect to Base Sepolia Testnet", true);
+                document.getElementById("retryButton").classList.remove("hidden");
             }
         };
 
@@ -176,6 +195,7 @@
             if (!window.ethereum) {
                 alert("Please install MetaMask to use this DApp.");
                 document.getElementById("networkInfo").innerText = "MetaMask not detected";
+                updateConnectionStatus("MetaMask not detected", true);
                 console.error("MetaMask not detected");
                 return;
             }
@@ -184,40 +204,74 @@
                 web3 = new Web3(window.ethereum);
                 console.log("Web3 initialized");
 
+                // Periksa akun yang sudah terhubung
+                const accounts = await window.ethereum.request({ method: "eth_accounts" });
+                console.log("Existing accounts:", accounts);
+
                 // Periksa dan beralih jaringan
                 await checkAndSwitchNetwork();
 
                 if (forceConnect || checkStoredConnection()) {
+                    updateConnectionStatus("Connecting to MetaMask...");
                     try {
-                        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                        console.log("Accounts received:", accounts);
-                        if (accounts.length === 0) {
+                        const newAccounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+                        console.log("Requested accounts:", newAccounts);
+                        if (newAccounts.length === 0) {
                             throw new Error("No accounts returned by MetaMask");
                         }
-                        userAccount = accounts[0];
+                        userAccount = newAccounts[0];
                         contract = new web3.eth.Contract(contractABI, contractAddress);
                         updateWalletUI(true);
                         storeConnection(userAccount);
+                        updateConnectionStatus("Wallet connected successfully");
                         console.log("Wallet connected:", userAccount);
                         await setAutomaticReferralId();
                         await handleReferralFromURL();
                         await checkReferralStatus();
-                        loadTokenInfo();
-                        loadCheckInHistory();
-                        loadUserBetHistory();
-                        loadGlobalBetHistory();
-                        loadReferees();
+                        await loadTokenInfo();
+                        await loadCheckInHistory();
+                        await loadUserBetHistory();
+                        await loadGlobalBetHistory();
+                        await loadReferees();
                     } catch (accountError) {
                         console.error("Error requesting accounts:", accountError);
                         if (accountError.code === 4001) {
-                            alert("Connection rejected by user. Please allow MetaMask to connect.");
+                            updateConnectionStatus("Connection rejected by user", true);
+                            alert("Connection rejected. Please allow MetaMask to connect.");
+                        } else if (accountError.message.includes("No accounts")) {
+                            updateConnectionStatus("MetaMask is locked. Please unlock MetaMask.", true);
+                            alert("MetaMask is locked. Please unlock MetaMask and try again.");
                         } else {
+                            updateConnectionStatus("Failed to connect to MetaMask", true);
                             alert("Failed to connect to MetaMask. Please try again.");
                         }
+                        document.getElementById("retryButton").classList.remove("hidden");
                         updateWalletUI(false);
                     }
+                } else if (accounts.length > 0) {
+                    // Gunakan akun yang sudah terhubung
+                    userAccount = accounts[0];
+                    contract = new web3.eth.Contract(contractABI, contractAddress);
+                    updateWalletUI(true);
+                    storeConnection(userAccount);
+                    updateConnectionStatus("Using existing wallet connection");
+                    console.log("Using existing wallet:", userAccount);
+                    await setAutomaticReferralId();
+                    await handleReferralFromURL();
+                    await checkReferralStatus();
+                    await loadTokenInfo();
+                    await loadCheckInHistory();
+                    await loadUserBetHistory();
+                    await loadGlobalBetHistory();
+                    await loadReferees();
                 }
+            } catch (error) {
+                console.error("Error initializing Web3:", error);
+                updateConnectionStatus("Failed to initialize Web3", true);
+                document.getElementById("retryButton").classList.remove("hidden");
+                updateWalletUI(false);
             }
+        };
 
         // Periksa koneksi tersimpan di localStorage
         const checkStoredConnection = () => {
@@ -256,6 +310,8 @@
             updateWalletUI(false);
             document.getElementById("accountInfo").innerText = "Wallet disconnected";
             document.getElementById("networkInfo").innerText = "";
+            document.getElementById("connectionStatus").classList.add("hidden");
+            document.getElementById("retryButton").classList.add("hidden");
             document.getElementById("referralLink").innerText = "Link Undangan: Connect wallet";
             document.getElementById("referrerId").innerText = "Your Referrer ID: Connect wallet";
             document.getElementById("refereeCount").innerText = "Teman yang Diundang: Connect wallet";
@@ -609,6 +665,11 @@
             }
         });
 
+        document.getElementById("retryButton").addEventListener("click", () => {
+            document.getElementById("retryButton").classList.add("hidden");
+            initWeb3(true);
+        });
+
         document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
         document.getElementById("checkIn").addEventListener("click", checkIn);
         document.getElementById("placeBet").addEventListener("click", placeBet);
@@ -621,6 +682,7 @@
         window.addEventListener("load", async () => {
             if (!window.ethereum) {
                 alert("Please install MetaMask to use this DApp.");
+                updateConnectionStatus("MetaMask not detected", true);
                 console.error("MetaMask not detected on load");
                 return;
             }
@@ -630,10 +692,12 @@
                     console.log("Accounts changed:", accounts);
                     if (accounts.length === 0) {
                         disconnectWallet();
+                        updateConnectionStatus("Wallet disconnected");
                     } else {
                         userAccount = accounts[0];
                         storeConnection(userAccount);
                         updateWalletUI(true);
+                        updateConnectionStatus("Wallet account changed");
                         await setAutomaticReferralId();
                         await handleReferralFromURL();
                         await checkReferralStatus();
@@ -648,6 +712,7 @@
                     console.log("Chain changed:", chainId);
                     await checkAndSwitchNetwork();
                     if (userAccount) {
+                        updateConnectionStatus("Network changed");
                         await loadTokenInfo();
                         await loadCheckInHistory();
                         await loadUserBetHistory();
@@ -657,7 +722,8 @@
                 });
             } catch (error) {
                 console.error("Error on page load:", error);
-                alert("Failed to initialize DApp. Please ensure MetaMask is installed and unlocked.");
+                updateConnectionStatus("Failed to initialize DApp", true);
+                document.getElementById("retryButton").classList.remove("hidden");
             }
         });
     </script>
