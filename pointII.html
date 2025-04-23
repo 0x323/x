@@ -217,12 +217,7 @@
                         updateWalletUI(false);
                     }
                 }
-            } catch (error) {
-                console.error("Error initializing Web3:", error);
-                alert("Failed to initialize Web3. Please ensure MetaMask is installed and unlocked.");
-                updateWalletUI(false);
             }
-        };
 
         // Periksa koneksi tersimpan di localStorage
         const checkStoredConnection = () => {
