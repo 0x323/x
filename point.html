@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting dApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <style>
+       /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Background */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Navbar Styles */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav .hamburger {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #3498db;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Heading Style for Bet Section */
+.orange-text {
+    color: #ff5722;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Connect Wallet Section */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Input Fields for Bet Form */
+input[type="text"],
+input[type="number"],
+#referralIdInput {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Bet Form Styles */
+#betForm {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#betForm label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#betForm button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #ff5722;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+#betForm button:hover {
+    background-color: #e64a19;
+}
+
+/* Status Message */
+#status {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* Referral Section */
+#referralSection {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#referralSection input {
+    width: 70%;
+}
+
+#referralSection button {
+    width: 28%;
+}
+
+/* Footer Section */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+footer .social-icons {
+    margin-top: 10px;
+}
+
+footer .social-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+footer .social-icons a:hover {
+    color: #3498db;
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    #betForm {
+        width: 90%;
+    }
+
+    footer .social-icons {
+        display: flex;
+        justify-content: center;
+    }
+
+    footer .social-icons a {
+        margin: 0 5px;
+    }
+}
+    </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+<nav>
+  <div class="logo">CheckInPoint</div>
+  <div class="hamburger">&#9776;</div>
+</nav>
+
+    <div class="bet-container">
+
+      <!-- Latar belakang animasi -->
+<div class="background"></div>
+<div class="stars"></div>
+
+<!-- Hero Section -->
+<div class="hero">
+  <h1>Welcome to CheckInPoint</h1>
+</div>
+
+<h1 class="orange-text">Doger Portal Airdrop Check-in</h1>
+
+<!-- Connect Wallet Section -->
+<button id="connectButton">
+    <i class="fas fa-link"></i> Connect Wallet
+</button>
+
+<p id="walletInfo" class="hidden">Wallet Address: <span id="walletAddress">-</span></p>
+<p id="ethBalanceInfo" class="hidden">ETH Balance: <span id="ethBalance">0</span> ETH</p>
+<p id="dPointBalanceInfo" class="hidden">dPoint: <span id="cipBalance">0</span> Point</p>
+
+<!-- Check-in Section -->
+<button id="checkinButton" disabled>
+    <i class="fas fa-check"></i> Check-in
+</button>
+<button id="disconnectButton" disabled>
+    <i class="fas fa-power-off"></i> Disconnect
+</button>
+
+<p id="status"></p>
+
+<!-- Referral ID Section (Optional) -->
+<div id="referralSection">
+  <input type="text" id="referralIdInput" placeholder="Referral ID" />
+  <button id="setReferralButton">Set Referral ID</button>
+  <button id="setReferralByIdButton">Use Referral ID</button>
+</div>
+      
+        <h2>Place Your Bet</h2>
+        <form id="betForm">
+            <label for="betNumber">Bet Number (1-20 digits):</label>
+            <input type="text" id="betNumber" required><br><br>
+            
+            <label for="betTimes">Bet Times (1-10):</label>
+            <input type="number" id="betTimes" min="1" max="10" required><br><br>
+            
+            <label for="payoutAmount">Payout Amount:</label>
+            <input type="number" id="payoutAmount" required><br><br>
+            
+            <button type="submit" id="placeBetButton">Place Bet</button>
+        </form>
+    </div>
+
+    <p id="status"></p>
+
+  <!-- Footer -->
+<footer>
+  <p>&copy; 2025 CheckInPoint</p>
+  <div class="social-icons">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin"></i></a>
+  </div>
+</footer>
+
+    <script>
+        // Initialize Web3 and contract
+
+      const ArbitrumSepolia = {
+    chainId: "0x66eee",
+    chainName: "Arbitrum Sepolia",
+    nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+    rpcUrls: ["https://sepolia-rollup.arbitrum.io/rpc"],
+    blockExplorerUrls: ["https://sepolia.arbiscan.io"]
+};
+        const contractAddress = "YOUR_CONTRACT_ADDRESS";  // Update contract address
+const pointTokenAddress = "YOUR_POINT_TOKEN_ADDRESS";  // Update Point Token address
+
+// ABI for the CheckInPoint contract
+const contractABI = [ /* Contract ABI goes here */ ];
+const pointABI = [ /* ABI for the Point token contract goes here */ ];
+
+      let web3;
+let contract;
+let pointContract;
+let userAccount;
+
+        window.addEventListener("load", async () => {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                try {
+                    // Request account access
+                    await window.ethereum.enable();
+                    const accounts = await web3.eth.getAccounts();
+                    userAccount = accounts[0];
+                    contract = new web3.eth.Contract(contractABI, contractAddress);
+                    console.log("Web3 connected. Account: ", userAccount);
+                } catch (error) {
+                    console.error("User denied account access.");
+                }
+            } else {
+                alert("Please install MetaMask to use this dApp.");
+            }
+        });
+
+      async function connectMetaMask() {
+    if (window.ethereum) {
+        try {
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+            web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            userAccount = accounts[0];
+
+            await switchToArbitrumSepolia();
+
+            contract = new web3.eth.Contract(contractABI, contractAddress);
+            pointContract = new web3.eth.Contract(pointABI, pointTokenAddress);
+
+            document.getElementById("walletAddress").innerText = userAccount;
+            document.getElementById("connectButton").innerText = "Connected";
+            document.getElementById("checkinButton").disabled = false;
+            document.getElementById("disconnectButton").disabled = false;
+
+            updateBalances();
+        } catch (error) {
+            console.error("MetaMask Connection Error:", error);
+        }
+    } else {
+        alert("MetaMask not detected. Please install MetaMask!");
+    }
+}
+
+async function switchToArbitrumSepolia() {
+    try {
+        await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x66eee" }]
+        });
+    } catch (error) {
+        if (error.code === 4902) { // Network not added
+            try {
+                await window.ethereum.request({
+                    method: "wallet_addEthereumChain",
+                    params: [{
+                        chainId: "0x66eee",
+                        chainName: "Arbitrum Sepolia",
+                        nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+                        rpcUrls: ["https://sepolia-rollup.arbitrum.io/rpc"],
+                        blockExplorerUrls: ["https://sepolia.arbiscan.io"]
+                    }]
+                });
+            } catch (addError) {
+                console.error("Failed to add network:", addError);
+            }
+        } else {
+            console.error("Failed to change network:", error);
+        }
+    }
+}
+
+async function updateBalances() {
+    if (userAccount) {
+        try {
+            const ethBalance = await web3.eth.getBalance(userAccount);
+            document.getElementById("ethBalance").innerText = web3.utils.fromWei(ethBalance, "ether");
+
+            const cipBalanceRaw = await pointContract.methods.balanceOf(userAccount).call();
+            const cipBalance = web3.utils.fromWei(cipBalanceRaw, "ether");
+            document.getElementById("cipBalance").innerText = cipBalance;
+        } catch (error) {
+            console.error("Failed to get balance:", error);
+        }
+    }
+}
+
+        // Fungsi untuk melakukan taruhan
+        async function placeBet(number, times, payoutAmount) {
+            if (contract && userAccount) {
+                try {
+                    // Validasi input
+                    if (!number || times <= 0 || payoutAmount <= 0) {
+                        alert("Invalid input!");
+                        return;
+                    }
+
+                    const currentDayUTC = Math.floor(Date.now() / (1000 * 60 * 60 * 24)); // Menghitung hari UTC
+
+                    // Mengirim transaksi untuk melakukan taruhan
+                    const tx = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+                    document.getElementById("status").innerText = "Bet placed successfully!";
+                    console.log("Transaction successful:", tx);
+
+                    updateBalances(); // Update saldo setelah taruhan
+                } catch (error) {
+                    console.error("Failed to place bet:", error);
+                    document.getElementById("status").innerText = "Failed to place bet.";
+                }
+            }
+        }
+
+        // Menampilkan saldo
+        async function updateBalances() {
+            if (contract && userAccount) {
+                try {
+                    const balance = await web3.eth.getBalance(userAccount);
+                    console.log("User balance:", web3.utils.fromWei(balance, 'ether'), "ETH");
+                } catch (error) {
+                    console.error("Failed to fetch balance:", error);
+                }
+            }
+        }
+
+        // Menangani pengiriman form taruhan
+        document.getElementById("betForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const number = document.getElementById("betNumber").value;
+            const times = parseInt(document.getElementById("betTimes").value);
+            const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
+
+            placeBet(number, times, payoutAmount);
+        });
+
+      async function checkIn() {
+    if (contract && userAccount) {
+        try {
+            document.getElementById("status").innerText = "Check-in is being processed...";
+            await contract.methods.checkIn().send({ from: userAccount });
+            document.getElementById("status").innerText = "Check-in was successful!";
+            updateBalances();
+        } catch (error) {
+            console.error("Failed to check-in:", error);
+            document.getElementById("status").innerText = "Failed to check-in.";
+        }
+    }
+}
+
+     function disconnectWallet() {
+    userAccount = null;
+    document.getElementById("walletAddress").innerText = "-";
+    document.getElementById("ethBalance").innerText = "0";
+    document.getElementById("cipBalance").innerText = "0";
+    document.getElementById("connectButton").innerText = "Connect MetaMask";
+    document.getElementById("checkinButton").disabled = true;
+    document.getElementById("disconnectButton").disabled = true;
+    document.getElementById("status").innerText = "Wallet disconnected.";
+}
+
+document.getElementById("connectButton").addEventListener("click", connectMetaMask);
+document.getElementById("checkinButton").addEventListener("click", checkIn);
+document.getElementById("disconnectButton").addEventListener("click", disconnectWallet);
+
+// Referral functions
+document.getElementById("setReferralButton").addEventListener("click", async () => {
+    const referralId = document.getElementById("referralIdInput").value;
+    if (referralId) {
+        try {
+            await contract.methods.setReferralId(referralId).send({ from: userAccount });
+            alert("Referral ID set successfully!");
+        } catch (error) {
+            console.error("Failed to set referral ID:", error);
+        }
+    }
+});
+
+document.getElementById("setReferralByIdButton").addEventListener("click", async () => {
+    const referralId = document.getElementById("referralIdInput").value;
+    if (referralId) {
+        try {
+            await contract.methods.setReferralById(referralId).send({ from: userAccount });
+            alert("Referral ID used successfully!");
+        } catch (error) {
+            console.error("Failed to use referral ID:", error);
+        }
+    }
+});
+    </script>
+
+</body>
+</html>
