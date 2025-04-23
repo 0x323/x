@@ -13,7 +13,7 @@
 
         <!-- Wallet Connection -->
         <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <button id="connectWallet" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+            <button id="walletButton" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                 Connect Wallet
             </button>
             <p id="accountInfo" class="mt-4 text-gray-600"></p>
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Referral -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
+        <div class="mb-8 bg-white p-6 rounded-lg sha dow">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Referral</h2>
             <div class="mb-6">
                 <label for="referralId" class="block text-gray-700 font-medium mb-2">Set Your Referral ID</label>
@@ -39,12 +39,16 @@
                     Set Referral ID
                 </button>
             </div>
-            <div>
+            <div class="mb-6">
                 <label for="referrerId" class="block text-gray-700 font-medium mb-2">Join with Referral ID</label>
                 <input id="referrerId" type="text" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter referrer's ID">
                 <button id="setReferrerId" class="bg-green-600 text-white px-6 py-2 mt-3 rounded-lg hover:bg-green-700 transition">
                     Join Referral
                 </button>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2 text-gray-800">Your Referral ID</h3>
+                <p id="userReferralId" class="text-gray-600">Loading...</p>
             </div>
         </div>
 
@@ -97,53 +101,137 @@ let web3;
 let contract;
 let userAccount;
 
-const initWeb3 = async () => {
+// Durasi validitas koneksi (7 hari dalam milidetik)
+const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
+
+// Inisialisasi Web3 dan kontrak
+const initWeb3 = async (forceConnect = false) => {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         try {
-            await window.ethereum.request({ method: "eth_requestAccounts" });
-            const accounts = await web3.eth.getAccounts();
-            userAccount = accounts[0];
-            document.getElementById("accountInfo").innerText = `Connected: ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}`;
-            contract = new web3.eth.Contract(contractABI, contractAddress);
-            loadTokenInfo();
-            loadCheckInHistory();
-            loadUserBetHistory();
-            loadGlobalBetHistory();
+            if (forceConnect || checkStoredConnection()) {
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+                const accounts = await web3.eth.getAccounts();
+                userAccount = accounts[0];
+                updateWalletUI(true);
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+                // Simpan koneksi ke localStorage
+                storeConnection(userAccount);
+                loadTokenInfo();
+                loadCheckInHistory();
+                loadUserBetHistory();
+                loadGlobalBetHistory();
+            }
         } catch (error) {
             console.error("Error connecting to MetaMask:", error);
             alert("Failed to connect to MetaMask. Please try again.");
+            updateWalletUI(false);
         }
     } else {
         alert("Please install MetaMask to use this DApp.");
     }
 };
 
-// Load informasi token
+// Periksa koneksi tersimpan di localStorage
+const checkStoredConnection = () => {
+    const connection = localStorage.getItem("walletConnection");
+    if (!connection) return false;
+
+    try {
+        const { account, timestamp } = JSON.parse(connection);
+        const now = Date.now();
+        if (now - timestamp < CONNECTION_VALIDITY && account) {
+            userAccount = account;
+            return true;
+        } else {
+            localStorage.removeItem("walletConnection");
+            return false;
+        }
+    } catch (error) {
+        console.error("Error parsing stored connection:", error);
+        localStorage.removeItem("walletConnection");
+        return false;
+    }
+};
+
+// Simpan koneksi ke localStorage
+const storeConnection = (account) => {
+    const connection = {
+        account,
+        timestamp: Date.now(),
+    };
+    localStorage.setItem("walletConnection", JSON.stringify(connection));
+};
+
+// Putuskan koneksi wallet
+const disconnectWallet = () => {
+    userAccount = null;
+    localStorage.removeItem("walletConnection");
+    updateWalletUI(false);
+    document.getElementById("accountInfo").innerText = "Wallet disconnected";
+    document.getElementById("userReferralId").innerText = "Connect wallet to view Referral ID.";
+    document.getElementById("tokenName").innerText = "Name: Connect wallet";
+    document.getElementById("tokenSymbol").innerText = "Symbol: Connect wallet";
+    document.getElementById("tokenDecimals").innerText = "Decimals: Connect wallet";
+    document.getElementById("totalSupply").innerText = "Total Supply: Connect wallet";
+    document.getElementById("balance").innerText = "Your Balance: Connect wallet";
+    document.getElementById("checkInHistory").innerHTML = "";
+    document.getElementById("userBetHistory").innerHTML = "";
+    document.getElementById("globalBetHistory").innerHTML = "";
+};
+
+// Perbarui UI tombol wallet
+const updateWalletUI = (isConnected) => {
+    const walletButton = document.getElementById("walletButton");
+    if (isConnected) {
+        walletButton.innerText = "Disconnect Wallet";
+        walletButton.classList.remove("bg-blue-600", "hover:bg-blue-700");
+        walletButton.classList.add("bg-red-600", "hover:bg-red-700");
+        document.getElementById("accountInfo").innerText = `Connected: ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}`;
+    } else {
+        walletButton.innerText = "Connect Wallet";
+        walletButton.classList.remove("bg-red-600", "hover:bg-red-700");
+        walletButton.classList.add("bg-blue-600", "hover:bg-blue-700");
+        document.getElementById("accountInfo").innerText = "";
+    }
+};
+
+// Load informasi token dan referral
 const loadTokenInfo = async () => {
+    if (!userAccount) return;
     try {
         const name = await contract.methods.name().call();
         const symbol = await contract.methods.symbol().call();
         const decimals = await contract.methods.decimals().call();
         const totalSupply = await contract.methods.totalSupply().call();
         const balance = await contract.methods.balanceOf(userAccount).call();
+        const userReferralId = await contract.methods.referralIdOf(userAccount).call();
 
         document.getElementById("tokenName").innerText = `Name: ${name}`;
         document.getElementById("tokenSymbol").innerText = `Symbol: ${symbol}`;
         document.getElementById("tokenDecimals").innerText = `Decimals: ${decimals}`;
         document.getElementById("totalSupply").innerText = `Total Supply: ${(totalSupply / 10 ** decimals).toFixed(2)} ${symbol}`;
         document.getElementById("balance").innerText = `Your Balance: ${(balance / 10 ** decimals).toFixed(2)} ${symbol}`;
+        document.getElementById("userReferralId").innerText = userReferralId 
+            ? `Your Referral ID: ${userReferralId}` 
+            : "You have not set a Referral ID.";
     } catch (error) {
         console.error("Error loading token info:", error);
         document.getElementById("tokenName").innerText = "Name: Error";
         document.getElementById("tokenSymbol").innerText = "Symbol: Error";
+        document.getElementById("tokenDecimals").innerText = "Decimals: Error";
         document.getElementById("totalSupply").innerText = "Total Supply: Error";
         document.getElementById("balance").innerText = "Your Balance: Error";
+        document.getElementById("userReferralId").innerText = "Error loading Referral ID.";
     }
 };
 
 // Set Referral ID
 const setReferralId = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
     const referralId = document.getElementById("referralId").value.trim();
     if (!referralId) {
         alert("Please enter a referral ID.");
@@ -153,6 +241,7 @@ const setReferralId = async () => {
         await contract.methods.setReferralId(referralId).send({ from: userAccount });
         alert("Referral ID set successfully!");
         document.getElementById("referralId").value = "";
+        loadTokenInfo();
     } catch (error) {
         console.error("Error setting referral ID:", error);
         alert("Failed to set referral ID. It may already be taken or you already have one.");
@@ -161,6 +250,10 @@ const setReferralId = async () => {
 
 // Set Referrer ID
 const setReferrerId = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
     const referrerId = document.getElementById("referrerId").value.trim();
     if (!referrerId) {
         alert("Please enter a referrer ID.");
@@ -178,6 +271,10 @@ const setReferrerId = async () => {
 
 // Check-In
 const checkIn = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
     try {
         await contract.methods.checkIn().send({ from: userAccount });
         document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Point.";
@@ -191,6 +288,7 @@ const checkIn = async () => {
 
 // Load Check-In History
 const loadCheckInHistory = async () => {
+    if (!userAccount) return;
     try {
         const count = await contract.methods.getCheckInCount(userAccount).call();
         const historyList = document.getElementById("checkInHistory");
@@ -211,6 +309,10 @@ const loadCheckInHistory = async () => {
 
 // Place Bet
 const placeBet = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
     const number = document.getElementById("betNumber").value.trim();
     const times = parseInt(document.getElementById("betTimes").value);
     const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
@@ -245,6 +347,7 @@ const placeBet = async () => {
 
 // Load User Bet History
 const loadUserBetHistory = async () => {
+    if (!userAccount) return;
     try {
         const count = await contract.methods.getUserBetCount(userAccount).call();
         const historyList = document.getElementById("userBetHistory");
@@ -265,6 +368,7 @@ const loadUserBetHistory = async () => {
 
 // Load Global Bet History
 const loadGlobalBetHistory = async () => {
+    if (!userAccount) return;
     try {
         const count = await contract.methods.getBetHistoryLength().call();
         const historyList = document.getElementById("globalBetHistory");
@@ -284,27 +388,40 @@ const loadGlobalBetHistory = async () => {
 };
 
 // Event Listeners
-document.getElementById("connectWallet").addEventListener("click", initWeb3);
+const walletButton = document.getElementById("walletButton");
+walletButton.addEventListener("click", () => {
+    if (userAccount) {
+        disconnectWallet();
+    } else {
+        initWeb3(true);
+    }
+});
+
 document.getElementById("setReferralId").addEventListener("click", setReferralId);
 document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
 document.getElementById("checkIn").addEventListener("click", checkIn);
 document.getElementById("placeBet").addEventListener("click", placeBet);
 
-// Handle account changes
+// Inisialisasi saat halaman dimuat
 window.addEventListener("load", () => {
     if (window.ethereum) {
+        // Coba koneksi otomatis dari localStorage
+        initWeb3(false);
         window.ethereum.on("accountsChanged", (accounts) => {
-            userAccount = accounts[0] || null;
-            document.getElementById("accountInfo").innerText = userAccount
-                ? `Connected: ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}`
-                : "Wallet disconnected";
-            if (userAccount) {
+            if (accounts.length === 0) {
+                disconnectWallet();
+            } else {
+                userAccount = accounts[0];
+                storeConnection(userAccount);
+                updateWalletUI(true);
                 loadTokenInfo();
                 loadCheckInHistory();
                 loadUserBetHistory();
                 loadGlobalBetHistory();
             }
         });
+    } else {
+        alert("Please install MetaMask to use this DApp.");
     }
 });
     </script>
