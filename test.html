@@ -2,15 +2,15 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Verifikasi Sosial Media</title>
+  <title>Verifikasi Sosmed</title>
   <style>
     body { font-family: sans-serif; }
     .modal {
-      display: flex;
       position: fixed;
       z-index: 9999;
       top: 0; left: 0;
       width: 100%; height: 100%;
+      display: flex;
       justify-content: center;
       align-items: center;
       background: rgba(0,0,0,0.8);
@@ -18,26 +18,44 @@
     .modal-content {
       background: white;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       width: 90%;
       max-width: 400px;
     }
     .task {
       margin-bottom: 20px;
     }
-    .hidden { display: none; }
-    .btn, .btn-task, .btn-confirm {
-      padding: 10px;
-      margin-top: 10px;
-      background: #2196F3;
+    .btn-task {
+      width: 100%;
+      background-color: #1a73e8;
       color: white;
       border: none;
       border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
       cursor: pointer;
-      display: block;
-      width: 100%;
     }
-    .btn:disabled { background: #aaa; }
+    .btn-task.confirm {
+      background-color: #28a745;
+    }
+    .btn-task:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    .checkbox {
+      margin-top: 10px;
+      display: none;
+    }
+    #continueBtn {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -46,67 +64,75 @@
   <div class="modal-content">
     <h3>Verifikasi Sosial Media</h3>
 
-    <!-- Task 1: Twitter -->
-    <div class="task" id="block1">
-      <b>1. Follow, Retweet, Like, Komentar Twitter</b>
-      <a class="btn-task" href="https://twitter.com/LottoChainXyz" target="_blank" onclick="showConfirm('1')">Buka Twitter</a>
-      <button class="btn-confirm hidden" onclick="confirmTask('1')">Saya sudah follow dan retweet</button>
-      <label class="hidden"><input type="checkbox" id="task1" onchange="checkAll()"> Selesai</label>
+    <!-- Twitter -->
+    <div class="task" id="task1">
+      <b>1. Twitter Follow, Like, RT, Komentar</b>
+      <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task1')">Follow & Konfirmasi</button>
+      <div class="checkbox">
+        <label><input type="checkbox" onchange="checkAll()"> Saya sudah menyelesaikan task ini</label>
+      </div>
     </div>
 
-    <!-- Task 2: Telegram -->
-    <div class="task" id="block2">
+    <!-- Telegram -->
+    <div class="task" id="task2">
       <b>2. Join Channel Telegram</b>
-      <a class="btn-task" href="https://t.me/LottoChainXyz" target="_blank" onclick="showConfirm('2')">Buka Telegram</a>
-      <button class="btn-confirm hidden" onclick="confirmTask('2')">Saya sudah join channel</button>
-      <label class="hidden"><input type="checkbox" id="task2" onchange="checkAll()"> Selesai</label>
+      <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Konfirmasi</button>
+      <div class="checkbox">
+        <label><input type="checkbox" onchange="checkAll()"> Saya sudah menyelesaikan task ini</label>
+      </div>
     </div>
 
-    <!-- Task 3: Facebook -->
-    <div class="task" id="block3">
-      <b>3. Join Halaman Facebook</b>
-      <a class="btn-task" href="https://facebook.com/LottoChainXyz" target="_blank" onclick="showConfirm('3')">Buka Facebook</a>
-      <button class="btn-confirm hidden" onclick="confirmTask('3')">Saya sudah like halaman</button>
-      <label class="hidden"><input type="checkbox" id="task3" onchange="checkAll()"> Selesai</label>
+    <!-- Facebook -->
+    <div class="task" id="task3">
+      <b>3. Like Halaman Facebook</b>
+      <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Konfirmasi</button>
+      <div class="checkbox">
+        <label><input type="checkbox" onchange="checkAll()"> Saya sudah menyelesaikan task ini</label>
+      </div>
     </div>
 
-    <button class="btn" id="continueBtn" disabled>Lanjutkan</button>
+    <button id="continueBtn" disabled onclick="finish()">Lanjutkan</button>
   </div>
 </div>
 
 <script>
-  function showConfirm(num) {
-    setTimeout(() => {
-      document.querySelector(`#block${num} .btn-confirm`).classList.remove('hidden');
-    }, 3000); // Delay agar tidak langsung muncul
-  }
+  const taskStates = {};
 
-  function confirmTask(num) {
-    document.querySelector(`#block${num} .btn-confirm`).classList.add('hidden');
-    document.querySelector(`#block${num} label`).classList.remove('hidden');
-    document.querySelector(`#task${num}`).checked = true;
-    checkAll();
+  function handleTaskClick(button, url, taskId) {
+    if (!taskStates[taskId]) {
+      window.open(url, '_blank');
+      taskStates[taskId] = true;
+      button.textContent = "Klik untuk Konfirmasi";
+      button.classList.add("confirm");
+    } else {
+      // Tampilkan checkbox untuk dicentang manual
+      const checkboxDiv = document.querySelector(`#${taskId} .checkbox`);
+      checkboxDiv.style.display = 'block';
+      button.disabled = true;
+    }
   }
 
   function checkAll() {
-    const allChecked = ['task1', 'task2', 'task3'].every(id => document.getElementById(id).checked);
-    document.getElementById('continueBtn').disabled = !allChecked;
+    const checkboxes = document.querySelectorAll('.checkbox input[type="checkbox"]');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    document.getElementById("continueBtn").disabled = !allChecked;
   }
 
-  document.getElementById('continueBtn').addEventListener('click', () => {
-    document.getElementById('taskModal').style.display = 'none';
-    alert('Semua tugas selesai. Modal ditutup.');
-  });
+  function finish() {
+    document.getElementById("taskModal").style.display = 'none';
+    alert("Semua verifikasi selesai!");
+  }
 
+  // Blok akses console sampai semua tugas selesai
   window.console = {
     log: function () {
-      if (!['task1', 'task2', 'task3'].every(id => document.getElementById(id).checked)) {
+      const checkboxes = document.querySelectorAll('.checkbox input[type="checkbox"]');
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      if (!allChecked) {
         alert("Selesaikan semua tugas sebelum membuka console.");
         throw new Error("Akses console diblokir.");
       }
-    },
-    warn: function () {},
-    error: function () {}
+    }
   };
 </script>
 
