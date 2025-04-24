@@ -1,656 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CheckInPoint DApp</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Modal Tugas Sosial Media</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f4f6;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
+      font-family: sans-serif;
     }
-    .container {
-      max-width: 960px;
-      margin: auto;
-      padding: 24px;
+
+    .modal {
+      display: flex;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.7);
     }
-    h1, h2, h3 {
-      text-align: center;
-      color: #2d3748;
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
-    .card {
-      background-color: white;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-      margin-bottom: 32px;
+
+    .task {
+      margin: 10px 0;
     }
-    .button {
-      background-color: #2563eb;
+
+    .task input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .btn, .btn-task {
+      padding: 10px 15px;
+      background: #4CAF50;
       color: white;
-      padding: 12px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s;
-      display: inline-block;
+      margin-top: 10px;
+      display: block;
+      text-align: center;
       text-decoration: none;
     }
-    .button:hover {
-      background-color: #1d4ed8;
+
+    .btn-task {
+      background: #2196F3;
     }
-    .button-copy {
-      background-color: #e5e7eb;
-      color: #1f2937;
-    }
-    .button-copy:hover {
-      background-color: #d1d5db;
-    }
-    .button-green {
-      background-color: #16a34a;
-    }
-    .button-green:hover {
-      background-color: #15803d;
-    }
-    .button-purple {
-      background-color: #7c3aed;
-    }
-    .button-purple:hover {
-      background-color: #6d28d9;
-    }
-    .input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      margin-top: 6px;
-      margin-bottom: 16px;
-    }
-    label {
-      font-weight: 600;
-      color: #374151;
-    }
-    p, ul {
-      color: #4b5563;
-      margin-bottom: 8px;
+
+    .btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>CheckInPoint DApp</h1>
 
-    <!-- Wallet Connection -->
-    <div class="card">
-      <div id="twitterFollowSection">
-        <p>Follow our Twitter account to unlock wallet connection:</p>
-        <a id="twitterButton" href="https://twitter.com/youraccount" target="_blank" class="button">Follow Twitter</a>
-        <p id="twitterStatus"></p>
-      </div>
-      <button id="walletButton" class="button" style="display:none;">Connect Wallet</button>
-      <p id="accountInfo"></p>
+<div class="modal" id="taskModal">
+  <div class="modal-content">
+    <h3>Verifikasi Tugas Sosial Media</h3>
+
+    <div class="task">
+      <label><input type="checkbox" id="task1">Follow, Retweet, Like & Komentar Twitter</label>
+      <a class="btn-task" href="https://twitter.com/LottoChainXyz" target="_blank" onclick="autoCheck('task1')">Buka Twitter</a>
     </div>
 
-    <!-- Token Info -->
-    <div class="card">
-      <h2>Token Information</h2>
-      <p id="tokenName">Name: Loading...</p>
-      <p id="tokenSymbol">Symbol: Loading...</p>
-      <p id="tokenDecimals">Decimals: Loading...</p>
-      <p id="totalSupply">Total Supply: Loading...</p>
-      <p id="tokenBalance">Your Balance: Loading...</p>
+    <div class="task">
+      <label><input type="checkbox" id="task2">Join Channel Telegram</label>
+      <a class="btn-task" href="https://t.me/LottoChainXyz" target="_blank" onclick="autoCheck('task2')">Buka Telegram</a>
     </div>
 
-    <!-- Referral -->
-    <div class="card">
-      <h2>Referral</h2>
-      <p id="referralLink">Link Undangan: Loading...</p>
-      <button id="copyLink" class="button button-copy">Copy Link</button>
-      <p id="refereeCount">Teman yang Diundang: Loading...</p>
-      <p id="referralReward">Reward: Loading...</p>
-
-      <label for="referrerId">Join with Referral ID</label>
-      <input id="referrerId" type="text" class="input" placeholder="Enter referrer's ID">
-      <button id="setReferrerId" class="button button-green">Join Referral</button>
+    <div class="task">
+      <label><input type="checkbox" id="task3">Join Halaman Facebook</label>
+      <a class="btn-task" href="https://facebook.com/LottoChainXyz" target="_blank" onclick="autoCheck('task3')">Buka Facebook</a>
     </div>
 
-    <!-- Check-In -->
-    <div class="card">
-      <h2>Daily Check-In</h2>
-      <div id="facebookJoinSection">
-        <p>Like our Facebook page to unlock check-in:</p>
-        <a id="facebookButton" href="https://facebook.com/yourpage" target="_blank" class="button">Like Facebook Page</a>
-        <p id="facebookStatus"></p>
-      </div>
-      <button id="checkIn" class="button" style="display:none;">Check In</button>
-      <p id="checkInStatus"></p>
-      <h3>Check-In History</h3>
-      <ul id="checkInHistory"></ul>
-    </div>
-
-    <!-- Betting -->
-    <div class="card">
-      <h2>Place a Bet</h2>
-      <div id="telegramJoinSection">
-        <p>Join our Telegram channel to unlock betting:</p>
-        <a id="telegramButton" href="https://t.me/yourchannel" target="_blank" class="button">Join Telegram</a>
-        <p id="telegramStatus"></p>
-      </div>
-
-      <label for="betNumber">Number (1-4 characters)</label>
-      <input id="betNumber" type="number" class="input" placeholder="2D 3D or 4D">
-
-      <label for="betTimes">Times (1-5)</label>
-      <input id="betTimes" type="number" min="1" max="10" class="input" placeholder="×1 / ×5">
-
-      <label for="payoutAmount">Payout Amount (in Points)</label>
-      <input id="payoutAmount" type="number" min="10" class="input" placeholder="Enter reward 10 (point)">
-
-      <button id="placeBet" class="button button-purple" style="display:none;">Place Bet</button>
-      <h3>Your Bet History</h3>
-      <ul id="userBetHistory"></ul>
-    </div>
-
-    <!-- Global Bet History -->
-    <div class="card">
-      <h2>Global Bet History</h2>
-      <ul id="globalBetHistory"></ul>
-    </div>
+    <button class="btn" id="continueBtn" disabled>Lanjutkan</button>
   </div>
+</div>
 
-    <script>
-        // Konfigurasi Web3 dan kontrak
-        const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC"; // Ganti dengan alamat kontrak Anda
-        const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
-        const BASE_URL = "https://0x323.github.io/x/test"; // Ganti dengan URL proyek Anda
+<script>
+  const task1 = document.getElementById("task1");
+  const task2 = document.getElementById("task2");
+  const task3 = document.getElementById("task3");
+  const btn = document.getElementById("continueBtn");
 
-        let web3;
-        let contract;
-        let userAccount;
+  function checkTasks() {
+    btn.disabled = !(task1.checked && task2.checked && task3.checked);
+  }
 
-        // Durasi validitas koneksi (7 hari dalam milidetik)
-        const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
+  function autoCheck(taskId) {
+    setTimeout(() => {
+      document.getElementById(taskId).checked = true;
+      checkTasks();
+    }, 2000); // delay biar lebih natural
+  }
 
-        // Status verifikasi disimpan di localStorage
-        let verificationStatus = JSON.parse(localStorage.getItem('verificationStatus')) || {
-            twitterFollow: false,
-            telegramJoin: false,
-            facebookLike: false
-        };
+  task1.addEventListener("change", checkTasks);
+  task2.addEventListener("change", checkTasks);
+  task3.addEventListener("change", checkTasks);
 
-        // Fungsi untuk menghasilkan UID acak
-        const generateUID = () => {
-            return 'uid_' + Math.random().toString(36).substr(2, 9);
-        };
+  btn.addEventListener("click", function () {
+    document.getElementById("taskModal").style.display = "none";
+    alert("Semua tugas selesai. Modal ditutup.");
+  });
 
-        // Simpan status verifikasi ke localStorage
-        const saveVerificationStatus = () => {
-            localStorage.setItem('verificationStatus', JSON.stringify(verificationStatus));
-            updateButtonVisibility();
-        };
+  window.console = {
+    log: function() {
+      if (!(task1.checked && task2.checked && task3.checked)) {
+        alert("Selesaikan tugas dulu sebelum membuka console.");
+        throw new Error("Blocked console until tasks done.");
+      }
+    },
+    warn: function() {},
+    error: function() {}
+  };
+</script>
 
-        // Perbarui visibilitas tombol berdasarkan status verifikasi
-        const updateButtonVisibility = () => {
-            const walletButton = document.getElementById('walletButton');
-            const twitterSection = document.getElementById('twitterFollowSection');
-            const placeBetButton = document.getElementById('placeBet');
-            const telegramSection = document.getElementById('telegramJoinSection');
-            const checkInButton = document.getElementById('checkIn');
-            const facebookSection = document.getElementById('facebookJoinSection');
-
-            // Wallet Button
-            if (verificationStatus.twitterFollow) {
-                twitterSection.classList.add('hidden');
-                walletButton.classList.remove('hidden');
-            } else {
-                twitterSection.classList.remove('hidden');
-                walletButton.classList.add('hidden');
-            }
-
-            // Place Bet Button
-            if (verificationStatus.telegramJoin) {
-                telegramSection.classList.add('hidden');
-                placeBetButton.classList.remove('hidden');
-            } else {
-                telegramSection.classList.remove('hidden');
-                placeBetButton.classList.add('hidden');
-            }
-
-            // Check-In Button
-            if (verificationStatus.facebookLike) {
-                facebookSection.classList.add('hidden');
-                checkInButton.classList.remove('hidden');
-            } else {
-                facebookSection.classList.remove('hidden');
-                checkInButton.classList.add('hidden');
-            }
-        };
-
-        // Fungsi untuk mengubah tombol menjadi tombol konfirmasi
-        const changeToConfirmButton = (buttonId, confirmText, confirmHandler) => {
-            const button = document.getElementById(buttonId);
-            const newButton = document.createElement('button');
-            newButton.id = buttonId;
-            newButton.className = 'bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition';
-            newButton.innerText = confirmText;
-            newButton.addEventListener('click', confirmHandler);
-            button.parentNode.replaceChild(newButton, button);
-        };
-
-        // Verifikasi Twitter Follow (simulasi)
-        const verifyTwitterFollow = () => {
-            const status = document.getElementById('twitterStatus');
-            status.innerText = 'Verifying Twitter follow...';
-            setTimeout(() => {
-                verificationStatus.twitterFollow = true;
-                status.innerText = 'Twitter follow verified!';
-                saveVerificationStatus();
-            }, 1000); // Simulasi penundaan API
-        };
-
-        // Verifikasi Telegram Join (simulasi)
-        const verifyTelegramJoin = () => {
-            const status = document.getElementById('telegramStatus');
-            status.innerText = 'Verifying Telegram join...';
-            setTimeout(() => {
-                verificationStatus.telegramJoin = true;
-                status.innerText = 'Telegram join verified!';
-                saveVerificationStatus();
-            }, 1000); // Simulasi penundaan API
-        };
-
-        // Verifikasi Facebook Like (simulasi)
-        const verifyFacebookLike = () => {
-            const status = document.getElementById('facebookStatus');
-            status.innerText = 'Verifying Facebook like...';
-            setTimeout(() => {
-                verificationStatus.facebookLike = true;
-                status.innerText = 'Facebook like verified!';
-                saveVerificationStatus();
-            }, 1000); // Simulasi penundaan API
-        };
-
-        // Inisialisasi tombol sosial media
-        const initSocialButtons = () => {
-            const twitterButton = document.getElementById('twitterButton');
-            const telegramButton = document.getElementById('telegramButton');
-            const facebookButton = document.getElementById('facebookButton');
-
-            twitterButton.addEventListener('click', () => {
-                setTimeout(() => {
-                    changeToConfirmButton('twitterButton', 'Confirm Follow', verifyTwitterFollow);
-                }, 500); // Penundaan kecil untuk memastikan link diklik
-            });
-
-            telegramButton.addEventListener('click', () => {
-                setTimeout(() => {
-                    changeToConfirmButton('telegramButton', 'Confirm Join', verifyTelegramJoin);
-                }, 500);
-            });
-
-            facebookButton.addEventListener('click', () => {
-                setTimeout(() => {
-                    changeToConfirmButton('facebookButton', 'Confirm Like', verifyFacebookLike);
-                }, 500);
-            });
-        };
-
-        // Inisialisasi Web3 dan kontrak
-        const initWeb3 = async (forceConnect = false) => {
-            if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
-                try {
-                    if (forceConnect || checkStoredConnection()) {
-                        await window.ethereum.request({ method: "eth_requestAccounts" });
-                        const accounts = await web3.eth.getAccounts();
-                        userAccount = accounts[0];
-                        contract = new web3.eth.Contract(contractABI, contractAddress);
-                        updateWalletUI(true);
-                        storeConnection(userAccount);
-                        await setAutomaticReferralId();
-                        await handleReferralFromURL();
-                        loadTokenInfo();
-                        loadCheckInHistory();
-                        loadUserBetHistory();
-                        loadGlobalBetHistory();
-                    }
-                } catch (error) {
-                    console.error("Error connecting to MetaMask:", error);
-                    alert("Failed to connect to MetaMask. Please try again.");
-                    updateWalletUI(false);
-                }
-            } else {
-                alert("Please install MetaMask to use this DApp.");
-            }
-        };
-
-        // Periksa koneksi tersimpan di localStorage
-        const checkStoredConnection = () => {
-            const connection = localStorage.getItem("walletConnection");
-            if (!connection) return false;
-
-            try {
-                const { account, timestamp } = JSON.parse(connection);
-                const now = Date.now();
-                if (now - timestamp < CONNECTION_VALIDITY && account) {
-                    userAccount = account;
-                    return true;
-                } else {
-                    localStorage.removeItem("walletConnection");
-                    return false;
-                }
-            } catch (error) {
-                console.error("Error parsing stored connection:", error);
-                localStorage.removeItem("walletConnection");
-                return false;
-            }
-        };
-
-        // Simpan koneksi ke localStorage
-        const storeConnection = (account) => {
-            const connection = {
-                account,
-                timestamp: Date.now(),
-            };
-            localStorage.setItem("walletConnection", JSON.stringify(connection));
-        };
-
-        // Putuskan koneksi wallet
-        const disconnectWallet = () => {
-            userAccount = null;
-            localStorage.removeItem("walletConnection");
-            updateWalletUI(false);
-            document.getElementById("accountInfo").innerText = "Wallet disconnected";
-            document.getElementById("referralLink").innerText = "Link Undangan: Connect wallet";
-            document.getElementById("refereeCount").innerText = "Teman yang Diundang: Connect wallet";
-            document.getElementById("referralReward").innerText = "Reward: Connect wallet";
-            document.getElementById("tokenName").innerText = "Name: Connect wallet";
-            document.getElementById("tokenSymbol").innerText = "Symbol: Connect wallet";
-            document.getElementById("tokenDecimals").innerText = "Decimals: Connect wallet";
-            document.getElementById("totalSupply").innerText = "Total Supply: Connect wallet";
-            document.getElementById("tokenBalance").innerText = "Your Balance: Connect wallet";
-            document.getElementById("checkInHistory").innerHTML = "";
-            document.getElementById("userBetHistory").innerHTML = "";
-            document.getElementById("globalBetHistory").innerHTML = "";
-        };
-
-        // Perbarui UI tombol wallet
-        const updateWalletUI = (isConnected) => {
-            const walletButton = document.getElementById("walletButton");
-            if (isConnected) {
-                walletButton.innerText = "Disconnect Wallet";
-                walletButton.classList.remove("bg-blue-600", "hover:bg-blue-700");
-                walletButton.classList.add("bg-red-600", "hover:bg-red-700");
-                document.getElementById("accountInfo").innerText = `Connected: ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}`;
-            } else {
-                walletButton.innerText = "Connect Wallet";
-                walletButton.classList.remove("bg-red-600", "hover:bg-red-700");
-                walletButton.classList.add("bg-blue-600", "hover:bg-blue-700");
-                document.getElementById("accountInfo").innerText = "";
-            }
-        };
-
-        // Set Referral ID otomatis
-        const setAutomaticReferralId = async () => {
-            if (!userAccount) return;
-            try {
-                const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
-                if (!currentReferralId) {
-                    const newReferralId = generateUID();
-                    await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
-                    console.log(`Set automatic Referral ID: ${newReferralId}`);
-                }
-            } catch (error) {
-                console.error("Error setting automatic referral ID:", error);
-            }
-        };
-
-        // Tangani referral dari URL
-        const handleReferralFromURL = async () => {
-            if (!userAccount) return;
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const referrerId = urlParams.get("uid");
-                if (referrerId) {
-                    const hasReferrer = await contract.methods.referredBy(userAccount).call();
-                    if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-                        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-                        console.log(`Joined referral with ID: ${referrerId}`);
-                    }
-                }
-            } catch (error) {
-                console.error("Error handling referral from URL:", error);
-            }
-        };
-
-        // Load informasi token dan referral
-        const loadTokenInfo = async () => {
-            if (!userAccount) return;
-            try {
-                const name = await contract.methods.name().call();
-                const symbol = await contract.methods.symbol().call();
-                const decimals = await contract.methods.decimals().call();
-                const totalSupply = await contract.methods.totalSupply().call();
-                const balance = await contract.methods.balanceOf(userAccount).call();
-                const userReferralId = await contract.methods.referralIdOf(userAccount).call();
-                const refereeCount = await contract.methods.getRefereeCount(userAccount).call();
-                const referralReward = await contract.methods.referralRewards(userAccount).call();
-
-                document.getElementById("tokenName").innerText = `Name: ${name}`;
-                document.getElementById("tokenSymbol").innerText = `Symbol: ${symbol}`;
-                document.getElementById("tokenDecimals").innerText = `Decimals: ${decimals}`;
-                document.getElementById("totalSupply").innerText = `Total Supply: ${(totalSupply / 10 ** decimals).toFixed(2)} ${symbol}`;
-                document.getElementById("tokenBalance").innerText = `Your Balance: ${(balance / 10 ** decimals).toFixed(2)} ${symbol}`;
-                document.getElementById("referralLink").innerText = `Link Undangan: ${BASE_URL}?uid=${userReferralId}`;
-                document.getElementById("refereeCount").innerText = `Teman yang Diundang: ${refereeCount}`;
-                document.getElementById("referralReward").innerText = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
-            } catch (error) {
-                console.error("Error loading token info:", error);
-                document.getElementById("tokenName").innerText = "Name: Error";
-                document.getElementById("tokenSymbol").innerText = "Symbol: Error";
-                document.getElementById("tokenDecimals").innerText = "Decimals: Error";
-                document.getElementById("totalSupply").innerText = "Total Supply: Error";
-                document.getElementById("tokenBalance").innerText = "Your Balance: Error";
-                document.getElementById("referralLink").innerText = "Link Undangan: Error";
-                document.getElementById("refereeCount").innerText = "Teman yang Diundang: Error";
-                document.getElementById("referralReward").innerText = "Reward: Error";
-            }
-        };
-
-        // Set Referrer ID
-        const setReferrerId = async () => {
-            if (!userAccount) {
-                alert("Please connect your wallet first.");
-                return;
-            }
-            const referrerId = document.getElementById("referrerId").value.trim();
-            if (!referrerId) {
-                alert("Please enter a referrer ID.");
-                return;
-            }
-            try {
-                await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-                alert("Successfully joined referral!");
-                document.getElementById("referrerId").value = "";
-            } catch (error) {
-                console.error("Error setting referrer ID:", error);
-                alert("Failed to join referral. Check if the ID is valid or if you were already referred.");
-            }
-        };
-
-        // Check-In
-        const checkIn = async () => {
-            if (!userAccount) {
-                alert("Please connect your wallet first.");
-                return;
-            }
-            try {
-                await contract.methods.checkIn().send({ from: userAccount });
-                document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Point.";
-                loadTokenInfo();
-                loadCheckInHistory();
-            } catch (error) {
-                console.error("Error checking in:", error);
-                document.getElementById("checkInStatus").innerText = "Failed to check in. You may have already checked in today.";
-            }
-        };
-
-        // Load Check-In History
-        const loadCheckInHistory = async () => {
-            if (!userAccount) return;
-            try {
-                const count = await contract.methods.getCheckInCount(userAccount).call();
-                const historyList = document.getElementById("checkInHistory");
-                historyList.innerHTML = "";
-                for (let i = 0; i < count; i++) {
-                    const log = await contract.methods.getCheckInLog(userAccount, i).call();
-                    const date = new Date(log.timestamp * 1000).toLocaleString();
-                    const li = document.createElement("li");
-                    li.className = "py-2";
-                    li.innerText = `Day: ${log.dayUTC}, Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;
-                    historyList.appendChild(li);
-                }
-            } catch (error) {
-                console.error("Error loading check-in history:", error);
-                document.getElementById("checkInHistory").innerHTML = "<li>Error loading history.</li>";
-            }
-        };
-
-        // Place Bet
-        const placeBet = async () => {
-            if (!userAccount) {
-                alert("Please connect your wallet first.");
-                return;
-            }
-            const number = document.getElementById("betNumber").value.trim();
-            const times = parseInt(document.getElementById("betTimes").value);
-            const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
-
-            if (!number || number.length < 2 || number.length > 4) {
-                alert("Please enter a valid number (2-4 characters).");
-                return;
-            }
-            if (!times || times < 1 || times > 5) {
-                alert("Please enter a valid number of times (1-5).");
-                return;
-            }
-            if (!payoutAmount || payoutAmount < 10 || payoutAmount > 10) {
-                alert("Please enter a valid payout amount 10.");
-                return;
-            }
-
-            try {
-                await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
-                alert("Bet placed successfully!");
-                document.getElementById("betNumber").value = "";
-                document.getElementById("betTimes").value = "";
-                document.getElementById("payoutAmount").value = "";
-                loadTokenInfo();
-                loadUserBetHistory();
-                loadGlobalBetHistory();
-            } catch (error) {
-                console.error("Error placing bet:", error);
-                alert("Failed to place bet. Check your balance or try again tomorrow.");
-            }
-        };
-
-        // Load User Bet History
-        const loadUserBetHistory = async () => {
-            if (!userAccount) return;
-            try {
-                const count = await contract.methods.getUserBetCount(userAccount).call();
-                const historyList = document.getElementById("userBetHistory");
-                historyList.innerHTML = "";
-                for (let i = 0; i < count; i++) {
-                    const bet = await contract.methods.getUserBet(userAccount, i).call();
-                    const date = new Date(bet.timestamp * 1000).toLocaleString();
-                    const li = document.createElement("li");
-                    li.className = "py-2";
-                    li.innerText = `Number: ${bet.number}, Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;
-                    historyList.appendChild(li);
-                }
-            } catch (error) {
-                console.error("Error loading user bet history:", error);
-                document.getElementById("userBetHistory").innerHTML = "<li>Error loading history.</li>";
-            }
-        };
-
-        // Load Global Bet History
-        const loadGlobalBetHistory = async () => {
-            if (!userAccount) return;
-            try {
-                const count = await contract.methods.getBetHistoryLength().call();
-                const historyList = document.getElementById("globalBetHistory");
-                historyList.innerHTML = "";
-                for (let i = 0; i < count; i++) {
-                    const bet = await contract.methods.getBet(i).call();
-                    const date = new Date(bet.timestamp * 1000).toLocaleString();
-                    const li = document.createElement("li");
-                    li.className = "py-2";
-                    li.innerText = `User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}, Number: ${bet.number}, Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;
-                    historyList.appendChild(li);
-                }
-            } catch (error) {
-                console.error("Error loading global bet history:", error);
-                document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
-            }
-        };
-
-        // Salin link undangan
-        const copyReferralLink = () => {
-            const linkText = document.getElementById("referralLink").innerText.replace("Link Undangan: ", "");
-            navigator.clipboard.writeText(linkText).then(() => {
-                alert("Referral link copied!");
-            }).catch(() => {
-                alert("Failed to copy link.");
-            });
-        };
-
-        // Event Listeners
-        const walletButton = document.getElementById("walletButton");
-        walletButton.addEventListener("click", () => {
-            if (userAccount) {
-                disconnectWallet();
-            } else {
-                initWeb3(true);
-            }
-        });
-
-        document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
-        document.getElementById("checkIn").addEventListener("click", checkIn);
-        document.getElementById("placeBet").addEventListener("click", placeBet);
-        document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-
-        // Inisialisasi saat halaman dimuat
-        window.addEventListener("load", () => {
-            updateButtonVisibility();
-            initSocialButtons();
-            if (window.ethereum) {
-                initWeb3(false);
-                window.ethereum.on("accountsChanged", (accounts) => {
-                    if (accounts.length === 0) {
-                        disconnectWallet();
-                    } else {
-                        userAccount = accounts[0];
-                        storeConnection(userAccount);
-                        updateWalletUI(true);
-                        setAutomaticReferralId();
-                        handleReferralFromURL();
-                        loadTokenInfo();
-                        loadCheckInHistory();
-                        loadUserBetHistory();
-                        loadGlobalBetHistory();
-                    }
-                });
-            } else {
-                alert("Please install MetaMask to use this DApp.");
-            }
-        });
-    </script>
 </body>
-    </html>
+</html>
