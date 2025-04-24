@@ -82,9 +82,9 @@
                 <p class="text-sm text-gray-500 mt-1">Cost: 1 Point per time (Total: <span id="totalCost">0</span> Points)</p>
             </div>
             <div class="mb-4">
-    <label class="block text-gray-700 font-medium mb-2">Reward (in Points)</label>
-    <p class="p-3 bg-gray-100 rounded-lg text-gray-800">10 Points (Fixed reward)</p>
-    <p class="text-sm text-gray-500 mt-1">Bonus tetap diberikan secara otomatis saat taruhan.</p>
+<label for="payoutAmount" class="block text-gray-700 font-medium mb-2">Payout Amount (in Points)</label>
+<input id="payoutAmount" type="number" min="1" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter payout amount">
+<p class="text-sm text-gray-500 mt-1">Total Reward: <span id="totalReward">0</span> Points (including bonus)</p>
             </div>
             <button id="placeBet" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
                 Place Bet
