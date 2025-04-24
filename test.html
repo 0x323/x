@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Connect Wallet and Telegram Verification</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #walletInfo {
+            margin-top: 20px;
+        }
+
+        #walletAddress {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Connect Your Wallet and Verify</h1>
+        <button id="connectButton">Connect MetaMask</button>
+        <div id="walletInfo" style="display: none;">
+            <p><strong>Wallet Address:</strong> <span id="walletAddress"></span></p>
+            <button id="disconnectButton">Disconnect</button>
+        </div>
+
+        <h2>Telegram Verification</h2>
+        <button id="startBtn">Start Verification</button>
+        <button id="verifyBtn">Verify Telegram Channel</button>
+        <button id="submitBtn">Submit UID</button>
+    </div>
+    
+    <script>
+        // Web3 and MetaMask setup
+        if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+            console.log('MetaMask is available!');
+            var web3 = new Web3(window.ethereum);
+
+            const connectButton = document.getElementById('connectButton');
+            const walletInfo = document.getElementById('walletInfo');
+            const walletAddress = document.getElementById('walletAddress');
+            const disconnectButton = document.getElementById('disconnectButton');
+
+            connectButton.addEventListener('click', async () => {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const accounts = await web3.eth.getAccounts();
+                    const account = accounts[0];
+                    walletAddress.textContent = account;
+                    walletInfo.style.display = 'block';
+                    connectButton.style.display = 'none';
+                } catch (error) {
+                    console.error('User denied account access', error);
+                }
+            });
+
+            disconnectButton.addEventListener('click', () => {
+                walletInfo.style.display = 'none';
+                connectButton.style.display = 'block';
+            });
+
+        } else {
+            alert('Please install MetaMask or another Ethereum-compatible browser extension.');
+        }
+
+        // Telegram Bot integration
+        const BOT_API_TOKEN = 'YOUR_BOT_API_TOKEN'; // Replace with your bot API token
+        const CHAT_ID = 'YOUR_CHAT_ID'; // Replace with your chat ID
+        const BASE_URL = `https://api.telegram.org/bot${BOT_API_TOKEN}`;
+
+        // Send message to Telegram
+        function sendMessage(text) {
+            const url = `${BASE_URL}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log('Message sent');
+                    } else {
+                        console.error('Failed to send message', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Start Telegram Verification
+        function startVerification() {
+            sendMessage('Welcome! Click the button to start verification.');
+            sendMessage('Click "Join Channel" after you join our Telegram channel!');
+        }
+
+        // Verify Telegram Channel Join
+        function verifyJoinChannel() {
+            sendMessage('Thank you for joining our Telegram channel! Click "Verify" after following the instructions.');
+        }
+
+        // Submit Verification
+        function submitVerification() {
+            const userUid = `UID-${Math.floor(Math.random() * 1000000)}`; // Simulate UID
+            sendMessage(`Your UID: ${userUid}. Verification complete!`);
+        }
+
+        // Event listeners for Telegram verification buttons
+        window.onload = function() {
+            const startBtn = document.getElementById('startBtn');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            startBtn.onclick = startVerification;
+            verifyBtn.onclick = verifyJoinChannel;
+            submitBtn.onclick = submitVerification;
+        };
+    </script>
+</body>
+</html>
