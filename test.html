@@ -3,186 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 Connect Wallet and Telegram Verification</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <title>Locked Modal for Social Actions</title>
     <style>
-        /* CSS tetap sama seperti sebelumnya */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            background-color: #f4f4f9;
+            overflow: hidden; /* Mencegah scroll saat modal aktif */
         }
-        .container {
-            text-align: center;
+
+        /* Overlay untuk modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Konten modal */
+        .modal-content {
+            background: white;
             padding: 20px;
-            background-color: white;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
-        h1 {
+
+        .modal-content h2 {
+            margin-top: 0;
             font-size: 24px;
-            margin-bottom: 20px;
+            color: #333;
         }
-        button {
+
+        .modal-content p {
+            color: #666;
+        }
+
+        .modal-content button {
             background-color: #4CAF50;
             color: white;
             border: none;
             padding: 10px 20px;
-            font-size: 16px;
+            margin: 10px;
             cursor: pointer;
             border-radius: 5px;
-            margin-top: 10px;
+            font-size: 16px;
         }
-        button:hover {
+
+        .modal-content button:hover {
             background-color: #45a049;
         }
-        #walletInfo, #status {
-            margin-top: 20px;
+
+        .modal-content button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
-        #walletAddress {
-            word-wrap: break-word;
+
+        .modal-content input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Sembunyikan tombol close */
+        .modal-content .close-btn {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Connect Your Wallet and Verify</h1>
-        <button id="connectButton">Connect MetaMask</button>
-        <div id="walletInfo" style="display: none;">
-            <p><strong>Wallet Address:</strong> <span id="walletAddress"></span></p>
-            <button id="disconnectButton">Disconnect</button>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <h2>Complete Social Actions to Unlock</h2>
+            <p>Please complete the following actions to close this modal.</p>
+            <div id="status" class="status"></div>
+
+            <!-- Twitter/X Actions -->
+            <h3>Twitter/X Actions</h3>
+            <p>Follow our Twitter account: <a href="https://twitter.com/LottoChainXyz" target="_blank">@lottochainxyz</a></p>
+            <button onclick="verifyTwitterFollow()">Verify Follow</button>
+            <p>Retweet, Like, and Comment on this <a href="https://x.com/LottoChainXyz/status/1912483817337811337?t=qmTC_wQlu6VAzW0QcI3vIA&s=19" target="_blank">Tweet</a></p>
+            <input type="text" id="tweetCommentUrl" placeholder="Paste your comment URL here">
+            <button onclick="verifyTwitterActions()">Verify Tweet Actions</button>
+
+            <!-- Telegram Action -->
+            <h3>Telegram Action</h3>
+            <p>Join our Telegram channel: <a href="https://t.me/LottoChainXyz" target="_blank">t.me/examplechannel</a></p>
+            <input type="text" id="telegramUserId" placeholder="Enter your Telegram User ID">
+            <button onclick="verifyTelegramJoin()">Verify Telegram Join</button>
+
+            <!-- Facebook Action -->
+            <h3>Facebook Action</h3>
+            <p>Like our Facebook page: <a href="https://www.facebook.com/LottoChainXyz" target="_blank">Example Page</a></p>
+            <input type="text" id="facebookProfileUrl" placeholder="Paste your Facebook profile URL">
+            <button onclick="verifyFacebookLike()">Verify Facebook Like</button>
+
+            <!-- Tombol untuk menutup (hanya aktif setelah semua selesai) -->
+            <button id="closeModalBtn" disabled onclick="closeModal()">Close Modal</button>
         </div>
-
-        <h2>Telegram Verification</h2>
-        <button id="startBtn">Start Verification</button>
-        <button id="verifyBtn">Verify Telegram Channel</button>
-        <button id="submitBtn">Submit UID</button>
-        <div id="status"></div>
     </div>
-    
+
     <script>
-        // Web3 dan MetaMask setup (tetap sama)
-        if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-            console.log('MetaMask is available!');
-            var web3 = new Web3(window.ethereum);
-
-            const connectButton = document.getElementById('connectButton');
-            const walletInfo = document.getElementById('walletInfo');
-            const walletAddress = document.getElementById('walletAddress');
-            const disconnectButton = document.getElementById('disconnectButton');
-
-            connectButton.addEventListener('click', async () => {
-                try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const accounts = await web3.eth.getAccounts();
-                    const account = accounts[0];
-                    walletAddress.textContent = account;
-                    walletInfo.style.display = 'block';
-                    connectButton.style.display = 'none';
-                } catch (error) {
-                    console.error('User denied account access', error);
-                    document.getElementById('status').textContent = 'Failed to connect MetaMask';
-                }
-            });
-
-            disconnectButton.addEventListener('click', () => {
-                walletInfo.style.display = 'none';
-                connectButton.style.display = 'block';
-            });
-        } else {
-            alert('Please install MetaMask or another Ethereum-compatible browser extension.');
-        }
-
-        // Telegram Bot integration
-        const BOT_API_TOKEN = '7406850699:AAGhGp5mhXNP0xbefVwj25_6-dchM677h-E'; // Token bot Anda
-        const CHAT_ID = '-1001234567890'; // Ganti dengan ID channel yang benar
+        // Konfigurasi
+        const BOT_API_TOKEN = '7406850699:AAGhGp5mhXNP0xbefVwj25_6-dchM677h-E'; // Ganti dengan token bot Anda
+        const TELEGRAM_CHAT_ID = '-1001234567890'; // Ganti dengan ID channel Telegram yang benar
         const BASE_URL = `https://api.telegram.org/bot${BOT_API_TOKEN}`;
         const statusDiv = document.getElementById('status');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
-        // Fungsi untuk mengirim pesan ke Telegram
-        async function sendMessage(text) {
-            const url = `${BASE_URL}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.ok) {
-                    statusDiv.textContent = 'Message sent to Telegram!';
-                    console.log('Message sent:', text);
-                } else {
-                    statusDiv.textContent = `Failed to send message: ${data.description}`;
-                    console.error('Failed to send message:', data);
-                }
-            } catch (error) {
-                statusDiv.textContent = 'Error sending message';
-                console.error('Error:', error);
+        // Status verifikasi
+        let verificationStatus = JSON.parse(localStorage.getItem('verificationStatus')) || {
+            twitterFollow: false,
+            twitterActions: false,
+            telegramJoin: false,
+            facebookLike: false
+        };
+
+        // Periksa apakah semua tindakan selesai
+        function checkAllVerified() {
+            const allVerified = verificationStatus.twitterFollow &&
+                               verificationStatus.twitterActions &&
+                               verificationStatus.telegramJoin &&
+                               verificationStatus.facebookLike;
+            closeModalBtn.disabled = !allVerified;
+            if (allVerified) {
+                statusDiv.textContent = 'All actions completed! You can now close the modal.';
             }
         }
 
-        // Fungsi untuk memeriksa keanggotaan (opsional, jika ingin memverifikasi pengguna)
-        async function checkMembership(userId) {
-            const url = `${BASE_URL}/getChatMember?chat_id=${CHAT_ID}&user_id=${userId}`;
+        // Simpan status ke localStorage
+        function saveStatus() {
+            localStorage.setItem('verificationStatus', JSON.stringify(verificationStatus));
+            checkAllVerified();
+        }
+
+        // Mencegah penutupan modal
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                e.preventDefault();
+                e.stopPropagation();
+                statusDiv.textContent = 'Please complete all actions to close the modal.';
+            }
+        });
+
+        // Mencegah tombol Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                statusDiv.textContent = 'Please complete all actions to close the modal.';
+            }
+        });
+
+        // MutationObserver untuk mendeteksi penghapusan modal
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (!document.body.contains(modalOverlay)) {
+                    document.body.appendChild(modalOverlay);
+                    statusDiv.textContent = 'Modal cannot be removed until actions are completed.';
+                }
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Verifikasi Twitter Follow (simulasi)
+        function verifyTwitterFollow() {
+            // Untuk verifikasi nyata, gunakan Twitter API untuk memeriksa status follow
+            // Di sini kita anggap pengguna sudah follow setelah klik
+            statusDiv.textContent = 'Verifying Twitter follow...';
+            setTimeout(() => {
+                verificationStatus.twitterFollow = true;
+                statusDiv.textContent = 'Twitter follow verified!';
+                saveStatus();
+            }, 1000); // Simulasi penundaan API
+        }
+
+        // Verifikasi Twitter Actions (RT, Like, Comment)
+        function verifyTwitterActions() {
+            const commentUrl = document.getElementById('tweetCommentUrl').value;
+            if (!commentUrl) {
+                statusDiv.textContent = 'Please paste your comment URL.';
+                return;
+            }
+            // Untuk verifikasi nyata, gunakan Twitter API untuk memeriksa RT, like, dan komentar
+            statusDiv.textContent = 'Verifying Twitter actions...';
+            setTimeout(() => {
+                verificationStatus.twitterActions = true;
+                statusDiv.textContent = 'Twitter actions verified!';
+                saveStatus();
+            }, 1000); // Simulasi penundaan API
+        }
+
+        // Verifikasi Telegram Join
+        async function verifyTelegramJoin() {
+            const userId = document.getElementById('telegramUserId').value;
+            if (!userId || isNaN(userId)) {
+                statusDiv.textContent = 'Please enter a valid Telegram User ID.';
+                return;
+            }
+            statusDiv.textContent = 'Verifying Telegram membership...';
+            const url = `${BASE_URL}/getChatMember?chat_id=${TELEGRAM_CHAT_ID}&user_id=${userId}`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 if (data.ok && data.result.status !== 'left') {
-                    statusDiv.textContent = 'User is a member of the channel!';
-                    return true;
+                    verificationStatus.telegramJoin = true;
+                    statusDiv.textContent = 'Telegram join verified!';
+                    saveStatus();
                 } else {
-                    statusDiv.textContent = 'User is not a member of the channel.';
-                    return false;
+                    statusDiv.textContent = 'You are not a member of the channel. Please join first.';
                 }
             } catch (error) {
-                statusDiv.textContent = 'Error checking membership';
+                statusDiv.textContent = 'Error verifying Telegram membership.';
                 console.error('Error:', error);
-                return false;
             }
         }
 
-        // Start Telegram Verification
-        function startVerification() {
-            statusDiv.textContent = 'Sending welcome message...';
-            sendMessage('Welcome! Please join our Telegram channel and click "Verify" after joining.');
-        }
-
-        // Verify Telegram Channel Join (contoh, perlu user ID)
-        async function verifyJoinChannel() {
-            statusDiv.textContent = 'Verifying channel membership...';
-            // Untuk verifikasi nyata, Anda perlu user ID Telegram pengguna.
-            // Contoh: Anda bisa meminta pengguna memasukkan ID mereka atau mengintegrasikan Telegram Login Widget.
-            const userId = prompt('Masukkan Telegram User ID Anda (angka):'); // Sementara, untuk testing
-            if (userId) {
-                const isMember = await checkMembership(userId);
-                if (isMember) {
-                    sendMessage('Thank you for joining our Telegram channel! Verification successful.');
-                } else {
-                    sendMessage('Please join the channel first.');
-                }
-            } else {
-                statusDiv.textContent = 'Please provide a valid Telegram User ID.';
+        // Verifikasi Facebook Like (simulasi)
+        function verifyFacebookLike() {
+            const profileUrl = document.getElementById('facebookProfileUrl').value;
+            if (!profileUrl) {
+                statusDiv.textContent = 'Please paste your Facebook profile URL.';
+                return;
             }
+            // Untuk verifikasi nyata, gunakan Facebook Graph API (jika tersedia)
+            statusDiv.textContent = 'Verifying Facebook like...';
+            setTimeout(() => {
+                verificationStatus.facebookLike = true;
+                statusDiv.textContent = 'Facebook like verified!';
+                saveStatus();
+            }, 1000); // Simulasi penundaan API
         }
 
-        // Submit Verification
-        function submitVerification() {
-            const userUid = `UID-${Math.floor(Math.random() * 1000000)}`;
-            statusDiv.textContent = 'Submitting verification...';
-            sendMessage(`Your UID: ${userUid}. Verification complete!`);
+        // Tutup modal
+        function closeModal() {
+            if (closeModalBtn.disabled) {
+                statusDiv.textContent = 'Please complete all actions to close the modal.';
+                return;
+            }
+            modalOverlay.style.display = 'none';
+            observer.disconnect(); // Hentikan observer setelah modal ditutup
         }
 
-        // Event listeners untuk tombol
-        window.onload = function() {
-            const startBtn = document.getElementById('startBtn');
-            const verifyBtn = document.getElementById('verifyBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            startBtn.onclick = startVerification;
-            verifyBtn.onclick = verifyJoinChannel;
-            submitBtn.onclick = submitVerification;
-        };
+        // Inisialisasi
+        checkAllVerified();
+        if (verificationStatus.twitterFollow &&
+            verificationStatus.twitterActions &&
+            verificationStatus.telegramJoin &&
+            verificationStatus.facebookLike) {
+            modalOverlay.style.display = 'none';
+        }
     </script>
 </body>
 </html>
