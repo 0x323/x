@@ -85,32 +85,43 @@
   <div class="modal-content">
     <h3>Complete Social Tasks</h3>
 
-    <!-- Twitter -->
-    <div class="task" id="task1">
-      <b>1. Follow, Like, Retweet, and Comment on Twitter</b>
-      <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task1')">Follow & Confirm</button>
-      <div class="checkbox">
-        <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-      </div>
-    </div>
+    <!-- Tambahkan di dalam <div class="modal-content"> sebelum tombol "Continue" -->
+<!-- Twitter Follow Only -->
+<div class="task" id="task0">
+  <b>1. Follow Twitter Account</b>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task0')">Follow & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
 
-    <!-- Telegram -->
-    <div class="task" id="task2">
-      <b>2. Join Telegram Channel</b>
-      <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Confirm</button>
-      <div class="checkbox">
-        <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-      </div>
-    </div>
+<!-- Update penomoran di task lainnya jadi 2, 3, 4 -->
+<!-- Twitter Engage -->
+<div class="task" id="task1">
+  <b>2. Like, Retweet, and Comment on Twitter</b>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz/status/YOUR_TWEET_ID', 'task1')">Engage & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
 
-    <!-- Facebook -->
-    <div class="task" id="task3">
-      <b>3. Like Facebook Page</b>
-      <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Confirm</button>
-      <div class="checkbox">
-        <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-      </div>
-    </div>
+<!-- Telegram -->
+<div class="task" id="task2">
+  <b>3. Join Telegram Channel</b>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
+
+<!-- Facebook -->
+<div class="task" id="task3">
+  <b>4. Like Facebook Page</b>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
 
     <button id="continueBtn" disabled onclick="finish()">Continue</button>
   </div>
