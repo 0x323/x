@@ -109,12 +109,6 @@
             <input type="text" id="tweetCommentUrl" placeholder="Paste your comment URL here">
             <button onclick="verifyTwitterActions()">Verify Tweet Actions</button>
 
-            <!-- Telegram Action -->
-            <h3>Telegram Action</h3>
-            <p>Join our Telegram channel: <a href="https://t.me/LottoChainXyz" target="_blank">t.me/examplechannel</a></p>
-            <input type="text" id="telegramUserId" placeholder="Enter your Telegram User ID">
-            <button onclick="verifyTelegramJoin()">Verify Telegram Join</button>
-
             <!-- Facebook Action -->
             <h3>Facebook Action</h3>
             <p>Like our Facebook page: <a href="https://www.facebook.com/LottoChainXyz" target="_blank">Example Page</a></p>
@@ -128,9 +122,6 @@
 
     <script>
         // Konfigurasi
-        const BOT_API_TOKEN = '7406850699:AAGhGp5mhXNP0xbefVwj25_6-dchM677h-E'; // Ganti dengan token bot Anda
-        const TELEGRAM_CHAT_ID = '-1001234567890'; // Ganti dengan ID channel Telegram yang benar
-        const BASE_URL = `https://api.telegram.org/bot${BOT_API_TOKEN}`;
         const statusDiv = document.getElementById('status');
         const modalOverlay = document.getElementById('modalOverlay');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -215,31 +206,6 @@
                 statusDiv.textContent = 'Twitter actions verified!';
                 saveStatus();
             }, 1000); // Simulasi penundaan API
-        }
-
-        // Verifikasi Telegram Join
-        async function verifyTelegramJoin() {
-            const userId = document.getElementById('telegramUserId').value;
-            if (!userId || isNaN(userId)) {
-                statusDiv.textContent = 'Please enter a valid Telegram User ID.';
-                return;
-            }
-            statusDiv.textContent = 'Verifying Telegram membership...';
-            const url = `${BASE_URL}/getChatMember?chat_id=${TELEGRAM_CHAT_ID}&user_id=${userId}`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.ok && data.result.status !== 'left') {
-                    verificationStatus.telegramJoin = true;
-                    statusDiv.textContent = 'Telegram join verified!';
-                    saveStatus();
-                } else {
-                    statusDiv.textContent = 'You are not a member of the channel. Please join first.';
-                }
-            } catch (error) {
-                statusDiv.textContent = 'Error verifying Telegram membership.';
-                console.error('Error:', error);
-            }
         }
 
         // Verifikasi Facebook Like (simulasi)
