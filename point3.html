@@ -343,12 +343,12 @@ const placeBet = async () => {
         alert("Please enter a valid number (1-20 characters).");
         return;
     }
-    if (!times || times < 1 || times > 10) {
-        alert("Please enter a valid number of times (1-10).");
+    if (!times || times < 1 || times > 5) {
+        alert("Please enter a valid number of times (1-5).");
         return;
     }
-    if (!payoutAmount || payoutAmount < 1) {
-        alert("Please enter a valid payout amount.");
+    if (!payoutAmount || payoutAmount < 10 || payoutAmount > 10) {
+        alert("Please enter a valid payout amount 10.");
         return;
     }
 
