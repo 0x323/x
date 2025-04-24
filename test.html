@@ -15,8 +15,7 @@
         <div class="mb-8 bg-white p-6 rounded-lg shadow">
             <div id="twitterFollowSection" class="mb-4">
                 <p class="text-gray-600 mb-2">Follow our Twitter account to unlock wallet connection:</p>
-                <a href="https://twitter.com/LottoChainXyz" target="_blank" class="bg-blue-400 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition">Follow Twitter</a>
-                <button id="confirmTwitterFollow" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition mt-2">Confirm Follow</button>
+                <a id="twitterButton" href="https://twitter.com/LottoChainXyz" target="_blank" class="bg-blue-400 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition">Follow Twitter</a>
                 <p id="twitterStatus" class="text-gray-600 mt-2"></p>
             </div>
             <button id="walletButton" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition hidden">Connect Wallet</button>
@@ -30,7 +29,7 @@
             <p id="tokenSymbol" class="text-gray-600 mb-2">Symbol: Loading...</p>
             <p id="tokenDecimals" class="text-gray-600 mb-2">Decimals: Loading...</p>
             <p id="totalSupply" class="text-gray-600 mb-2">Total Supply: Loading...</p>
-            <p id="balance" class="text-gray-600 mb-2">Your Balance: Loading...</p>
+            <p id="tokenBalance" class="text-gray-600 mb-2">Your Balance: Loading...</p>
         </div>
 
         <!-- Referral -->
@@ -54,8 +53,7 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Daily Check-In</h2>
             <div id="facebookJoinSection" class="mb-4">
                 <p class="text-gray-600 mb-2">Like our Facebook page to unlock check-in:</p>
-                <a href="https://facebook.com/LottoChainXyz" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Like Facebook Page</a>
-                <button id="confirmFacebookLike" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition mt-2">Confirm Like</button>
+                <a id="facebookButton" href="https://facebook.com/LottoChainXyz" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Like Facebook Page</a>
                 <p id="facebookStatus" class="text-gray-600 mt-2"></p>
             </div>
             <button id="checkIn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition hidden">Check In</button>
@@ -69,8 +67,7 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Place a Bet</h2>
             <div id="telegramJoinSection" class="mb-4">
                 <p class="text-gray-600 mb-2">Join our Telegram channel to unlock betting:</p>
-                <a href="https://t.me/LottoChainXyz" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Join Telegram</a>
-                <button id="confirmTelegramJoin" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition mt-2">Confirm Join</button>
+                <a id="telegramButton" href="https://t.me/LottoChainXyz" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Join Telegram</a>
                 <p id="telegramStatus" class="text-gray-600 mt-2"></p>
             </div>
             <div class="mb-4">
@@ -129,14 +126,14 @@
         };
 
         // Perbarui visibilitas tombol berdasarkan status verifikasi
-const updateButtonVisibility = () => {
-    const walletButton = document.getElementById('walletButton');
-    const twitterSection = document.getElementById('twitterFollowSection');
-    const placeBetButton = document.getElementById('placeBet');
-    const telegramSection = document.getElementById('telegramJoinSection');
-    const checkInButton = document.getElementById('checkIn');
-    const facebookSection = document.getElementById('facebookJoinSection');
-    
+        const updateButtonVisibility = () => {
+            const walletButton = document.getElementById('walletButton');
+            const twitterSection = document.getElementById('twitterFollowSection');
+            const placeBetButton = document.getElementById('placeBet');
+            const telegramSection = document.getElementById('telegramJoinSection');
+            const checkInButton = document.getElementById('checkIn');
+            const facebookSection = document.getElementById('facebookJoinSection');
+
             // Wallet Button
             if (verificationStatus.twitterFollow) {
                 twitterSection.classList.add('hidden');
@@ -163,6 +160,17 @@ const updateButtonVisibility = () => {
                 facebookSection.classList.remove('hidden');
                 checkInButton.classList.add('hidden');
             }
+        };
+
+        // Fungsi untuk mengubah tombol menjadi tombol konfirmasi
+        const changeToConfirmButton = (buttonId, confirmText, confirmHandler) => {
+            const button = document.getElementById(buttonId);
+            const newButton = document.createElement('button');
+            newButton.id = buttonId;
+            newButton.className = 'bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition';
+            newButton.innerText = confirmText;
+            newButton.addEventListener('click', confirmHandler);
+            button.parentNode.replaceChild(newButton, button);
         };
 
         // Verifikasi Twitter Follow (simulasi)
@@ -196,6 +204,31 @@ const updateButtonVisibility = () => {
                 status.innerText = 'Facebook like verified!';
                 saveVerificationStatus();
             }, 1000); // Simulasi penundaan API
+        };
+
+        // Inisialisasi tombol sosial media
+        const initSocialButtons = () => {
+            const twitterButton = document.getElementById('twitterButton');
+            const telegramButton = document.getElementById('telegramButton');
+            const facebookButton = document.getElementById('facebookButton');
+
+            twitterButton.addEventListener('click', () => {
+                setTimeout(() => {
+                    changeToConfirmButton('twitterButton', 'Confirm Follow', verifyTwitterFollow);
+                }, 500); // Penundaan kecil untuk memastikan link diklik
+            });
+
+            telegramButton.addEventListener('click', () => {
+                setTimeout(() => {
+                    changeToConfirmButton('telegramButton', 'Confirm Join', verifyTelegramJoin);
+                }, 500);
+            });
+
+            facebookButton.addEventListener('click', () => {
+                setTimeout(() => {
+                    changeToConfirmButton('facebookButton', 'Confirm Like', verifyFacebookLike);
+                }, 500);
+            });
         };
 
         // Inisialisasi Web3 dan kontrak
@@ -271,7 +304,7 @@ const updateButtonVisibility = () => {
             document.getElementById("tokenSymbol").innerText = "Symbol: Connect wallet";
             document.getElementById("tokenDecimals").innerText = "Decimals: Connect wallet";
             document.getElementById("totalSupply").innerText = "Total Supply: Connect wallet";
-            document.getElementById("balance").innerText = "Your Balance: Connect wallet";
+            document.getElementById("tokenBalance").innerText = "Your Balance: Connect wallet";
             document.getElementById("checkInHistory").innerHTML = "";
             document.getElementById("userBetHistory").innerHTML = "";
             document.getElementById("globalBetHistory").innerHTML = "";
@@ -343,9 +376,9 @@ const updateButtonVisibility = () => {
                 document.getElementById("tokenSymbol").innerText = `Symbol: ${symbol}`;
                 document.getElementById("tokenDecimals").innerText = `Decimals: ${decimals}`;
                 document.getElementById("totalSupply").innerText = `Total Supply: ${(totalSupply / 10 ** decimals).toFixed(2)} ${symbol}`;
-                document.getElementById("balance").innerText = `Your Balance: ${(balance / 10 ** decimals).toFixed(2)} ${symbol}`;
+                document.getElementById("tokenBalance").innerText = `Your Balance: ${(balance / 10 ** decimals).toFixed(2)} ${symbol}`;
                 document.getElementById("referralLink").innerText = `Link Undangan: ${BASE_URL}?uid=${userReferralId}`;
-                document.getElementById("refereeCount").innerするにはText = `Teman yang Diundang: ${refereeCount}`;
+                document.getElementById("refereeCount").innerText = `Teman yang Diundang: ${refereeCount}`;
                 document.getElementById("referralReward").innerText = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
             } catch (error) {
                 console.error("Error loading token info:", error);
@@ -353,7 +386,7 @@ const updateButtonVisibility = () => {
                 document.getElementById("tokenSymbol").innerText = "Symbol: Error";
                 document.getElementById("tokenDecimals").innerText = "Decimals: Error";
                 document.getElementById("totalSupply").innerText = "Total Supply: Error";
-                document.getElementById("balance").innerText = "Your Balance: Error";
+                document.getElementById("tokenBalance").innerText = "Your Balance: Error";
                 document.getElementById("referralLink").innerText = "Link Undangan: Error";
                 document.getElementById("refereeCount").innerText = "Teman yang Diundang: Error";
                 document.getElementById("referralReward").innerText = "Reward: Error";
@@ -523,13 +556,11 @@ const updateButtonVisibility = () => {
         document.getElementById("checkIn").addEventListener("click", checkIn);
         document.getElementById("placeBet").addEventListener("click", placeBet);
         document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-        document.getElementById("confirmTwitterFollow").addEventListener("click", verifyTwitterFollow);
-        document.getElementById("confirmTelegramJoin").addEventListener("click", verifyTelegramJoin);
-        document.getElementById("confirmFacebookLike").addEventListener("click", verifyFacebookLike);
 
         // Inisialisasi saat halaman dimuat
         window.addEventListener("load", () => {
             updateButtonVisibility();
+            initSocialButtons();
             if (window.ethereum) {
                 initWeb3(false);
                 window.ethereum.on("accountsChanged", (accounts) => {
