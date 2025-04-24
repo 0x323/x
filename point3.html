@@ -538,46 +538,57 @@
 
         // Pasang taruhan
         const placeBet = async () => {
-            if (!userAccount) {
-                alert("Please connect your wallet first.");
-                return;
-            }
-            const number = document.getElementById("betNumber").value.trim();
-            const times = parseInt(document.getElementById("betTimes").value);
-            const payoutAmount = 10 * 10 ** 18; // Fixed reward: 10 tokens (in wei)
+    if (!window.ethereum || !userAccount) {
+        alert("Please ensure your wallet is connected and on the correct network.");
+        return;
+    }
 
-            if (!number || number.length < 1 || number.length > 20) {
-                alert("Please enter a valid number (1-20 characters).");
-                return;
-            }
-            if (!times || times < 1 || times > 10) {
-                alert("Please enter a valid number of times (1-10).");
-                return;
-            }
+    const number = document.getElementById("betNumber").value.trim();
+    const times = parseInt(document.getElementById("betTimes").value);
+    const payoutAmount = 10 * 10 ** 18; // 10 tokens in wei
 
-            try {
-                const balance = await contract.methods.balanceOf(userAccount).call();
-                const totalCost = (1 * 10 ** 18) * times; // BET_COST * times
-                if (balance < totalCost) {
-                    alert("Insufficient balance to place bet.");
-                    return;
-                }
+    if (!number || number.length < 1 || number.length > 20 || /[^a-zA-Z0-9]/.test(number)) {
+        alert("Please enter a valid alphanumeric number (1-20 characters).");
+        return;
+    }
+    if (isNaN(times) || times < 1 || times > 10) {
+        alert("Please enter a valid number of times (1-10).");
+        return;
+    }
 
-                await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
-                alert("Bet placed successfully!");
-                document.getElementById("betNumber").value = "";
-                document.getElementById("betTimes").value = "";
-                document.getElementById("totalCost").innerText = "0";
-                loadTokenInfo();
-                loadUserBetHistory();
-                loadGlobalBetHistory();
-                console.log("Bet placed:", { number, times, payoutAmount });
-            } catch (error) {
-                console.error("Error placing bet:", error);
-                alert("Failed to place bet. Check your balance or try again tomorrow.");
-            }
-        };
+    try {
+        console.log("Placing bet with:", { userAccount, number, times, payoutAmount });
+        const balance = await contract.methods.balanceOf(userAccount).call();
+        const totalCost = (1 * 10 ** 18) * times;
+        console.log("Balance:", balance, "Total Cost:", totalCost);
 
+        if (balance < totalCost) {
+            alert("Insufficient balance to place bet.");
+            return;
+        }
+
+        await contract.methods.placeBet(number, times, payoutAmount).send({
+            from: userAccount,
+            gas: 300000
+        });
+
+        alert("Bet placed successfully!");
+        document.getElementById("betNumber").value = "";
+        document.getElementById("betTimes").value = "";
+        document.getElementById("totalCost").innerText = "0";
+        loadTokenInfo();
+        loadUserBetHistory();
+        loadGlobalBetHistory();
+        console.log("Bet placed:", { number, times, payoutAmount });
+    } catch (error) {
+        console.error("Error placing bet:", error.message, error.data);
+        if (error.message.includes("Try again tomorrow")) {
+            alert("You have reached the daily betting limit. Please try again tomorrow.");
+        } else {
+            alert("Failed to place bet. Check your balance or try again later.");
+        }
+    }
+};
         // Load riwayat taruhan pengguna
         const loadUserBetHistory = async () => {
             if (!userAccount) return;
