@@ -6,6 +6,7 @@
     <title>Web3 Connect Wallet and Telegram Verification</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
     <style>
+        /* CSS tetap sama seperti sebelumnya */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -15,7 +16,6 @@
             height: 100vh;
             margin: 0;
         }
-
         .container {
             text-align: center;
             padding: 20px;
@@ -23,12 +23,10 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
         }
-
         button {
             background-color: #4CAF50;
             color: white;
@@ -39,15 +37,12 @@
             border-radius: 5px;
             margin-top: 10px;
         }
-
         button:hover {
             background-color: #45a049;
         }
-
-        #walletInfo {
+        #walletInfo, #status {
             margin-top: 20px;
         }
-
         #walletAddress {
             word-wrap: break-word;
         }
@@ -66,10 +61,11 @@
         <button id="startBtn">Start Verification</button>
         <button id="verifyBtn">Verify Telegram Channel</button>
         <button id="submitBtn">Submit UID</button>
+        <div id="status"></div>
     </div>
     
     <script>
-        // Web3 and MetaMask setup
+        // Web3 dan MetaMask setup (tetap sama)
         if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
             console.log('MetaMask is available!');
             var web3 = new Web3(window.ethereum);
@@ -89,6 +85,7 @@
                     connectButton.style.display = 'none';
                 } catch (error) {
                     console.error('User denied account access', error);
+                    document.getElementById('status').textContent = 'Failed to connect MetaMask';
                 }
             });
 
@@ -96,49 +93,87 @@
                 walletInfo.style.display = 'none';
                 connectButton.style.display = 'block';
             });
-
         } else {
             alert('Please install MetaMask or another Ethereum-compatible browser extension.');
         }
 
         // Telegram Bot integration
-        const BOT_API_TOKEN = '7406850699:AAGhGp5mhXNP0xbefVwj25_6-dchM677h-E'; // Ganti dengan token bot kamu
-const CHAT_ID = '100202718934'; // Ganti dengan chat ID kamu
-const BASE_URL = `https://api.telegram.org/bot${BOT_API_TOKEN}`;
-        
-        // Send message to Telegram
-        function sendMessage(text) {
+        const BOT_API_TOKEN = '7406850699:AAGhGp5mhXNP0xbefVwj25_6-dchM677h-E'; // Token bot Anda
+        const CHAT_ID = '-1001234567890'; // Ganti dengan ID channel yang benar
+        const BASE_URL = `https://api.telegram.org/bot${BOT_API_TOKEN}`;
+        const statusDiv = document.getElementById('status');
+
+        // Fungsi untuk mengirim pesan ke Telegram
+        async function sendMessage(text) {
             const url = `${BASE_URL}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        console.log('Message sent');
-                    } else {
-                        console.error('Failed to send message', data);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.ok) {
+                    statusDiv.textContent = 'Message sent to Telegram!';
+                    console.log('Message sent:', text);
+                } else {
+                    statusDiv.textContent = `Failed to send message: ${data.description}`;
+                    console.error('Failed to send message:', data);
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Error sending message';
+                console.error('Error:', error);
+            }
+        }
+
+        // Fungsi untuk memeriksa keanggotaan (opsional, jika ingin memverifikasi pengguna)
+        async function checkMembership(userId) {
+            const url = `${BASE_URL}/getChatMember?chat_id=${CHAT_ID}&user_id=${userId}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.ok && data.result.status !== 'left') {
+                    statusDiv.textContent = 'User is a member of the channel!';
+                    return true;
+                } else {
+                    statusDiv.textContent = 'User is not a member of the channel.';
+                    return false;
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Error checking membership';
+                console.error('Error:', error);
+                return false;
+            }
         }
 
         // Start Telegram Verification
         function startVerification() {
-            sendMessage('Welcome! Click the button to start verification.');
-            sendMessage('Click "Join Channel" after you join our Telegram channel!');
+            statusDiv.textContent = 'Sending welcome message...';
+            sendMessage('Welcome! Please join our Telegram channel and click "Verify" after joining.');
         }
 
-        // Verify Telegram Channel Join
-        function verifyJoinChannel() {
-            sendMessage('Thank you for joining our Telegram channel! Click "Verify" after following the instructions.');
+        // Verify Telegram Channel Join (contoh, perlu user ID)
+        async function verifyJoinChannel() {
+            statusDiv.textContent = 'Verifying channel membership...';
+            // Untuk verifikasi nyata, Anda perlu user ID Telegram pengguna.
+            // Contoh: Anda bisa meminta pengguna memasukkan ID mereka atau mengintegrasikan Telegram Login Widget.
+            const userId = prompt('Masukkan Telegram User ID Anda (angka):'); // Sementara, untuk testing
+            if (userId) {
+                const isMember = await checkMembership(userId);
+                if (isMember) {
+                    sendMessage('Thank you for joining our Telegram channel! Verification successful.');
+                } else {
+                    sendMessage('Please join the channel first.');
+                }
+            } else {
+                statusDiv.textContent = 'Please provide a valid Telegram User ID.';
+            }
         }
 
         // Submit Verification
         function submitVerification() {
-            const userUid = `UID-${Math.floor(Math.random() * 1000000)}`; // Simulate UID
+            const userUid = `UID-${Math.floor(Math.random() * 1000000)}`;
+            statusDiv.textContent = 'Submitting verification...';
             sendMessage(`Your UID: ${userUid}. Verification complete!`);
         }
 
-        // Event listeners for Telegram verification buttons
+        // Event listeners untuk tombol
         window.onload = function() {
             const startBtn = document.getElementById('startBtn');
             const verifyBtn = document.getElementById('verifyBtn');
