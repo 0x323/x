@@ -1,98 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CheckInPoint DApp</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CheckInPoint DApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #2d3748;
+    }
+    .card {
+      background-color: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+      margin-bottom: 32px;
+    }
+    .button {
+      background-color: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .button:hover {
+      background-color: #1d4ed8;
+    }
+    .button-copy {
+      background-color: #e5e7eb;
+      color: #1f2937;
+    }
+    .button-copy:hover {
+      background-color: #d1d5db;
+    }
+    .button-green {
+      background-color: #16a34a;
+    }
+    .button-green:hover {
+      background-color: #15803d;
+    }
+    .button-purple {
+      background-color: #7c3aed;
+    }
+    .button-purple:hover {
+      background-color: #6d28d9;
+    }
+    .input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+    }
+    label {
+      font-weight: 600;
+      color: #374151;
+    }
+    p, ul {
+      color: #4b5563;
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans min-h-screen">
-    <div class="container mx-auto p-6 max-w-4xl">
-        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">CheckInPoint DApp</h1>
+<body>
+  <div class="container">
+    <h1>CheckInPoint DApp</h1>
 
-        <!-- Wallet Connection -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <div id="twitterFollowSection" class="mb-4">
-                <p class="text-gray-600 mb-2">Follow our Twitter account to unlock wallet connection:</p>
-                <a id="twitterButton" href="https://twitter.com/LottoChainXyz" target="_blank" class="bg-blue-400 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition">Follow Twitter</a>
-                <p id="twitterStatus" class="text-gray-600 mt-2"></p>
-            </div>
-            <button id="walletButton" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition hidden">Connect Wallet</button>
-            <p id="accountInfo" class="mt-4 text-gray-600"></p>
-        </div>
-
-        <!-- Token Info -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Token Information</h2>
-            <p id="tokenName" class="text-gray-600 mb-2">Name: Loading...</p>
-            <p id="tokenSymbol" class="text-gray-600 mb-2">Symbol: Loading...</p>
-            <p id="tokenDecimals" class="text-gray-600 mb-2">Decimals: Loading...</p>
-            <p id="totalSupply" class="text-gray-600 mb-2">Total Supply: Loading...</p>
-            <p id="tokenBalance" class="text-gray-600 mb-2">Your Balance: Loading...</p>
-        </div>
-
-        <!-- Referral -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Referral</h2>
-            <div class="mb-6">
-                <p id="referralLink" class="text-gray-600 mb-2">Link Undangan: Loading...</p>
-                <button id="copyLink" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Copy Link</button>
-                <p id="refereeCount" class="text-gray-600 mb-2 mt-2">Teman yang Diundang: Loading...</p>
-                <p id="referralReward" class="text-gray-600 mb-2">Reward: Loading...</p>
-            </div>
-            <div>
-                <label for="referrerId" class="block text-gray-700 font-medium mb-2">Join with Referral ID</label>
-                <input id="referrerId" type="text" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter referrer's ID">
-                <button id="setReferrerId" class="bg-green-600 text-white px-6 py-2 mt-3 rounded-lg hover:bg-green-700 transition">Join Referral</button>
-            </div>
-        </div>
-
-        <!-- Check-In -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Daily Check-In</h2>
-            <div id="facebookJoinSection" class="mb-4">
-                <p class="text-gray-600 mb-2">Like our Facebook page to unlock check-in:</p>
-                <a id="facebookButton" href="https://facebook.com/LottoChainXyz" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Like Facebook Page</a>
-                <p id="facebookStatus" class="text-gray-600 mt-2"></p>
-            </div>
-            <button id="checkIn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition hidden">Check In</button>
-            <p id="checkInStatus" class="mt-4 text-gray-600"></p>
-            <h3 class="text-xl font-semibold mt-6 text-gray-800">Check-In History</h3>
-            <ul id="checkInHistory" class="mt-2 text-gray-600"></ul>
-        </div>
-
-        <!-- Betting -->
-        <div class="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Place a Bet</h2>
-            <div id="telegramJoinSection" class="mb-4">
-                <p class="text-gray-600 mb-2">Join our Telegram channel to unlock betting:</p>
-                <a id="telegramButton" href="https://t.me/LottoChainXyz" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Join Telegram</a>
-                <p id="telegramStatus" class="text-gray-600 mt-2"></p>
-            </div>
-            <div class="mb-4">
-                <label for="betNumber" class="block text-gray-700 font-medium mb-2">Number (1-4 characters)</label>
-                <input id="betNumber" type="number" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="2D 3D or 4D">
-            </div>
-            <div class="mb-4">
-                <label for="betTimes" class="block text-gray-700 font-medium mb-2">Times (1-5)</label>
-                <input id="betTimes" type="number" min="1" max="10" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="×1 / ×5">
-            </div>
-            <div class="mb-4">
-                <label for="payoutAmount" class="block text-gray-700 font-medium mb-2">Payout Amount (in Points)</label>
-                <input id="payoutAmount" type="number" min="10" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter reward 10 (point)">
-            </div>
-            <button id="placeBet" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition hidden">Place Bet</button>
-            <h3 class="text-xl font-semibold mt-6 text-gray-800">Your Bet History</h3>
-            <ul id="userBetHistory" class="mt-2 text-gray-600"></ul>
-        </div>
-
-        <!-- Global Bet History -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Global Bet History</h2>
-            <ul id="globalBetHistory" class="mt-2 text-gray-600"></ul>
-        </div>
+    <!-- Wallet Connection -->
+    <div class="card">
+      <div id="twitterFollowSection">
+        <p>Follow our Twitter account to unlock wallet connection:</p>
+        <a id="twitterButton" href="https://twitter.com/youraccount" target="_blank" class="button">Follow Twitter</a>
+        <p id="twitterStatus"></p>
+      </div>
+      <button id="walletButton" class="button" style="display:none;">Connect Wallet</button>
+      <p id="accountInfo"></p>
     </div>
+
+    <!-- Token Info -->
+    <div class="card">
+      <h2>Token Information</h2>
+      <p id="tokenName">Name: Loading...</p>
+      <p id="tokenSymbol">Symbol: Loading...</p>
+      <p id="tokenDecimals">Decimals: Loading...</p>
+      <p id="totalSupply">Total Supply: Loading...</p>
+      <p id="tokenBalance">Your Balance: Loading...</p>
+    </div>
+
+    <!-- Referral -->
+    <div class="card">
+      <h2>Referral</h2>
+      <p id="referralLink">Link Undangan: Loading...</p>
+      <button id="copyLink" class="button button-copy">Copy Link</button>
+      <p id="refereeCount">Teman yang Diundang: Loading...</p>
+      <p id="referralReward">Reward: Loading...</p>
+
+      <label for="referrerId">Join with Referral ID</label>
+      <input id="referrerId" type="text" class="input" placeholder="Enter referrer's ID">
+      <button id="setReferrerId" class="button button-green">Join Referral</button>
+    </div>
+
+    <!-- Check-In -->
+    <div class="card">
+      <h2>Daily Check-In</h2>
+      <div id="facebookJoinSection">
+        <p>Like our Facebook page to unlock check-in:</p>
+        <a id="facebookButton" href="https://facebook.com/yourpage" target="_blank" class="button">Like Facebook Page</a>
+        <p id="facebookStatus"></p>
+      </div>
+      <button id="checkIn" class="button" style="display:none;">Check In</button>
+      <p id="checkInStatus"></p>
+      <h3>Check-In History</h3>
+      <ul id="checkInHistory"></ul>
+    </div>
+
+    <!-- Betting -->
+    <div class="card">
+      <h2>Place a Bet</h2>
+      <div id="telegramJoinSection">
+        <p>Join our Telegram channel to unlock betting:</p>
+        <a id="telegramButton" href="https://t.me/yourchannel" target="_blank" class="button">Join Telegram</a>
+        <p id="telegramStatus"></p>
+      </div>
+
+      <label for="betNumber">Number (1-4 characters)</label>
+      <input id="betNumber" type="number" class="input" placeholder="2D 3D or 4D">
+
+      <label for="betTimes">Times (1-5)</label>
+      <input id="betTimes" type="number" min="1" max="10" class="input" placeholder="×1 / ×5">
+
+      <label for="payoutAmount">Payout Amount (in Points)</label>
+      <input id="payoutAmount" type="number" min="10" class="input" placeholder="Enter reward 10 (point)">
+
+      <button id="placeBet" class="button button-purple" style="display:none;">Place Bet</button>
+      <h3>Your Bet History</h3>
+      <ul id="userBetHistory"></ul>
+    </div>
+
+    <!-- Global Bet History -->
+    <div class="card">
+      <h2>Global Bet History</h2>
+      <ul id="globalBetHistory"></ul>
+    </div>
+  </div>
 
     <script>
         // Konfigurasi Web3 dan kontrak
