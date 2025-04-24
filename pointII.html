@@ -119,6 +119,7 @@ const initWeb3 = async (forceConnect = false) => {
                 contract = new web3.eth.Contract(contractABI, contractAddress);
                 updateWalletUI(true);
                 storeConnection(userAccount);
+                displayUserSignature();
                 await setAutomaticReferralId();
                 await handleReferralFromURL();
                 loadTokenInfo();
@@ -134,6 +135,27 @@ const initWeb3 = async (forceConnect = false) => {
     } else {
         alert("Please install MetaMask to use this DApp.");
     }
+};
+
+// Tampilkan signature user
+const displayUserSignature = () => {
+    const userAddress = userAccount;
+    const localTime = new Date().toLocaleString(undefined, {
+        timeZoneName: "short",
+        hour12: false,
+    });
+
+    const uniqueSignatureId = `LTC-${Date.now().toString(36)}-${userAddress.slice(-4)}`;
+
+    const signatureMessage = `Welcome ${userAddress} to Lotto Chain, Try Beta Version & Earn Points!\nLocal Time: ${localTime}\nSignature ID: ${uniqueSignatureId}`;
+
+    alert(signatureMessage);
+
+    localStorage.setItem("lottoChainSignature", JSON.stringify({
+        user: userAddress,
+        time: localTime,
+        id: uniqueSignatureId
+    }));
 };
 
 // Periksa koneksi tersimpan di localStorage
