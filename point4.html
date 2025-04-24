@@ -468,28 +468,34 @@ const placeBet = async () => {
     }
 };
       
-// Load User Bet History
 const loadUserBetHistory = async () => {
     if (!userAccount) return;
     try {
-        const count = await contract.methods.getBetHistoryLength().call();
-        const historyList = document.getElementById("globalBetHistory");
+        const count = await contract.methods.getUserBetCount(userAccount).call();
+        const historyList = document.getElementById("userBetHistory");
         historyList.innerHTML = "";
+
+        const promises = [];
         for (let i = 0; i < count; i++) {
-            const bet = await contract.methods.getBet(i).call();
+            promises.push(contract.methods.getUserBet(userAccount, i).call());
+        }
+        const bets = await Promise.all(promises);
+
+        bets.forEach(bet => {
             const date = new Date(bet.timestamp * 1000).toLocaleString();
             const li = document.createElement("li");
             li.className = "py-2";
-            li.innerHTML = `<small>User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}, 
-            Number: ${bet.number}, 
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, 
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, 
-            Time: ${date}</small>`;
+            li.innerHTML = `<small>
+                Number: ${bet.number}, 
+                Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, 
+                Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, 
+                Time: ${date}
+            </small>`;
             historyList.appendChild(li);
-        }
+        });
     } catch (error) {
-        console.error("Error loading global bet history:", error);
-        document.getElementById("loadUserBetHistory").innerHTML = "<li>Error loading history.</li>";
+        console.error("Error loading user bet history:", error);
+        document.getElementById("userBetHistory").innerHTML = "<li>Error loading history.</li>";
     }
 };
 
