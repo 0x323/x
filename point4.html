@@ -1,251 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CheckInPoint DApp</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #000000;
-            font-family: sans-serif;
-            min-height: 100vh;
-            font-family: 'Ubuntu', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CheckInPoint DApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000000;
+      font-family: 'Ubuntu', sans-serif;
+      min-height: 100vh;
+      color: #f1f1f1;
+    }
 
-        .container {
-            max-width: 1024px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            background: #111111;
-        }
+    .container {
+      max-width: 1024px;
+      margin: auto;
+      padding: 1.5rem;
+      background: #111111;
+    }
 
-        h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #1f2937;
-        }
+    h1, h2, h3 {
+      color: #00ffcc;
+      text-align: center;
+    }
 
-        .mb-8 {
-            margin-bottom: 2rem;
-        }
+    .section {
+      margin-bottom: 2rem;
+      background-color: #1a1a1a;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+    }
 
-        .bg-white {
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    button {
+      font-weight: bold;
+      border: none;
+      padding: 0.6rem 1.6rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
 
-        #walletButton {
-            background-color: #2563eb;
-            color: #ffffff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    #walletButton,
+    #checkIn,
+    #placeBet {
+      background: linear-gradient(145deg, #00ffaa, #008866);
+      color: #000;
+    }
 
-        #walletButton:hover {
-            background-color: #1d4ed8;
-        }
+    #walletButton:hover,
+    #checkIn:hover,
+    #placeBet:hover {
+      background: linear-gradient(145deg, #00ffcc, #00cc99);
+    }
 
-        #accountInfo {
-            margin-top: 1rem;
-            color: #4b5563;
-        }
+    #setReferrerId {
+      background: linear-gradient(145deg, #66ff66, #339933);
+      color: #000;
+    }
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1f2937;
-        }
+    #setReferrerId:hover {
+      background: linear-gradient(145deg, #77ff77, #44aa44);
+    }
 
-        .text-gray-600 {
-            color: #4b5563;
-            margin-bottom: 0.5rem;
-        }
+    #copyLink {
+      background: #333;
+      color: #fff;
+    }
 
-        #copyLink {
-            background-color: #e5e7eb;
-            color: #1f2937;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    #copyLink:hover {
+      background: #555;
+    }
 
-        #copyLink:hover {
-            background-color: #d1d5db;
-        }
+    .info-text {
+      color: #cccccc;
+    }
 
-        .mt-2 {
-            margin-top: 0.5rem;
-        }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #ccc;
+    }
 
-        label {
-            display: block;
-            color: #374151;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 0.5rem;
+    }
 
-        input {
-            border: 1px solid #d1d5db;
-            padding: 0.75rem;
-            width: 100%;
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-        }
+    input:focus {
+      outline: none;
+      border-color: #00ffcc;
+      box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.3);
+    }
 
-        input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
+    .input-group {
+      margin-bottom: 1rem;
+    }
 
-        #setReferrerId {
-            background-color: #16a34a;
-            color: #ffffff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            margin-top: 0.75rem;
-            transition: background-color 0.2s;
-        }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
 
-        #setReferrerId:hover {
-            background-color: #15803d;
-        }
-
-        #checkIn {
-            background-color: #2563eb;
-            color: #ffffff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        #checkIn:hover {
-            background-color: #1d4ed8;
-        }
-
-        #checkInStatus {
-            margin-top: 1rem;
-            color: #4b5563;
-        }
-
-        h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            color: #1f2937;
-        }
-
-        #placeBet {
-            background-color: #7c3aed;
-            color: #ffffff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        #placeBet:hover {
-            background-color: #6d28d9;
-        }
-
-        .mb-4 {
-            margin-bottom: 1rem;
-        }
-    </style>
+      button,
+      input {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>CheckInPoint DApp</h1>
+  <div class="container">
+    <h1>CheckInPoint DApp</h1>
 
-        <!-- Wallet Connection -->
-        <div class="mb-8 bg-white">
-            <button id="walletButton">Connect Wallet</button>
-            <p id="accountInfo"></p>
-        </div>
-
-        <!-- Token Info -->
-        <div class="mb-8 bg-white">
-            <h2>Token Information</h2>
-            <p id="tokenName" class="text-gray-600">Name: Loading...</p>
-            <p id="tokenSymbol" class="text-gray-600">Symbol: Loading...</p>
-            <p id="tokenDecimals" class="text-gray-600">Decimals: Loading...</p>
-            <p id="totalSupply" class="text-gray-600">Total Supply: Loading...</p>
-            <p id="balance" class="text-gray-600">Your Balance: Loading...</p>
-        </div>
-
-        <!-- Check-In -->
-        <div class="mb-8 bg-white">
-            <h2>Daily Check-In</h2>
-            <button id="checkIn">Check In</button>
-            <p id="checkInStatus" class="text-gray-600"></p>
-            <h3>Check-In History</h3>
-            <ul id="checkInHistory" class="text-gray-600"></ul>
-        </div>
-
-        <!-- Betting -->
-        <div class="mb-8 bg-white">
-            <h2>Place a Bet</h2>
-            <div class="mb-4">
-                <label for="betNumber">Number (1-4 characters)</label>
-                <input id="betNumber" type="number" placeholder="2D 3D or 4D">
-            </div>
-            <div class="mb-4">
-                <label for="betTimes">Times (1-5)</label>
-                <input id="betTimes" type="number" min="1" max="10" placeholder="×1 / ×5">
-            </div>
-            <div class="mb-4">
-                <label for="payoutAmount">Payout Amount (in Points)</label>
-                <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
-            </div>
-            <button id="placeBet">Place Bet</button>
-        </div>
-
-        <!-- User Bet History -->
-        <div class="mb8 bg-white">
-            <h3>Your Bet History</h3>
-            <ul id="userBetHistory" class="text-gray-600"></ul>
-        </div>
-
-        <!-- Global Bet History -->
-        <div class="mb-8 bg-white">
-            <h2>Global Bet History</h2>
-            <ul id="globalBetHistory" class="text-gray-600"></ul>
-        </div>
-
-        <!-- Referral -->
-        <div class="mb-8 bg-white">
-            <h2>Referral</h2>
-            <div class="mb-4">
-                <p id="referralLink" class="text-gray-600">Link Undangan: Loading...</p>
-                <button id="copyLink">Copy Link</button>
-                <p id="refereeCount" class="text-gray-600 mt-2">Teman yang Diundang: Loading...</p>
-                <p id="referralReward" class="text-gray-600">Reward: Loading...</p>
-            </div>
-            <div>
-                <label for="referrerId">Join with Referral ID</label>
-                <input id="referrerId" type="text" placeholder="Enter referrer's ID">
-                <button id="setReferrerId">Join Referral</button>
-            </div>
-        </div>
+    <!-- Wallet Connection -->
+    <div class="section">
+      <button id="walletButton">Connect Wallet</button>
+      <p id="accountInfo" class="info-text"></p>
     </div>
 
+    <!-- Token Info -->
+    <div class="section">
+      <h2>Token Information</h2>
+      <p id="tokenName" class="info-text">Name: Loading...</p>
+      <p id="tokenSymbol" class="info-text">Symbol: Loading...</p>
+      <p id="tokenDecimals" class="info-text">Decimals: Loading...</p>
+      <p id="totalSupply" class="info-text">Total Supply: Loading...</p>
+      <p id="balance" class="info-text">Your Balance: Loading...</p>
+    </div>
+
+    <!-- Check-In -->
+    <div class="section">
+      <h2>Daily Check-In</h2>
+      <button id="checkIn">Check In</button>
+      <p id="checkInStatus" class="info-text"></p>
+      <h3>Check-In History</h3>
+      <ul id="checkInHistory" class="info-text"></ul>
+    </div>
+
+    <!-- Betting -->
+    <div class="section">
+      <h2>Place a Bet</h2>
+      <div class="input-group">
+        <label for="betNumber">Number (1-4 characters)</label>
+        <input id="betNumber" type="number" placeholder="2D 3D or 4D">
+      </div>
+      <div class="input-group">
+        <label for="betTimes">Times (1-5)</label>
+        <input id="betTimes" type="number" min="1" max="10" placeholder="×1 / ×5">
+      </div>
+      <div class="input-group">
+        <label for="payoutAmount">Payout Amount (in Points)</label>
+        <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
+      </div>
+      <button id="placeBet">Place Bet</button>
+    </div>
+
+    <!-- User Bet History -->
+    <div class="section">
+      <h3>Your Bet History</h3>
+      <ul id="userBetHistory" class="info-text"></ul>
+    </div>
+
+    <!-- Global Bet History -->
+    <div class="section">
+      <h2>Global Bet History</h2>
+      <ul id="globalBetHistory" class="info-text"></ul>
+    </div>
+
+    <!-- Referral -->
+    <div class="section">
+      <h2>Referral</h2>
+      <div class="input-group">
+        <p id="referralLink" class="info-text">Link Undangan: Loading...</p>
+        <button id="copyLink">Copy Link</button>
+        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Teman yang Diundang: Loading...</p>
+        <p id="referralReward" class="info-text">Reward: Loading...</p>
+      </div>
+      <div>
+        <label for="referrerId">Join with Referral ID</label>
+        <input id="referrerId" type="text" placeholder="Enter referrer's ID">
+        <button id="setReferrerId">Join Referral</button>
+      </div>
+    </div>
+  </div>
     <script>
         // Konfigurasi Web3 dan kontrak
 const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC"; // Ganti dengan alamat kontrak yang sudah di-deploy
