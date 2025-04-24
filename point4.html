@@ -501,7 +501,11 @@ const loadGlobalBetHistory = async () => {
             const date = new Date(bet.timestamp * 1000).toLocaleString();
             const li = document.createElement("li");
             li.className = "py-2";
-            li.innerText = `User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}, Number: ${bet.number}, Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;
+            li.innerText = `
+            <small>User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)},
+            Number: ${bet.number},
+            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points,
+            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;</small>
             historyList.appendChild(li);
         }
     } catch (error) {
