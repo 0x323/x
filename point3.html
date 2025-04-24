@@ -64,16 +64,16 @@
         <div class="mb-8 bg-white p-6 rounded-lg shadow">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Place a Bet</h2>
             <div class="mb-4">
-                <label for="betNumber" class="block text-gray-700 font-medium mb-2">Number (1-20 characters)</label>
-                <input id="betNumber" type="text" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter number">
+                <label for="betNumber" class="block text-gray-700 font-medium mb-2">Number (1-4 characters)</label>
+                <input id="betNumber" type="number" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="2D 3D or 4D">
             </div>
             <div class="mb-4">
-                <label for="betTimes" class="block text-gray-700 font-medium mb-2">Times (1-10)</label>
-                <input id="betTimes" type="number" min="1" max="10" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter times">
+                <label for="betTimes" class="block text-gray-700 font-medium mb-2">Times (1-5)</label>
+                <input id="betTimes" type="number" min="1" max="10" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="×1 / ×5">
             </div>
             <div class="mb-4">
                 <label for="payoutAmount" class="block text-gray-700 font-medium mb-2">Payout Amount (in Points)</label>
-                <input id="payoutAmount" type="number" min="1" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter payout amount">
+                <input id="payoutAmount" type="number" min="10" class="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter reward 10 (point)">
             </div>
             <button id="placeBet" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
                 Place Bet
@@ -339,8 +339,8 @@ const placeBet = async () => {
     const times = parseInt(document.getElementById("betTimes").value);
     const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
 
-    if (!number || number.length < 1 || number.length > 20) {
-        alert("Please enter a valid number (1-20 characters).");
+    if (!number || number.length < 2 || number.length > 4) {
+        alert("Please enter a valid number (2-4 characters).");
         return;
     }
     if (!times || times < 1 || times > 5) {
