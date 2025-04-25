@@ -240,7 +240,7 @@
 
     // Durasi validitas koneksi (7 hari dalam milidetik)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
-    const BASE_URL = "https://0x323.github.io/x/point4"; // Ganti dengan URL proyek Anda
+    const BASE_URL = "https://0x323.github.io/x/point3"; // Ganti dengan URL proyek Anda
 
     // Fungsi untuk menghasilkan UID acak
     const generateUID = () => {
@@ -408,7 +408,7 @@
 
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
-        document.getElementById("referralLink").innerHTML = `<small>Referral Link: ${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br>${BASE_URL}?uid=${userReferralId}</small>`;
         document.getElementById("refereeCount").innerHTML = `Invited Friends: ${refereeCount}`;
         document.getElementById("referralReward").innerHTML = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
 
@@ -458,12 +458,12 @@
       }
       try {
         await contract.methods.checkIn().send({ from: userAccount });
-        document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Lpoint.";
+        document.getElementById("checkInStatus").innerText = "<small>Check-in successful! You earned 1 Lpoint!</small>";
         loadWalletInfo();
         loadCheckInHistory();
       } catch (error) {
         console.error("Error checking in:", error);
-        document.getElementById("checkInStatus").innerText = "Failed to check in. You may have already checked in today.";
+        document.getElementById("checkInStatus").innerText = "<small>Failed to check in. You may have already checked in today.</small>";
       }
     };
 
