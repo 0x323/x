@@ -214,7 +214,6 @@
       <h2>Global Bet History</h2>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
-        <center><button id="loadMoreGlobal" class="hidden">Load More</button></center>
       </div>
     </div>
 
@@ -267,7 +266,7 @@
     let contract;
     let userAccount;
     let globalHistoryOffset = 0;
-    const globalHistoryBatchSize = 10; // Batasi 10 entri per muatan
+    const globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
 
