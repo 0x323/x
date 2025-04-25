@@ -658,11 +658,11 @@ th {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
-            Number: ${bet.number}<br>
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
-            Time: ${date}<br>
+            User: <span style="color: #bd80ff;">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</span><br>
+            Number: <span style="color: #00ff14;">${bet.number}<br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
         }
