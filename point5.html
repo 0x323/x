@@ -323,9 +323,6 @@
           await window.ethereum.request({ method: "eth_requestAccounts" });
           userAccount = (await web3.eth.getAccounts())[0];
           contract = new web3.eth.Contract(contractABI, contractAddress);
-          console.log("Initializing global bet events");
-          await fetchBetEvents(); // Cache global events
-          await fetchBetEvents(userAccount);
           updateWalletUI(true);
           storeConnection(userAccount);
           await setAutomaticReferralId();
