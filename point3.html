@@ -65,50 +65,63 @@
     }
 
     #walletButton {
-      background: linear-gradient(90deg, #03a9f4, #f441a5);
-      color: #000;
-    }
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  color: #fff;
+  border: none;
+  backdrop-filter: none;
+  transition: all 0.3s ease;
+}
 
-    #walletButton:hover {
-      background: linear-gradient(145deg, #00ffcc, #00cc99);
-    }
+#walletButton:hover {
+  background: rgba(3, 169, 244, 0.2);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(3, 169, 244, 0.4), 0 0 20px rgba(244, 65, 165, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-    #walletButton.disconnect {
-      background: linear-gradient(145deg, #ff3333, #cc0000);
-      color: #fff;
-    }
+#walletButton.disconnect {
+  background: linear-gradient(145deg, #ff3333, #cc0000);
+  color: #fff;
+}
 
-    #walletButton.disconnect:hover {
-      background: linear-gradient(145deg, #ff6666, #ff3333);
-    }
+#walletButton.disconnect:hover {
+  background: rgba(255, 51, 51, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.4), 0 0 20px rgba(204, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-    #checkIn, #placeBet {
-      background: linear-gradient(90deg, #03a9f4, #f441a5);
-      color: #fff;
-    }
+#checkIn, #placeBet {
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  color: #fff;
+  transition: all 0.3s ease;
+}
 
-    #checkIn:hover, #placeBet:hover {
-      background: linear-gradient(145deg, #00ffcc, #00cc99);
-    }
+#checkIn:hover, #placeBet:hover {
+  background: rgba(3, 169, 244, 0.2);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(3, 169, 244, 0.4), 0 0 20px rgba(244, 65, 165, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-    #copyLink {
-      background: linear-gradient(90deg, #03a9f4, #f441a5);
-      color: #fff;
-    }
+#copyLink {
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  color: #fff;
+  transition: all 0.3s ease;
+}
 
-    #copyLink:hover {
-      background: #555;
-    }
+#copyLink:hover {
+  background: rgba(85, 85, 85, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(85, 85, 85, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-    .info-text {
-      color: #cccccc;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #ccc;
-    }
+.info-text {
+  color: #cccccc;
+}
 
     input {
       width: 90%;
