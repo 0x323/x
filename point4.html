@@ -366,7 +366,13 @@
       if (isConnected) {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
-        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 21)}${userAccount.slice(-21)}</small>`;
+        document.getElementById("accountInfo").innerHTML = `
+          <span style="font-size: 12.5px; color: #bd80ff;">
+            Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
+              ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
+            </a>
+          </span>
+        `;
       } else {
         walletButton.innerText = "Connect Wallet";
         walletButton.classList.remove("disconnect");
@@ -428,7 +434,7 @@
 
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
-        document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br> ${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Referral Link:</small><br> ${BASE_URL}?uid=${userReferralId}`;
         document.getElementById("refereeCount").innerHTML = `Invited Friends: ${refereeCount}`;
         document.getElementById("referralReward").innerHTML = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
 
@@ -461,7 +467,12 @@
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
           li.className = "py-2";
-          li.innerHTML = `<small>Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</small>`;
+          li.innerHTML = `<span style="font-size: 12.5px; color: #bd80ff;">
+              Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
+                ${referee.slice(0, 21)}${referee.slice(-21)}
+              </a>
+            </span>
+          `;
           refereeList.appendChild(li);
         });
       } catch (error) {
