@@ -274,7 +274,7 @@
   let globalHistoryBatchSize = 15;
   let totalGlobalCount = 0;
   let isFetching = false;
-  let betEventsCache = {}; // Hanya satu deklarasi
+  let betEventsCache = {};
 
   const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
   const BASE_URL = "https://0x323.github.io/x/point3";
@@ -291,32 +291,46 @@
     });
   };
 
-  // Periksa jaringan Base Sepolia
-  const checkNetwork = async () => {
+  // Periksa jaringan MetaMask
+  const checkMetaMaskNetwork = async () => {
     try {
-      const chainId = await web3.eth.getChainId();
-      if (chainId !== parseInt(BASE_SEPOLIA_CHAIN_ID, 16)) {
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      if (chainId !== BASE_SEPOLIA_CHAIN_ID) {
         alert("Please switch to Base Sepolia network in MetaMask.");
         return false;
       }
       return true;
     } catch (error) {
-      console.error("Error checking network:", error);
+      console.error("Error checking MetaMask network:", error.message);
       return false;
     }
   };
 
-  // Ambil event PlaceBet dengan rentang blok terbatas
+  // Retry untuk panggilan Web3
+  const retry = async (fn, retries = 3, delay = 1000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await fn();
+      } catch (error) {
+        if (i === retries - 1) throw error;
+        console.warn(`Retrying (${i + 1}/${retries})...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  };
+
   const fetchBetEvents = async (user = null) => {
     try {
-      const latestBlock = await web3.eth.getBlockNumber();
-      const fromBlock = Math.max(latestBlock - 10000, 0); // ~1 minggu
+      const latestBlock = await retry(() => web3.eth.getBlockNumber());
+      const fromBlock = Math.max(latestBlock - 5000, 0); // ~3 hari
       const filter = user ? { user } : {};
-      const events = await contract.getPastEvents("PlaceBet", {
-        filter,
-        fromBlock,
-        toBlock: "latest",
-      });
+      const events = await retry(() =>
+        contract.getPastEvents("PlaceBet", {
+          filter,
+          fromBlock,
+          toBlock: "latest",
+        })
+      );
       const eventMap = {};
       events.forEach((event, index) => {
         eventMap[index] = {
@@ -330,19 +344,27 @@
         };
       });
       betEventsCache[user || "global"] = eventMap;
+      console.log(`Fetched ${user ? "user" : "global"} events:`, eventMap);
+      if (Object.keys(eventMap).length === 0) {
+        console.warn(`No PlaceBet events found for ${user || "global"} from block ${fromBlock} to latest`);
+      }
       return eventMap;
     } catch (error) {
-      console.error("Error fetching PlaceBet events:", error);
+      console.error("Error fetching PlaceBet events:", error.message);
+      document.getElementById(user ? "userBetHistory" : "globalBetHistory").innerHTML = 
+        `<li><small>Error loading history: Failed to fetch events - ${error.message}</small></li>`;
       return {};
     }
   };
 
   const initWeb3 = async (forceConnect = false) => {
     if (window.ethereum) {
-      web3 = new Web3(window.ethereum);
+      // Gunakan node publik untuk membaca data, MetaMask untuk tanda tangan
+      web3 = new Web3("https://sepolia.base.org");
       try {
         if (forceConnect || checkStoredConnection()) {
-          if (!(await checkNetwork())) return;
+          // Periksa jaringan MetaMask untuk transaksi
+          if (!(await checkMetaMaskNetwork())) return;
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const accounts = await web3.eth.getAccounts();
           userAccount = accounts[0];
@@ -359,8 +381,8 @@
           loadGlobalBetHistory();
         }
       } catch (error) {
-        console.error("Error connecting to MetaMask:", error);
-        alert("Failed to connect to MetaMask. Please try again.");
+        console.error("Error connecting to MetaMask:", error.message);
+        alert(`Failed to connect to MetaMask: ${error.message}`);
         updateWalletUI(false);
       }
     } else {
@@ -442,7 +464,7 @@
         console.log(`Set automatic Referral ID: ${newReferralId}`);
       }
     } catch (error) {
-      console.error("Error setting automatic referral ID:", error);
+      console.error("Error setting automatic referral ID:", error.message);
     }
   };
 
@@ -459,7 +481,7 @@
         }
       }
     } catch (error) {
-      console.error("Error handling referral from URL:", error);
+      console.error("Error handling referral from URL:", error.message);
     }
   };
 
@@ -484,13 +506,13 @@
 
       await loadRefereeList();
     } catch (error) {
-      console.error("Error loading wallet info:", error);
-      document.getElementById("ethBalance").innerHTML = "<small>ETH Balance: Error</small>";
-      document.getElementById("tokenBalance").innerHTML = "<small>Token Balance: Error</small>";
-      document.getElementById("referralLink").innerHTML = "<small>Referral Link: Error</small>";
-      document.getElementById("refereeCount").innerHTML = "<small>Invited Friends: Error</small>";
-      document.getElementById("referralReward").innerHTML = "<small>Reward: Error</small>";
-      document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
+      console.error("Error loading wallet info:", error.message);
+      document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: Error - ${error.message}</small>`;
+      document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: Error - ${error.message}</small>`;
+      document.getElementById("referralLink").innerHTML = `<small>Referral Link: Error - ${error.message}</small>`;
+      document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: Error - ${error.message}</small>`;
+      document.getElementById("referralReward").innerHTML = `<small>Reward: Error - ${error.message}</small>`;
+      document.getElementById("refereeList").innerHTML = `<li><small>Error loading referee list: ${error.message}</small></li>`;
     }
   };
 
@@ -517,8 +539,8 @@
         refereeList.appendChild(li);
       });
     } catch (error) {
-      console.error("Error loading referee list:", error);
-      document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
+      console.error("Error loading referee list:", error.message);
+      document.getElementById("refereeList").innerHTML = `<li><small>Error loading referee list: ${error.message}</small></li>`;
     }
   };
 
@@ -527,14 +549,15 @@
       alert("Please connect your wallet first.");
       return;
     }
+    if (!(await checkMetaMaskNetwork())) return;
     try {
       await contract.methods.checkIn().send({ from: userAccount });
       document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
       loadWalletInfo();
       loadCheckInHistory();
     } catch (error) {
-      console.error("Error checking in:", error);
-      document.getElementById("checkInStatus").innerHTML = "<small>Failed to check in. You may have already checked in today.</small>";
+      console.error("Error checking in:", error.message);
+      document.getElementById("checkInStatus").innerHTML = `<small>Failed to check in: ${error.message}</small>`;
     }
   };
 
@@ -561,8 +584,8 @@
         historyList.appendChild(li);
       }
     } catch (error) {
-      console.error("Error loading check-in history:", error);
-      document.getElementById("checkInHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      console.error("Error loading check-in history:", error.message);
+      document.getElementById("checkInHistory").innerHTML = `<li><small>Error loading history: ${error.message}</small></li>`;
     }
   };
 
@@ -571,6 +594,7 @@
       alert("Please connect your wallet first.");
       return;
     }
+    if (!(await checkMetaMaskNetwork())) return;
     const number = document.getElementById("betNumber").value.trim();
     const times = parseInt(document.getElementById("betTimes").value);
     const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
@@ -589,19 +613,20 @@
     }
 
     try {
-      await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+      const tx = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
       alert("Bet placed successfully!");
       document.getElementById("betNumber").value = "";
       document.getElementById("betTimes").value = "";
       document.getElementById("payoutAmount").value = "";
+      console.log("Bet transaction:", tx);
       await fetchBetEvents();
       await fetchBetEvents(userAccount);
       loadWalletInfo();
       loadUserBetHistory();
       loadGlobalBetHistory();
     } catch (error) {
-      console.error("Error placing bet:", error);
-      alert("Failed to place bet. Check your balance or try again.");
+      console.error("Error placing bet:", error.message);
+      alert(`Failed to place bet: ${error.message}`);
     }
   };
 
@@ -631,9 +656,9 @@
       let hasValidBets = false;
       bets.forEach((bet, index) => {
         if (!bet || !bet.timestamp) return;
+        hasValidBets = true;
         const eventIndex = count - 1 - index;
         const event = userEvents[eventIndex] || {};
-        hasValidBets = true;
         const date = new Date(bet.timestamp * 1000).toLocaleString();
         const txHash = event.txHash || "Pending";
         const blockNumber = event.blockNumber || "Pending";
@@ -661,8 +686,8 @@
         historyList.innerHTML = "<li><small>No valid bet history found.</small></li>";
       }
     } catch (error) {
-      console.error("Error loading user bet history:", error);
-      document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history: ${error.message}</small></li>";
+      console.error("Error loading user bet history:", error.message);
+      document.getElementById("userBetHistory").innerHTML = `<li><small>Error loading history: ${error.message}</small></li>`;
     }
   };
 
@@ -685,9 +710,9 @@
       let hasValidBets = false;
       for (let i = end; i >= start; i--) {
         const bet = await contract.methods.getBet(i).call();
+        hasValidBets = true;
         const eventIndex = i;
         const event = globalEvents[eventIndex] || {};
-        hasValidBets = true;
         const date = new Date(bet.timestamp * 1000).toLocaleString();
         const referrer = await contract.methods.referredBy(bet.user).call();
         const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
@@ -721,8 +746,8 @@
 
       globalHistoryOffset += globalHistoryBatchSize;
     } catch (error) {
-      console.error("Error loading global bet history:", error);
-      document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history: ${error.message}</small></li>";
+      console.error("Error loading global bet history:", error.message);
+      document.getElementById("globalBetHistory").innerHTML = `<li><small>Error loading history: ${error.message}</small></li>`;
     }
     isFetching = false;
   };
@@ -785,7 +810,7 @@
         }
       });
       window.ethereum.on("chainChanged", () => {
-        window.location.reload(); // Reload jika jaringan berubah
+        window.location.reload();
       });
     } else {
       alert("Please install MetaMask to use this DApp.");
@@ -794,4 +819,4 @@
 </script>
 
 </body>
-  </html>
+</html>
