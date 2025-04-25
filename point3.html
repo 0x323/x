@@ -65,57 +65,44 @@
     }
 
     #walletButton {
-  background: linear-gradient(90deg, #03a9f4, #f441a5);
-  color: #fff;
-  transition: all 0.3s ease;
-  border: none;
-}
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      color: #fff;
+      transition: all 0.3s ease;
+      border: none;
+    }
 
-#walletButton:hover {
-  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
-  color: #fff;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+    #walletButton:hover {
+      background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
+      color: #fff;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-#walletButton.disconnect {
-  background: linear-gradient(145deg, #ff3333, #cc0000);
-  color: #fff;
-}
+    #walletButton.disconnect {
+      background: linear-gradient(145deg, #ff3333, #cc0000);
+      color: #fff;
+    }
 
-#walletButton.disconnect:hover {
-  background: linear-gradient(145deg, #ff3333, #cc0000, #ffffff33);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 25px #ff3333, 0 0 35px #cc0000, 0 0 10px #ffffff44;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+    #walletButton.disconnect:hover {
+      background: linear-gradient(145deg, #ff3333, #cc0000, #ffffff33);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px #ff3333, 0 0 35px #cc0000, 0 0 10px #ffffff44;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-#checkIn, #placeBet {
-  background: linear-gradient(90deg, #03a9f4, #f441a5);
-  color: #fff;
-  transition: all 0.3s ease;
-}
+    #checkIn, #placeBet, #copyLink {
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
 
-#checkIn:hover, #placeBet:hover {
-  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-#copyLink {
-  background: linear-gradient(90deg, #03a9f4, #f441a5);
-  color: #fff;
-  transition: all 0.3s ease;
-}
-
-#copyLink:hover {
-  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+    #checkIn:hover, #placeBet:hover, #copyLink:hover {
+      background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
     input {
       width: 90%;
@@ -157,28 +144,28 @@
       }
     }
 
-  table {
-    width: 100%; /* Bisa diperkecil lagi, misalnya 50% jika terlalu lebar */
-    max-width: 900px; /* Agar tabel tidak terlalu besar di layar lebar */
-    border-collapse: collapse;
-    margin: 20px auto; /* 'auto' agar tabel tetap di tengah */
-    font-size: 18px; /* Kecilkan agar tabel lebih compact */
-    text-align: left;
-}
+    table {
+      width: 100%;
+      max-width: 900px;
+      border-collapse: collapse;
+      margin: 20px auto;
+      font-size: 18px;
+      text-align: left;
+    }
 
-th, td {
-    padding: 8px; /* Kurangi padding agar tabel lebih kecil */
-    border: 1px solid #ddd;
-}
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
 
-th {
-    background-color: #000000; /* Background hitam */
-    background-image: linear-gradient(90deg, #03a9f4, #f441a5); /* Gradasi untuk teks */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-    padding: 10px;
-}
+    th {
+      background-color: #000000;
+      background-image: linear-gradient(90deg, #03a9f4, #f441a5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
@@ -196,7 +183,7 @@ th {
     <!-- Check-In -->
     <div class="section hidden">
       <h2>Daily Faucet Claim</h2>
-      <center><button id="checkIn">Claim 1 Lpoint</button></center>
+      <center><button id="checkIn">Claim 1 Point</button></center>
       <p id="checkInStatus" class="info-text"></p>
       <h3>Your Faucet History</h3>
       <ul id="checkInHistory" class="info-text"></ul>
@@ -207,11 +194,11 @@ th {
       <h2>Place a Bet</h2>
       <div class="input-group">
         <label for="betNumber"><small>Betting Number</small></label><br>
-        <br><input id="betNumber" type="number" placeholder="Enter: 2D, 3D, or 4D">
+        <br><input id="betNumber" type="text" placeholder="Enter: 2D, 3D, or 4D">
       </div>
       <div class="input-group">
-        <label for="betTimes"><small>Multiplication (1× / 5×)</small></label><br>
-        <br><input id="betTimes" type="number" min="1" max="5" placeholder="1× / 5×">
+        <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
+        <br><input id="betTimes" type="number" min="1" max="5" placeholder="1× - 5×">
       </div>
       <div class="input-group">
         <label for="payoutAmount"><small>Reward Amount (10 points)</small></label><br>
@@ -248,29 +235,29 @@ th {
     </div>
 
     <div id="prizes" class="section hidden">
-        <center><h2>4D USDT Reward Payout</h2></center>
-            <table>
-                <tr>
-                    <th>Bet Type</th>
-                    <th>Const</th>
-                    <th>USDT Mainnet Reward</th>
-                </tr>
-                <tr>
-                    <td style="color: orange; font-weight: bold;">4D</td>
-                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-                    <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
-                </tr>
-                <tr>
-                    <td style="color: orange; font-weight: bold;">3D</td>
-                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-                    <td style="color: #1a88ff; font-weight: bold;">0.75</td>
-                </tr>
-                <tr>
-                    <td style="color: orange; font-weight: bold;">2D</td>
-                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-                    <td style="color: #1a88ff; font-weight: bold;">0.5</td>
-                </tr>
-            </table>
+      <center><h2>4D USDT Reward Payout</h2></center>
+      <table>
+        <tr>
+          <th>Bet Type</th>
+          <th>Const</th>
+          <th>USDT Mainnet Reward</th>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">4D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">3D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.75 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">2D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.5 USDT</td>
+        </tr>
+      </table>
     </div>
   </div>
 
@@ -287,6 +274,9 @@ th {
     let totalGlobalCount = 0;
     let isFetching = false;
 
+    // Cache untuk event PlaceBet
+    let betEventsCache = {};
+
     // Durasi validitas koneksi (7 hari dalam milidetik)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
     const BASE_URL = "https://0x323.github.io/x/point3";
@@ -301,12 +291,37 @@ th {
       const sections = document.querySelectorAll('.section');
       sections.forEach((section, index) => {
         if (index === 0) return; // Skip Wallet Connection section
-        if (isConnected) {
-          section.classList.remove('hidden');
-        } else {
-          section.classList.add('hidden');
-        }
+        section.classList.toggle('hidden', !isConnected);
       });
+    };
+
+    // Ambil event PlaceBet untuk txHash dan blockNumber
+    const fetchBetEvents = async (user = null) => {
+      try {
+        const filter = user ? { user } : {};
+        const events = await contract.getPastEvents("PlaceBet", {
+          filter,
+          fromBlock: 0,
+          toBlock: "latest",
+        });
+        const eventMap = {};
+        events.forEach((event, index) => {
+          eventMap[index] = {
+            txHash: event.transactionHash,
+            blockNumber: event.blockNumber,
+            timestamp: event.returnValues.timestamp,
+            user: event.returnValues.user,
+            number: event.returnValues.number,
+            cost: event.returnValues.cost,
+            reward: event.returnValues.reward,
+          };
+        });
+        betEventsCache[user || "global"] = eventMap;
+        return eventMap;
+      } catch (error) {
+        console.error("Error fetching PlaceBet events:", error);
+        return {};
+      }
     };
 
     // Inisialisasi Web3 dan kontrak
@@ -323,6 +338,8 @@ th {
             storeConnection(userAccount);
             await setAutomaticReferralId();
             await handleReferralFromURL();
+            await fetchBetEvents(); // Cache global events
+            await fetchBetEvents(userAccount); // Cache user events
             loadWalletInfo();
             loadCheckInHistory();
             loadUserBetHistory();
@@ -373,6 +390,7 @@ th {
     const disconnectWallet = () => {
       userAccount = null;
       localStorage.removeItem("walletConnection");
+      betEventsCache = {};
       updateWalletUI(false);
       toggleSectionsVisibility(false);
       document.getElementById("accountInfo").innerText = "Wallet disconnected";
@@ -394,12 +412,12 @@ th {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
         document.getElementById("accountInfo").innerHTML = `
-  <span style="font-size: 12.5px; color: #bd80ff;">
-    Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
-      ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-    </a>
-  </span>
-`;
+          <span style="font-size: 12.5px; color: #bd80ff;">
+            Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
+              ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+            </a>
+          </span>
+        `;
         toggleSectionsVisibility(true);
       } else {
         walletButton.innerText = "Connect Wallet";
@@ -446,17 +464,12 @@ th {
     const loadWalletInfo = async () => {
       if (!userAccount) return;
       try {
-        // Mendapatkan ETH Balance
         const ethBalance = await web3.eth.getBalance(userAccount);
         const ethBalanceFormatted = web3.utils.fromWei(ethBalance, 'ether');
-
-        // Mendapatkan Token Balance
         const decimals = await contract.methods.decimals().call();
         const balance = await contract.methods.balanceOf(userAccount).call();
         const tokenBalanceFormatted = (balance / 10 ** decimals).toFixed(2);
         const symbol = await contract.methods.symbol().call();
-
-        // Mendapatkan informasi referral
         const userReferralId = await contract.methods.referralIdOf(userAccount).call();
         const refereeCount = await contract.methods.getRefereeCount(userAccount).call();
         const referralReward = await contract.methods.referralRewards(userAccount).call();
@@ -464,18 +477,17 @@ th {
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
         document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br>${BASE_URL}?uid=${userReferralId}</small>`;
-        document.getElementById("refereeCount").innerHTML = `Invited Friends: ${refereeCount}`;
-        document.getElementById("referralReward").innerHTML = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
+        document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
+        document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
 
-        // Load daftar referee
         await loadRefereeList();
       } catch (error) {
         console.error("Error loading wallet info:", error);
         document.getElementById("ethBalance").innerHTML = "<small>ETH Balance: Error</small>";
         document.getElementById("tokenBalance").innerHTML = "<small>Token Balance: Error</small>";
         document.getElementById("referralLink").innerHTML = "<small>Referral Link: Error</small>";
-        document.getElementById("refereeCount").innerHTML = "Invited Friends: Error";
-        document.getElementById("referralReward").innerHTML = "Reward: Error";
+        document.getElementById("refereeCount").innerHTML = "<small>Invited Friends: Error</small>";
+        document.getElementById("referralReward").innerHTML = "<small>Reward: Error</small>";
         document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
       }
     };
@@ -497,12 +509,13 @@ th {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `
-  <span style="font-size: 12.5px; color: #bd80ff;">
-    Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
-      ${referee.slice(0, 21)}${referee.slice(-21)}
-    </a>
-  </span>
-`;
+            <span style="font-size: 12.5px; color: #bd80ff;">
+              Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
+                ${referee.slice(0, 6)}...${referee.slice(-4)}
+              </a>
+            </span>
+          `;
+          refereeList.appendChild(li);
         });
       } catch (error) {
         console.error("Error loading referee list:", error);
@@ -518,7 +531,7 @@ th {
       }
       try {
         await contract.methods.checkIn().send({ from: userAccount });
-        document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Lpoint!</smal>";
+        document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
         loadWalletInfo();
         loadCheckInHistory();
       } catch (error) {
@@ -546,8 +559,8 @@ th {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            ID: ${log.dayUTC}<br>
-            Reward: ${(log.reward / 10 ** 18).toFixed(2)} Lpoints<br>
+            Day: ${log.dayUTC}<br>
+            Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
             Time: ${date}<br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
@@ -587,6 +600,8 @@ th {
         document.getElementById("betNumber").value = "";
         document.getElementById("betTimes").value = "";
         document.getElementById("payoutAmount").value = "";
+        await fetchBetEvents(); // Perbarui cache global
+        await fetchBetEvents(userAccount); // Perbarui cache pengguna
         loadWalletInfo();
         loadUserBetHistory();
         loadGlobalBetHistory();
@@ -597,132 +612,120 @@ th {
     };
 
     // Load User Bet History
-const loadUserBetHistory = async () => {
-  if (!userAccount) return;
-  try {
-    const count = await contract.methods.getUserBetCount(userAccount).call();
-    const historyList = document.getElementById("userBetHistory");
-    historyList.innerHTML = "";
+    const loadUserBetHistory = async () => {
+      if (!userAccount) return;
+      try {
+        const count = await contract.methods.getUserBetCount(userAccount).call();
+        const historyList = document.getElementById("userBetHistory");
+        historyList.innerHTML = "";
 
-    if (count == 0) {
-      historyList.innerHTML = "<li><small>No history found.</small></li>";
-      return;
-    }
+        if (count == 0) {
+          historyList.innerHTML = "<li><small>No history found.</small></li>";
+          return;
+        }
 
-    const promises = [];
-    for (let i = count - 1; i >= 0; i--) {
-      promises.push(contract.methods.getUserBet(userAccount, i).call());
-    }
+        const promises = [];
+        for (let i = count - 1; i >= 0; i--) {
+          promises.push(contract.methods.getUserBet(userAccount, i).call());
+        }
 
-    const bets = await Promise.all(promises);
+        const bets = await Promise.all(promises);
+        const userEvents = betEventsCache[userAccount] || {};
+        const referrer = await contract.methods.referredBy(userAccount).call();
+        const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+          ? "None"
+          : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
 
-    for (const bet of bets) {
-      if (!bet || !bet.timestamp) continue;
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
+        bets.forEach((bet, index) => {
+          if (!bet || !bet.timestamp) return;
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const eventIndex = count - 1 - index; // Urutkan dari terbaru
+          const event = userEvents[eventIndex] || {};
+          const txHash = event.txHash || "N/A";
+          const blockNumber = event.blockNumber || "N/A";
+          const betTimes = bet.cost / (1 * 10 ** 18);
+          const payoutAmount = bet.reward / (10 * 10 ** 18);
 
-      // Ambil referrer (jika ada)
-      const referrer = await contract.methods.referredBy(bet.user).call();
-      const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-        ? "None"
-        : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
-
-      // Asumsi txHash dan blockNumber diambil dari event log (placeholder)
-      const txHash = bet.txHash || "N/A"; // Ganti dengan logika untuk mengambil txHash
-      const blockNumber = bet.blockNumber || "N/A"; // Ganti dengan logika untuk mengambil blockNumber
-      const betTimes = bet.cost / (1 * 10 ** 18); // Hitung bet times dari totalCost / BET_COST
-      const payoutAmount = bet.reward / (10 * 10 ** 18); // Hitung payoutAmount dari totalReward / BET_REWARD
-
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-        Number: <span style="color: #00ff14;">${bet.number}</span><br>
-        Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-        Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-        Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
-        Time: <span style="color: #ffb833;">${date}</span><br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    }
-  } catch (error) {
-    console.error("Error loading user bet history:", error);
-    document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
-  }
-};
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            Number: <span style="color: #00ff14;">${bet.number}</span><br>
+            Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+            Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Error loading user bet history:", error);
+        document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      }
+    };
 
     // Load Global Bet History
-const loadGlobalBetHistory = async () => {
-  if (!userAccount || isFetching) {
-    console.log("Skipping load: No userAccount or isFetching");
-    return;
-  }
-  isFetching = true;
+    const loadGlobalBetHistory = async () => {
+      if (!userAccount || isFetching) {
+        console.log("Skipping load: No userAccount or isFetching");
+        return;
+      }
+      isFetching = true;
 
-  try {
-    if (totalGlobalCount === 0) {
-      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-    }
+      try {
+        if (totalGlobalCount === 0) {
+          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+        }
 
-    const historyList = document.getElementById("globalBetHistory");
-    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+        const historyList = document.getElementById("globalBetHistory");
+        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
 
-    for (let i = end; i >= start; i--) {
-      const bet = await contract.methods.getBet(i).call();
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      
-      // Ambil referrer (jika ada)
-      const referrer = await contract.methods.referredBy(bet.user).call();
-      const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000" 
-        ? "None" 
-        : `${referrer.slice(0, 6)}...${referrer.slice(-4)}`;
+        const globalEvents = betEventsCache["global"] || {};
 
-      // Asumsi txHash dan blockNumber diambil dari event log (placeholder)
-      const txHash = bet.txHash || "N/A"; // Ganti dengan logika untuk mengambil txHash
-      const blockNumber = bet.blockNumber || "N/A"; // Ganti dengan logika untuk mengambil blockNumber
-      const betTimes = bet.cost / (1 * 10 ** 18); // Hitung bet times dari totalCost / BET_COST
-      const payoutAmount = bet.reward / (10 * 10 ** 18); // Hitung payoutAmount dari totalReward / BET_REWARD
+        for (let i = end; i >= start; i--) {
+          const bet = await contract.methods.getBet(i).call();
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const referrer = await contract.methods.referredBy(bet.user).call();
+          const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+            ? "None"
+            : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+          const eventIndex = i; // Global index sesuai dengan betHistory
+          const event = globalEvents[eventIndex] || {};
+          const txHash = event.txHash || "N/A";
+          const blockNumber = event.blockNumber || "N/A";
+          const betTimes = bet.cost / (1 * 10 ** 18);
+          const payoutAmount = bet.reward / (10 * 10 ** 18);
 
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-        Number: <span style="color: #00ff14;">${bet.number}</span><br>
-        Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-        Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-        Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
-        Time: <span style="color: #ffb833;">${date}</span><br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    }
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            Number: <span style="color: #00ff14;">${bet.number}</span><br>
+            Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+            Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        }
 
-    globalHistoryOffset += globalHistoryBatchSize;
-  } catch (error) {
-    console.error("Error loading global bet history:", error);
-    document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
-  }
+        globalHistoryOffset += globalHistoryBatchSize;
+      } catch (error) {
+        console.error("Error loading global bet history:", error);
+        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      }
 
-  isFetching = false;
-};
-
-// Salin link undangan
-const copyReferralLink = () => {
-  const linkElement = document.getElementById("referralLink").innerText;
-  const linkText = linkElement.replace("Referral Link:", "").trim();
-  navigator.clipboard.writeText(linkText).then(() => {
-    alert("Referral link copied!");
-  }).catch(() => {
-    alert("Failed to copy link.");
-  });
-};
+      isFetching = false;
+    };
 
     // Salin link undangan
     const copyReferralLink = () => {
@@ -750,30 +753,18 @@ const copyReferralLink = () => {
 
     // Lazy scrolling untuk Global Bet History
     document.addEventListener("DOMContentLoaded", () => {
-      // Inisialisasi visibilitas section
       toggleSectionsVisibility(false);
-
       const globalContainer = document.getElementById("globalBetHistoryContainer");
-
       let scrollTimeout;
       globalContainer.addEventListener("scroll", () => {
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
           const condition = globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50;
-          console.log("Scroll event:", {
-            scrollTop: globalContainer.scrollTop,
-            clientHeight: globalContainer.clientHeight,
-            scrollHeight: globalContainer.scrollHeight,
-            condition
-          });
           if (condition) {
-            console.log("Triggering loadGlobalBetHistory");
             loadGlobalBetHistory();
           }
         }, 200);
       });
-
-      loadGlobalBetHistory();
     });
 
     // Inisialisasi saat halaman dimuat
@@ -789,6 +780,8 @@ const copyReferralLink = () => {
             updateWalletUI(true);
             setAutomaticReferralId();
             handleReferralFromURL();
+            fetchBetEvents();
+            fetchBetEvents(userAccount);
             loadWalletInfo();
             loadCheckInHistory();
             loadUserBetHistory();
@@ -801,4 +794,4 @@ const copyReferralLink = () => {
     });
   </script>
 </body>
-          </html>
+  </html>
