@@ -294,26 +294,50 @@
   // Periksa jaringan MetaMask
   const checkMetaMaskNetwork = async () => {
     try {
+      console.log("Checking MetaMask network...");
       const chainId = await window.ethereum.request({ method: 'eth_chainId' });
       if (chainId !== BASE_SEPOLIA_CHAIN_ID) {
-        alert("Please switch to Base Sepolia network in MetaMask.");
-        return false;
+        console.log("Switching to Base Sepolia Testnet...");
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: BASE_SEPOLIA_CHAIN_ID }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            console.log("Adding Base Sepolia Testnet...");
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: BASE_SEPOLIA_CHAIN_ID,
+                chainName: 'Base Sepolia Testnet',
+                rpcUrls: ['https://sepolia.base.org'],
+                blockExplorerUrls: ['https://sepolia.basescan.org'],
+                nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+              }],
+            });
+          } else {
+            throw switchError;
+          }
+        }
       }
+      console.log("MetaMask is on Base Sepolia Testnet.");
       return true;
     } catch (error) {
       console.error("Error checking MetaMask network:", error.message);
+      alert(`Please ensure MetaMask is set to Base Sepolia Testnet: ${error.message}`);
       return false;
     }
   };
 
   // Retry untuk panggilan Web3
-  const retry = async (fn, retries = 3, delay = 1000) => {
+  const retry = async (fn, retries = 5, delay = 1000) => {
     for (let i = 0; i < retries; i++) {
       try {
         return await fn();
       } catch (error) {
         if (i === retries - 1) throw error;
-        console.warn(`Retrying (${i + 1}/${retries})...`);
+        console.warn(`Retrying (${i + 1}/${retries})...`, error.message);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -321,16 +345,15 @@
 
   const fetchBetEvents = async (user = null) => {
     try {
+      console.log(`Fetching PlaceBet events for ${user || "global"}...`);
       const latestBlock = await retry(() => web3.eth.getBlockNumber());
-      const fromBlock = Math.max(latestBlock - 5000, 0); // ~3 hari
+      const fromBlock = Math.max(latestBlock - 2000, 0); // ~1 hari
       const filter = user ? { user } : {};
-      const events = await retry(() =>
-        contract.getPastEvents("PlaceBet", {
-          filter,
-          fromBlock,
-          toBlock: "latest",
-        })
-      );
+      const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error("Request timed out")), ms));
+      const events = await Promise.race([
+        retry(() => contract.getPastEvents("PlaceBet", { filter, fromBlock, toBlock: "latest" })),
+        timeout(8000)
+      ]);
       const eventMap = {};
       events.forEach((event, index) => {
         eventMap[index] = {
@@ -344,9 +367,9 @@
         };
       });
       betEventsCache[user || "global"] = eventMap;
-      console.log(`Fetched ${user ? "user" : "global"} events:`, eventMap);
+      console.log(`Fetched ${user ? "user" : "global"} events from block ${fromBlock} to ${latestBlock}:`, eventMap);
       if (Object.keys(eventMap).length === 0) {
-        console.warn(`No PlaceBet events found for ${user || "global"} from block ${fromBlock} to latest`);
+        console.warn(`No PlaceBet events found for ${user || "global"} in blocks ${fromBlock} to ${latestBlock}`);
       }
       return eventMap;
     } catch (error) {
@@ -358,35 +381,58 @@
   };
 
   const initWeb3 = async (forceConnect = false) => {
-    if (window.ethereum) {
-      // Gunakan node publik untuk membaca data, MetaMask untuk tanda tangan
-      web3 = new Web3("https://sepolia.base.org");
-      try {
-        if (forceConnect || checkStoredConnection()) {
-          // Periksa jaringan MetaMask untuk transaksi
-          if (!(await checkMetaMaskNetwork())) return;
-          await window.ethereum.request({ method: "eth_requestAccounts" });
-          const accounts = await web3.eth.getAccounts();
-          userAccount = accounts[0];
-          contract = new web3.eth.Contract(contractABI, contractAddress);
-          updateWalletUI(true);
-          storeConnection(userAccount);
-          await setAutomaticReferralId();
-          await handleReferralFromURL();
-          await fetchBetEvents();
-          await fetchBetEvents(userAccount);
-          loadWalletInfo();
-          loadCheckInHistory();
-          loadUserBetHistory();
-          loadGlobalBetHistory();
-        }
-      } catch (error) {
-        console.error("Error connecting to MetaMask:", error.message);
-        alert(`Failed to connect to MetaMask: ${error.message}`);
-        updateWalletUI(false);
-      }
-    } else {
+    if (!window.ethereum) {
       alert("Please install MetaMask to use this DApp.");
+      return;
+    }
+    try {
+      // Gunakan MetaMask sebagai penyedia utama
+      console.log("Initializing Web3 with MetaMask...");
+      web3 = new Web3(window.ethereum);
+      if (forceConnect || checkStoredConnection()) {
+        // Periksa dan switch ke Base Sepolia
+        if (!(await checkMetaMaskNetwork())) return;
+        console.log("Requesting MetaMask permissions...");
+        // Gunakan wallet_requestPermissions untuk memastikan izin
+        await window.ethereum.request({
+          method: 'wallet_requestPermissions',
+          params: [{ eth_accounts: {} }],
+        });
+        const accounts = await web3.eth.getAccounts();
+        if (!accounts || accounts.length === 0) {
+          throw new Error("No accounts found. Please ensure MetaMask is unlocked and an account is selected.");
+        }
+        userAccount = accounts[0];
+        console.log("Connected account:", userAccount);
+        contract = new web3.eth.Contract(contractABI, contractAddress);
+        updateWalletUI(true);
+        storeConnection(userAccount);
+        await setAutomaticReferralId();
+        await handleReferralFromURL();
+        console.log("Fetching bet events...");
+        await fetchBetEvents();
+        await fetchBetEvents(userAccount);
+        loadWalletInfo();
+        loadCheckInHistory();
+        loadUserBetHistory();
+        loadGlobalBetHistory();
+      }
+    } catch (error) {
+      console.error("Error connecting to MetaMask:", error.message);
+      alert(`Failed to connect to MetaMask: ${error.message}. Please ensure MetaMask is unlocked and set to Base Sepolia Testnet.`);
+      updateWalletUI(false);
+      // Fallback ke node publik
+      try {
+        console.warn("Falling back to public node...");
+        web3 = new Web3("https://sepolia.base.org");
+        contract = new web3.eth.Contract(contractABI, contractAddress);
+        alert("Connected to public node in read-only mode. You can view global bet history, but transactions require MetaMask.");
+        await fetchBetEvents();
+        await loadGlobalBetHistory();
+      } catch (fallbackError) {
+        console.error("Error connecting to public node:", fallbackError.message);
+        alert(`Failed to connect to public node: ${fallbackError.message}`);
+      }
     }
   };
 
@@ -615,10 +661,10 @@
     try {
       const tx = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
       alert("Bet placed successfully!");
+      console.log("Bet transaction:", tx);
       document.getElementById("betNumber").value = "";
       document.getElementById("betTimes").value = "";
       document.getElementById("payoutAmount").value = "";
-      console.log("Bet transaction:", tx);
       await fetchBetEvents();
       await fetchBetEvents(userAccount);
       loadWalletInfo();
@@ -692,8 +738,8 @@
   };
 
   const loadGlobalBetHistory = async () => {
-    if (!userAccount || isFetching) {
-      console.log("Skipping load: No userAccount or isFetching");
+    if (isFetching) {
+      console.log("Skipping load: isFetching");
       return;
     }
     isFetching = true;
@@ -810,6 +856,7 @@
         }
       });
       window.ethereum.on("chainChanged", () => {
+        console.log("Chain changed, reloading...");
         window.location.reload();
       });
     } else {
