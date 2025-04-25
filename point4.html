@@ -178,7 +178,7 @@
 
     <!-- Global Bet History -->
     <div class="section">
-      <h2>Global Ticket History</h2>
+      <h2>Global Bet History</h2>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
       </div>
@@ -303,7 +303,7 @@
       if (isConnected) {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
-        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 6)}...${userAccount.slice(-4)}</small>`;
+        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 21)}${userAccount.slice(-21)}</small>`;
       } else {
         walletButton.innerText = "Connect Wallet";
         walletButton.classList.remove("disconnect");
@@ -398,7 +398,7 @@
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
           li.className = "py-2";
-          li.innerHTML = `<small>Referee ${index + 1}: ${referee.slice(0, 6)}...${referee.slice(-4)}</small>`;
+          li.innerHTML = `<small>Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</small>`;
           refereeList.appendChild(li);
         });
       } catch (error) {
@@ -534,70 +534,55 @@
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
-      if (!userAccount || isFetching) {
-        console.log("Skipping load: No userAccount or isFetching");
-        return;
-      }
+      if (!userAccount || isFetching) return;
       isFetching = true;
-      const historyList = document.getElementById("globalBetHistory");
-      const loadingLi = document.createElement("li");
-      loadingLi.innerText = "Loading...";
-      historyList.appendChild(loadingLi);
 
-      try {
-        if (totalGlobalCount === 0) {
-          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-          console.log("Total global count:", totalGlobalCount);
-        }
+try {
+    if (totalGlobalCount === 0) {
+      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+    }
 
-        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
-        console.log(`Loading batch: start=${start}, end=${end}`);
+    const historyList = document.getElementById("globalBetHistory");
+    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
 
-        if (start >= totalGlobalCount) {
-          console.log("No more data to load");
-          historyList.removeChild(loadingLi);
-          isFetching = false;
-          return;
-        }
+    for (let i = end; i >= start; i--) {
+      const bet = await contract.methods.getBet(i).call();
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
+        Number: ${bet.number}<br>
+        Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
+        Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
+        Time: ${date}<br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    }
 
-        const promises = [];
-        for (let i = end; i >= start; i--) {
-          promises.push(contract.methods.getBet(i).call());
-        }
-        const bets = await Promise.all(promises);
+    globalHistoryOffset += globalHistoryBatchSize;
+  } catch (error) {
+    console.error("Error loading global bet history:", error);
+    document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
+  }
 
-        historyList.removeChild(loadingLi);
-        bets.forEach((bet, index) => {
-          if (!bet || !bet.user) {
-            console.log(`Invalid bet at index ${end - index}`);
-            return;
-          }
-          console.log("Fetched bet:", bet);
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
-            Number: ${bet.number}<br>
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Lpoints<br>
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Lpoints<br>
-            Time: ${date}<br>
-          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-          historyList.appendChild(li);
-        });
+  isFetching = false;
+};
 
-        globalHistoryOffset += globalHistoryBatchSize;
-        console.log("Updated offset:", globalHistoryOffset);
-      } catch (error) {
-        console.error("Error loading global bet history:", error);
-        historyList.removeChild(loadingLi);
-        historyList.innerHTML = "<li><small>Error loading history.</small></li>";
-      }
+document.addEventListener("DOMContentLoaded", () => {
+  const globalContainer = document.getElementById("globalBetHistoryContainer");
 
-      isFetching = false;
-      console.log("Fetching complete, isFetching:", isFetching);
-    };
+  globalContainer.addEventListener("scroll", () => {
+    if (
+      globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50
+    ) {
+      loadGlobalBetHistory();
+    }
+  });
+
+  loadGlobalBetHistory();
+});
 
     // Salin link undangan
     const copyReferralLink = () => {
