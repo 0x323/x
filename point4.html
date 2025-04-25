@@ -202,7 +202,7 @@ let web3;
 let contract;
 let userAccount;
 let globalHistoryOffset = 0;
-let globalHistoryBatchSize = 10;
+let globalHistoryBatchSize = 2;
 let totalGlobalCount = 0;
 let isFetching = false;
 
@@ -525,12 +525,12 @@ const loadGlobalBetHistory = async () => {
             const li = document.createElement("li");
             li.className = "py-2";
             li.innerHTML = `<small>
-                User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}, 
-                Number: ${bet.number}, 
-                Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, 
-                Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, 
-                Time: ${date}
-            </small>`;
+                User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)},<br>
+                Number: ${bet.number},<br>
+                Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points,<br>
+                Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points,<br>
+                Time: ${date}<br>
+            </small><hr style="background-color: #333333; height: 1px; border: none;">`;
             historyList.appendChild(li);
         }
 
