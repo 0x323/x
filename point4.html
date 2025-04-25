@@ -471,35 +471,43 @@ Time: ${date}<br>
 
     // Load User Bet History
     const loadUserBetHistory = async () => {
-      if (!userAccount) return;
-      try {
-        const count = await contract.methods.getUserBetCount(userAccount).call();
-        const historyList = document.getElementById("userBetHistory");
-        historyList.innerHTML = "";
+  if (!userAccount) return;
 
-        const promises = [];
-        for (let i = count - 1; i >= 0; i--) {
-          promises.push(contract.methods.getUserBet(userAccount, i).call());
-        }
-        const bets = await Promise.all(promises);
+  try {
+    const count = await contract.methods.getUserBetCount(userAccount).call();
+    const historyList = document.getElementById("userBetHistory");
+    historyList.innerHTML = "";
 
-        bets.forEach(bet => {
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            Number: ${bet.number}, 
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points, 
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points, 
-            Time: ${date}
-          </small>`;
-          historyList.appendChild(li);
-        });
-      } catch (error) {
-        console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li>Error loading history.</li>";
-      }
-    };
+    if (count == 0) {
+      historyList.innerHTML = "<li><small>No history found.</small></li>";
+      return;
+    }
+
+    const promises = [];
+    for (let i = count - 1; i >= 0; i--) {
+      promises.push(contract.methods.getUserBet(userAccount, i).call());
+    }
+
+    const bets = await Promise.all(promises);
+
+    bets.forEach((bet) => {
+      if (!bet || !bet.timestamp) return; // validasi minimal
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        Number: ${bet.number}<br>
+        Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
+        Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
+        Time: ${date}<br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    });
+  } catch (error) {
+    console.error("Error loading user bet history:", error);
+    document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+  }
+};
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
