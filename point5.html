@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CheckInPoint DApp</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.5.0/web3.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -64,12 +64,12 @@
       margin-top: 0.5rem;
     }
 
-    #walletButton {
+    #walletButton, #refreshGlobal {
       background: linear-gradient(90deg, #03a9f4, #f441a5);
       color: #fff;
     }
 
-    #walletButton:hover {
+    #walletButton:hover, #refreshGlobal:hover {
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
       box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -214,7 +214,10 @@
       <h2>Global Bet History</h2>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
-        <center><button id="loadMoreGlobal" class="hidden">Load More</button></center>
+        <center>
+          <button id="refreshGlobal" class="hidden">Refresh</button>
+          <button id="loadMoreGlobal" class="hidden">Load More</button>
+        </center>
       </div>
     </div>
 
@@ -267,7 +270,7 @@
     let contract;
     let userAccount;
     let globalHistoryOffset = 0;
-    const globalHistoryBatchSize = 15; // Batasi 10 entri per muatan
+    const globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
 
@@ -300,6 +303,7 @@
         section.classList.toggle('hidden', !isConnected);
       });
       document.getElementById('loadMoreGlobal').classList.toggle('hidden', !isConnected);
+      document.getElementById('refreshGlobal').classList.toggle('hidden', !isConnected);
     };
 
     const debounce = (func, wait) => {
@@ -310,77 +314,98 @@
       };
     };
 
+    // Periksa koneksi tersimpan
+    const checkStoredConnection = () => {
+      const connection = localStorage.getItem("walletConnection");
+      if (!connection) return false;
+      try {
+        const { account, timestamp } = JSON.parse(connection);
+        if (Date.now() - timestamp < CONNECTION_VALIDITY && account && web3.utils.isAddress(account)) {
+          userAccount = account;
+          console.log("Using stored account:", userAccount);
+          return true;
+        }
+        localStorage.removeItem("walletConnection");
+        console.log("Cleared invalid stored connection");
+        return false;
+      } catch (error) {
+        console.error("Error parsing stored connection:", error);
+        localStorage.removeItem("walletConnection");
+        return false;
+      }
+    };
+
     // Inisialisasi Web3
-const initWeb3 = async (forceConnect = false) => {
-  if (!window.ethereum) {
-    alert("Please install MetaMask to use this DApp.");
-    console.error("MetaMask not detected.");
-    return;
-  }
-
-  web3 = new Web3(window.ethereum);
-  try {
-    // Periksa jaringan (Sepolia chainId: 84532)
-    const chainId = await window.ethereum.request({ method: "eth_chainId" });
-    if (chainId !== "0x14a34") { // 0x14a34 adalah chainId untuk Sepolia Base
-      alert("Please switch MetaMask to the Sepolia Base Testnet network.");
-      console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Sepolia Base Testnet)`);
-      return;
-    }
-
-    // Periksa koneksi tersimpan atau paksa koneksi
-    if (forceConnect || checkStoredConnection()) {
-      console.log("Requesting MetaMask account access...");
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      if (!accounts || accounts.length === 0) {
-        throw new Error("No accounts returned by MetaMask.");
+    const initWeb3 = async (forceConnect = false) => {
+      if (!window.ethereum) {
+        alert("Please install MetaMask to use this DApp.");
+        console.error("MetaMask not detected.");
+        return;
       }
 
-      userAccount = accounts[0];
-      console.log(`Connected account: ${userAccount}`);
+      web3 = new Web3(window.ethereum);
+      try {
+        // Periksa jaringan (Base Sepolia chainId: 84532)
+        const chainId = await window.ethereum.request({ method: "eth_chainId" });
+        if (chainId !== "0x14a34") {
+          alert("Please switch MetaMask to the Sepolia Base Testnet network.");
+          console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Sepolia Base Testnet)`);
+          return;
+        }
 
-      // Inisialisasi kontrak
-      if (!contractABI || !contractAddress) {
-        throw new Error("Contract ABI or address is not defined.");
+        // Periksa koneksi tersimpan atau paksa koneksi
+        if (forceConnect || checkStoredConnection()) {
+          console.log("Requesting MetaMask account access...");
+          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          if (!accounts || accounts.length === 0) {
+            throw new Error("No accounts returned by MetaMask.");
+          }
+
+          userAccount = accounts[0];
+          console.log(`Connected account: ${userAccount}`);
+
+          // Inisialisasi kontrak
+          if (!contractABI || !contractAddress) {
+            throw new Error("Contract ABI or address is not defined.");
+          }
+          contract = new web3.eth.Contract(contractABI, contractAddress);
+          console.log("Contract initialized at:", contractAddress);
+
+          // Cache event taruhan
+          console.log("Initializing global bet events");
+          await fetchBetEvents(); // Cache global events
+          await fetchBetEvents(userAccount); // Cache user events
+
+          // Perbarui UI dan simpan koneksi
+          updateWalletUI(true);
+          storeConnection(userAccount);
+
+          // Tangani referral
+          await setAutomaticReferralId();
+          await handleReferralFromURL();
+
+          // Muat data kritis
+          await loadCriticalData();
+
+          // Tunda pemuatan riwayat untuk performa
+          setTimeout(() => {
+            loadCheckInHistory();
+            loadUserBetHistory();
+            loadGlobalBetHistory();
+          }, 100);
+        }
+      } catch (error) {
+        console.error("Error connecting to MetaMask:", error.message, error.stack);
+        if (error.code === 4001) {
+          alert("Connection request denied by user. Please approve the connection in MetaMask.");
+        } else if (error.code === -32002) {
+          alert("A connection request is already pending in MetaMask. Please check your MetaMask extension.");
+        } else {
+          alert(`Failed to connect to MetaMask: ${error.message}. Please try again.`);
+        }
+        updateWalletUI(false);
       }
-      contract = new web3.eth.Contract(contractABI, contractAddress);
-      console.log("Contract initialized at:", contractAddress);
-
-      // Cache event taruhan
-      console.log("Initializing global bet events");
-      await fetchBetEvents(); // Cache global events
-      await fetchBetEvents(userAccount); // Cache user events
-
-      // Perbarui UI dan simpan koneksi
-      updateWalletUI(true);
-      storeConnection(userAccount);
-
-      // Tangani referral
-      await setAutomaticReferralId();
-      await handleReferralFromURL();
-
-      // Muat data kritis
-      await loadCriticalData();
-
-      // Tunda pemuatan riwayat untuk performa
-      setTimeout(() => {
-        loadCheckInHistory();
-        loadUserBetHistory();
-        loadGlobalBetHistory();
-      }, 100);
-    }
-  } catch (error) {
-    console.error("Error connecting to MetaMask:", error.message, error.stack);
-    if (error.code === 4001) {
-      alert("Connection request denied by user. Please approve the connection in MetaMask.");
-    } else if (error.code === -32002) {
-      alert("A connection request is already pending in MetaMask. Please check your MetaMask extension.");
-    } else {
-      alert(`Failed to connect to MetaMask: ${error.message}. Please try again.`);
-    }
-    updateWalletUI(false);
-  }
-};
+    };
 
     // Simpan koneksi
     const storeConnection = (account) => {
@@ -455,36 +480,36 @@ const initWeb3 = async (forceConnect = false) => {
     };
 
     // Ambil event PlaceBet
-const fetchBetEvents = async (user = null, fromBlock = null) => {
-  try {
-    const latestBlock = await web3.eth.getBlockNumber();
-    const startBlock = fromBlock || Math.max(latestBlock - 10000, 0);
-    console.log(`Fetching PlaceBet events from block ${startBlock} to latest for ${user || 'global'}`);
-    const events = await contract.getPastEvents("PlaceBet", {
-      filter: user ? { user } : {},
-      fromBlock: startBlock,
-      toBlock: "latest",
-    });
-    const eventMap = {};
-    events.forEach((event) => {
-      eventMap[event.returnValues.timestamp] = {
-        txHash: event.transactionHash,
-        blockNumber: event.blockNumber,
-        timestamp: event.returnValues.timestamp,
-        user: event.returnValues.user,
-        number: event.returnValues.number,
-        cost: event.returnValues.cost,
-        reward: event.returnValues.reward,
-      };
-    });
-    cache.betEvents[user || "global"] = eventMap;
-    console.log(`Fetched ${Object.keys(eventMap).length} events for ${user || 'global'}`);
-    return eventMap;
-  } catch (error) {
-    console.error("Error fetching PlaceBet events:", error);
-    return {};
-  }
-};
+    const fetchBetEvents = async (user = null, fromBlock = null) => {
+      try {
+        const latestBlock = await web3.eth.getBlockNumber();
+        const startBlock = fromBlock || Math.max(latestBlock - 50000, 0); // Perluas rentang blok
+        console.log(`Fetching PlaceBet events from block ${startBlock} to latest for ${user || 'global'}`);
+        const events = await contract.getPastEvents("PlaceBet", {
+          filter: user ? { user } : {},
+          fromBlock: startBlock,
+          toBlock: "latest",
+        });
+        const eventMap = {};
+        events.forEach((event) => {
+          eventMap[event.returnValues.timestamp] = {
+            txHash: event.transactionHash,
+            blockNumber: event.blockNumber,
+            timestamp: event.returnValues.timestamp,
+            user: event.returnValues.user,
+            number: event.returnValues.number,
+            cost: event.returnValues.cost,
+            reward: event.returnValues.reward,
+          };
+        });
+        cache.betEvents[user || "global"] = eventMap;
+        console.log(`Fetched ${Object.keys(eventMap).length} events for ${user || 'global'}`);
+        return eventMap;
+      } catch (error) {
+        console.error("Error fetching PlaceBet events:", error);
+        return {};
+      }
+    };
 
     // Load data kritis (wallet info, referral)
     const loadCriticalData = async () => {
@@ -579,7 +604,7 @@ const fetchBetEvents = async (user = null, fromBlock = null) => {
         const historyList = document.getElementById("checkInHistory");
         historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
-        const maxDisplay = 10; // Batasi 10 entri
+        const maxDisplay = 10;
         const start = Math.max(count - maxDisplay, 0);
         const promises = [];
         for (let i = count - 1; i >= start; i--) {
@@ -670,8 +695,7 @@ const fetchBetEvents = async (user = null, fromBlock = null) => {
         bets.reverse().forEach((bet, index) => {
           if (!bet || !bet.timestamp) return;
           const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const eventIndex = start + index;
-          const event = userEvents[eventIndex] || {};
+          const event = userEvents[bet.timestamp] || { txHash: "N/A", blockNumber: "N/A" };
           const txHash = event.txHash || "N/A";
           const blockNumber = event.blockNumber || "N/A";
           const betTimes = bet.cost / (1 * 10 ** 18);
@@ -699,86 +723,95 @@ const fetchBetEvents = async (user = null, fromBlock = null) => {
     };
 
     // Load Global Bet History
-const loadGlobalBetHistory = async () => {
-  if (!userAccount || isFetching) {
-    console.log("Skipping loadGlobalBetHistory: No userAccount or isFetching");
-    return;
-  }
-  isFetching = true;
-  setLoading("globalBetHistory", true);
-  const historyList = document.getElementById("globalBetHistory");
-
-  try {
-    if (totalGlobalCount === 0) {
-      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-      console.log(`Total global bet count: ${totalGlobalCount}`);
-    }
-
-    if (totalGlobalCount === 0) {
-      historyList.innerHTML = "<li><small>No global bet history found.</small></li>";
-      document.getElementById("loadMoreGlobal").classList.add("hidden");
-      isFetching = false;
-      setLoading("globalBetHistory", false);
-      return;
-    }
-
-    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
-    console.log(`Loading global bets from index ${start} to ${end}`);
-
-    const promises = [];
-    for (let i = end; i >= start; i--) {
-      promises.push(contract.methods.getBet(i).call());
-    }
-    const bets = await Promise.all(promises);
-    const globalEvents = cache.betEvents["global"] || {};
-    console.log(`Fetched ${bets.length} bets, global events cache size: ${Object.keys(globalMeals).length}`);
-
-    if (bets.length === 0) {
-      historyList.innerHTML = "<li><small>No more bets to display.</small></li>";
-      document.getElementById("loadMoreGlobal").classList.add("hidden");
-      isFetching = false;
-      setLoading("globalBetHistory", false);
-      return;
-    }
-
-    bets.reverse().forEach((bet, index) => {
-      if (!bet || !bet.timestamp) {
-        console.warn(`Invalid bet at index ${end - index}:`, bet);
+    const loadGlobalBetHistory = async () => {
+      if (!userAccount || isFetching) {
+        console.log("Skipping loadGlobalBetHistory: No userAccount or isFetching");
         return;
       }
-      const event = globalEvents[bet.timestamp] || { txHash: "N/A", blockNumber: "N/A" };
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const txHash = event.txHash || "N/A";
-      const blockNumber = event.blockNumber || "N/A";
-      const betTimes = bet.cost / (1 * 10 ** 18);
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-        BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
-        BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-        Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
-        Time: <span style="color: #ffb833;">${date}</span><br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-      console.log("Appended bet to globalBetHistory:", li.innerHTML);
-    });
+      isFetching = true;
+      setLoading("globalBetHistory", true);
+      const historyList = document.getElementById("globalBetHistory");
 
-    globalHistoryOffset += globalHistoryBatchSize;
-    document.getElementById("loadMoreGlobal").classList.toggle("hidden", start <= 0);
-  } catch (error) {
-    console.error("Error loading global bet history:", error);
-    historyList.innerHTML = "<li><small>Error loading global bet history.</small></li>";
-    document.getElementById("loadMoreGlobal").classList.add("hidden");
-  } finally {
-    isFetching = false;
-    setLoading("globalBetHistory", false);
-  }
-};
+      try {
+        if (totalGlobalCount === 0) {
+          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+          console.log(`Total global bet count: ${totalGlobalCount}`);
+        }
+
+        if (totalGlobalCount === 0) {
+          historyList.innerHTML = "<li><small>No global bet history found.</small></li>";
+          document.getElementById("loadMoreGlobal").classList.add("hidden");
+          isFetching = false;
+          setLoading("globalBetHistory", false);
+          return;
+        }
+
+        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+        console.log(`Loading global bets from index ${start} to ${end}`);
+
+        const promises = [];
+        for (let i = end; i >= start; i--) {
+          promises.push(contract.methods.getBet(i).call());
+        }
+        const bets = await Promise.all(promises);
+        const globalEvents = cache.betEvents["global"] || {};
+        console.log(`Fetched ${bets.length} bets, global events cache size: ${Object.keys(globalEvents).length}`);
+
+        if (bets.length === 0) {
+          historyList.innerHTML = "<li><small>No more bets to display.</small></li>";
+          document.getElementById("loadMoreGlobal").classList.add("hidden");
+          isFetching = false;
+          setLoading("globalBetHistory", false);
+          return;
+        }
+
+        bets.reverse().forEach((bet, index) => {
+          if (!bet || !bet.timestamp) {
+            console.warn(`Invalid bet at index ${end - index}:`, bet);
+            return;
+          }
+          const event = globalEvents[bet.timestamp] || { txHash: "N/A", blockNumber: "N/A" };
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const txHash = event.txHash || "N/A";
+          const blockNumber = event.blockNumber || "N/A";
+          const betTimes = bet.cost / (1 * 10 ** 18);
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
+            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</small><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+          console.log("Appended bet to globalBetHistory:", li.innerHTML);
+        });
+
+        globalHistoryOffset += globalHistoryBatchSize;
+        document.getElementById("loadMoreGlobal").classList.toggle("hidden", start <= 0);
+      } catch (error) {
+        console.error("Error loading global bet history:", error);
+        historyList.innerHTML = "<li><small>Error loading global bet history.</small></li>";
+        document.getElementById("loadMoreGlobal").classList.add("hidden");
+      } finally {
+        isFetching = false;
+        setLoading("globalBetHistory", false);
+      }
+    };
+
+    // Refresh Global Bet History
+    const refreshGlobalBetHistory = async () => {
+      globalHistoryOffset = 0;
+      totalGlobalCount = 0;
+      cache.betEvents["global"] = {};
+      await fetchBetEvents();
+      await loadGlobalBetHistory();
+    };
 
     // Salin link referral
     const copyReferralLink = () => {
@@ -798,6 +831,7 @@ const loadGlobalBetHistory = async () => {
     document.getElementById("placeBet").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
     document.getElementById("loadMoreGlobal").addEventListener("click", loadGlobalBetHistory);
+    document.getElementById("refreshGlobal").addEventListener("click", refreshGlobalBetHistory);
 
     // Inisialisasi saat halaman dimuat
     window.addEventListener("load", () => {
@@ -822,10 +856,13 @@ const loadGlobalBetHistory = async () => {
             }, 100);
           }
         });
+        window.ethereum.on("chainChanged", () => {
+          window.location.reload(); // Reload jika jaringan berubah
+        });
       } else {
         alert("Please install MetaMask to use this DApp.");
       }
     });
   </script>
 </body>
-                                             </html>
+  </html>
