@@ -207,7 +207,7 @@
         <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;"><small>Invited Friends: Loading...</small></p>
         <p id="referralReward" class="info-text"><small>Reward: Loading...</small></p>
       </div>
-      <h3>Invited Friends List</h3>
+      <center><h3>Invited Friends List</h3></center>
       <ul id="refereeList" class="info-text"></ul>
     </div>
   </div>
@@ -379,9 +379,9 @@
 
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
-        document.getElementById("referralLink").innerHTML = `<small>Referral Link: ${BASE_URL}?uid=${userReferralId}</small>`;
-        document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
-        document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br> ${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("refereeCount").innerHTML = `Invited Friends: ${refereeCount}`;
+        document.getElementById("referralReward").innerHTML = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
 
         // Load daftar referee
         await loadRefereeList();
