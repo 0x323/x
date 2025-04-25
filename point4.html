@@ -197,6 +197,7 @@
     let globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
+    const loadedIndexes = new Set();
 
     // Durasi validitas koneksi (7 hari dalam milidetik)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
@@ -502,56 +503,95 @@ Time: ${date}<br>
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
-      if (!userAccount || isFetching) return;
-      isFetching = true;
+  if (!userAccount || isFetching) {
+    console.log("Skipping load: No userAccount or isFetching");
+    return;
+  }
+  isFetching = true;
+  document.getElementById("globalLoading").style.display = "block";
 
-      try {
-        if (totalGlobalCount === 0) {
-          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-        }
+  try {
+    if (totalGlobalCount === 0) {
+      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+      console.log("Total global count:", totalGlobalCount);
+    }
 
-        const historyList = document.getElementById("globalBetHistory");
-        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+    const historyList = document.getElementById("globalBetHistory");
+    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+    console.log(`Loading batch: start=${start}, end=${end}`);
 
-        for (let i = end; i >= start; i--) {
-          const bet = await contract.methods.getBet(i).call();
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
-            Number: ${bet.number}<br>
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
-            Time: ${date}<br>
-          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-          historyList.appendChild(li);
-        }
+    if (globalHistoryOffset >= totalGlobalCount) {
+      console.log("All data loaded");
+      document.getElementById("globalLoading").innerText = "No more history";
+      isFetching = false;
+      return;
+    }
 
-        globalHistoryOffset += globalHistoryBatchSize;
-      } catch (error) {
-        console.error("Error loading global bet history:", error);
-        document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
+    const promises = [];
+    for (let i = end; i >= start; i--) {
+      if (!loadedIndexes.has(i)) {
+        promises.push(contract.methods.getBet(i).call().then(bet => ({ index: i, bet })));
+        loadedIndexes.add(i);
+      }
+    }
+
+    const results = await Promise.all(promises);
+
+    results.forEach(({ index, bet }) => {
+      if (!bet || !bet.user) {
+        console.log(`Invalid bet at index ${index}`);
+        return;
       }
 
-      isFetching = false;
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const globalContainer = document.getElementById("globalBetHistoryContainer");
-
-      globalContainer.addEventListener("scroll", () => {
-        if (
-          globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50
-        ) {
-          loadGlobalBetHistory();
-        }
-      });
-
-      loadGlobalBetHistory();
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
+        Number: ${bet.number}<br>
+        Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
+        Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
+        Time: ${date}<br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
     });
 
+    globalHistoryOffset += globalHistoryBatchSize;
+
+    if (globalHistoryOffset >= totalGlobalCount) {
+      console.log("All history loaded, removing scroll listener");
+      globalContainer.removeEventListener("scroll", scrollHandler);
+      document.getElementById("globalLoading").innerText = "No more history";
+    } else {
+      document.getElementById("globalLoading").style.display = "none";
+    }
+
+  } catch (error) {
+    console.error("Error loading global bet history:", error);
+    document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
+  }
+
+  isFetching = false;
+};
+
+const scrollHandler = () => {
+  clearTimeout(scrollHandler._timeout);
+  scrollHandler._timeout = setTimeout(() => {
+    const container = globalContainer;
+    const condition = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+    if (condition) {
+      loadGlobalBetHistory();
+    }
+  }, 200);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  globalContainer = document.getElementById("globalBetHistoryContainer");
+  globalContainer.addEventListener("scroll", scrollHandler);
+  loadGlobalBetHistory();
+});
+    
     // Salin link undangan
     const copyReferralLink = () => {
       const linkText = document.getElementById("referralLink").innerText.replace("Link Undangan: ", "");
