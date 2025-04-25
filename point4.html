@@ -21,7 +21,7 @@
       background: #111111;
     }
 
-    h1, h2, {
+    h1, h2, h3, h4 {
       color: #00ffcc;
       text-align: center;
     }
@@ -44,26 +44,31 @@
       margin-top: 0.5rem;
     }
 
-    #walletButton,
-    #checkIn,
-    #placeBet {
+    #walletButton {
       background: linear-gradient(145deg, #00ffaa, #008866);
       color: #000;
     }
 
-    #walletButton:hover,
-    #checkIn:hover,
-    #placeBet:hover {
+    #walletButton:hover {
       background: linear-gradient(145deg, #00ffcc, #00cc99);
     }
 
-    #setReferrerId {
-      background: linear-gradient(145deg, #66ff66, #339933);
+    #walletButton.disconnect {
+      background: linear-gradient(145deg, #ff3333, #cc0000);
+      color: #fff;
+    }
+
+    #walletButton.disconnect:hover {
+      background: linear-gradient(145deg, #ff6666, #ff3333);
+    }
+
+    #checkIn, #placeBet {
+      background: linear-gradient(145deg, #00ffaa, #008866);
       color: #000;
     }
 
-    #setReferrerId:hover {
-      background: linear-gradient(145deg, #77ff77, #44aa44);
+    #checkIn:hover, #placeBet:hover {
+      background: linear-gradient(145deg, #00ffcc, #00cc99);
     }
 
     #copyLink {
@@ -103,6 +108,16 @@
 
     .input-group {
       margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
     }
 
     @media (max-width: 600px) {
@@ -110,8 +125,7 @@
         padding: 1rem;
       }
 
-      button,
-      input {
+      button, input {
         font-size: 1rem;
       }
     }
@@ -119,52 +133,52 @@
 </head>
 <body>
   <div class="container">
-  <center><h1>CheckInPoint DApp</h1></center>
+    <h1>CheckInPoint DApp</h1>
 
     <!-- Wallet Connection -->
     <div class="section">
-    <center><button id="walletButton">Connect Wallet</button></center>
+      <center><button id="walletButton">Connect Wallet</button></center>
       <p id="accountInfo" class="info-text"></p>
-      <p id="ethBalance" class="info-text">Balance: Loading...</p>
-      <p id="tokenBalance" class="info-text">Balance: Loading...</p>
+      <p id="ethBalance" class="info-text"><small>Balance: Loading...</small></p>
+      <p id="tokenBalance" class="info-text"><small>Balance: Loading...</small></p>
     </div>
 
     <!-- Check-In -->
     <div class="section">
-    <center><h2>Daily Faucet Claim</h2>
-      <button id="checkIn">Claim 1 Lpoint</button></center>
+      <h2>Daily Faucet Claim</h2>
+      <center><button id="checkIn">Claim 1 Lpoint</button></center>
       <p id="checkInStatus" class="info-text"></p>
-      <h4>Your Faucet History</h4>
+      <h3>Your Faucet History</h3>
       <ul id="checkInHistory" class="info-text"></ul>
     </div>
 
     <!-- Betting -->
     <div class="section">
-      <center><h2>Place a Bet</h2>
+      <h2>Place a Bet</h2>
       <div class="input-group">
         <label for="betNumber"><small>Betting Number</small></label>
-        <input id="betNumber" type="number" placeholder="2D 3D or 4D">
+        <input id="betNumber" type="number" placeholder="2D, 3D, or 4D">
       </div>
       <div class="input-group">
-        <label for="betTimes"><small>Multiplication 1× / 5×</small></label>
-        <input id="betTimes" type="number" min="1" max="5" placeholder="×1 / ×5">
+        <label for="betTimes"><small>Multiplication (1× to 5×)</small></label>
+        <input id="betTimes" type="number" min="1" max="5" placeholder="1× to 5×">
       </div>
       <div class="input-group">
-        <label for="payoutAmount"><small>Reward Amount</small></label>
-        <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
+        <label for="payoutAmount"><small>Reward Amount (10 points)</small></label>
+        <input id="payoutAmount" type="number" min="10" max="10" placeholder="10 points">
       </div>
-      <button id="placeBet">Submit Ticket</button></center>
+      <center><button id="placeBet">Submit Ticket</button></center>
     </div>
 
     <!-- User Bet History -->
     <div class="section">
-    <center><h2>Your Ticket History</h2></center>
+      <h2>Your Ticket History</h2>
       <ul id="userBetHistory" class="info-text"></ul>
     </div>
 
     <!-- Global Bet History -->
     <div class="section">
-    <center><h2>Global Ticket History</h2></center>
+      <h2>Global Ticket History</h2>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
       </div>
@@ -172,25 +186,23 @@
 
     <!-- Referral -->
     <div class="section">
-    <center><h2>Referral</h2></center>
+      <h2>Referral</h2>
       <div class="input-group">
-        <p id="referralLink" class="info-text">Invitation Link: Loading...<br></p>
-        <button id="copyLink>Copy Link</button><br>
-        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Invited Friends: Loading...</p>
-        <p id="referralReward" class="info-text">Reward: Loading...</p>
+        <p id="referralLink" class="info-text"><small>Referral Link: Loading...</small></p>
+        <center><button id="copyLink">Copy Link</button></center>
+        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;"><small>Invited Friends: Loading...</small></p>
+        <p id="referralReward" class="info-text"><small>Reward: Loading...</small></p>
       </div>
-      <div>
-  <label for="referrerId">Join with Your Friends UID</label>
-  <input id="referrerId" type="text" placeholder="Enter Your Friend UID">
-  <button id="setReferrerId">Join Invitation</button>
-      </div>
+      <h3>Invited Friends List</h3>
+      <ul id="refereeList" class="info-text"></ul>
     </div>
   </div>
+
   <script>
     // Konfigurasi Web3 dan kontrak
-    const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC"; // Ganti dengan alamat kontrak yang sudah di-deploy
+    const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC";
     const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
-    
+
     let web3;
     let contract;
     let userAccount;
@@ -273,30 +285,29 @@
       userAccount = null;
       localStorage.removeItem("walletConnection");
       updateWalletUI(false);
-      document.getElementById("accountInfo").innerHTML = "Wallet disconnected";
-      document.getElementById("ethBalance").innerHTML = "ETH Balance: Connect wallet";
-      document.getElementById("tokenBalance").innerHTML = "Token Balance: Connect wallet";
-      document.getElementById("referralLink").innerHTML = "Invitation Link: Connect wallet";
-      document.getElementById("refereeCount").innerHTML = "Invited Friends: Connect wallet";
-      document.getElementById("referralReward").innerHTML = "Reward: Connect wallet";
+      document.getElementById("accountInfo").innerText = "Wallet disconnected";
+      document.getElementById("ethBalance").innerText = "Balance: Connect wallet";
+      document.getElementById("tokenBalance").innerText = "Balance: Connect wallet";
+      document.getElementById("referralLink").innerText = "Referral Link: Connect wallet";
+      document.getElementById("refereeCount").innerText = "Invited Friends: Connect wallet";
+      document.getElementById("referralReward").innerText = "Reward: Connect wallet";
       document.getElementById("checkInHistory").innerHTML = "";
       document.getElementById("userBetHistory").innerHTML = "";
       document.getElementById("globalBetHistory").innerHTML = "";
+      document.getElementById("refereeList").innerHTML = "";
     };
 
     // Perbarui UI tombol wallet
     const updateWalletUI = (isConnected) => {
       const walletButton = document.getElementById("walletButton");
       if (isConnected) {
-        walletButton.innerHTML = "Disconnect Wallet";
-        walletButton.classList.remove("bg-blue-600", "hover:bg-blue-700");
-        walletButton.classList.add("bg-red-600", "hover:bg-red-700");
-        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 21)}${userAccount.slice(-21)}</small>`;
+        walletButton.innerText = "Disconnect Wallet";
+        walletButton.classList.add("disconnect");
+        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 6)}...${userAccount.slice(-4)}</small>`;
       } else {
-        walletButton.innerHTML = "Connect Wallet";
-        walletButton.classList.remove("bg-red-600", "hover:bg-red-700");
-        walletButton.classList.add("bg-blue-600", "hover:bg-blue-700");
-        document.getElementById("accountInfo").innerHTML = "";
+        walletButton.innerText = "Connect Wallet";
+        walletButton.classList.remove("disconnect");
+        document.getElementById("accountInfo").innerText = "";
       }
     };
 
@@ -333,7 +344,7 @@
       }
     };
 
-    // Load informasi wallet (ETH dan Token Balance)
+    // Load informasi wallet (ETH, Token Balance, dan Referral)
     const loadWalletInfo = async () => {
       if (!userAccount) return;
       try {
@@ -354,37 +365,45 @@
 
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
-        document.getElementById("referralLink").innerHTML = `<small>Link Undangan: ${BASE_URL}?uid=${userReferralId}</small>`;
-        document.getElementById("refereeCount").innerHTML = `<small>Teman yang Diundang: ${refereeCount}</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Referral Link: ${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
         document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
+
+        // Load daftar referee
+        await loadRefereeList();
       } catch (error) {
         console.error("Error loading wallet info:", error);
         document.getElementById("ethBalance").innerHTML = "<small>ETH Balance: Error</small>";
         document.getElementById("tokenBalance").innerHTML = "<small>Token Balance: Error</small>";
-        document.getElementById("referralLink").innerHTML = "<small>Link Undangan: Error</small>";
-        document.getElementById("refereeCount").innerHTML = "<small>Teman yang Diundang: Error</small>";
+        document.getElementById("referralLink").innerHTML = "<small>Referral Link: Error</small>";
+        document.getElementById("refereeCount").innerHTML = "<small>Invited Friends: Error</small>";
         document.getElementById("referralReward").innerHTML = "<small>Reward: Error</small>";
+        document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
       }
     };
 
-    // Set Referrer ID
-    const setReferrerId = async () => {
-      if (!userAccount) {
-        alert("Please connect your wallet first.");
-        return;
-      }
-      const referrerId = document.getElementById("referrerId").value.trim();
-      if (!referrerId) {
-        alert("Please enter a referrer ID.");
-        return;
-      }
+    // Load daftar referee
+    const loadRefereeList = async () => {
+      if (!userAccount) return;
       try {
-        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-        alert("Successfully joined referral!");
-        document.getElementById("referrerId").value = "";
+        const refereeList = document.getElementById("refereeList");
+        refereeList.innerHTML = "";
+        const referees = await contract.methods.getReferees(userAccount).call();
+        
+        if (referees.length === 0) {
+          refereeList.innerHTML = "<li><small>No referees found.</small></li>";
+          return;
+        }
+
+        referees.forEach((referee, index) => {
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>Referee ${index + 1}: ${referee.slice(0, 6)}...${referee.slice(-4)}</small>`;
+          refereeList.appendChild(li);
+        });
       } catch (error) {
-        console.error("Error setting referrer ID:", error);
-        alert("Failed to join referral. Check if the ID is valid or if you were already referred.");
+        console.error("Error loading referee list:", error);
+        document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
       }
     };
 
@@ -396,7 +415,7 @@
       }
       try {
         await contract.methods.checkIn().send({ from: userAccount });
-        document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Point.";
+        document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Lpoint.";
         loadWalletInfo();
         loadCheckInHistory();
       } catch (error) {
@@ -406,30 +425,35 @@
     };
 
     // Load Check-In History
-const loadCheckInHistory = async () => {
-  if (!userAccount) return;
-  try {
-    const count = await contract.methods.getCheckInCount(userAccount).call();
-    const historyList = document.getElementById("checkInHistory");
-    historyList.innerHTML = "";
+    const loadCheckInHistory = async () => {
+      if (!userAccount) return;
+      try {
+        const count = await contract.methods.getCheckInCount(userAccount).call();
+        const historyList = document.getElementById("checkInHistory");
+        historyList.innerHTML = "";
 
-    for (let i = count - 1; i >= 0; i--) {
-      const log = await contract.methods.getCheckInLog(userAccount, i).call();
-      const date = new Date(log.timestamp * 1000).toLocaleString();
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-ID: ${log.dayUTC}<br>
-Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
-Time: ${date}<br>
-</small><br><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    }
-  } catch (error) {
-    console.error("Error loading check-in history:", error);
-    document.getElementById("checkInHistory").innerHTML = "<li>Error loading history.</li>";
-  }
-};
+        if (count == 0) {
+          historyList.innerHTML = "<li><small>No history found.</small></li>";
+          return;
+        }
+
+        for (let i = count - 1; i >= 0; i--) {
+          const log = await contract.methods.getCheckInLog(userAccount, i).call();
+          const date = new Date(log.timestamp * 1000).toLocaleString();
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            ID: ${log.dayUTC}<br>
+            Reward: ${(log.reward / 10 ** 18).toFixed(2)} Lpoints<br>
+            Time: ${date}<br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading check-in history:", error);
+        document.getElementById("checkInHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      }
+    };
 
     // Place Bet
     const placeBet = async () => {
@@ -442,15 +466,15 @@ Time: ${date}<br>
       const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
 
       if (!number || number.length < 2 || number.length > 4) {
-        alert("Please enter a valid number (2-4 characters).");
+        alert("Please enter a valid number (2-4 digits).");
         return;
       }
       if (!times || times < 1 || times > 5) {
-        alert("Please enter a valid number of times (1-5).");
+        alert("Please enter a valid multiplication (1-5).");
         return;
       }
-      if (!payoutAmount || payoutAmount < 10 || payoutAmount > 10) {
-        alert("Please enter a valid payout amount 10.");
+      if (!payoutAmount || payoutAmount !== 10) {
+        alert("Please enter a valid reward amount (10 points).");
         return;
       }
 
@@ -471,133 +495,113 @@ Time: ${date}<br>
 
     // Load User Bet History
     const loadUserBetHistory = async () => {
-  if (!userAccount) return;
+      if (!userAccount) return;
+      try {
+        const count = await contract.methods.getUserBetCount(userAccount).call();
+        const historyList = document.getElementById("userBetHistory");
+        historyList.innerHTML = "";
 
-  try {
-    const count = await contract.methods.getUserBetCount(userAccount).call();
-    const historyList = document.getElementById("userBetHistory");
-    historyList.innerHTML = "";
+        if (count == 0) {
+          historyList.innerHTML = "<li><small>No history found.</small></li>";
+          return;
+        }
 
-    if (count == 0) {
-      historyList.innerHTML = "<li><small>No history found.</small></li>";
-      return;
-    }
+        const promises = [];
+        for (let i = count - 1; i >= 0; i--) {
+          promises.push(contract.methods.getUserBet(userAccount, i).call());
+        }
 
-    const promises = [];
-    for (let i = count - 1; i >= 0; i--) {
-      promises.push(contract.methods.getUserBet(userAccount, i).call());
-    }
+        const bets = await Promise.all(promises);
 
-    const bets = await Promise.all(promises);
-
-    bets.forEach((bet) => {
-      if (!bet || !bet.timestamp) return; // validasi minimal
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        Number: ${bet.number}<br>
-        Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
-        Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
-        Time: ${date}<br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
-  } catch (error) {
-    console.error("Error loading user bet history:", error);
-    document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
-  }
-};
+        bets.forEach((bet) => {
+          if (!bet || !bet.timestamp) return;
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            Number: ${bet.number}<br>
+            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Lpoints<br>
+            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Lpoints<br>
+            Time: ${date}<br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Error loading user bet history:", error);
+        document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      }
+    };
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
-  if (!userAccount || isFetching) {
-    console.log("Skipping load: No userAccount or isFetching");
-    return;
-  }
-  isFetching = true;
-  console.log("Loading global bet history, offset:", globalHistoryOffset);
-
-  try {
-    if (totalGlobalCount === 0) {
-      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-      console.log("Total global count:", totalGlobalCount);
-    }
-
-    const historyList = document.getElementById("globalBetHistory");
-    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
-    console.log(`Loading batch: start=${start}, end=${end}`);
-
-    if (start >= totalGlobalCount) {
-      console.log("No more data to load");
-      isFetching = false;
-      return;
-    }
-
-    const promises = [];
-    for (let i = end; i >= start; i--) {
-      promises.push(contract.methods.getBet(i).call());
-    }
-    const bets = await Promise.all(promises);
-
-    bets.forEach((bet, index) => {
-      if (!bet || !bet.user) {
-        console.log(`Invalid bet at index ${end - index}`);
+      if (!userAccount || isFetching) {
+        console.log("Skipping load: No userAccount or isFetching");
         return;
       }
-      console.log("Fetched bet:", bet);
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
-        Number: ${bet.number}<br>
-        Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Points<br>
-        Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Points<br>
-        Time: ${date}<br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
+      isFetching = true;
+      const historyList = document.getElementById("globalBetHistory");
+      const loadingLi = document.createElement("li");
+      loadingLi.innerText = "Loading...";
+      historyList.appendChild(loadingLi);
 
-    globalHistoryOffset += globalHistoryBatchSize;
-    console.log("Updated offset:", globalHistoryOffset);
-  } catch (error) {
-    console.error("Error loading global bet history:", error);
-    document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
-  }
+      try {
+        if (totalGlobalCount === 0) {
+          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+          console.log("Total global count:", totalGlobalCount);
+        }
 
-  isFetching = false;
-  console.log("Fetching complete, isFetching:", isFetching);
-};
+        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+        console.log(`Loading batch: start=${start}, end=${end}`);
 
-document.addEventListener("DOMContentLoaded", () => {
-  const globalContainer = document.getElementById("globalBetHistoryContainer");
+        if (start >= totalGlobalCount) {
+          console.log("No more data to load");
+          historyList.removeChild(loadingLi);
+          isFetching = false;
+          return;
+        }
 
-  let scrollTimeout;
-  globalContainer.addEventListener("scroll", () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      const condition = globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50;
-      console.log("Scroll event:", {
-        scrollTop: globalContainer.scrollTop,
-        clientHeight: globalContainer.clientHeight,
-        scrollHeight: globalContainer.scrollHeight,
-        condition
-      });
-      if (condition) {
-        console.log("Triggering loadGlobalBetHistory");
-        loadGlobalBetHistory();
+        const promises = [];
+        for (let i = end; i >= start; i--) {
+          promises.push(contract.methods.getBet(i).call());
+        }
+        const bets = await Promise.all(promises);
+
+        historyList.removeChild(loadingLi);
+        bets.forEach((bet, index) => {
+          if (!bet || !bet.user) {
+            console.log(`Invalid bet at index ${end - index}`);
+            return;
+          }
+          console.log("Fetched bet:", bet);
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: ${bet.user.slice(0, 6)}...${bet.user.slice(-4)}<br>
+            Number: ${bet.number}<br>
+            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Lpoints<br>
+            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Lpoints<br>
+            Time: ${date}<br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        });
+
+        globalHistoryOffset += globalHistoryBatchSize;
+        console.log("Updated offset:", globalHistoryOffset);
+      } catch (error) {
+        console.error("Error loading global bet history:", error);
+        historyList.removeChild(loadingLi);
+        historyList.innerHTML = "<li><small>Error loading history.</small></li>";
       }
-    }, 200);
-  });
 
-  loadGlobalBetHistory();
-});
-    
+      isFetching = false;
+      console.log("Fetching complete, isFetching:", isFetching);
+    };
+
     // Salin link undangan
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerHTML.replace("Invitation Link: ", "");
+      const linkText = document.getElementById("referralLink").innerText.replace("Referral Link: ", "");
       navigator.clipboard.writeText(linkText).then(() => {
         alert("Referral link copied!");
       }).catch(() => {
@@ -606,8 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Event Listeners
-    const walletButton = document.getElementById("walletButton");
-    walletButton.addEventListener("click", () => {
+    document.getElementById("walletButton").addEventListener("click", () => {
       if (userAccount) {
         disconnectWallet();
       } else {
@@ -615,10 +618,34 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("placeBet").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
+
+    // Lazy scrolling untuk Global Bet History
+    document.addEventListener("DOMContentLoaded", () => {
+      const globalContainer = document.getElementById("globalBetHistoryContainer");
+
+      let scrollTimeout;
+      globalContainer.addEventListener("scroll", () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const condition = globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50;
+          console.log("Scroll event:", {
+            scrollTop: globalContainer.scrollTop,
+            clientHeight: globalContainer.clientHeight,
+            scrollHeight: globalContainer.scrollHeight,
+            condition
+          });
+          if (condition) {
+            console.log("Triggering loadGlobalBetHistory");
+            loadGlobalBetHistory();
+          }
+        }, 200);
+      });
+
+      loadGlobalBetHistory();
+    });
 
     // Inisialisasi saat halaman dimuat
     window.addEventListener("load", () => {
