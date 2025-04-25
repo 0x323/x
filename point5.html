@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CheckInPoint DApp</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.10.0/web3.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -166,7 +166,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>CheckInPoint DAp</h1>
+    <h1>CheckInPoint DApp</h1>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -284,6 +284,9 @@
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
     const BASE_URL = "https://0x323.github.io/x/point3";
 
+    // Fallback RPC untuk Base Sepolia
+    const FALLBACK_RPC = "https://sepolia.base.org";
+
     // Fungsi utilitas
     const generateUID = () => 'uid_' + Math.random().toString(36).substr(2, 9);
 
@@ -342,13 +345,15 @@
         return;
       }
 
-      web3 = new Web3(window.ethereum);
       try {
+        // Gunakan MetaMask atau fallback RPC
+        web3 = new Web3(window.ethereum || FALLBACK_RPC);
+
         // Periksa jaringan (Base Sepolia chainId: 84532)
-        const chainId = await window.ethereum.request({ method: "eth_chainId" });
-        if (chainId !== "0x14a34") {
+        const chainId = await web3.eth.getChainId();
+        if (chainId !== 84532) {
           alert("Please switch MetaMask to the Base Sepolia network.");
-          console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Base Sepolia)`);
+          console.error(`Invalid chainId: ${chainId}, expected 84532 (Base Sepolia)`);
           return;
         }
 
@@ -372,8 +377,8 @@
 
           // Cache event taruhan
           console.log("Initializing global bet events");
-          await fetchBetEvents(); // Cache global events
-          await fetchBetEvents(userAccount); // Cache user events
+          await fetchBetEvents();
+          await fetchBetEvents(userAccount);
 
           // Perbarui UI dan simpan koneksi
           updateWalletUI(true);
@@ -399,6 +404,8 @@
           alert("Connection request denied by user. Please approve the connection in MetaMask.");
         } else if (error.code === -32002) {
           alert("A connection request is already pending in MetaMask. Please check your MetaMask extension.");
+        } else if (error.message.includes("Invalid JSON RPC response")) {
+          alert("Network error: Unable to connect to Base Sepolia. Please check your internet or try a different RPC.");
         } else {
           alert(`Failed to connect to MetaMask: ${error.message}. Please try again.`);
         }
@@ -482,7 +489,7 @@
     const fetchBetEvents = async (user = null, fromBlock = null) => {
       try {
         const latestBlock = await web3.eth.getBlockNumber();
-        const startBlock = fromBlock || Math.max(latestBlock - 50000, 0); // Perluas rentang blok
+        const startBlock = fromBlock || Math.max(latestBlock - 50000, 0);
         console.log(`Fetching PlaceBet events from block ${startBlock} to latest for ${user || 'global'}`);
         const events = await contract.getPastEvents("PlaceBet", {
           filter: user ? { user } : {},
@@ -502,7 +509,7 @@
           };
         });
         cache.betEvents[user || "global"] = eventMap;
-        console.log(`Fetched ${Object.keys(eventMap).length} events for ${user || 'global'}`);
+        console.log(`Fetched ${Object.keys(eventMap).length} events for ${user || 'global'}`, eventMap);
         return eventMap;
       } catch (error) {
         console.error("Error fetching PlaceBet events:", error);
@@ -516,27 +523,27 @@
       try {
         // Cache data statis
         if (!cache.decimals) {
-          cache.decimals = await contract.methods.decimals().call();
-          cache.symbol = await contract.methods.symbol().call();
+          cache.decimals = await contract.methods.decimals().call().catch(() => 18);
+          cache.symbol = await contract.methods.symbol().call().catch(() => "POINT");
           localStorage.setItem("contractDecimals", cache.decimals);
           localStorage.setItem("contractSymbol", cache.symbol);
         } else {
-          cache.decimals = cache.decimals || localStorage.getItem("contractDecimals");
-          cache.symbol = cache.symbol || localStorage.getItem("contractSymbol");
+          cache.decimals = cache.decimals || localStorage.getItem("contractDecimals") || 18;
+          cache.symbol = cache.symbol || localStorage.getItem("contractSymbol") || "POINT";
         }
 
-        // Batch panggilan
+        // Batch panggilan dengan fallback
         const [ethBalance, balance, userReferralId, refereeCount, referralReward] = await Promise.all([
-          web3.eth.getBalance(userAccount),
-          contract.methods.balanceOf(userAccount).call(),
-          contract.methods.referralIdOf(userAccount).call(),
-          contract.methods.getRefereeCount(userAccount).call(),
-          contract.methods.referralRewards(userAccount).call(),
+          web3.eth.getBalance(userAccount).catch(() => "0"),
+          contract.methods.balanceOf(userAccount).call().catch(() => "0"),
+          contract.methods.referralIdOf(userAccount).call().catch(() => ""),
+          contract.methods.getRefereeCount(userAccount).call().catch(() => "0"),
+          contract.methods.referralRewards(userAccount).call().catch(() => "0"),
         ]);
 
         document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${web3.utils.fromWei(ethBalance, 'ether')} ETH</small>`;
         document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${(balance / 10 ** cache.decimals).toFixed(2)} ${cache.symbol}</small>`;
-        document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br>${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br>${BASE_URL}?uid=${userReferralId || "N/A"}</small>`;
         document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
         document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
 
@@ -544,7 +551,7 @@
       } catch (error) {
         console.error("Error loading wallet info:", error);
         ["ethBalance", "tokenBalance", "referralLink", "refereeCount", "referralReward"].forEach(id => {
-          document.getElementById(id).innerHTML = `<small>Error</small>`;
+          document.getElementById(id).innerHTML = `<small>Unable to load data</small>`;
         });
       }
     };
@@ -555,7 +562,7 @@
       setLoading("refereeList", true);
       try {
         const refereeList = document.getElementById("refereeList");
-        const referees = await contract.methods.getReferees(userAccount).call();
+        const referees = await contract.methods.getReferees(userAccount).call().catch(() => []);
         refereeList.innerHTML = referees.length === 0 ? "<li><small>No referees found.</small></li>" : "";
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
@@ -571,7 +578,7 @@
         });
       } catch (error) {
         console.error("Error loading referee list:", error);
-        document.getElementById("refereeList").innerHTML = "<li><small>Error</small></li>";
+        document.getElementById("refereeList").innerHTML = "<li><small>Unable to load data</small></li>";
       } finally {
         setLoading("refereeList", false);
       }
@@ -599,7 +606,7 @@
       if (!userAccount) return;
       setLoading("checkInHistory", true);
       try {
-        const count = await contract.methods.getCheckInCount(userAccount).call();
+        const count = await contract.methods.getCheckInCount(userAccount).call().catch(() => 0);
         const historyList = document.getElementById("checkInHistory");
         historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
@@ -623,7 +630,7 @@
         });
       } catch (error) {
         console.error("Error loading check-in history:", error);
-        document.getElementById("checkInHistory").innerHTML = "<li><small>Error</small></li>";
+        document.getElementById("checkInHistory").innerHTML = "<li><small>Unable to load data</small></li>";
       } finally {
         setLoading("checkInHistory", false);
       }
@@ -674,7 +681,7 @@
       if (!userAccount) return;
       setLoading("userBetHistory", true);
       try {
-        const count = await contract.methods.getUserBetCount(userAccount).call();
+        const count = await contract.methods.getUserBetCount(userAccount).call().catch(() => 0);
         const historyList = document.getElementById("userBetHistory");
         historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
@@ -686,13 +693,16 @@
         }
         const bets = await Promise.all(promises);
         const userEvents = cache.betEvents[userAccount] || {};
-        const referrer = await contract.methods.referredBy(userAccount).call();
+        const referrer = await contract.methods.referredBy(userAccount).call().catch(() => "0x0000000000000000000000000000000000000000");
         const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
           ? "None"
           : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
 
         bets.reverse().forEach((bet, index) => {
-          if (!bet || !bet.timestamp) return;
+          if (!bet || !bet.timestamp) {
+            console.warn(`Invalid bet at index ${start + index}:`, bet);
+            return;
+          }
           const date = new Date(bet.timestamp * 1000).toLocaleString();
           const event = userEvents[bet.timestamp] || { txHash: "N/A", blockNumber: "N/A" };
           const txHash = event.txHash || "N/A";
@@ -715,7 +725,7 @@
         });
       } catch (error) {
         console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li><small>Error</small></li>";
+        document.getElementById("userBetHistory").innerHTML = "<li><small>Unable to load data</small></li>";
       } finally {
         setLoading("userBetHistory", false);
       }
@@ -733,7 +743,7 @@
 
       try {
         if (totalGlobalCount === 0) {
-          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+          totalGlobalCount = await contract.methods.getBetHistoryLength().call().catch(() => 0);
           console.log(`Total global bet count: ${totalGlobalCount}`);
         }
 
@@ -755,7 +765,7 @@
         }
         const bets = await Promise.all(promises);
         const globalEvents = cache.betEvents["global"] || {};
-        console.log(`Fetched ${bets.length} bets, global events cache size: ${Object.keys(globalEvents).length}`);
+        console.log(`Fetched ${bets.length} bets, global events cache size: ${Object.keys(globalEvents).length}`, bets);
 
         if (bets.length === 0) {
           historyList.innerHTML = "<li><small>No more bets to display.</small></li>";
@@ -766,7 +776,7 @@
         }
 
         bets.reverse().forEach((bet, index) => {
-          if (!bet || !bet.timestamp) {
+          if (!bet || !bet.timestamp || !bet.user) {
             console.warn(`Invalid bet at index ${end - index}:`, bet);
             return;
           }
@@ -779,9 +789,9 @@
           li.className = "py-2";
           li.innerHTML = `<small>
             User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
-            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</small><br>
+            BetNumber: <span style="color: #00ff14;">${bet.number || "N/A"}</span><br>
+            BetAmount: <span style="color: #ffcc00;">${betTimes.toFixed(2)}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
             Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
             Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
             Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
@@ -795,7 +805,7 @@
         document.getElementById("loadMoreGlobal").classList.toggle("hidden", start <= 0);
       } catch (error) {
         console.error("Error loading global bet history:", error);
-        historyList.innerHTML = "<li><small>Error loading global bet history.</small></li>";
+        historyList.innerHTML = "<li><small>Unable to load data</small></li>";
         document.getElementById("loadMoreGlobal").classList.add("hidden");
       } finally {
         isFetching = false;
@@ -856,7 +866,7 @@
           }
         });
         window.ethereum.on("chainChanged", () => {
-          window.location.reload(); // Reload jika jaringan berubah
+          window.location.reload();
         });
       } else {
         alert("Please install MetaMask to use this DApp.");
@@ -864,4 +874,4 @@
     });
   </script>
 </body>
-  </html>
+        </html>
