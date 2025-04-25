@@ -174,10 +174,15 @@
     <div class="section">
     <center><h2>Referral</h2></center>
       <div class="input-group">
-        <p id="referralLink" class="info-text">Invitation Link:: Loading...<br></p>
+        <p id="referralLink" class="info-text">Invitation Link: Loading...<br></p>
         <button id="copyLink>Copy Link</button><br>
-        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Teman yang Diundang: Loading...</p>
+        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Invited Friends: Loading...</p>
         <p id="referralReward" class="info-text">Reward: Loading...</p>
+      </div>
+      <div>
+  <label for="referrerId">Join with Your Friends UID</label>
+  <input id="referrerId" type="text" placeholder="Enter Your Friend UID">
+  <button id="setReferrerId">Join Invitation</button>
       </div>
     </div>
   </div>
@@ -271,8 +276,8 @@
       document.getElementById("accountInfo").innerHTML = "Wallet disconnected";
       document.getElementById("ethBalance").innerHTML = "ETH Balance: Connect wallet";
       document.getElementById("tokenBalance").innerHTML = "Token Balance: Connect wallet";
-      document.getElementById("referralLink").innerHTML = "Link Undangan: Connect wallet";
-      document.getElementById("refereeCount").innerHTML = "Teman yang Diundang: Connect wallet";
+      document.getElementById("referralLink").innerHTML = "Invitation Link: Connect wallet";
+      document.getElementById("refereeCount").innerHTML = "Invited Friends: Connect wallet";
       document.getElementById("referralReward").innerHTML = "Reward: Connect wallet";
       document.getElementById("checkInHistory").innerHTML = "";
       document.getElementById("userBetHistory").innerHTML = "";
