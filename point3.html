@@ -273,6 +273,7 @@
     let globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
+    let betEventsCache = {};
 
     // Cache untuk event PlaceBet
     let betEventsCache = {};
@@ -296,33 +297,33 @@
     };
 
     // Ambil event PlaceBet untuk txHash dan blockNumber
-    const fetchBetEvents = async (user = null) => {
-      try {
-        const filter = user ? { user } : {};
-        const events = await contract.getPastEvents("PlaceBet", {
-          filter,
-          fromBlock: 0,
-          toBlock: "latest",
-        });
-        const eventMap = {};
-        events.forEach((event, index) => {
-          eventMap[index] = {
-            txHash: event.transactionHash,
-            blockNumber: event.blockNumber,
-            timestamp: event.returnValues.timestamp,
-            user: event.returnValues.user,
-            number: event.returnValues.number,
-            cost: event.returnValues.cost,
-            reward: event.returnValues.reward,
-          };
-        });
-        betEventsCache[user || "global"] = eventMap;
-        return eventMap;
-      } catch (error) {
-        console.error("Error fetching PlaceBet events:", error);
-        return {};
-      }
-    };
+const fetchBetEvents = async (user = null) => {
+  try {
+    const filter = user ? { user } : {};
+    const events = await contract.getPastEvents("PlaceBet", {
+      filter,
+      fromBlock: 0,
+      toBlock: "latest",
+    });
+    const eventMap = {};
+    events.forEach((event, index) => {
+      eventMap[index] = {
+        txHash: event.transactionHash,
+        blockNumber: event.blockNumber,
+        timestamp: event.returnValues.timestamp,
+        user: event.returnValues.user,
+        number: event.returnValues.number,
+        cost: event.returnValues.cost,
+        reward: event.returnValues.reward,
+      };
+    });
+    betEventsCache[user || "global"] = eventMap;
+    return eventMap;
+  } catch (error) {
+    console.error("Error fetching PlaceBet events:", error);
+    return {};
+  }
+};
 
     // Inisialisasi Web3 dan kontrak
     const initWeb3 = async (forceConnect = false) => {
@@ -414,7 +415,7 @@
         document.getElementById("accountInfo").innerHTML = `
           <span style="font-size: 12.5px; color: #bd80ff;">
             Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
-              ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+              ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
             </a>
           </span>
         `;
@@ -511,7 +512,7 @@
           li.innerHTML = `
             <span style="font-size: 12.5px; color: #bd80ff;">
               Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank" rel="noopener noreferrer" style="color: #bd80ff; text-decoration: underline;">
-                ${referee.slice(0, 6)}...${referee.slice(-4)}
+                ${referee.slice(0, 21)}${referee.slice(-21)}
               </a>
             </span>
           `;
@@ -612,120 +613,135 @@
     };
 
     // Load User Bet History
-    const loadUserBetHistory = async () => {
-      if (!userAccount) return;
-      try {
-        const count = await contract.methods.getUserBetCount(userAccount).call();
-        const historyList = document.getElementById("userBetHistory");
-        historyList.innerHTML = "";
+const loadUserBetHistory = async () => {
+  if (!userAccount) return;
+  try {
+    const count = await contract.methods.getUserBetCount(userAccount).call();
+    const historyList = document.getElementById("userBetHistory");
+    historyList.innerHTML = "";
 
-        if (count == 0) {
-          historyList.innerHTML = "<li><small>No history found.</small></li>";
-          return;
-        }
+    if (count == 0) {
+      historyList.innerHTML = "<li><small>No history found.</small></li>";
+      return;
+    }
 
-        const promises = [];
-        for (let i = count - 1; i >= 0; i--) {
-          promises.push(contract.methods.getUserBet(userAccount, i).call());
-        }
+    const promises = [];
+    for (let i = count - 1; i >= 0; i--) {
+      promises.push(contract.methods.getUserBet(userAccount, i).call());
+    }
 
-        const bets = await Promise.all(promises);
-        const userEvents = betEventsCache[userAccount] || {};
-        const referrer = await contract.methods.referredBy(userAccount).call();
-        const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-          ? "None"
-          : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+    const bets = await Promise.all(promises);
+    const userEvents = betEventsCache[userAccount] || {};
+    const referrer = await contract.methods.referredBy(userAccount).call();
+    const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+      ? "None"
+      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
 
-        bets.forEach((bet, index) => {
-          if (!bet || !bet.timestamp) return;
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const eventIndex = count - 1 - index; // Urutkan dari terbaru
-          const event = userEvents[eventIndex] || {};
-          const txHash = event.txHash || "N/A";
-          const blockNumber = event.blockNumber || "N/A";
-          const betTimes = bet.cost / (1 * 10 ** 18);
-          const payoutAmount = bet.reward / (10 * 10 ** 18);
+    let hasValidBets = false;
+    bets.forEach((bet, index) => {
+      if (!bet || !bet.timestamp) return;
+      const eventIndex = count - 1 - index; // Urutkan dari terbaru
+      const event = userEvents[eventIndex];
+      if (!event || !event.txHash || !event.blockNumber) return; // Lewati jika tidak ada txHash/blockNumber
 
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-            Number: <span style="color: #00ff14;">${bet.number}</span><br>
-            Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-            Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-            Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
-            Time: <span style="color: #ffb833;">${date}</span><br>
-          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-          historyList.appendChild(li);
-        });
-      } catch (error) {
-        console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
-      }
-    };
+      hasValidBets = true;
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const txHash = event.txHash;
+      const blockNumber = event.blockNumber;
+      const betTimes = bet.cost / (1 * 10 ** 18);
+      const payoutAmount = bet.reward / (10 * 10 ** 18);
 
-    // Load Global Bet History
-    const loadGlobalBetHistory = async () => {
-      if (!userAccount || isFetching) {
-        console.log("Skipping load: No userAccount or isFetching");
-        return;
-      }
-      isFetching = true;
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+        Number: <span style="color: #00ff14;">${bet.number}</span><br>
+        Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
+        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+        Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
+        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+        Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+        Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+        Time: <span style="color: #ffb833;">${date}</span><br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    });
 
-      try {
-        if (totalGlobalCount === 0) {
-          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-        }
+    if (!hasValidBets) {
+      historyList.innerHTML = "<li><small>No valid bet history found.</small></li>";
+    }
+  } catch (error) {
+    console.error("Error loading user bet history:", error);
+    document.getElementById("userBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+  }
+};
 
-        const historyList = document.getElementById("globalBetHistory");
-        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+// Load Global Bet History
+const loadGlobalBetHistory = async () => {
+  if (!userAccount || isFetching) {
+    console.log("Skipping load: No userAccount or isFetching");
+    return;
+  }
+  isFetching = true;
 
-        const globalEvents = betEventsCache["global"] || {};
+  try {
+    if (totalGlobalCount === 0) {
+      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+    }
 
-        for (let i = end; i >= start; i--) {
-          const bet = await contract.methods.getBet(i).call();
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const referrer = await contract.methods.referredBy(bet.user).call();
-          const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-            ? "None"
-            : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
-          const eventIndex = i; // Global index sesuai dengan betHistory
-          const event = globalEvents[eventIndex] || {};
-          const txHash = event.txHash || "N/A";
-          const blockNumber = event.blockNumber || "N/A";
-          const betTimes = bet.cost / (1 * 10 ** 18);
-          const payoutAmount = bet.reward / (10 * 10 ** 18);
+    const historyList = document.getElementById("globalBetHistory");
+    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+    const globalEvents = betEventsCache["global"] || {};
 
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-            Number: <span style="color: #00ff14;">${bet.number}</span><br>
-            Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-            Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-            Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
-            Time: <span style="color: #ffb833;">${date}</span><br>
-          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-          historyList.appendChild(li);
-        }
+    let hasValidBets = false;
+    for (let i = end; i >= start; i--) {
+      const bet = await contract.methods.getBet(i).call();
+      const eventIndex = i;
+      const event = globalEvents[eventIndex];
+      if (!event || !event.txHash || !event.blockNumber) continue; // Lewati jika tidak ada txHash/blockNumber
 
-        globalHistoryOffset += globalHistoryBatchSize;
-      } catch (error) {
-        console.error("Error loading global bet history:", error);
-        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
-      }
+      hasValidBets = true;
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const referrer = await contract.methods.referredBy(bet.user).call();
+      const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+        ? "None"
+        : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+      const txHash = event.txHash;
+      const blockNumber = event.blockNumber;
+      const betTimes = bet.cost / (1 * 10 ** 18);
+      const payoutAmount = bet.reward / (10 * 10 ** 18);
 
-      isFetching = false;
-    };
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+        Number: <span style="color: #00ff14;">${bet.number}</span><br>
+        Bet Times: <span style="color: #ffcc00;">${betTimes}</span><br>
+        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+        Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
+        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+        Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+        Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+        Time: <span style="color: #ffb833;">${date}</span><br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    }
+
+    if (!hasValidBets && globalHistoryOffset === 0) {
+      historyList.innerHTML = "<li><small>No valid bet history found.</small></li>";
+    }
+
+    globalHistoryOffset += globalHistoryBatchSize;
+  } catch (error) {
+    console.error("Error loading global bet history:", error);
+    document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+  }
+
+  isFetching = false;
+};
 
     // Salin link undangan
     const copyReferralLink = () => {
