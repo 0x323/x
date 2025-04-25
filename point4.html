@@ -204,8 +204,8 @@
       <div class="input-group">
         <p id="referralLink" class="info-text"><small>Referral Link: Loading...</small></p>
         <center><button id="copyLink">Copy Link</button></center>
-        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Invited Friends: Loading...</p>
-        <p id="referralReward" class="info-text">Reward: Loading...</p>
+        <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;"><small>Invited Friends: Loading...</small></p>
+        <p id="referralReward" class="info-text"><small>Reward: Loading...</small></p>
       </div>
       <h3>Invited Friends List</h3>
       <ul id="refereeList" class="info-text"></ul>
@@ -390,8 +390,8 @@
         document.getElementById("ethBalance").innerHTML = "<small>ETH Balance: Error</small>";
         document.getElementById("tokenBalance").innerHTML = "<small>Token Balance: Error</small>";
         document.getElementById("referralLink").innerHTML = "<small>Referral Link: Error</small>";
-        document.getElementById("refereeCount").innerHTML = "<small>Invited Friends: Error</small>";
-        document.getElementById("referralReward").innerHTML = "<small>Reward: Error</small>";
+        document.getElementById("refereeCount").innerHTML = "Invited Friends: Error";
+        document.getElementById("referralReward").innerHTML = "Reward: Error";
         document.getElementById("refereeList").innerHTML = "<li><small>Error loading referee list.</small></li>";
       }
     };
