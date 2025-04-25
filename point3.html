@@ -156,6 +156,29 @@
         font-size: 1rem;
       }
     }
+
+  table {
+    width: 100%; /* Bisa diperkecil lagi, misalnya 50% jika terlalu lebar */
+    max-width: 900px; /* Agar tabel tidak terlalu besar di layar lebar */
+    border-collapse: collapse;
+    margin: 20px auto; /* 'auto' agar tabel tetap di tengah */
+    font-size: 18px; /* Kecilkan agar tabel lebih compact */
+    text-align: left;
+}
+
+th, td {
+    padding: 8px; /* Kurangi padding agar tabel lebih kecil */
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #000000; /* Background hitam */
+    background-image: linear-gradient(90deg, #03a9f4, #f441a5); /* Gradasi untuk teks */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    padding: 10px;
+}
   </style>
 </head>
 <body>
@@ -222,6 +245,32 @@
       </div>
       <h3>Invited Friends List</h3>
       <ul id="refereeList" class="info-text"></ul>
+    </div>
+
+    <div id="prizes" class="section hidden">
+        <center><h2>4D USDT Reward Payouts</h2></center>
+            <table>
+                <tr>
+                    <th>Bet Type</th>
+                    <th>Const</th>
+                    <th>USDT Mainnet Reward</th>
+                </tr>
+                <tr>
+                    <td style="color: orange; font-weight: bold;">4D</td>
+                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+                    <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
+                </tr>
+                <tr>
+                    <td style="color: orange; font-weight: bold;">3D</td>
+                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+                    <td style="color: #1a88ff; font-weight: bold;">0.75</td>
+                </tr>
+                <tr>
+                    <td style="color: orange; font-weight: bold;">2D</td>
+                    <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+                    <td style="color: #1a88ff; font-weight: bold;">0.5</td>
+                </tr>
+            </table>
     </div>
   </div>
 
