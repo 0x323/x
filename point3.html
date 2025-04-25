@@ -393,7 +393,7 @@ th {
       if (isConnected) {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
-        document.getElementById("accountInfo").innerHTML = `<span style="font-size: 13px; color: #a24dff;">Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}</span>`;
+        document.getElementById("accountInfo").innerHTML = `<span style="font-size: 12.5px; color: #a24dff;">Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}</span>`;
         toggleSectionsVisibility(true);
       } else {
         walletButton.innerText = "Connect Wallet";
@@ -490,7 +490,7 @@ th {
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
           li.className = "py-2";
-          li.innerHTML = `<span style="font-size: 13px; color: #a24dff;">
+          li.innerHTML = `<span style="font-size: 12.5px; color: #a24dff;">
           Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</span>`;
           refereeList.appendChild(li);
         });
