@@ -166,7 +166,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>CheckInPoint DApp</h1>
+    <h1>CheckInPoint DAp</h1>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -347,8 +347,8 @@
         // Periksa jaringan (Base Sepolia chainId: 84532)
         const chainId = await window.ethereum.request({ method: "eth_chainId" });
         if (chainId !== "0x14a34") {
-          alert("Please switch MetaMask to the Base Sepolia Testnet network.");
-          console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Base Sepolia Testnet)`);
+          alert("Please switch MetaMask to the Base Sepolia network.");
+          console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Base Sepolia)`);
           return;
         }
 
