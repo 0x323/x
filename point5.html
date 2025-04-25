@@ -323,8 +323,8 @@ const initWeb3 = async (forceConnect = false) => {
     // Periksa jaringan (Sepolia chainId: 84532)
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
     if (chainId !== "0x14a34") { // 0x14a34 adalah chainId untuk Sepolia Base
-      alert("Please switch MetaMask to the Sepolia Base network.");
-      console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Sepolia Base)`);
+      alert("Please switch MetaMask to the Sepolia Base Testnet network.");
+      console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Sepolia Base Testnet)`);
       return;
     }
 
