@@ -543,12 +543,18 @@ const loadGlobalBetHistory = async () => {
     isFetching = false;
 };
 
-// Attach scroll listener
-const globalContainer = document.getElementById("globalBetHistoryContainer");
-globalContainer.addEventListener("scroll", () => {
-    if (globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50) {
-        loadGlobalBetHistory(); // Load more when near bottom
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const globalContainer = document.getElementById("globalBetHistoryContainer");
+
+    globalContainer.addEventListener("scroll", () => {
+        if (
+            globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50
+        ) {
+            loadGlobalBetHistory();
+        }
+    });
+
+    loadGlobalBetHistory();
 });
 
 // Salin link undangan
