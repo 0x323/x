@@ -706,8 +706,13 @@
         const eventIndex = count - 1 - index;
         const event = userEvents[eventIndex] || {};
         const date = new Date(bet.timestamp * 1000).toLocaleString();
-        const txHash = event.txHash || "Pending";
-        const blockNumber = event.blockNumber || "Pending";
+        const txHashDisplay = txHash !== "Pending"
+  ? `Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>`
+  : "";
+
+const blockNumberDisplay = blockNumber !== "Pending"
+  ? `Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>`
+  : "";
         const betTimes = bet.cost / (1 * 10 ** 18);
         const payoutAmount = bet.reward / (10 * 10 ** 18);
 
@@ -721,8 +726,8 @@
           Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
           Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
           Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-          Tx Hash: <span style="color: #ff4da6;">${txHash === "Pending" ? txHash : `<a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a>`}</span><br>
-          Block Number: <span style="color: #00ccff;">${blockNumber === "Pending" ? blockNumber : `<a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a>`}</span><br>
+         ${txHashDisplay}<br>
+  ${blockNumberDisplay}<br>
           Time: <span style="color: #ffb833;">${date}</span><br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
         historyList.appendChild(li);
@@ -764,8 +769,13 @@
         const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
           ? "None"
           : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
-        const txHash = event.txHash || "Pending";
-        const blockNumber = event.blockNumber || "Pending";
+        const txHashDisplay = txHash !== "Pending"
+  ? `Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>`
+  : "";
+
+const blockNumberDisplay = blockNumber !== "Pending"
+  ? `Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>`
+  : "";
         const betTimes = bet.cost / (1 * 10 ** 18);
         const payoutAmount = bet.reward / (10 * 10 ** 18);
 
@@ -779,8 +789,8 @@
           Payout Amount: <span style="color: #66ff66;">${payoutAmount.toFixed(2)} Points</span><br>
           Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
           Referrer: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-          Tx Hash: <span style="color: #ff4da6;">${txHash === "Pending" ? txHash : `<a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a>`}</span><br>
-          Block Number: <span style="color: #00ccff;">${blockNumber === "Pending" ? blockNumber : `<a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a>`}</span><br>
+          ${txHashDisplay}<br>
+  ${blockNumberDisplay}<br>
           Time: <span style="color: #ffb833;">${date}</span><br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
         historyList.appendChild(li);
