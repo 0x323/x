@@ -119,11 +119,11 @@
 </head>
 <body>
   <div class="container">
-    <h1>CheckInPoint DApp</h1>
+  <center><h1>CheckInPoint DApp</h1></center>
 
     <!-- Wallet Connection -->
     <div class="section">
-      <button id="walletButton">Connect Wallet</button>
+    <center><button id="walletButton">Connect Wallet</button></center>
       <p id="accountInfo" class="info-text"></p>
       <p id="ethBalance" class="info-text">Balance: Loading...</p>
       <p id="tokenBalance" class="info-text">Balance: Loading...</p>
@@ -131,8 +131,8 @@
 
     <!-- Check-In -->
     <div class="section">
-      <h2>Daily Check-In</h2>
-      <button id="checkIn">Check In</button>
+    <center><h2>Daily Check-In</h2>
+      <button id="checkIn">Check In</button></center>
       <p id="checkInStatus" class="info-text"></p>
       <h3>Check-In History</h3>
       <ul id="checkInHistory" class="info-text"></ul>
@@ -140,7 +140,7 @@
 
     <!-- Betting -->
     <div class="section">
-      <h2>Place a Bet</h2>
+      <center><h2>Place a Bet</h2>
       <div class="input-group">
         <label for="betNumber">Number (1-4 characters)</label>
         <input id="betNumber" type="number" placeholder="2D 3D or 4D">
@@ -153,18 +153,18 @@
         <label for="payoutAmount">Payout Amount (in Points)</label>
         <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
       </div>
-      <button id="placeBet">Place Bet</button>
+      <button id="placeBet">Place Bet</button></center>
     </div>
 
     <!-- User Bet History -->
     <div class="section">
-      <h3>Your Bet History</h3>
+    <center><h2>Your Bet History</h2></center>
       <ul id="userBetHistory" class="info-text"></ul>
     </div>
 
     <!-- Global Bet History -->
     <div class="section">
-      <h2>Global Bet History</h2>
+    <center><h2>Global Bet History</h2></center>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
       </div>
@@ -172,10 +172,10 @@
 
     <!-- Referral -->
     <div class="section">
-      <h2>Referral</h2>
+    <center><h2>Referral</h2></center>
       <div class="input-group">
         <p id="referralLink" class="info-text">Link Undangan: Loading...<br></p>
-        <button id="copyLink">Copy Link</button>
+        <button id="copyLink">Copy Link</button><br>
         <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Teman yang Diundang: Loading...</p>
         <p id="referralReward" class="info-text">Reward: Loading...</p>
       </div>
@@ -422,7 +422,7 @@ const loadCheckInHistory = async () => {
 Day: ${log.dayUTC}<br>
 Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
 Time: ${date}<br>
-</small><hr style="background-color: #333333; height: 1px; border: none;">`;
+</small><br><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
     }
   } catch (error) {
