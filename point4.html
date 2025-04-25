@@ -600,13 +600,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Salin link undangan
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Referral Link: ", "");
-      navigator.clipboard.writeText(linkText).then(() => {
-        alert("Referral link copied!");
-      }).catch(() => {
-        alert("Failed to copy link.");
-      });
-    };
+    const linkElement = document.getElementById("referralLink").innerText;
+    const linkText = linkElement.replace("Referral Link:", "").trim();
+    navigator.clipboard.writeText(linkText).then(() => {
+      alert("Referral link copied!");
+    }).catch(() => {
+      alert("Failed to copy link.");
+    });
+  };
 
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", () => {
