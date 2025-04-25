@@ -611,7 +611,7 @@
 
     // Salin link undangan
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Referral Link: ", "");
+      const linkText = document.getElementById("referralLink").innerText.replace("", "");
       navigator.clipboard.writeText(linkText).then(() => {
         alert("Referral link copied!");
       }).catch(() => {
