@@ -393,7 +393,8 @@ th {
       if (isConnected) {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
-        document.getElementById("accountInfo").innerHTML = `Connected: <small>${userAccount.slice(0, 21)}${userAccount.slice(-21)}</small>`;
+        document.getElementById("accountInfo").innerHTML = `<span style="font-size: 12px; color: #f441a5;
+text-shadow: 0 0 4px #f441a5, 0 0 8px #f441a5;">Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}</span>`;
         toggleSectionsVisibility(true);
       } else {
         walletButton.innerText = "Connect Wallet";
@@ -490,7 +491,8 @@ th {
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
           li.className = "py-2";
-          li.innerHTML = `<small>Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</small>`;
+          li.innerHTML = `<span style="font-size: 12px; color: #f441a5; text-shadow: 0 0 4px #f441a5, 0 0 8px #f441a5;">
+          Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</span>`;
           refereeList.appendChild(li);
         });
       } catch (error) {
@@ -507,12 +509,12 @@ th {
       }
       try {
         await contract.methods.checkIn().send({ from: userAccount });
-        document.getElementById("checkInStatus").innerText = "<small>Check-in successful! You earned 1 Lpoint!</small>";
+        document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Lpoint!</smal>";
         loadWalletInfo();
         loadCheckInHistory();
       } catch (error) {
         console.error("Error checking in:", error);
-        document.getElementById("checkInStatus").innerText = "<small>Failed to check in. You may have already checked in today.</small>";
+        document.getElementById("checkInStatus").innerHTML = "<small>Failed to check in. You may have already checked in today.</small>";
       }
     };
 
