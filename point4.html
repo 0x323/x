@@ -134,7 +134,7 @@
     <center><h2>Daily Faucet Claim</h2>
       <button id="checkIn">Claim 1 Lpoint</button></center>
       <p id="checkInStatus" class="info-text"></p>
-      <h5>Your Faucet History</h5>
+      <h4>Your Faucet History</h4>
       <ul id="checkInHistory" class="info-text"></ul>
     </div>
 
@@ -142,15 +142,15 @@
     <div class="section">
       <center><h2>Place a Bet</h2>
       <div class="input-group">
-        <label for="betNumber"><small>Betting Number</small>small></label>
+        <label for="betNumber"><small>Betting Number</small></label>
         <input id="betNumber" type="number" placeholder="2D 3D or 4D">
       </div>
       <div class="input-group">
-        <label for="betTimes"><small>Multiplication 1× / 5×</small>small></label>
+        <label for="betTimes"><small>Multiplication 1× / 5×</small></label>
         <input id="betTimes" type="number" min="1" max="5" placeholder="×1 / ×5">
       </div>
       <div class="input-group">
-        <label for="payoutAmount"><small>Reward Amount</small>small></label>
+        <label for="payoutAmount"><small>Reward Amount</small></label>
         <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
       </div>
       <button id="placeBet">Submit Ticket</button></center>
@@ -174,15 +174,10 @@
     <div class="section">
     <center><h2>Referral</h2></center>
       <div class="input-group">
-        <p id="referralLink" class="info-text">Link Undangan: Loading...<br></p>
-        <button id="copyLink">Copy Link</button><br>
+        <p id="referralLink" class="info-text">Invitation Link:: Loading...<br></p>
+        <button id="copyLink>Copy Link</button><br>
         <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Teman yang Diundang: Loading...</p>
         <p id="referralReward" class="info-text">Reward: Loading...</p>
-      </div>
-      <div>
-        <label for="referrerId"><small>Join with Referral ID</small>small></label>
-        <input id="referrerId" type="text" placeholder="Enter referrer's ID">
-        <button id="setReferrerId">Join Referral</button>
       </div>
     </div>
   </div>
@@ -597,7 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Salin link undangan
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerHTML.replace("Link Undangan: ", "");
+      const linkText = document.getElementById("referralLink").innerHTML.replace("Invitation Link: ", "");
       navigator.clipboard.writeText(linkText).then(() => {
         alert("Referral link copied!");
       }).catch(() => {
