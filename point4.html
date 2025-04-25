@@ -173,7 +173,7 @@
     <div class="section">
       <h2>Referral</h2>
       <div class="input-group">
-        <p id="referralLink" class="info-text">Link Undangan: Loading...</p><br>
+        <p id="referralLink" class="info-text">Link Undangan: Loading...<br></p>
         <button id="copyLink">Copy Link</button>
         <p id="refereeCount" class="info-text" style="margin-top: 0.5rem;">Teman yang Diundang: Loading...</p>
         <p id="referralReward" class="info-text">Reward: Loading...</p>
@@ -197,7 +197,6 @@
     let globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
-    const loadedIndexes = new Set();
 
     // Durasi validitas koneksi (7 hari dalam milidetik)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
@@ -508,7 +507,7 @@ Time: ${date}<br>
     return;
   }
   isFetching = true;
-  document.getElementById("globalLoading").style.display = "block";
+  console.log("Loading global bet history, offset:", globalHistoryOffset);
 
   try {
     if (totalGlobalCount === 0) {
@@ -521,29 +520,24 @@ Time: ${date}<br>
     const start = Math.max(end - globalHistoryBatchSize + 1, 0);
     console.log(`Loading batch: start=${start}, end=${end}`);
 
-    if (globalHistoryOffset >= totalGlobalCount) {
-      console.log("All data loaded");
-      document.getElementById("globalLoading").innerText = "No more history";
+    if (start >= totalGlobalCount) {
+      console.log("No more data to load");
       isFetching = false;
       return;
     }
 
     const promises = [];
     for (let i = end; i >= start; i--) {
-      if (!loadedIndexes.has(i)) {
-        promises.push(contract.methods.getBet(i).call().then(bet => ({ index: i, bet })));
-        loadedIndexes.add(i);
-      }
+      promises.push(contract.methods.getBet(i).call());
     }
+    const bets = await Promise.all(promises);
 
-    const results = await Promise.all(promises);
-
-    results.forEach(({ index, bet }) => {
+    bets.forEach((bet, index) => {
       if (!bet || !bet.user) {
-        console.log(`Invalid bet at index ${index}`);
+        console.log(`Invalid bet at index ${end - index}`);
         return;
       }
-
+      console.log("Fetched bet:", bet);
       const date = new Date(bet.timestamp * 1000).toLocaleString();
       const li = document.createElement("li");
       li.className = "py-2";
@@ -558,37 +552,37 @@ Time: ${date}<br>
     });
 
     globalHistoryOffset += globalHistoryBatchSize;
-
-    if (globalHistoryOffset >= totalGlobalCount) {
-      console.log("All history loaded, removing scroll listener");
-      globalContainer.removeEventListener("scroll", scrollHandler);
-      document.getElementById("globalLoading").innerText = "No more history";
-    } else {
-      document.getElementById("globalLoading").style.display = "none";
-    }
-
+    console.log("Updated offset:", globalHistoryOffset);
   } catch (error) {
     console.error("Error loading global bet history:", error);
     document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
   }
 
   isFetching = false;
-};
-
-const scrollHandler = () => {
-  clearTimeout(scrollHandler._timeout);
-  scrollHandler._timeout = setTimeout(() => {
-    const container = globalContainer;
-    const condition = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
-    if (condition) {
-      loadGlobalBetHistory();
-    }
-  }, 200);
+  console.log("Fetching complete, isFetching:", isFetching);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  globalContainer = document.getElementById("globalBetHistoryContainer");
-  globalContainer.addEventListener("scroll", scrollHandler);
+  const globalContainer = document.getElementById("globalBetHistoryContainer");
+
+  let scrollTimeout;
+  globalContainer.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const condition = globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50;
+      console.log("Scroll event:", {
+        scrollTop: globalContainer.scrollTop,
+        clientHeight: globalContainer.clientHeight,
+        scrollHeight: globalContainer.scrollHeight,
+        condition
+      });
+      if (condition) {
+        console.log("Triggering loadGlobalBetHistory");
+        loadGlobalBetHistory();
+      }
+    }, 200);
+  });
+
   loadGlobalBetHistory();
 });
     
