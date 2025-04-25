@@ -131,10 +131,10 @@
 
     <!-- Check-In -->
     <div class="section">
-    <center><h2>Daily Check-In</h2>
-      <button id="checkIn">Check In</button></center>
+    <center><h2>Daily Faucet Claim</h2>
+      <button id="checkIn">Claim 1 Lpoint</button></center>
       <p id="checkInStatus" class="info-text"></p>
-      <h3>Check-In History</h3>
+      <h5>Your Faucet History</h5>
       <ul id="checkInHistory" class="info-text"></ul>
     </div>
 
@@ -142,29 +142,29 @@
     <div class="section">
       <center><h2>Place a Bet</h2>
       <div class="input-group">
-        <label for="betNumber">Number (1-4 characters)</label>
+        <label for="betNumber"><small>Betting Number</small>small></label>
         <input id="betNumber" type="number" placeholder="2D 3D or 4D">
       </div>
       <div class="input-group">
-        <label for="betTimes">Times (1-5)</label>
-        <input id="betTimes" type="number" min="1" max="10" placeholder="×1 / ×5">
+        <label for="betTimes"><small>Multiplication 1× / 5×</small>small></label>
+        <input id="betTimes" type="number" min="1" max="5" placeholder="×1 / ×5">
       </div>
       <div class="input-group">
-        <label for="payoutAmount">Payout Amount (in Points)</label>
+        <label for="payoutAmount"><small>Reward Amount</small>small></label>
         <input id="payoutAmount" type="number" min="10" placeholder="Enter reward 10 (point)">
       </div>
-      <button id="placeBet">Place Bet</button></center>
+      <button id="placeBet">Submit Ticket</button></center>
     </div>
 
     <!-- User Bet History -->
     <div class="section">
-    <center><h2>Your Bet History</h2></center>
+    <center><h2>Your Ticket History</h2></center>
       <ul id="userBetHistory" class="info-text"></ul>
     </div>
 
     <!-- Global Bet History -->
     <div class="section">
-    <center><h2>Global Bet History</h2></center>
+    <center><h2>Global Ticket History</h2></center>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
         <ul id="globalBetHistory" class="info-text"></ul>
       </div>
@@ -180,7 +180,7 @@
         <p id="referralReward" class="info-text">Reward: Loading...</p>
       </div>
       <div>
-        <label for="referrerId">Join with Referral ID</label>
+        <label for="referrerId"><small>Join with Referral ID</small>small></label>
         <input id="referrerId" type="text" placeholder="Enter referrer's ID">
         <button id="setReferrerId">Join Referral</button>
       </div>
@@ -419,7 +419,7 @@ const loadCheckInHistory = async () => {
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
-Day: ${log.dayUTC}<br>
+ID: ${log.dayUTC}<br>
 Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
 Time: ${date}<br>
 </small><br><hr style="background-color: #333333; height: 1px; border: none;">`;
