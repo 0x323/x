@@ -311,35 +311,38 @@
     };
 
     // Inisialisasi Web3
-    const initWeb3 = async (forceConnect = false) => {
-      if (!window.ethereum) {
-        alert("Please install MetaMask to use this DApp.");
-        return;
-      }
+const initWeb3 = async (forceConnect = false) => {
+  if (!window.ethereum) {
+    alert("Please install MetaMask to use this DApp.");
+    return;
+  }
 
-      web3 = new Web3(window.ethereum);
-      try {
-        if (forceConnect || checkStoredConnection()) {
-          await window.ethereum.request({ method: "eth_requestAccounts" });
-          userAccount = (await web3.eth.getAccounts())[0];
-          contract = new web3.eth.Contract(contractABI, contractAddress);
-          updateWalletUI(true);
-          storeConnection(userAccount);
-          await setAutomaticReferralId();
-          await handleReferralFromURL();
-          await loadCriticalData();
-          setTimeout(() => {
-            loadCheckInHistory();
-            loadUserBetHistory();
-            loadGlobalBetHistory();
-          }, 100); // Tunda riwayat
-        }
-      } catch (error) {
-        console.error("Error connecting to MetaMask:", error);
-        alert("Failed to connect to MetaMask. Please try again.");
-        updateWalletUI(false);
-      }
-    };
+  web3 = new Web3(window.ethereum);
+  try {
+    if (forceConnect || checkStoredConnection()) {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      userAccount = (await web3.eth.getAccounts())[0];
+      contract = new web3.eth.Contract(contractABI, contractAddress);
+      console.log("Initializing global bet events");
+      await fetchBetEvents(); // Cache global events
+      await fetchBetEvents(userAccount); // Cache user events
+      updateWalletUI(true);
+      storeConnection(userAccount);
+      await setAutomaticReferralId();
+      await handleReferralFromURL();
+      await loadCriticalData();
+      setTimeout(() => {
+        loadCheckInHistory();
+        loadUserBetHistory();
+        loadGlobalBetHistory();
+      }, 100); // Tunda riwayat
+    }
+  } catch (error) {
+    console.error("Error connecting to MetaMask:", error);
+    alert("Failed to connect to MetaMask. Please try again.");
+    updateWalletUI(false);
+  }
+};
 
     // Periksa koneksi tersimpan
     const checkStoredConnection = () => {
