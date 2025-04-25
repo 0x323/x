@@ -289,7 +289,7 @@ th {
 
     // Durasi validitas koneksi (7 hari dalam milidetik)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
-    const BASE_URL = "https://0x323.github.io/x/point3"; // Ganti dengan URL proyek Anda
+    const BASE_URL = "https://0x323.github.io/x/point3";
 
     // Fungsi untuk menghasilkan UID acak
     const generateUID = () => {
@@ -393,8 +393,7 @@ th {
       if (isConnected) {
         walletButton.innerText = "Disconnect Wallet";
         walletButton.classList.add("disconnect");
-        document.getElementById("accountInfo").innerHTML = `<span style="font-size: 12px; color: #f441a5;
-text-shadow: 0 0 4px #f441a5, 0 0 8px #f441a5;">Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}</span>`;
+        document.getElementById("accountInfo").innerHTML = `<span style="font-size: 13px; color: #7a00ff;">Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}</span>`;
         toggleSectionsVisibility(true);
       } else {
         walletButton.innerText = "Connect Wallet";
@@ -491,7 +490,7 @@ text-shadow: 0 0 4px #f441a5, 0 0 8px #f441a5;">Connected: ${userAccount.slice(0
         referees.forEach((referee, index) => {
           const li = document.createElement("li");
           li.className = "py-2";
-          li.innerHTML = `<span style="font-size: 12px; color: #f441a5; text-shadow: 0 0 4px #f441a5, 0 0 8px #f441a5;">
+          li.innerHTML = `<span style="font-size: 13px; color: #7a00ff;">
           Referee ${index + 1}: ${referee.slice(0, 21)}${referee.slice(-21)}</span>`;
           refereeList.appendChild(li);
         });
