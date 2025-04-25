@@ -273,12 +273,12 @@
       userAccount = null;
       localStorage.removeItem("walletConnection");
       updateWalletUI(false);
-      document.getElementById("accountInfo").innerText = "Wallet disconnected";
-      document.getElementById("ethBalance").innerText = "ETH Balance: Connect wallet";
-      document.getElementById("tokenBalance").innerText = "Token Balance: Connect wallet";
-      document.getElementById("referralLink").innerText = "Link Undangan: Connect wallet";
-      document.getElementById("refereeCount").innerText = "Teman yang Diundang: Connect wallet";
-      document.getElementById("referralReward").innerText = "Reward: Connect wallet";
+      document.getElementById("accountInfo").innerHTML = "Wallet disconnected";
+      document.getElementById("ethBalance").innerHTML = "ETH Balance: Connect wallet";
+      document.getElementById("tokenBalance").innerHTML = "Token Balance: Connect wallet";
+      document.getElementById("referralLink").innerHTML = "Link Undangan: Connect wallet";
+      document.getElementById("refereeCount").innerHTML = "Teman yang Diundang: Connect wallet";
+      document.getElementById("referralReward").innerHTML = "Reward: Connect wallet";
       document.getElementById("checkInHistory").innerHTML = "";
       document.getElementById("userBetHistory").innerHTML = "";
       document.getElementById("globalBetHistory").innerHTML = "";
@@ -288,12 +288,12 @@
     const updateWalletUI = (isConnected) => {
       const walletButton = document.getElementById("walletButton");
       if (isConnected) {
-        walletButton.innerText = "Disconnect Wallet";
+        walletButton.innerHTML = "Disconnect Wallet";
         walletButton.classList.remove("bg-blue-600", "hover:bg-blue-700");
         walletButton.classList.add("bg-red-600", "hover:bg-red-700");
-        document.getElementById("accountInfo").innerText = `Connected: ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}`;
+        document.getElementById("accountInfo").innerText = `Connected: ${userAccount.slice(0, 21)}${userAccount.slice(-21)}`;
       } else {
-        walletButton.innerText = "Connect Wallet";
+        walletButton.innerHTML = "Connect Wallet";
         walletButton.classList.remove("bg-red-600", "hover:bg-red-700");
         walletButton.classList.add("bg-blue-600", "hover:bg-blue-700");
         document.getElementById("accountInfo").innerText = "";
@@ -597,7 +597,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Salin link undangan
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Link Undangan: ", "");
+      const linkText = document.getElementById("referralLink").innerHTML.replace("Link Undangan: ", "");
       navigator.clipboard.writeText(linkText).then(() => {
         alert("Referral link copied!");
       }).catch(() => {
