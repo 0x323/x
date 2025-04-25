@@ -314,53 +314,73 @@
 const initWeb3 = async (forceConnect = false) => {
   if (!window.ethereum) {
     alert("Please install MetaMask to use this DApp.");
+    console.error("MetaMask not detected.");
     return;
   }
 
   web3 = new Web3(window.ethereum);
   try {
+    // Periksa jaringan (Sepolia chainId: 84532)
+    const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    if (chainId !== "0x14a34") { // 0x14a34 adalah chainId untuk Sepolia Base
+      alert("Please switch MetaMask to the Sepolia Base network.");
+      console.error(`Invalid chainId: ${chainId}, expected 0x14a34 (Sepolia Base)`);
+      return;
+    }
+
+    // Periksa koneksi tersimpan atau paksa koneksi
     if (forceConnect || checkStoredConnection()) {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      userAccount = (await web3.eth.getAccounts())[0];
+      console.log("Requesting MetaMask account access...");
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      if (!accounts || accounts.length === 0) {
+        throw new Error("No accounts returned by MetaMask.");
+      }
+
+      userAccount = accounts[0];
+      console.log(`Connected account: ${userAccount}`);
+
+      // Inisialisasi kontrak
+      if (!contractABI || !contractAddress) {
+        throw new Error("Contract ABI or address is not defined.");
+      }
       contract = new web3.eth.Contract(contractABI, contractAddress);
+      console.log("Contract initialized at:", contractAddress);
+
+      // Cache event taruhan
       console.log("Initializing global bet events");
       await fetchBetEvents(); // Cache global events
       await fetchBetEvents(userAccount); // Cache user events
+
+      // Perbarui UI dan simpan koneksi
       updateWalletUI(true);
       storeConnection(userAccount);
+
+      // Tangani referral
       await setAutomaticReferralId();
       await handleReferralFromURL();
+
+      // Muat data kritis
       await loadCriticalData();
+
+      // Tunda pemuatan riwayat untuk performa
       setTimeout(() => {
         loadCheckInHistory();
         loadUserBetHistory();
         loadGlobalBetHistory();
-      }, 100); // Tunda riwayat
+      }, 100);
     }
   } catch (error) {
-    console.error("Error connecting to MetaMask:", error);
-    alert("Failed to connect to MetaMask. Please try again.");
+    console.error("Error connecting to MetaMask:", error.message, error.stack);
+    if (error.code === 4001) {
+      alert("Connection request denied by user. Please approve the connection in MetaMask.");
+    } else if (error.code === -32002) {
+      alert("A connection request is already pending in MetaMask. Please check your MetaMask extension.");
+    } else {
+      alert(`Failed to connect to MetaMask: ${error.message}. Please try again.`);
+    }
     updateWalletUI(false);
   }
 };
-
-    // Periksa koneksi tersimpan
-    const checkStoredConnection = () => {
-      const connection = localStorage.getItem("walletConnection");
-      if (!connection) return false;
-      try {
-        const { account, timestamp } = JSON.parse(connection);
-        if (Date.now() - timestamp < CONNECTION_VALIDITY && account) {
-          userAccount = account;
-          return true;
-        }
-        localStorage.removeItem("walletConnection");
-        return false;
-      } catch (error) {
-        localStorage.removeItem("walletConnection");
-        return false;
-      }
-    };
 
     // Simpan koneksi
     const storeConnection = (account) => {
