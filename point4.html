@@ -170,10 +170,12 @@
     </div>
 
     <!-- Global Bet History -->
-    <div class="section">
-      <h2>Global Bet History</h2>
-      <ul id="globalBetHistory" class="info-text"></ul>
-    </div>
+<div class="section">
+  <h2>Global Bet History</h2>
+  <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+    <ul id="globalBetHistory" class="info-text"></ul>
+  </div>
+</div>
 
     <!-- Referral -->
     <div class="section">
@@ -199,6 +201,10 @@ const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constru
 let web3;
 let contract;
 let userAccount;
+let globalHistoryOffset = 0;
+let globalHistoryBatchSize = 10;
+let totalGlobalCount = 0;
+let isFetching = false;
 
 // Durasi validitas koneksi (7 hari dalam milidetik)
 const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
@@ -501,12 +507,19 @@ const loadUserBetHistory = async () => {
 
 // Load Global Bet History
 const loadGlobalBetHistory = async () => {
-    if (!userAccount) return;
+    if (!userAccount || isFetching) return;
+    isFetching = true;
+
     try {
-        const count = await contract.methods.getBetHistoryLength().call();
+        if (totalGlobalCount === 0) {
+            totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+        }
+
         const historyList = document.getElementById("globalBetHistory");
-        historyList.innerHTML = "";
-        for (let i = count - 1; i >= 0; i--) {
+        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+
+        for (let i = end; i >= start; i--) {
             const bet = await contract.methods.getBet(i).call();
             const date = new Date(bet.timestamp * 1000).toLocaleString();
             const li = document.createElement("li");
@@ -520,11 +533,23 @@ const loadGlobalBetHistory = async () => {
             </small>`;
             historyList.appendChild(li);
         }
+
+        globalHistoryOffset += globalHistoryBatchSize;
     } catch (error) {
         console.error("Error loading global bet history:", error);
         document.getElementById("globalBetHistory").innerHTML = "<li>Error loading history.</li>";
     }
+
+    isFetching = false;
 };
+
+// Attach scroll listener
+const globalContainer = document.getElementById("globalBetHistoryContainer");
+globalContainer.addEventListener("scroll", () => {
+    if (globalContainer.scrollTop + globalContainer.clientHeight >= globalContainer.scrollHeight - 50) {
+        loadGlobalBetHistory(); // Load more when near bottom
+    }
+});
 
 // Salin link undangan
 const copyReferralLink = () => {
