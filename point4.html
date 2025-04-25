@@ -593,10 +593,15 @@
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            Number: ${bet.number}<br>
-            Cost: ${(bet.cost / 10 ** 18).toFixed(2)} Lpoints<br>
-            Reward: ${(bet.reward / 10 ** 18).toFixed(2)} Lpoints<br>
-            Time: ${date}<br>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
+            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+            Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
+            Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
         });
