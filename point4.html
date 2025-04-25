@@ -351,18 +351,18 @@
         const refereeCount = await contract.methods.getRefereeCount(userAccount).call();
         const referralReward = await contract.methods.referralRewards(userAccount).call();
 
-        document.getElementById("ethBalance").innerText = `ETH Balance: ${ethBalanceFormatted} ETH`;
-        document.getElementById("tokenBalance").innerText = `Token Balance: ${tokenBalanceFormatted} ${symbol}`;
-        document.getElementById("referralLink").innerText = `Link Undangan: ${BASE_URL}?uid=${userReferralId}`;
-        document.getElementById("refereeCount").innerText = `Teman yang Diundang: ${refereeCount}`;
-        document.getElementById("referralReward").innerText = `Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points`;
+        document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${ethBalanceFormatted} ETH</small>`;
+        document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${tokenBalanceFormatted} ${symbol}</small>`;
+        document.getElementById("referralLink").innerHTML = `<small>Link Undangan: ${BASE_URL}?uid=${userReferralId}</small>`;
+        document.getElementById("refereeCount").innerHTML = `<small>Teman yang Diundang: ${refereeCount}</small>`;
+        document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
       } catch (error) {
         console.error("Error loading wallet info:", error);
-        document.getElementById("ethBalance").innerText = "ETH Balance: Error";
-        document.getElementById("tokenBalance").innerText = "Token Balance: Error";
-        document.getElementById("referralLink").innerText = "Link Undangan: Error";
-        document.getElementById("refereeCount").innerText = "Teman yang Diundang: Error";
-        document.getElementById("referralReward").innerText = "Reward: Error";
+        document.getElementById("ethBalance").innerHTML = "<small>ETH Balance: Error</small>";
+        document.getElementById("tokenBalance").innerHTML = "<small>Token Balance: Error</small>";
+        document.getElementById("referralLink").innerHTML = "<small>Link Undangan: Error</small>";
+        document.getElementById("refereeCount").innerHTML = "<small>Teman yang Diundang: Error</small>";
+        document.getElementById("referralReward").innerHTML = "<small>Reward: Error</small>";
       }
     };
 
@@ -405,25 +405,30 @@
     };
 
     // Load Check-In History
-    const loadCheckInHistory = async () => {
-      if (!userAccount) return;
-      try {
-        const count = await contract.methods.getCheckInCount(userAccount).call();
-        const historyList = document.getElementById("checkInHistory");
-        historyList.innerHTML = "";
-        for (let i = 0; i < count; i++) {
-          const log = await contract.methods.getCheckInLog(userAccount, i).call();
-          const date = new Date(log.timestamp * 1000).toLocaleString();
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerText = `Day: ${log.dayUTC}, Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points, Time: ${date}`;
-          historyList.appendChild(li);
-        }
-      } catch (error) {
-        console.error("Error loading check-in history:", error);
-        document.getElementById("checkInHistory").innerHTML = "<li>Error loading history.</li>";
-      }
-    };
+const loadCheckInHistory = async () => {
+  if (!userAccount) return;
+  try {
+    const count = await contract.methods.getCheckInCount(userAccount).call();
+    const historyList = document.getElementById("checkInHistory");
+    historyList.innerHTML = "";
+
+    for (let i = count - 1; i >= 0; i--) {
+      const log = await contract.methods.getCheckInLog(userAccount, i).call();
+      const date = new Date(log.timestamp * 1000).toLocaleString();
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+Day: ${log.dayUTC}<br>
+Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
+Time: ${date}<br>
+</small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    }
+  } catch (error) {
+    console.error("Error loading check-in history:", error);
+    document.getElementById("checkInHistory").innerHTML = "<li>Error loading history.</li>";
+  }
+};
 
     // Place Bet
     const placeBet = async () => {
