@@ -108,7 +108,7 @@
 
     input:focus {
       outline: none;
-      border-color: #00ffcc;
+      border-color: #00bfff;
       box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.3);
     }
 
@@ -190,7 +190,7 @@
       <h2>Place a Bet</h2>
       <div class="input-group">
         <label for="betNumber"><small>Betting Number</small></label><br>
-        <br><input id="betNumber" type="text" placeholder="Enter: 2D, 3D, or 4D">
+        <br><input id="betNumber" type="number" min="00" max="9999" placeholder="Enter: 2D, 3D, or 4D">
       </div>
       <div class="input-group">
         <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
