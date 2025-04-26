@@ -103,13 +103,13 @@
 
                 // Tentukan blok awal untuk event (misalnya, 10000 blok terakhir)
                 const latestBlock = await web3.eth.getBlockNumber();
-                const fromBlock = Math.max(latestBlock - 10000, 0); // Ambil 10000 blok terakhir
+                const fromBlock = Math.max(latestBlock - 100000000, 0); // Ambil 10000 blok terakhir
 
                 // Total Check-Ins (menggunakan event CheckInLogCreated)
                 let checkInEvents = [];
                 try {
                     checkInEvents = await contract.getPastEvents('CheckInLogCreated', { 
-                        fromBlock: fromBlock, 
+                        fromBlock: 24816594, 
                         toBlock: 'latest' 
                     });
                     document.getElementById('totalCheckIns').innerText = `Total Check-Ins: ${checkInEvents.length}`;
@@ -123,7 +123,7 @@
                 let referralRewardEvents = [];
                 try {
                     referralRewardEvents = await contract.getPastEvents('ReferralReward', { 
-                        fromBlock: fromBlock, 
+                        fromBlock: 24816594,, 
                         toBlock: 'latest' 
                     });
                     const totalReferralRewards = referralRewardEvents.reduce((sum, event) => sum + Number(event.returnValues.reward), 0);
@@ -134,7 +134,7 @@
                 let referredEvents = [];
                 try {
                     referredEvents = await contract.getPastEvents('Referred', { 
-                        fromBlock: fromBlock, 
+                        fromBlock: 24816594, 
                         toBlock: 'latest' 
                     });
                     const referrerCounts = {};
@@ -150,7 +150,7 @@
                 let betEvents = [];
                 try {
                     betEvents = await contract.getPastEvents('PlaceBet', { 
-                        fromBlock: fromBlock, 
+                        fromBlock: 24816594, 
                         toBlock: 'latest' 
                     });
                     const bettorCounts = {};
@@ -177,7 +177,7 @@
                 let transferEvents = [];
                 try {
                     transferEvents = await contract.getPastEvents('Transfer', { 
-                        fromBlock: fromBlock, 
+                        fromBlock: 24816594, 
                         toBlock: 'latest' 
                     });
                     const totalBurned = transferEvents
