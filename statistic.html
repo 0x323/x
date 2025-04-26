@@ -98,7 +98,7 @@
             try {
                 // Total Supply
                 const totalSupply = await contract.methods.totalSupply().call();
-                document.getElementById('totalSupply').innerText = `Total Supply: ${web3.utils.fromWei(totalSupply, 'ether')} CIP`;
+                document.getElementById('totalSupply').innerText = `Supply Now: ${web3.utils.fromWei(totalSupply, 'ether')} Lpoint`;
 
                 // Total Check-Ins (contoh: hitung total check-in dari event atau metode lain)
                 // Catatan: Anda perlu metode kontrak atau event log untuk menghitung total check-in
