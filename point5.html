@@ -772,11 +772,11 @@ const loadRefereeList = async () => {
         pagination.appendChild(btn);
       };
 
-      createButton("img/first.png", currentPage === 1, () => {
+      createButton("img/first.svg", currentPage === 1, () => {
   currentPage = 1;
   renderPage(currentPage);
 }, true);
-      createButton("img/prev.png", currentPage === 1, () => {
+      createButton("img/prev.svg", currentPage === 1, () => {
   currentPage--;
   renderPage(currentPage);
 }, true);
@@ -850,11 +850,11 @@ const loadRefereeList = async () => {
         }
       }
 
-      createButton("img/next.png", currentPage === totalPages, () => {
+      createButton("img/next.svg", currentPage === totalPages, () => {
   currentPage++;
   renderPage(currentPage);
 }, true);
-      createButton("img/last.png", currentPage === totalPages, () => {
+      createButton("img/last.svg", currentPage === totalPages, () => {
   currentPage = totalPages;
   renderPage(currentPage);
 }, true);
