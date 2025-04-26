@@ -803,54 +803,54 @@
     };
 
     // Load User Bet History
-    const loadUserBetHistory = async () => {
-      if (!userAccount) return;
-      setLoading("userBetHistory", true);
-      try {
-        console.log("Loading user bet history");
-        const count = await contract.methods.getUserBetCount(userAccount).call();
-        const historyList = document.getElementById("userBetHistory");
-        historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
+const loadUserBetHistory = async () => {
+  if (!userAccount) return;
+  setLoading("userBetHistory", true);
+  try {
+    console.log("Loading user bet history");
+    const count = await contract.methods.getUserBetCount(userAccount).call();
+    const historyList = document.getElementById("userBetHistory");
+    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
-        const maxDisplay = 10;
-        const start = Math.max(count - maxDisplay, 0);
-        const promises = [];
-        for (let i = count - 1; i >= start; i--) {
-          promises.push(contract.methods.getUserBet(userAccount, i).call());
-        }
-        const bets = await Promise.all(promises);
-        const userEvents = cache.betEvents[userAccount] || {};
-        const referrer = await contract.methods.referredBy(userAccount).call();
-        const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-          ? "None"
-          : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+    const maxDisplay = 10;
+    const start = Math.max(count - maxDisplay, 0);
+    const promises = [];
+    for (let i = count - 1; i >= start; i--) {
+      promises.push(contract.methods.getUserBet(userAccount, i).call());
+    }
+    const bets = await Promise.all(promises);
+    const userEvents = cache.betEvents[userAccount] || {};
+    const referrer = await contract.methods.referredBy(userAccount).call();
+    const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+      ? "None"
+      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
 
-        bets.reverse().forEach((bet, index) => {
-          if (!bet || !bet.timestamp) return;
-          const date = new Date(bet.timestamp * 1000).toLocaleString();
-          const eventIndex = start + index;
-          const event = userEvents[eventIndex] || {};
-          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
-          const li = document.createElement("li");
-          li.className = "py-2";
-          li.innerHTML = `<small>
-            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
-            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-            Time: <span style="color: #ffb833;">${date}</span><br>
-          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-          historyList.appendChild(li);
-        });
-        console.log("User bet history loaded successfully");
-      } catch (error) {
-        console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
-      } finally {
-        setLoading("userBetHistory", false);
-      }
-    };
+    bets.forEach((bet, index) => {
+      if (!bet || !bet.timestamp) return;
+      const date = new Date(bet.timestamp * 1000).toLocaleString();
+      const eventIndex = start + index;
+      const event = userEvents[eventIndex] || {};
+      const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+        BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
+        BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
+        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+        Time: <span style="color: #ffb833;">${date}</span><br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    });
+    console.log("User bet history loaded successfully");
+  } catch (error) {
+    console.error("Error loading user bet history:", error);
+    document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+  } finally {
+    setLoading("userBetHistory", false);
+  }
+};
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
