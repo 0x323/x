@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CheckInPoint Statistics Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
-      body {
+        body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
@@ -59,8 +59,8 @@ canvas {
 <body>
     <div class="container">
         <h1>CheckInPoint Statistics Dashboard</h1>
+        <div id="loading" style="text-align: center;">Loading statistics...</div>
 
-        <!-- User Activity -->
         <section>
             <h2>User Activity</h2>
             <table id="userActivityTable">
@@ -78,7 +78,6 @@ canvas {
             <canvas id="checkInTrendChart" width="400" height="200"></canvas>
         </section>
 
-        <!-- Betting Analytics -->
         <section>
             <h2>Betting Analytics</h2>
             <table id="bettingTable">
@@ -86,8 +85,8 @@ canvas {
                     <tr>
                         <th>Number</th>
                         <th>Frequency</th>
-                        <th>Total Cost</th>
-                        <th>Total Reward</th>
+                        <th>Avg Cost</th>
+                        <th>Avg Reward</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -95,7 +94,6 @@ canvas {
             <canvas id="betVolumeChart" width="400" height="200"></canvas>
         </section>
 
-        <!-- Referral Statistics -->
         <section>
             <h2>Referral Statistics</h2>
             <table id="referralTable">
@@ -112,7 +110,6 @@ canvas {
             <canvas id="referralChart" width="400" height="200"></canvas>
         </section>
 
-        <!-- Token Economics -->
         <section>
             <h2>Token Economics</h2>
             <p>Total Supply: <span id="totalSupply">0</span> Point</p>
@@ -120,7 +117,6 @@ canvas {
             <canvas id="tokenDistributionChart" width="400" height="200"></canvas>
         </section>
 
-        <!-- System Performance -->
         <section>
             <h2>System Performance</h2>
             <table id="systemTable">
@@ -139,43 +135,79 @@ canvas {
     </div>
 
     <script>
-      // Konfigurasi Web3
-const web3 = new Web3('https://sepolia.base.org'); // Ganti dengan Infura Project ID
+        // Konfigurasi Web3
+const web3 = new Web3('https://sepolia.base.org'); // Ganti dengan ID Infura
 const contractAddress = '0x12802A911BE5B96202e15901d91F371a7d7747fC'; // Ganti dengan alamat kontrak
 const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-// Konversi satuan token (18 desimal)
+// Konversi satuan token
 const toPoint = (wei) => Number(web3.utils.fromWei(wei, 'ether')).toFixed(2);
+
+// Cek koneksi ke blockchain
+async function checkConnection() {
+    try {
+        const blockNumber = await web3.eth.getBlockNumber();
+        console.log('Connected to Sepolia, latest block:', blockNumber);
+    } catch (error) {
+        console.error('Failed to connect to Sepolia:', error);
+        alert('Failed to connect to blockchain. Check Infura ID and network.');
+    }
+}
+
+// Ambil daftar pengguna dari event
+async function getUsersFromEvents() {
+    try {
+        const checkInEvents = await contract.getPastEvents('CheckIn', { fromBlock: 0, toBlock: 'latest' });
+        const placeBetEvents = await contract.getPastEvents('PlaceBet', { fromBlock: 0, toBlock: 'latest' });
+        const users = [...new Set([
+            ...checkInEvents.map(e => e.returnValues.user),
+            ...placeBetEvents.map(e => e.returnValues.user)
+        ])];
+        console.log('Found users:', users);
+        return users.length > 0 ? users : ['0x0000000000000000000000000000000000000000'];
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return ['0x0000000000000000000000000000000000000000'];
+    }
+}
 
 // Fungsi untuk mengambil data dan menghitung statistik
 async function loadStatistics() {
+    document.getElementById('loading').style.display = 'block';
     try {
-        // Ambil daftar pengguna (misalnya, dari event atau daftar manual untuk demo)
-        const users = ['0xUser1', '0xUser2', '0xUser3']; // Ganti dengan daftar alamat pengguna dari event atau indexer
+        await checkConnection();
+        const users = await getUsersFromEvents();
+        if (users.length === 1 && users[0] === '0x0000000000000000000000000000000000000000') {
+            alert('No users found. Please ensure the contract has activity.');
+            return;
+        }
 
         // 1. User Activity
         const userActivity = [];
         for (let user of users) {
-            const checkInCount = await contract.methods.getCheckInCount(user).call();
-            const betCount = await contract.methods.getUserBetCount(user).call();
-            const balance = await contract.methods.balanceOf(user).call();
-            const lastCheckIn = await contract.methods._lastCheckIn(user).call();
-            const lastBet = await contract.methods._lastBetDayUTC(user).call();
-            const isActive = (lastCheckIn * 86400 >= Date.now() / 1000 - 7 * 86400) || 
-                            (lastBet * 86400 >= Date.now() / 1000 - 7 * 86400);
+            try {
+                const checkInCount = await contract.methods.getCheckInCount(user).call();
+                const betCount = await contract.methods.getUserBetCount(user).call();
+                const balance = await contract.methods.balanceOf(user).call();
+                const lastCheckIn = await contract.methods._lastCheckIn(user).call();
+                const lastBet = await contract.methods._lastBetDayUTC(user).call();
+                const isActive = (lastCheckIn * 86400 >= Date.now() / 1000 - 7 * 86400) || 
+                                (lastBet * 86400 >= Date.now() / 1000 - 7 * 86400);
 
-            userActivity.push({
-                address: user.slice(0, 6) + '...',
-                checkIns: checkInCount,
-                bets: betCount,
-                balance: toPoint(balance),
-                active: isActive ? 'Yes' : 'No'
-            });
+                userActivity.push({
+                    address: user.slice(0, 6) + '...',
+                    checkIns: checkInCount,
+                    bets: betCount,
+                    balance: toPoint(balance),
+                    active: isActive ? 'Yes' : 'No'
+                });
+            } catch (error) {
+                console.error(`Error fetching data for user ${user}:`, error);
+            }
         }
-        // Update tabel
         const userTableBody = document.querySelector('#userActivityTable tbody');
-        userTableBody.innerHTML = userActivity.map(u => `
+        userTableBody.innerHTML = userActivity.length > 0 ? userActivity.map(u => `
             <tr>
                 <td>${u.address}</td>
                 <td>${u.checkIns}</td>
@@ -183,9 +215,8 @@ async function loadStatistics() {
                 <td>${u.balance}</td>
                 <td>${u.active}</td>
             </tr>
-        `).join('');
+        `).join('') : '<tr><td colspan="5">No data available</td></tr>';
 
-        // Grafik tren check-in (misalnya, total check-in per pengguna)
         new Chart(document.getElementById('checkInTrendChart'), {
             type: 'bar',
             data: {
@@ -207,30 +238,32 @@ async function loadStatistics() {
         const numberPopularity = {};
         let totalCost = 0, totalReward = 0;
         for (let i = 0; i < betHistoryLength; i++) {
-            const bet = await contract.methods.getBet(i).call();
-            bets.push(bet);
-            numberPopularity[bet.number] = (numberPopularity[bet.number] || 0) + 1;
-            totalCost += Number(bet.cost);
-            totalReward += Number(bet.reward);
+            try {
+                const bet = await contract.methods.getBet(i).call();
+                bets.push(bet);
+                numberPopularity[bet.number] = (numberPopularity[bet.number] || 0) + 1;
+                totalCost += Number(bet.cost);
+                totalReward += Number(bet.reward);
+            } catch (error) {
+                console.error(`Error fetching bet ${i}:`, error);
+            }
         }
         const bettingStats = Object.entries(numberPopularity).map(([number, count]) => ({
             number,
             count,
-            cost: toPoint(totalCost / betHistoryLength),
-            reward: toPoint(totalReward / betHistoryLength)
+            cost: toPoint(totalCost / (betHistoryLength || 1)),
+            reward: toPoint(totalReward / (betHistoryLength || 1))
         }));
-        // Update tabel
         const bettingTableBody = document.querySelector('#bettingTable tbody');
-        bettingTableBody.innerHTML = bettingStats.map(b => `
+        bettingTableBody.innerHTML = bettingStats.length > 0 ? bettingStats.map(b => `
             <tr>
                 <td>${b.number}</td>
                 <td>${b.count}</td>
                 <td>${b.cost}</td>
                 <td>${b.reward}</td>
             </tr>
-        `).join('');
+        `).join('') : '<tr><td colspan="4">No bets available</td></tr>';
 
-        // Grafik volume taruhan
         new Chart(document.getElementById('betVolumeChart'), {
             type: 'pie',
             data: {
@@ -246,33 +279,35 @@ async function loadStatistics() {
         // 3. Referral Statistics
         const referralStats = [];
         for (let user of users) {
-            const refereeCount = await contract.methods.getRefereeCount(user).call();
-            const referees = await contract.methods.getReferees(user).call();
-            const rewards = await contract.methods.referralRewards(user).call();
-            let activeReferees = 0;
-            for (let referee of referees) {
-                const betCount = await contract.methods.getUserBetCount(referee).call();
-                if (betCount > 0) activeReferees++;
+            try {
+                const refereeCount = await contract.methods.getRefereeCount(user).call();
+                const referees = await contract.methods.getReferees(user).call();
+                const rewards = await contract.methods.referralRewards(user).call();
+                let activeReferees = 0;
+                for (let referee of referees) {
+                    const betCount = await contract.methods.getUserBetCount(referee).call();
+                    if (betCount > 0) activeReferees++;
+                }
+                referralStats.push({
+                    referrer: user.slice(0, 6) + '...',
+                    referees: refereeCount,
+                    rewards: toPoint(rewards),
+                    activeReferees
+                });
+            } catch (error) {
+                console.error(`Error fetching referral for user ${user}:`, error);
             }
-            referralStats.push({
-                referrer: user.slice(0, 6) + '...',
-                referees: refereeCount,
-                rewards: toPoint(rewards),
-                activeReferees
-            });
         }
-        // Update tabel
         const referralTableBody = document.querySelector('#referralTable tbody');
-        referralTableBody.innerHTML = referralStats.map(r => `
+        referralTableBody.innerHTML = referralStats.length > 0 ? referralStats.map(r => `
             <tr>
                 <td>${r.referrer}</td>
                 <td>${r.referees}</td>
                 <td>${r.rewards}</td>
                 <td>${r.activeReferees}</td>
             </tr>
-        `).join('');
+        `).join('') : '<tr><td colspan="4">No referrals available</td></tr>';
 
-        // Grafik referral
         new Chart(document.getElementById('referralChart'), {
             type: 'bar',
             data: {
@@ -289,11 +324,18 @@ async function loadStatistics() {
         });
 
         // 4. Token Economics
-        const totalSupply = await contract.methods.totalSupply().call();
-        document.getElementById('totalSupply').textContent = toPoint(totalSupply);
+        let totalSupply;
+        try {
+            totalSupply = await contract.methods.totalSupply().call();
+            document.getElementById('totalSupply').textContent = toPoint(totalSupply);
+        } catch (error) {
+            console.error('Error fetching total supply:', error);
+            document.getElementById('totalSupply').textContent = 'N/A';
+        }
 
-        // Hitung Gini Coefficient
-        const balances = await Promise.all(users.map(user => contract.methods.balanceOf(user).call()));
+        const balances = await Promise.all(users.map(user => 
+            contract.methods.balanceOf(user).call().catch(() => '0')
+        ));
         const sortedBalances = balances.map(b => Number(b)).sort((a, b) => a - b);
         const n = sortedBalances.length;
         let sum = 0, cumulativeSum = 0;
@@ -304,7 +346,6 @@ async function loadStatistics() {
         const gini = n > 0 ? (2 * sum) / (n * cumulativeSum) - (n + 1) / n : 0;
         document.getElementById('giniCoefficient').textContent = gini.toFixed(4);
 
-        // Grafik distribusi token
         new Chart(document.getElementById('tokenDistributionChart'), {
             type: 'bar',
             data: {
@@ -320,47 +361,68 @@ async function loadStatistics() {
             options: { scales: { y: { beginAtZero: true } } }
         });
 
-        // 5. System Performance (contoh sederhana dengan event)
-        const events = await contract.getPastEvents('CheckIn', { fromBlock: 0, toBlock: 'latest' });
-        const dailyStats = {};
-        events.forEach(event => {
-            const day = Math.floor(event.returnValues.timestamp / 86400);
-            dailyStats[day] = (dailyStats[day] || 0) + 1;
-        });
-        const systemStats = Object.entries(dailyStats).map(([day, checkIns]) => ({
-            date: new Date(day * 86400 * 1000).toISOString().split('T')[0],
-            checkIns,
-            bets: 0, // Tambahkan event PlaceBet untuk bets
-            total: checkIns
-        }));
-        // Update tabel
+        // 5. System Performance
+        let systemStats = [];
+        try {
+            const checkInEvents = await contract.getPastEvents('CheckIn', { fromBlock: 0, toBlock: 'latest' });
+            const placeBetEvents = await contract.getPastEvents('PlaceBet', { fromBlock: 0, toBlock: 'latest' });
+            const dailyStats = {};
+            checkInEvents.forEach(event => {
+                const day = Math.floor(event.returnValues.timestamp / 86400);
+                dailyStats[day] = dailyStats[day] || { checkIns: 0, bets: 0 };
+                dailyStats[day].checkIns++;
+            });
+            placeBetEvents.forEach(event => {
+                const day = Math.floor(event.returnValues.timestamp / 86400);
+                dailyStats[day] = dailyStats[day] || { checkIns: 0, bets: 0 };
+                dailyStats[day].bets++;
+            });
+            systemStats = Object.entries(dailyStats).map(([day, data]) => ({
+                date: new Date(day * 86400 * 1000).toISOString().split('T')[0],
+                checkIns: data.checkIns,
+                bets: data.bets,
+                total: data.checkIns + data.bets
+            }));
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
         const systemTableBody = document.querySelector('#systemTable tbody');
-        systemTableBody.innerHTML = systemStats.map(s => `
+        systemTableBody.innerHTML = systemStats.length > 0 ? systemStats.map(s => `
             <tr>
                 <td>${s.date}</td>
                 <td>${s.checkIns}</td>
                 <td>${s.bets}</td>
                 <td>${s.total}</td>
             </tr>
-        `).join('');
+        `).join('') : '<tr><td colspan="4">No events available</td></tr>';
 
-        // Grafik transaksi
         new Chart(document.getElementById('transactionChart'), {
             type: 'line',
             data: {
                 labels: systemStats.map(s => s.date),
-                datasets: [{
-                    label: 'Check-Ins',
-                    data: systemStats.map(s => s.checkIns),
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    fill: false
-                }]
+                datasets: [
+                    {
+                        label: 'Check-Ins',
+                        data: systemStats.map(s => s.checkIns),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false
+                    },
+                    {
+                        label: 'Bets',
+                        data: systemStats.map(s => s.bets),
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        fill: false
+                    }
+                ]
             },
             options: { scales: { y: { beginAtZero: true } } }
         });
 
     } catch (error) {
         console.error('Error loading statistics:', error);
+        alert('Failed to load statistics. Check console for details.');
+    } finally {
+        document.getElementById('loading').style.display = 'none';
     }
 }
 
