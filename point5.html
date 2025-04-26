@@ -440,7 +440,7 @@
             document.getElementById("accountInfo").innerHTML = `
               <span style="font-size: 12.5px; color: #bd80ff;">
                 Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+                  ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
                 </a>
               </span><br><small>Referral set successfully!</small>
             `;
@@ -451,7 +451,7 @@
             document.getElementById("accountInfo").innerHTML = `
               <span style="font-size: 12.5px; color: #bd80ff;">
                 Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+                  ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
                 </a>
               </span><br><small>Referral already set</small>
             `;
@@ -461,7 +461,7 @@
           document.getElementById("accountInfo").innerHTML = `
             <span style="font-size: 12.5px; color: #bd80ff;">
               Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+                ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
               </a>
             </span>
           `;
@@ -471,7 +471,7 @@
         document.getElementById("accountInfo").innerHTML = `
           <span style="font-size: 12.5px; color: #bd80ff;">
             Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-              ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+              ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
             </a>
           </span><br><small>Error setting referral</small>
         `;
