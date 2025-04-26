@@ -772,14 +772,14 @@ const loadRefereeList = async () => {
         pagination.appendChild(btn);
       };
 
-      createButton("« First", currentPage === 1, () => {
-        currentPage = 1;
-        renderPage(currentPage);
-      });
-      createButton("< Prev", currentPage === 1, () => {
-        currentPage--;
-        renderPage(currentPage);
-      });
+      createButton("img/first.png", currentPage === 1, () => {
+  currentPage = 1;
+  renderPage(currentPage);
+}, true);
+      createButton("img/prev.png", currentPage === 1, () => {
+  currentPage--;
+  renderPage(currentPage);
+}, true);
 
       // Numbered pages
       if (totalPages <= 5) {
@@ -850,14 +850,14 @@ const loadRefereeList = async () => {
         }
       }
 
-      createButton("Next >", currentPage === totalPages, () => {
-        currentPage++;
-        renderPage(currentPage);
-      });
-      createButton("Last »", currentPage === totalPages, () => {
-        currentPage = totalPages;
-        renderPage(currentPage);
-      });
+      createButton("img/next.png", currentPage === totalPages, () => {
+  currentPage++;
+  renderPage(currentPage);
+}, true);
+      createButton("img/last.png", currentPage === totalPages, () => {
+  currentPage = totalPages;
+  renderPage(currentPage);
+}, true);
     };
 
     // Pertama kali load
