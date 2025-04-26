@@ -166,7 +166,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>CheckInPoint DAp</h1>
+    <h1>CheckInPoint DApp</h1>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -224,7 +224,6 @@
         <p id="referralLink" class="info-text"><small>Referral Link: Loading...</small></p>
         <center><button id="copyLink">Copy Link</button></center>
         <p id="refereeCount" class="info-text"><small>Invited Friends: Loading...</small></p>
-        <p id="refereeCount" class="info-text"><small>Invited Friends: Loading...</small></p>
         <p id="referralReward" class="info-text"><small>Reward: Loading...</small></p>
       </div>
       <h3>Invited Friends List</h3>
@@ -271,17 +270,19 @@
     let totalGlobalCount = 0;
     let isFetching = false;
     let isSettingReferral = false; // Pengunci untuk setAutomaticReferralId
+    let isHandlingReferral = false; // Pengunci untuk handleReferralFromURL
 
     // Cache untuk data statis dan event
     const cache = {
       decimals: null,
       symbol: null,
       betEvents: {},
+      checkInEvents: {}, // Cache untuk event CheckInLogCreated
     };
 
     // Durasi validitas koneksi (7 hari)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
-    const BASE_URL = "https://0x323.github.io/x/point5";
+    const BASE_URL = "https://0x323.github.io/x/point4";
 
     // Fungsi utilitas
     const generateUID = () => 'uid_' + Math.random().toString(36).substr(2, 9);
@@ -400,9 +401,11 @@
       }
       isSettingReferral = true;
       try {
+        console.log("Checking referral ID for account:", userAccount);
         const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
         if (!currentReferralId) {
           const newReferralId = generateUID();
+          console.log("Setting new referral ID:", newReferralId);
           await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
           console.log("Referral ID set successfully:", newReferralId);
         } else {
@@ -415,20 +418,36 @@
       }
     };
 
-    // Tangani referral dari URL
+    // Tangani referral dari URL dengan pengunci
     const handleReferralFromURL = async () => {
-      if (!userAccount) return;
+      if (!userAccount || isHandlingReferral) {
+        console.log("Skipping handleReferralFromURL: No userAccount or already handling referral");
+        return;
+      }
+      isHandlingReferral = true;
       try {
+        console.log("Checking for referral parameter in URL");
         const urlParams = new URLSearchParams(window.location.search);
         const referrerId = urlParams.get("uid");
         if (referrerId) {
+          console.log("Found referrerId in URL:", referrerId);
           const hasReferrer = await contract.methods.referredBy(userAccount).call();
           if (hasReferrer === "0x0000000000000000000000000000000000000000") {
+            console.log("No existing referrer, setting referrer with ID:", referrerId);
             await contract.methods.setReferralById(referrerId).send({ from: userAccount });
+            console.log("Referral set successfully for referrerId:", referrerId);
+            // Tunda untuk memastikan state blockchain tersinkron
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          } else {
+            console.log("User already has a referrer:", hasReferrer);
           }
+        } else {
+          console.log("No referrerId found in URL");
         }
       } catch (error) {
         console.error("Error handling referral:", error);
+      } finally {
+        isHandlingReferral = false;
       }
     };
 
@@ -464,6 +483,7 @@
       userAccount = null;
       localStorage.removeItem("walletConnection");
       cache.betEvents = {};
+      cache.checkInEvents = {};
       updateWalletUI(false);
       toggleSectionsVisibility(false);
       document.getElementById("accountInfo").innerText = "Wallet disconnected";
@@ -522,11 +542,39 @@
       }
     };
 
+    // Ambil event CheckInLogCreated sebagai cadangan
+    const fetchCheckInEvents = async (user, fromBlock = null) => {
+      try {
+        const latestBlock = await web3.eth.getBlockNumber();
+        const startBlock = fromBlock || Math.max(latestBlock - 10000, 0);
+        const events = await contract.getPastEvents("CheckInLogCreated", {
+          filter: { user },
+          fromBlock: startBlock,
+          toBlock: "latest",
+        });
+        const eventMap = {};
+        events.forEach((event, index) => {
+          eventMap[index] = {
+            user: event.returnValues.user,
+            dayUTC: event.returnValues.dayUTC,
+            reward: event.returnValues.reward,
+            timestamp: event.returnValues.timestamp,
+          };
+        });
+        cache.checkInEvents[user] = eventMap;
+        return eventMap;
+      } catch (error) {
+        console.error("Error fetching CheckInLogCreated events:", error);
+        return {};
+      }
+    };
+
     // Load data kritis dengan retry
-    const loadCriticalData = async (retries = 3, delay = 1000) => {
+    const loadCriticalData = async (retries = 5, delay = 2000) => {
       if (!userAccount) return;
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
+          console.log(`Loading critical data (attempt ${attempt}/${retries})`);
           if (!cache.decimals) {
             cache.decimals = await contract.methods.decimals().call();
             cache.symbol = await contract.methods.symbol().call();
@@ -549,9 +597,10 @@
           document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${(balance / 10 ** cache.decimals).toFixed(2)} ${cache.symbol}</small>`;
           document.getElementById("referralLink").innerHTML = `<small>Referral Link:<br>${BASE_URL}?uid=${userReferralId}</small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
-          document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** 18).toFixed(2)} Points</small>`;
+          document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** cache.decimals).toFixed(2)} Points</small>`;
 
           await loadRefereeList();
+          console.log("Critical data loaded successfully");
           return;
         } catch (error) {
           console.error(`Error loading critical data (attempt ${attempt}/${retries}):`, error);
@@ -559,8 +608,9 @@
             await new Promise(resolve => setTimeout(resolve, delay));
           } else {
             ["ethBalance", "tokenBalance", "referralLink", "refereeCount", "referralReward"].forEach(id => {
-              document.getElementById(id).innerHTML = `<small>Error</small>`;
+              document.getElementById(id).innerHTML = `<small>Error: Failed to load data</small>`;
             });
+            alert("Failed to load wallet data after multiple attempts. Please try again later.");
           }
         }
       }
@@ -571,6 +621,7 @@
       if (!userAccount) return;
       setLoading("refereeList", true);
       try {
+        console.log("Loading referee list");
         const refereeList = document.getElementById("refereeList");
         const referees = await contract.methods.getReferees(userAccount).call();
         refereeList.innerHTML = referees.length === 0 ? "<li><small>No referees found.</small></li>" : "";
@@ -586,9 +637,10 @@
           `;
           refereeList.appendChild(li);
         });
+        console.log("Referee list loaded successfully");
       } catch (error) {
         console.error("Error loading referee list:", error);
-        document.getElementById("refereeList").innerHTML = "<li><small>Error</small></li>";
+        document.getElementById("refereeList").innerHTML = "<li><small>Error: Failed to load referees</small></li>";
       } finally {
         setLoading("refereeList", false);
       }
@@ -602,40 +654,54 @@
       }
       document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
       try {
+        console.log("Initiating check-in transaction");
         const tx = await contract.methods.checkIn().send({ from: userAccount });
-        // Tunggu konfirmasi transaksi
-        await new Promise((resolve, reject) => {
-          web3.eth.getTransactionReceipt(tx.transactionHash, (err, receipt) => {
-            if (err) reject(err);
-            if (receipt) resolve(receipt);
-            else setTimeout(() => web3.eth.getTransactionReceipt(tx.transactionHash, (err, receipt) => {
-              if (err) reject(err);
-              if (receipt) resolve(receipt);
-              else reject(new Error("Transaction not confirmed"));
-            }), 2000);
-          });
-        });
+        console.log("Check-in transaction sent, hash:", tx.transactionHash);
+
+        // Polling untuk konfirmasi transaksi
+        const maxAttempts = 10;
+        let attempt = 0;
+        let receipt = null;
+        while (!receipt && attempt < maxAttempts) {
+          console.log(`Polling for transaction receipt (attempt ${attempt + 1}/${maxAttempts})`);
+          receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
+          if (!receipt) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            attempt++;
+          }
+        }
+        if (!receipt) {
+          throw new Error("Transaction not confirmed after multiple attempts");
+        }
+        console.log("Transaction confirmed, receipt:", receipt);
+
         document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
-        // Tunda sedikit untuk sinkronisasi blockchain
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Tunda untuk sinkronisasi blockchain
+        console.log("Waiting for blockchain sync");
+        await new Promise(resolve => setTimeout(resolve, 3000));
         await loadCriticalData();
         await loadCheckInHistory();
+        console.log("Check-in completed and UI updated");
       } catch (error) {
         console.error("Error checking in:", error);
         let errorMessage = "Failed to check in. Please try again.";
         if (error.message.includes("already checked in")) {
           errorMessage = "You have already checked in today.";
+        } else if (error.message.includes("Transaction not confirmed")) {
+          errorMessage = "Transaction timed out. Please check Basescan and try again.";
         }
         document.getElementById("checkInStatus").innerHTML = `<small>${errorMessage}</small>`;
+        alert(errorMessage);
       }
     };
 
-    // Load Check-In History dengan retry
-    const loadCheckInHistory = async (retries = 3, delay = 1000) => {
+    // Load Check-In History dengan retry dan cadangan event
+    const loadCheckInHistory = async (retries = 5, delay = 2000) => {
       if (!userAccount) return;
       setLoading("checkInHistory", true);
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
+          console.log(`Loading check-in history (attempt ${attempt}/${retries})`);
           const count = await contract.methods.getCheckInCount(userAccount).call();
           const historyList = document.getElementById("checkInHistory");
           historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
@@ -653,18 +719,41 @@
             li.className = "py-2";
             li.innerHTML = `<small>
               Day: ${log.dayUTC}<br>
-              Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
+              Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
               Time: ${date}<br>
             </small><hr style="background-color: #333333; height: 1px; border: none;">`;
             historyList.appendChild(li);
           });
+          console.log("Check-in history loaded successfully");
           return;
         } catch (error) {
           console.error(`Error loading check-in history (attempt ${attempt}/${retries}):`, error);
           if (attempt < retries) {
             await new Promise(resolve => setTimeout(resolve, delay));
           } else {
-            document.getElementById("checkInHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+            // Coba cadangan: ambil dari event CheckInLogCreated
+            console.log("Falling back to CheckInLogCreated events");
+            try {
+              const events = await fetchCheckInEvents(userAccount);
+              const historyList = document.getElementById("checkInHistory");
+              historyList.innerHTML = Object.keys(events).length === 0 ? "<li><small>No history found.</small></li>" : "";
+              Object.values(events).slice(-10).reverse().forEach(log => {
+                const date = new Date(log.timestamp * 1000).toLocaleString();
+                const li = document.createElement("li");
+                li.className = "py-2";
+                li.innerHTML = `<small>
+                  Day: ${log.dayUTC}<br>
+                  Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
+                  Time: ${date}<br>
+                </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+                historyList.appendChild(li);
+              });
+              console.log("Check-in history loaded from events");
+            } catch (eventError) {
+              console.error("Error loading check-in history from events:", eventError);
+              document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+              alert("Failed to load check-in history after multiple attempts.");
+            }
           }
         }
       }
@@ -695,6 +784,7 @@
       }
 
       try {
+        console.log("Initiating placeBet transaction");
         await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
         alert("Bet placed successfully!");
         document.getElementById("betNumber").value = "";
@@ -705,6 +795,7 @@
         await loadCriticalData();
         await loadUserBetHistory();
         await loadGlobalBetHistory();
+        console.log("Bet placed and UI updated");
       } catch (error) {
         console.error("Error placing bet:", error);
         alert("Failed to place bet. Check your balance or try again tomorrow.");
@@ -716,6 +807,7 @@
       if (!userAccount) return;
       setLoading("userBetHistory", true);
       try {
+        console.log("Loading user bet history");
         const count = await contract.methods.getUserBetCount(userAccount).call();
         const historyList = document.getElementById("userBetHistory");
         historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
@@ -738,22 +830,23 @@
           const date = new Date(bet.timestamp * 1000).toLocaleString();
           const eventIndex = start + index;
           const event = userEvents[eventIndex] || {};
-          const betTimes = bet.cost / (1 * 10 ** 18);
+          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
             User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
         });
+        console.log("User bet history loaded successfully");
       } catch (error) {
         console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li><small>Error</small></li>";
+        document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
       } finally {
         setLoading("userBetHistory", false);
       }
@@ -768,6 +861,7 @@
       isFetching = true;
 
       try {
+        console.log("Loading global bet history");
         if (totalGlobalCount === 0) {
           totalGlobalCount = await contract.methods.getBetHistoryLength().call();
         }
@@ -789,7 +883,7 @@
           const event = globalEvents[eventIndex] || {};
           const txHash = event.txHash || "N/A";
           const blockNumber = event.blockNumber || "N/A";
-          const betTimes = bet.cost / (1 * 10 ** 18);
+          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
 
           const li = document.createElement("li");
           li.className = "py-2";
@@ -797,8 +891,8 @@
             User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
@@ -806,12 +900,13 @@
         }
 
         globalHistoryOffset += globalHistoryBatchSize;
+        console.log("Global bet history loaded successfully");
       } catch (error) {
         console.error("Error loading global bet history:", error);
-        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+      } finally {
+        isFetching = false;
       }
-
-      isFetching = false;
     };
 
     // Salin link referral
@@ -855,13 +950,12 @@
           contract = new web3.eth.Contract(contractABI, contractAddress);
           updateWalletUI(true);
           await setAutomaticReferralId();
-          await handleReferralFromURL();
           await loadCriticalData();
           await loadCheckInHistory();
           await loadUserBetHistory();
           await loadGlobalBetHistory();
         }
-      }, 500));
+      }, 1000));
 
       window.ethereum.on("chainChanged", () => {
         window.location.reload();
