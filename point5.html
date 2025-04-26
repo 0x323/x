@@ -261,6 +261,7 @@
     // Konfigurasi Web3 dan kontrak
     const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC";
     const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
+
     let web3;
     let contract;
     let userAccount;
@@ -270,19 +271,18 @@
     let isFetching = false;
     let isSettingReferral = false; // Pengunci untuk setAutomaticReferralId
     let isHandlingReferral = false; // Pengunci untuk handleReferralFromURL
-    let referrerIdFromURL = null; // Simpan referrerId dari URL
 
     // Cache untuk data statis dan event
     const cache = {
       decimals: null,
       symbol: null,
       betEvents: {},
-      checkInEvents: {},
+      checkInEvents: {}, // Cache untuk event CheckInLogCreated
     };
 
     // Durasi validitas koneksi (7 hari)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
-    const BASE_URL = "https://0x323.github.io/x/point4";
+    const BASE_URL = "https://0x323.github.io/x/point5";
 
     // Fungsi utilitas
     const generateUID = () => 'uid_' + Math.random().toString(36).substr(2, 9);
@@ -364,7 +364,7 @@
             updateWalletUI(true);
             storeConnection(userAccount);
             await setAutomaticReferralId();
-            // Tidak panggil handleReferralFromURL di sini, akan dipanggil di event listener walletButton
+            await handleReferralFromURL();
             await loadCriticalData();
             setTimeout(() => {
               loadCheckInHistory();
@@ -425,10 +425,10 @@
         return;
       }
       isHandlingReferral = true;
-      document.getElementById("accountInfo").innerHTML += `<br><small>Processing referral...</small>`;
       try {
         console.log("Checking for referral parameter in URL");
-        const referrerId = referrerIdFromURL;
+        const urlParams = new URLSearchParams(window.location.search);
+        const referrerId = urlParams.get("uid");
         if (referrerId) {
           console.log("Found referrerId in URL:", referrerId);
           const hasReferrer = await contract.methods.referredBy(userAccount).call();
@@ -436,45 +436,16 @@
             console.log("No existing referrer, setting referrer with ID:", referrerId);
             await contract.methods.setReferralById(referrerId).send({ from: userAccount });
             console.log("Referral set successfully for referrerId:", referrerId);
-            document.getElementById("accountInfo").innerHTML = `
-              <span style="font-size: 12.5px; color: #bd80ff;">
-                Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
-                </a>
-              </span><br><small>Referral set successfully!</small>
-            `;
             // Tunda untuk memastikan state blockchain tersinkron
             await new Promise(resolve => setTimeout(resolve, 2000));
           } else {
             console.log("User already has a referrer:", hasReferrer);
-            document.getElementById("accountInfo").innerHTML = `
-              <span style="font-size: 12.5px; color: #bd80ff;">
-                Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
-                </a>
-              </span><br><small>Referral already set</small>
-            `;
           }
         } else {
           console.log("No referrerId found in URL");
-          document.getElementById("accountInfo").innerHTML = `
-            <span style="font-size: 12.5px; color: #bd80ff;">
-              Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
-              </a>
-            </span>
-          `;
         }
       } catch (error) {
         console.error("Error handling referral:", error);
-        document.getElementById("accountInfo").innerHTML = `
-          <span style="font-size: 12.5px; color: #bd80ff;">
-            Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-              ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
-            </a>
-          </span><br><small>Error setting referral</small>
-        `;
-        alert("Failed to set referral. Please try again or check the referrer ID.");
       } finally {
         isHandlingReferral = false;
       }
@@ -705,6 +676,7 @@
         console.log("Transaction confirmed, receipt:", receipt);
 
         document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
+        // Tunda untuk sinkronisasi blockchain
         console.log("Waiting for blockchain sync");
         await new Promise(resolve => setTimeout(resolve, 3000));
         await loadCriticalData();
@@ -759,6 +731,7 @@
           if (attempt < retries) {
             await new Promise(resolve => setTimeout(resolve, delay));
           } else {
+            // Coba cadangan: ambil dari event CheckInLogCreated
             console.log("Falling back to CheckInLogCreated events");
             try {
               const events = await fetchCheckInEvents(userAccount);
@@ -830,54 +803,54 @@
     };
 
     // Load User Bet History
-const loadUserBetHistory = async () => {
-  if (!userAccount) return;
-  setLoading("userBetHistory", true);
-  try {
-    console.log("Loading user bet history");
-    const count = await contract.methods.getUserBetCount(userAccount).call();
-    const historyList = document.getElementById("userBetHistory");
-    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
+    const loadUserBetHistory = async () => {
+      if (!userAccount) return;
+      setLoading("userBetHistory", true);
+      try {
+        console.log("Loading user bet history");
+        const count = await contract.methods.getUserBetCount(userAccount).call();
+        const historyList = document.getElementById("userBetHistory");
+        historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
-    const maxDisplay = 10;
-    const start = Math.max(count - maxDisplay, 0);
-    const promises = [];
-    for (let i = count - 1; i >= start; i--) {
-      promises.push(contract.methods.getUserBet(userAccount, i).call());
-    }
-    const bets = await Promise.all(promises);
-    const userEvents = cache.betEvents[userAccount] || {};
-    const referrer = await contract.methods.referredBy(userAccount).call();
-    const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-      ? "None"
-      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+        const maxDisplay = 10;
+        const start = Math.max(count - maxDisplay, 0);
+        const promises = [];
+        for (let i = count - 1; i >= start; i--) {
+          promises.push(contract.methods.getUserBet(userAccount, i).call());
+        }
+        const bets = await Promise.all(promises);
+        const userEvents = cache.betEvents[userAccount] || {};
+        const referrer = await contract.methods.referredBy(userAccount).call();
+        const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+          ? "None"
+          : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
 
-    bets.forEach((bet, index) => {
-      if (!bet || !bet.timestamp) return;
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const eventIndex = start + index;
-      const event = userEvents[eventIndex] || {};
-      const betTimes = bet.cost / (1 * 10 ** cache.decimals);
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-        BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
-        BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-        Time: <span style="color: #ffb833;">${date}</span><br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
-    console.log("User bet history loaded successfully");
-  } catch (error) {
-    console.error("Error loading user bet history:", error);
-    document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
-  } finally {
-    setLoading("userBetHistory", false);
-  }
-};
+        bets.reverse().forEach((bet, index) => {
+          if (!bet || !bet.timestamp) return;
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const eventIndex = start + index;
+          const event = userEvents[eventIndex] || {};
+          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
+            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        });
+        console.log("User bet history loaded successfully");
+      } catch (error) {
+        console.error("Error loading user bet history:", error);
+        document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+      } finally {
+        setLoading("userBetHistory", false);
+      }
+    };
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
@@ -952,7 +925,6 @@ const loadUserBetHistory = async () => {
         disconnectWallet();
       } else {
         await initWeb3(true);
-        await handleReferralFromURL(); // Panggil setelah koneksi wallet
       }
     });
 
@@ -962,11 +934,6 @@ const loadUserBetHistory = async () => {
 
     // Inisialisasi saat halaman dimuat
     window.addEventListener("load", async () => {
-      // Simpan referrerId dari URL saat halaman dimuat
-      const urlParams = new URLSearchParams(window.location.search);
-      referrerIdFromURL = urlParams.get("uid");
-      console.log("Stored referrerId from URL:", referrerIdFromURL);
-
       if (!window.ethereum) {
         alert("Please install MetaMask to use this DApp.");
         return;
