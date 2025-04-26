@@ -102,7 +102,7 @@
 
                 // Total Check-Ins (contoh: hitung total check-in dari event atau metode lain)
                 // Catatan: Anda perlu metode kontrak atau event log untuk menghitung total check-in
-                document.getElementById('totalCheckIns').innerText = `Total Check-Ins: Data tidak tersedia`;
+                document.getElementById('totalCheckIns').innerText = `Total Check-Ins: ${totalCheckIns}`;
 
                 // Total Bets
                 const totalBets = await contract.methods.getBetHistoryLength().call();
@@ -113,16 +113,17 @@
                 document.getElementById('totalReferralRewards').innerText = `Total Referral Rewards: Data tidak tersedia`;
 
                 // Top Referrer (contoh: ambil dari event atau metode kontrak)
-                document.getElementById('topReferrer').innerText = `Top Referrer: Data tidak tersedia`;
+                document.getElementById('topReferrer').innerText = `Top Referrer: ${topReferrer}`;
 
                 // Top Bettor (contoh: ambil dari event atau metode kontrak)
-                document.getElementById('topBettor').innerText = `Top Bettor: Data tidak tersedia`;
+                document.getElementById('topBettor').innerText = `Top Bettor: ${topBettor}`;
 
                 // Top Check-In User (contoh: ambil dari event atau metode kontrak)
-                document.getElementById('topCheckInUser').innerText = `Top Check-In User: Data tidak tersedia`;
+                document.getElementById('topCheckInUser').innerText = `Top Check-In User: ${topCheckInUser}`;
 
                 // Total Burned (contoh: perlu metode kontrak untuk menghitung token yang dibakar)
-                document.getElementById('totalBurned').innerText = `Total Burned: Data tidak tersedia`;
+                document.getElementById('totalBurned').innerText = `${web3.utils.fromWei(totalBurned, 'ether')} ETH`;
+            }`;
             } catch (err) {
                 console.error("Gagal memuat data:", err);
                 document.querySelectorAll('.stat').forEach(stat => {
