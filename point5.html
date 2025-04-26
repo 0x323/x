@@ -178,24 +178,30 @@
   background-color: #f2f2f2;
   border: 1px solid #ccc;
   color: #333;
-  padding: 5px 10px;
+  padding: 6px 12px;
   font-size: 13px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Hover effect */
 .pagination button:hover {
-  background-color: #ddd;
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(147, 51, 234, 0.4);
+  border-color: transparent;
 }
 
 /* Tombol aktif (halaman sekarang) */
 .pagination button.active {
-  background-color: #a855f7;
+  background: linear-gradient(135deg, #9333ea, #7e22ce);
   color: white;
   font-weight: bold;
-  border-color: #9333ea;
+  border-color: transparent;
+  box-shadow: 0 4px 8px rgba(147, 51, 234, 0.5);
 }
 
 /* Tombol nonaktif (Prev/Next saat tidak bisa diklik) */
@@ -203,7 +209,9 @@
   background-color: #eee;
   color: #aaa;
   cursor: not-allowed;
-  border-color: #ddd;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  transform: none;
 }
   </style>
 </head>
