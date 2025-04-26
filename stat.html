@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CheckInPoint Statistics</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -37,6 +36,11 @@
             text-align: center;
             font-size: 18px;
         }
+
+        .error {
+            color: red;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -54,53 +58,113 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.3.0/web3.min.js"></script>
     <script>
         // Konfigurasi
         const CONTRACT_ADDRESS = "0x12802A911BE5B96202e15901d91F371a7d7747fC";
         const ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
 
-        // Mengecek jika Web3 terpasang
-        if (typeof window.ethereum !== 'undefined') {
-            const web3 = new Web3(window.ethereum);
-            window.ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
-                const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
-                loadStats(contract);
-            }).catch(error => {
-                console.error('User rejected connection or error:', error);
-                alert('Connection to wallet failed. Please try again.');
-            });
-        } else {
-            alert('Web3 not detected! Please install MetaMask or another wallet provider.');
-        }
+        // Inisialisasi Web3
+        let web3;
+        let contract;
 
-        // Memuat Statistik
-        async function loadStats(contract) {
+        async function initWeb3() {
             try {
-                // Mengambil data dari kontrak pintar
-                const totalSupply = await contract.methods.totalSupply().call();
-                const totalCheckIns = await contract.methods.getCheckInCount("user_address_here").call(); // Update with correct user address
-                const totalBets = await contract.methods.getBetHistoryLength().call();
-                const totalReferralRewards = await contract.methods.referralRewards("user_address_here").call(); // Update with correct user address
-                const topReferrer = await contract.methods.getReferees("user_address_here").call(); // Update with correct user address
-                const topBettor = await contract.methods.getUserBet("user_address_here", 0).call(); // Update with correct user address and index
-                const topCheckInUser = await contract.methods.getTopCheckInUser().call();
-                const totalBurned = await contract.methods.getBurnedTotal().call(); // Replace with correct function
-
-                // Memperbarui DOM dengan data yang diterima
-                document.getElementById('totalSupply').textContent = `Total Supply: ${totalSupply}`;
-                document.getElementById('totalCheckIns').textContent = `Total Check-Ins: ${totalCheckIns}`;
-                document.getElementById('totalBets').textContent = `Total Bets: ${totalBets}`;
-                document.getElementById('totalReferralRewards').textContent = `Total Referral Rewards: ${totalReferralRewards}`;
-                document.getElementById('topReferrer').textContent = `Top Referrer: ${topReferrer}`;
-                document.getElementById('topBettor').textContent = `Top Bettor: ${topBettor}`;
-                document.getElementById('topCheckInUser').textContent = `Top Check-In User: ${topCheckInUser}`;
-                document.getElementById('totalBurned').textContent = `Total Burned: ${totalBurned}`;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                alert('There was an error fetching data from the contract.');
+                if (window.ethereum) {
+                    web3 = new Web3(window.ethereum);
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
+                    return true;
+                } else {
+                    alert("Web3 tidak terdeteksi! Harap instal Metamask atau gunakan dompet lain.");
+                    return false;
+                }
+            } catch (err) {
+                console.error("Gagal menginisialisasi Web3:", err);
+                alert("Gagal menghubungkan ke dompet. Pastikan Metamask terinstal dan Anda telah login.");
+                return false;
             }
         }
+
+        async function loadData() {
+            if (!web3 || !contract) {
+                document.querySelectorAll('.stat').forEach(stat => {
+                    stat.innerText = "Error: Tidak dapat terhubung ke Web3";
+                    stat.classList.add('error');
+                });
+                return;
+            }
+
+            try {
+                // Total Supply
+                const totalSupply = await contract.methods.totalSupply().call();
+                document.getElementById('totalSupply').innerText = `Total Supply: ${web3.utils.fromWei(totalSupply, 'ether')} CIP`;
+
+                // Total Check-Ins (menggunakan event CheckInLogCreated)
+                const checkInEvents = await contract.getPastEvents('CheckInLogCreated', { fromBlock: 0, toBlock: 'latest' });
+                document.getElementById('totalCheckIns').innerText = `Total Check-Ins: ${checkInEvents.length}`;
+
+                // Total Bets
+                const totalBets = await contract.methods.getBetHistoryLength().call();
+                document.getElementById('totalBets').innerText = `Total Bets: ${totalBets}`;
+
+                // Total Referral Rewards (menggunakan event ReferralReward)
+                const referralRewardEvents = await contract.getPastEvents('ReferralReward', { fromBlock: 0, toBlock: 'latest' });
+                const totalReferralRewards = referralRewardEvents.reduce((sum, event) => sum + Number(event.returnValues.reward), 0);
+                document.getElementById('totalReferralRewards').innerText = `Total Referral Rewards: ${web3.utils.fromWei(totalReferralRewards.toString(), 'ether')} CIP`;
+
+                // Top Referrer (menggunakan event Referred)
+                const referredEvents = await contract.getPastEvents('Referred', { fromBlock: 0, toBlock: 'latest' });
+                const referrerCounts = {};
+                referredEvents.forEach(event => {
+                    const referrer = event.returnValues.referrer;
+                    referrerCounts[referrer] = (referrerCounts[referrer] || 0) + 1;
+                });
+                const topReferrer = Object.keys(referrerCounts).reduce((a, b) => referrerCounts[a] > referrerCounts[b] ? a : b, 'Tidak ada');
+                document.getElementById('topReferrer').innerText = `Top Referrer: ${topReferrer !== 'Tidak ada' ? topReferrer : 'Tidak ada'}`;
+
+                // Top Bettor (menggunakan event PlaceBet)
+                const betEvents = await contract.getPastEvents('PlaceBet', { fromBlock: 0, toBlock: 'latest' });
+                const bettorCounts = {};
+                betEvents.forEach(event => {
+                    const user = event.returnValues.user;
+                    bettorCounts[user] = (bettorCounts[user] || 0) + 1;
+                });
+                const topBettor = Object.keys(bettorCounts).reduce((a, b) => bettorCounts[a] > bettorCounts[b] ? a : b, 'Tidak ada');
+                document.getElementById('topBettor').innerText = `Top Bettor: ${topBettor !== 'Tidak ada' ? topBettor : 'Tidak ada'}`;
+
+                // Top Check-In User (menggunakan event CheckInLogCreated)
+                const checkInCounts = {};
+                checkInEvents.forEach(event => {
+                    const user = event.returnValues.user;
+                    checkInCounts[user] = (checkInCounts[user] || 0) + 1;
+                });
+                const topCheckInUser = Object.keys(checkInCounts).reduce((a, b) => checkInCounts[a] > checkInCounts[b] ? a : b, 'Tidak ada');
+                document.getElementById('topCheckInUser').innerText = `Top Check-In User: ${topCheckInUser !== 'Tidak ada' ? topCheckInUser : 'Tidak ada'}`;
+
+                // Total Burned (menggunakan event Transfer ke alamat nol)
+                const transferEvents = await contract.getPastEvents('Transfer', { fromBlock: 0, toBlock: 'latest' });
+                const totalBurned = transferEvents
+                    .filter(event => event.returnValues.to === '0x0000000000000000000000000000000000000000')
+                    .reduce((sum, event) => sum + Number(event.returnValues.value), 0);
+                document.getElementById('totalBurned').innerText = `Total Burned: ${web3.utils.fromWei(totalBurned.toString(), 'ether')} CIP`;
+
+            } catch (err) {
+                console.error("Gagal memuat data:", err);
+                document.querySelectorAll('.stat').forEach(stat => {
+                    stat.innerText = `Error: Gagal memuat data - ${err.message}`;
+                    stat.classList.add('error');
+                });
+            }
+        }
+
+        // Inisialisasi dan muat data
+        (async () => {
+            const web3Initialized = await initWeb3();
+            if (web3Initialized) {
+                await loadData();
+            }
+        })();
     </script>
 </body>
 </html>
