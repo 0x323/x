@@ -761,16 +761,28 @@ const loadRefereeList = async () => {
 
       if (totalPages <= 1) return; // Tidak perlu pagination kalau cuma 1 halaman
 
-      const createButton = (text, disabled, onClick) => {
-        const btn = document.createElement("button");
-        btn.innerText = text;
-        btn.disabled = disabled;
-        btn.style.margin = "0 3px";
-        btn.style.padding = "5px 10px";
-        btn.style.fontSize = "12px";
-        btn.onclick = onClick;
-        pagination.appendChild(btn);
-      };
+      const createButton = (content, disabled, onClick, isImage = false) => {
+  const btn = document.createElement("button");
+  btn.disabled = disabled;
+  btn.style.margin = "0 3px";
+  btn.style.padding = "5px 10px";
+  btn.style.fontSize = "12px";
+  btn.style.display = "flex";
+  btn.style.alignItems = "center";
+  btn.onclick = onClick;
+
+  if (isImage) {
+    const img = document.createElement("img");
+    img.src = img/; // kalau gambar, 'content' itu URL PNG
+    img.style.width = "16px";
+    img.style.height = "16px";
+    btn.appendChild(img);
+  } else {
+    btn.innerText = content;
+  }
+
+  pagination.appendChild(btn);
+};
 
       createButton("img/first.svg", currentPage === 1, () => {
   currentPage = 1;
