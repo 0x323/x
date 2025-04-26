@@ -689,7 +689,7 @@
 
           document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${web3.utils.fromWei(ethBalance, 'ether')} ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${(balance / 10 ** cache.decimals).toFixed(2)} ${cache.symbol}</small>`;
-          document.getElementById("referralLink").innerHTML = `<small>Referral Link:</small><br>${BASE_URL}?uid=${userReferralId}`;
+          document.getElementById("referralLink").innerHTML = `<small>Referral Link:</small><br><span style="color: #6683ff;">${BASE_URL}?uid=${userReferralId}</span>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward: ${(referralReward / 10 ** cache.decimals).toFixed(2)} Points</small>`;
 
