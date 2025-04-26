@@ -700,8 +700,8 @@ const loadUserBetHistory = async () => {
       const date = new Date(bet.timestamp * 1000).toLocaleString();
       const eventIndex = start + index;
       const event = userEvents[eventIndex] || {};
-      const txHash = bet.txHash || "N/A";
-const blockNumber = bet.blockNumber || "N/A";
+      const txHash = bet.txHash;
+const blockNumber = bet.blockNumber;
       const betTimes = bet.cost / (1 * 10 ** 18);
       const li = document.createElement("li");
       li.className = "py-2";
