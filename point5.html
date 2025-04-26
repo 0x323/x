@@ -725,24 +725,48 @@
     };
 
     // Load Check-In History dengan retry dan cadangan event
-    const loadCheckInHistory = async (retries = 5, delay = 2000) => {
-      if (!userAccount) return;
-      setLoading("checkInHistory", true);
-      for (let attempt = 1; attempt <= retries; attempt++) {
-        try {
-          console.log(`Loading check-in history (attempt ${attempt}/${retries})`);
-          const count = await contract.methods.getCheckInCount(userAccount).call();
-          const historyList = document.getElementById("checkInHistory");
-          historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
+const loadCheckInHistory = async (retries = 5, delay = 2000) => {
+  if (!userAccount) return;
+  setLoading("checkInHistory", true);
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      console.log(`Loading check-in history (attempt ${attempt}/${retries})`);
+      const count = await contract.methods.getCheckInCount(userAccount).call();
+      const historyList = document.getElementById("checkInHistory");
+      historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
-          const maxDisplay = 10;
-          const start = Math.max(count - maxDisplay, 0);
-          const promises = [];
-          for (let i = count - 1; i >= start; i--) {
-            promises.push(contract.methods.getCheckInLog(userAccount, i).call());
-          }
-          const logs = await Promise.all(promises);
-          logs.reverse().forEach(log => {
+      const maxDisplay = 10;
+      const start = Math.max(count - maxDisplay, 0);
+      const promises = [];
+      for (let i = count - 1; i >= start; i--) {
+        promises.push(contract.methods.getCheckInLog(userAccount, i).call());
+      }
+      const logs = await Promise.all(promises);
+      logs.forEach(log => {
+        const date = new Date(log.timestamp * 1000).toLocaleString();
+        const li = document.createElement("li");
+        li.className = "py-2";
+        li.innerHTML = `<small>
+          Day: ${log.dayUTC}<br>
+          Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
+          Time: ${date}<br>
+        </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+        historyList.insertBefore(li, historyList.firstChild);
+      });
+      console.log("Check-in history loaded successfully");
+      return;
+    } catch (error) {
+      console.error(`Error loading check-in history (attempt ${attempt}/${retries}):`, error);
+      if (attempt < retries) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        // Coba cadangan: ambil dari event CheckInLogCreated
+        console.log("Falling back to CheckInLogCreated events");
+        try {
+          const events = await fetchCheckInEvents(userAccount);
+          const historyList = document.getElementById("checkInHistory");
+          historyList.innerHTML = Object.keys(events).length === 0 ? "<li><small>No history found.</small></li>" : "";
+          Object.values(events).slice(-10).forEach(log => {
             const date = new Date(log.timestamp * 1000).toLocaleString();
             const li = document.createElement("li");
             li.className = "py-2";
@@ -751,42 +775,19 @@
               Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
               Time: ${date}<br>
             </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-            historyList.appendChild(li);
+            historyList.insertBefore(li, historyList.firstChild);
           });
-          console.log("Check-in history loaded successfully");
-          return;
-        } catch (error) {
-          console.error(`Error loading check-in history (attempt ${attempt}/${retries}):`, error);
-          if (attempt < retries) {
-            await new Promise(resolve => setTimeout(resolve, delay));
-          } else {
-            console.log("Falling back to CheckInLogCreated events");
-            try {
-              const events = await fetchCheckInEvents(userAccount);
-              const historyList = document.getElementById("checkInHistory");
-              historyList.innerHTML = Object.keys(events).length === 0 ? "<li><small>No history found.</small></li>" : "";
-              Object.values(events).slice(-10).reverse().forEach(log => {
-                const date = new Date(log.timestamp * 1000).toLocaleString();
-                const li = document.createElement("li");
-                li.className = "py-2";
-                li.innerHTML = `<small>
-                  Day: ${log.dayUTC}<br>
-                  Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
-                  Time: ${date}<br>
-                </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-                historyList.appendChild(li);
-              });
-              console.log("Check-in history loaded from events");
-            } catch (eventError) {
-              console.error("Error loading check-in history from events:", eventError);
-              document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
-              alert("Failed to load check-in history after multiple attempts.");
-            }
-          }
+          console.log("Check-in history loaded from events");
+        } catch (eventError) {
+          console.error("Error loading check-in history from events:", eventError);
+          document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+          alert("Failed to load check-in history after multiple attempts.");
         }
       }
-      setLoading("checkInHistory", false);
-    };
+    }
+  }
+  setLoading("checkInHistory", false);
+};
 
     // Place Bet
     const placeBet = async () => {
