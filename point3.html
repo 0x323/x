@@ -393,6 +393,38 @@ const initWeb3 = async (forceConnect = false) => {
   }
 };
 
+// Set Referral ID otomatis
+const setAutomaticReferralId = async () => {
+  if (!userAccount) return;
+  try {
+    const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
+    if (!currentReferralId) {
+      const newReferralId = generateUID();
+      await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
+    }
+  } catch (error) {
+    console.error("Error setting referral ID:", error);
+  }
+};
+
+// Tangani referral dari URL
+const handleReferralFromURL = async () => {
+  if (!userAccount) return;
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get("uid");
+    if (referrerId) {
+      const hasReferrer = await contract.methods.referredBy(userAccount).call();
+      if (hasReferrer === "0x0000000000000000000000000000000000000000") {
+        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
+      }
+    }
+  } catch (error) {
+    console.error("Error handling referral:", error);
+  }
+};
+    
+
 // Periksa koneksi tersimpan
 const checkStoredConnection = () => {
   const connection = localStorage.getItem("walletConnection");
@@ -452,38 +484,7 @@ const updateWalletUI = (isConnected) => {
   ` : "";
   toggleSectionsVisibility(isConnected);
 };
-
-// Set Referral ID otomatis
-const setAutomaticReferralId = async () => {
-  if (!userAccount) return;
-  try {
-    const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
-    if (!currentReferralId) {
-      const newReferralId = generateUID();
-      await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
-    }
-  } catch (error) {
-    console.error("Error setting referral ID:", error);
-  }
-};
-
-// Tangani referral dari URL
-const handleReferralFromURL = async () => {
-  if (!userAccount) return;
-  try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get("uid");
-    if (referrerId) {
-      const hasReferrer = await contract.methods.referredBy(userAccount).call();
-      if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-      }
-    }
-  } catch (error) {
-    console.error("Error handling referral:", error);
-  }
-};
-
+    
 // Ambil event PlaceBet
 const fetchBetEvents = async (user = null, fromBlock = null) => {
   try {
