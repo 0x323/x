@@ -1108,7 +1108,7 @@ const loadUserBetHistory = async () => {
     const referrer = await contract.methods.referredBy(userAccount).call();
     const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
       ? "None"
-      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
 
     bets.forEach((bet, index) => {
       if (!bet || !bet.timestamp) return;
@@ -1119,11 +1119,12 @@ const loadUserBetHistory = async () => {
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
-        Wallet: <span style="color: #bd80ff; font-size: 13px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
+        Wallet: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
         BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+        InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
@@ -1173,12 +1174,12 @@ const loadUserBetHistory = async () => {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            User: <span style="color: #bd80ff; font-size: 13px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
+            User: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
             Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-            InviteBy: <span style="color: #ff9900; font-size: 13px;">${referrerDisplay}</span><br>
+            InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
