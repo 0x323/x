@@ -84,6 +84,7 @@
                 const totalReferralRewards = await contract.methods.referralRewards("user_address_here").call(); // Update with correct user address
                 const topReferrer = await contract.methods.getReferees("user_address_here").call(); // Update with correct user address
                 const topBettor = await contract.methods.getUserBet("user_address_here", 0).call(); // Update with correct user address and index
+                const topCheckInUser = await contract.methods.getTopCheckInUser().call();
                 const totalBurned = await contract.methods.getBurnedTotal().call(); // Replace with correct function
 
                 // Memperbarui DOM dengan data yang diterima
