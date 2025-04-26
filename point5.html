@@ -535,7 +535,7 @@
       document.getElementById("accountInfo").innerHTML = isConnected ? `
         <span style="font-size: 12.5px; color: #bd80ff;">
           Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-            ${userAccount.slice(0, 6)}...${userAccount.slice(-4)}
+            ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
           </a>
         </span>
       ` : "";
@@ -660,8 +660,8 @@
           li.className = "py-2";
           li.innerHTML = `
             <span style="font-size: 12.5px; color: #bd80ff;">
-              Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
-                ${referee.slice(0, 6)}...${referee.slice(-4)}
+              Ref ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
+                ${referee.slice(0, 21)}${referee.slice(-21)}
               </a>
             </span>
           `;
@@ -747,7 +747,7 @@ const loadCheckInHistory = async (retries = 5, delay = 2000) => {
         const li = document.createElement("li");
         li.className = "py-2";
         li.innerHTML = `<small>
-          Day: ${log.dayUTC}<br>
+          ID: ${log.dayUTC}<br>
           Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
           Time: ${date}<br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
@@ -771,7 +771,7 @@ const loadCheckInHistory = async (retries = 5, delay = 2000) => {
             const li = document.createElement("li");
             li.className = "py-2";
             li.innerHTML = `<small>
-              Day: ${log.dayUTC}<br>
+              ID: ${log.dayUTC}<br>
               Reward: ${(log.reward / 10 ** cache.decimals).toFixed(2)} Points<br>
               Time: ${date}<br>
             </small><hr style="background-color: #333333; height: 1px; border: none;">`;
@@ -863,7 +863,7 @@ const loadUserBetHistory = async () => {
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
         BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
@@ -907,7 +907,7 @@ const loadUserBetHistory = async () => {
           const referrer = await contract.methods.referredBy(bet.user).call();
           const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
             ? "None"
-            : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+            : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
           const eventIndex = i;
           const event = globalEvents[eventIndex] || {};
           const txHash = event.txHash || "N/A";
@@ -917,12 +917,12 @@ const loadUserBetHistory = async () => {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
             Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-            ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+            InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
