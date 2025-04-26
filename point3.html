@@ -166,7 +166,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>CheckInPoint DAp</h1>
+    <h1>CheckInPoint DApp</h1>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -710,8 +710,8 @@ const loadUserBetHistory = async () => {
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
         ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a></span><br>
-Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a></span><br>
+        Tx Hash: <span style="color: #ff4da6;"><a href="https://sepolia.basescan.org/tx/${bet.txHash}" target="_blank">${bet.txHash.slice(0, 10)}...</a></span><br>
+Block Number: <span style="color: #00ccff;"><a href="https://sepolia.basescan.org/block/${bet.blockNumber}" target="_blank">${bet.blockNumber}</a></span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
