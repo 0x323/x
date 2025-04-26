@@ -709,7 +709,6 @@ const loadUserBetHistory = async () => {
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
@@ -747,7 +746,7 @@ const loadGlobalBetHistory = async () => {
       const referrer = await contract.methods.referredBy(bet.user).call();
       const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
         ? "None"
-        : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+        : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
       const eventIndex = i; // Global index sesuai dengan betHistory
       const event = globalEvents[eventIndex] || {};
       const txHash = event.txHash || "N/A";
@@ -762,16 +761,7 @@ const loadGlobalBetHistory = async () => {
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        Tx Hash: <span style="color: #ff4da6;">${
-  txHash !== "N/A"
-    ? `<a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank">${txHash.slice(0, 10)}...</a>`
-    : "N/A"
-}</span><br>
-Block Number: <span style="color: #00ccff;">${
-  blockNumber !== "N/A"
-    ? `<a href="https://sepolia.basescan.org/block/${blockNumber}" target="_blank">${blockNumber}</a>`
-    : "N/A"
-}</span><br>
+        ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
