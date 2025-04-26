@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CheckInPoint Statistics</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -37,6 +36,11 @@
             text-align: center;
             font-size: 18px;
         }
+
+        .error {
+            color: red;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -54,60 +58,87 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.5/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.3.0/web3.min.js"></script>
     <script>
         // Konfigurasi
         const CONTRACT_ADDRESS = "0x12802A911BE5B96202e15901d91F371a7d7747fC";
         const ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
-            
-        // Menginisialisasi Web3 dan kontrak
-        let web3;
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            window.ethereum.enable().catch(err => console.log("Akses ditolak"));
-        } else {
-            alert("Web3 tidak terdeteksi! Anda harus menggunakan Metamask atau dompet lain.");
-            return;
-        }
 
-        const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
+        // Inisialisasi Web3
+        let web3;
+        let contract;
+
+        async function initWeb3() {
+            try {
+                if (window.ethereum) {
+                    web3 = new Web3(window.ethereum);
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
+                    return true;
+                } else {
+                    alert("Web3 tidak terdeteksi! Harap instal Metamask atau gunakan dompet lain.");
+                    return false;
+                }
+            } catch (err) {
+                console.error("Gagal menginisialisasi Web3:", err);
+                alert("Gagal menghubungkan ke dompet. Pastikan Metamask terinstal dan Anda telah login.");
+                return false;
+            }
+        }
 
         async function loadData() {
-            // Ambil total supply
-            const totalSupply = await contract.methods.totalSupply().call();
-            document.getElementById('totalSupply').innerText = `Total Supply: ${web3.utils.fromWei(totalSupply, 'ether')} ETH`;
+            if (!web3 || !contract) {
+                document.querySelectorAll('.stat').forEach(stat => {
+                    stat.innerText = "Error: Tidak dapat terhubung ke Web3";
+                    stat.classList.add('error');
+                });
+                return;
+            }
 
-            // Ambil total check-ins
-            const totalCheckIns = await contract.methods.getCheckInCount("0xAddressExample").call();
-            document.getElementById('totalCheckIns').innerText = `Total Check-Ins: ${totalCheckIns}`;
+            try {
+                // Total Supply
+                const totalSupply = await contract.methods.totalSupply().call();
+                document.getElementById('totalSupply').innerText = `Total Supply: ${web3.utils.fromWei(totalSupply, 'ether')} CIP`;
 
-            // Ambil total bets
-            const totalBets = await contract.methods.getBetHistoryLength().call();
-            document.getElementById('totalBets').innerText = `Total Bets: ${totalBets}`;
+                // Total Check-Ins (contoh: hitung total check-in dari event atau metode lain)
+                // Catatan: Anda perlu metode kontrak atau event log untuk menghitung total check-in
+                document.getElementById('totalCheckIns').innerText = `Total Check-Ins: Data tidak tersedia`;
 
-            // Ambil total referral rewards
-            const totalReferralRewards = await contract.methods.referralRewards("0xAddressExample").call();
-            document.getElementById('totalReferralRewards').innerText = `Total Referral Rewards: ${web3.utils.fromWei(totalReferralRewards, 'ether')} ETH`;
+                // Total Bets
+                const totalBets = await contract.methods.getBetHistoryLength().call();
+                document.getElementById('totalBets').innerText = `Total Bets: ${totalBets}`;
 
-            // Ambil top referrer (contoh menggunakan metode kontrak untuk referer)
-            const topReferrer = await contract.methods.getReferees("0xAddressExample").call();
-            document.getElementById('topReferrer').innerText = `Top Referrer: ${topReferrer}`;
+                // Total Referral Rewards (contoh: hitung dari event atau metode lain)
+                // Catatan: Anda perlu metode kontrak atau event log untuk menghitung total referral rewards
+                document.getElementById('totalReferralRewards').innerText = `Total Referral Rewards: Data tidak tersedia`;
 
-            // Ambil top bettor (contoh)
-            const topBettor = await contract.methods.getUserBet("0xAddressExample", 0).call();
-            document.getElementById('topBettor').innerText = `Top Bettor: ${topBettor}`;
+                // Top Referrer (contoh: ambil dari event atau metode kontrak)
+                document.getElementById('topReferrer').innerText = `Top Referrer: Data tidak tersedia`;
 
-            // Ambil top check-in user (contoh)
-            const topCheckInUser = await contract.methods.getCheckInLog("0xAddressExample", 0).call();
-            document.getElementById('topCheckInUser').innerText = `Top Check-In User: ${topCheckInUser}`;
+                // Top Bettor (contoh: ambil dari event atau metode kontrak)
+                document.getElementById('topBettor').innerText = `Top Bettor: Data tidak tersedia`;
 
-            // Ambil total burned tokens (contoh)
-            const totalBurned = await contract.methods.totalSupply().call();
-            document.getElementById('totalBurned').innerText = `Total Burned: ${web3.utils.fromWei(totalBurned, 'ether')} ETH`;
+                // Top Check-In User (contoh: ambil dari event atau metode kontrak)
+                document.getElementById('topCheckInUser').innerText = `Top Check-In User: Data tidak tersedia`;
+
+                // Total Burned (contoh: perlu metode kontrak untuk menghitung token yang dibakar)
+                document.getElementById('totalBurned').innerText = `Total Burned: Data tidak tersedia`;
+            } catch (err) {
+                console.error("Gagal memuat data:", err);
+                document.querySelectorAll('.stat').forEach(stat => {
+                    stat.innerText = "Error: Gagal memuat data";
+                    stat.classList.add('error');
+                });
+            }
         }
 
-        // Load data saat halaman dimuat
-        loadData();
+        // Inisialisasi dan muat data
+        (async () => {
+            const web3Initialized = await initWeb3();
+            if (web3Initialized) {
+                await loadData();
+            }
+        })();
     </script>
 </body>
 </html>
