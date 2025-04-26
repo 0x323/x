@@ -113,10 +113,7 @@
                         toBlock: 'latest' 
                     });
                     document.getElementById('totalCheckIns').innerText = `Total Check-Ins: ${checkInEvents.length}`;
-                } catch (err) {
-                    console.error("Gagal mengambil CheckInLogCreated:", err);
-                    document.getElementById('totalCheckIns').innerText = "Total Check-Ins: Tidak dapat diambil";
-                }
+                } 
 
                 // Total Bets
                 const totalBets = await contract.methods.getBetHistoryLength().call();
@@ -131,10 +128,7 @@
                     });
                     const totalReferralRewards = referralRewardEvents.reduce((sum, event) => sum + Number(event.returnValues.reward), 0);
                     document.getElementById('totalReferralRewards').innerText = `Total Referral Rewards: ${web3.utils.fromWei(totalReferralRewards.toString(), 'ether')} CIP`;
-                } catch (err) {
-                    console.error("Gagal mengambil ReferralReward:", err);
-                    document.getElementById('totalReferralRewards').innerText = "Total Referral Rewards: Tidak dapat diambil";
-                }
+                } 
 
                 // Top Referrer (menggunakan event Referred)
                 let referredEvents = [];
@@ -150,9 +144,6 @@
                     });
                     const topReferrer = Object.keys(referrerCounts).reduce((a, b) => referrerCounts[a] > referrerCounts[b] ? a : b, 'Tidak ada');
                     document.getElementById('topReferrer').innerText = `Top Referrer: ${topReferrer !== 'Tidak ada' ? topReferrer : 'Tidak ada'}`;
-                } catch (err) {
-                    console.error("Gagal mengambil Referred:", err);
-                    document.getElementById('topReferrer').innerText = "Top Referrer: Tidak dapat diambil";
                 }
 
                 // Top Bettor (menggunakan event PlaceBet)
@@ -169,9 +160,6 @@
                     });
                     const topBettor = Object.keys(bettorCounts).reduce((a, b) => bettorCounts[a] > bettorCounts[b] ? a : b, 'Tidak ada');
                     document.getElementById('topBettor').innerText = `Top Bettor: ${topBettor !== 'Tidak ada' ? topBettor : 'Tidak ada'}`;
-                } catch (err) {
-                    console.error("Gagal mengambil PlaceBet:", err);
-                    document.getElementById('topBettor').innerText = "Top Bettor: Tidak dapat diambil";
                 }
 
                 // Top Check-In User (menggunakan event CheckInLogCreated)
@@ -183,9 +171,6 @@
                     });
                     const topCheckInUser = Object.keys(checkInCounts).reduce((a, b) => checkInCounts[a] > checkInCounts[b] ? a : b, 'Tidak ada');
                     document.getElementById('topCheckInUser').innerText = `Top Check-In User: ${topCheckInUser !== 'Tidak ada' ? topCheckInUser : 'Tidak ada'}`;
-                } catch (err) {
-                    console.error("Gagal menghitung Top Check-In User:", err);
-                    document.getElementById('topCheckInUser').innerText = "Top Check-In User: Tidak dapat diambil";
                 }
 
                 // Total Burned (menggunakan event Transfer ke alamat nol)
@@ -199,9 +184,6 @@
                         .filter(event => event.returnValues.to === '0x0000000000000000000000000000000000000000')
                         .reduce((sum, event) => sum + Number(event.returnValues.value), 0);
                     document.getElementById('totalBurned').innerText = `Total Burned: ${web3.utils.fromWei(totalBurned.toString(), 'ether')} CIP`;
-                } catch (err) {
-                    console.error("Gagal mengambil Transfer:", err);
-                    document.getElementById('totalBurned').innerText = "Total Burned: Tidak dapat diambil";
                 }
 
             } catch (err) {
