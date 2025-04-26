@@ -747,7 +747,7 @@ const loadCheckInHistory = async (retries = 5, delay = 2000) => {
         const li = document.createElement("li");
         li.className = "py-2";
         li.innerHTML = `<small>
-           Day: <span style="color: #00bfff;">${log.dayUTC}</span><br>
+           ID: <span style="color: #00bfff;">${log.dayUTC}</span><br>
            Reward: <span style="color: #32cd32;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
            Time: <span style="color: #ffa500;">${date}</span><br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
