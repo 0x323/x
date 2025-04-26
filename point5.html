@@ -186,23 +186,34 @@
     </div>
 
     <!-- Betting -->
-    <div class="section hidden">
-      <h2>Place a Bet</h2>
-      <div class="input-group">
-        <label for="betNumber"><small>Betting Number</small></label><br>
-        <br><input id="betNumber" type="number" min="00" max="9999" placeholder="Enter: 2D, 3D, or 4D">
-      </div>
-      <div class="input-group">
-        <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
-        <br><input id="betTimes" type="number" min="1" max="5" placeholder="1× - 5×">
-      </div>
-      <div class="input-group">
-        <label for="payoutAmount"><small>Reward Amount (10 points)</small></label><br>
-        <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="Enter the reward value (10) points">
-      </div>
-      <center><button id="placeBet">Submit Ticket</button></center>
-    </div>
+<div class="section hidden">
+  <h2>Place a Bet</h2>
+  
+  <div class="input-group">
+    <label for="betNumber"><small>Betting Number</small></label><br>
+    <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
+  </div>
 
+  <div class="input-group">
+    <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
+    <br><input id="betTimes" type="number" min="1" max="5" placeholder="1× - 5×">
+  </div>
+
+  <div class="input-group">
+    <label for="payoutAmount"><small>Reward Amount (Fixed 10 Points)</small></label><br>
+    <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="10">
+  </div>
+
+  <div class="input-group">
+    <label><small>Total Cost</small></label><br>
+    <br><small id="betCost" style="color: yellow;">-</small>
+  </div>
+
+  <center><button id="placeBet" onclick="placeBet()">Submit Ticket</button></center>
+
+  <div id="betStatus" style="margin-top: 15px; text-align: center;"></div>
+</div>
+    
     <!-- User Bet History -->
     <div class="section hidden">
       <h2>Your Ticket History</h2>
@@ -790,46 +801,80 @@ const loadCheckInHistory = async (retries = 5, delay = 2000) => {
 };
 
     // Place Bet
-    const placeBet = async () => {
-      if (!userAccount) {
-        alert("Please connect your wallet first.");
-        return;
-      }
-      const number = document.getElementById("betNumber").value.trim();
-      const times = parseInt(document.getElementById("betTimes").value);
-      const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
+const placeBet = async () => {
+  if (!userAccount) {
+    alert("Please connect your wallet first.");
+    return;
+  }
 
-      if (!number || number.length < 2 || number.length > 4) {
-        alert("Please enter a valid number (2-4 digits).");
-        return;
-      }
-      if (!times || times < 1 || times > 5) {
-        alert("Please enter a valid multiplication (1-5).");
-        return;
-      }
-      if (!payoutAmount || payoutAmount !== 10) {
-        alert("Please enter a valid reward amount (10 points).");
-        return;
-      }
+  const number = document.getElementById("betNumber").value.trim();
+  const times = parseInt(document.getElementById("betTimes").value);
+  const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
+  const betStatus = document.getElementById("betStatus");
 
-      try {
-        console.log("Initiating placeBet transaction");
-        await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
-        alert("Bet placed successfully!");
-        document.getElementById("betNumber").value = "";
-        document.getElementById("betTimes").value = "";
-        document.getElementById("payoutAmount").value = "";
-        await fetchBetEvents();
-        await fetchBetEvents(userAccount);
-        await loadCriticalData();
-        await loadUserBetHistory();
-        await loadGlobalBetHistory();
-        console.log("Bet placed and UI updated");
-      } catch (error) {
-        console.error("Error placing bet:", error);
-        alert("Failed to place bet. Check your balance or try again tomorrow.");
-      }
-    };
+  // Reset Status
+  betStatus.innerHTML = "";
+
+  // Validate number (must be 2-4 digits and between 0-9999)
+  if (!number || isNaN(number) || number.length < 2 || number.length > 4 || parseInt(number) < 0 || parseInt(number) > 9999) {
+    betStatus.innerHTML = `<small style="color: red;">❌ Please enter a valid number (2-4 digits).</small>`;
+    return;
+  }
+
+  // Validate times
+  if (!times || times < 1 || times > 5) {
+    betStatus.innerHTML = `<small style="color: red;">❌ Multiplication must be between 1× and 5×.</small>`;
+    return;
+  }
+
+  // Validate payoutAmount (must be exactly 10)
+  if (payoutAmount !== 10) {
+    betStatus.innerHTML = `<small style="color: red;">❌ Reward amount must be exactly 10 points.</small>`;
+    return;
+  }
+
+  // Calculate Cost
+  const costPerBet = 5; // Example: 5 Points per 1×
+  const totalCost = costPerBet * times;
+
+  // Update UI with the calculated cost
+  document.getElementById("betCost").innerHTML = `${totalCost} Points`;
+
+  // Disable the button during processing
+  document.getElementById("placeBet").disabled = true;
+
+  try {
+    // Show processing
+    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
+
+    console.log("Initiating placeBet transaction");
+
+    // Initiate the smart contract method
+    await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+
+    // Success
+    betStatus.innerHTML = `<small style="color: #00ff14;">✅ Bet placed successfully!</small>`;
+    document.getElementById("betNumber").value = "";
+    document.getElementById("betTimes").value = "";
+    document.getElementById("payoutAmount").value = "";
+    document.getElementById("betCost").innerHTML = "-";
+
+    // Fetch and load data again after the bet
+    await fetchBetEvents();
+    await fetchBetEvents(userAccount);
+    await loadCriticalData();
+    await loadUserBetHistory();
+    await loadGlobalBetHistory();
+    console.log("Bet placed and UI updated");
+    
+  } catch (error) {
+    console.error("Error placing bet:", error);
+    betStatus.innerHTML = `<small style="color: red;">❌ Failed to place bet. Please check your balance or try again later.</small>`;
+  }
+
+  // Re-enable the button after processing
+  document.getElementById("placeBet").disabled = false;
+};
 
     // Load User Bet History
 const loadUserBetHistory = async () => {
