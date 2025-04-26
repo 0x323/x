@@ -690,8 +690,8 @@
           document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: ${web3.utils.fromWei(ethBalance, 'ether')} ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: ${(balance / 10 ** cache.decimals).toFixed(2)} ${cache.symbol}</small>`;
           document.getElementById("referralLink").innerHTML = `<small>Referral Link:</small><br><span style="color: #6683ff;">${BASE_URL}?uid=${userReferralId}</span>`;
-          document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: ${refereeCount}</small>`;
-          document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #6683ff;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Points</small>`;
+          document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #6683ff;">${refereeCount}</span></small>`;
+          document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Points</small>`;
 
           await loadRefereeList();
           console.log("Critical data loaded successfully");
