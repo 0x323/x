@@ -582,56 +582,52 @@ const loadRefereeList = async () => {
 };
 
 // Check-In
-const checkIn = async () => {
-  if (!userAccount) {
-    alert("Please connect your wallet first.");
-    return;
-  }
-  try {
-    await contract.methods.checkIn().send({ from: userAccount });
-    document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
-    await loadCriticalData();
-    await loadCheckInHistory();
-  } catch (error) {
-    console.error("Error checking in:", error);
-    document.getElementById("checkInStatus").innerHTML = "<small>Failed to check in. You may have already checked in today.</small>";
-  }
-};
+    const checkIn = async () => {
+      if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+      }
+      try {
+        await contract.methods.checkIn().send({ from: userAccount });
+        document.getElementById("checkInStatus").innerText = "Check-in successful! You earned 1 Lpoint.";
+        loadWalletInfo();
+        loadCheckInHistory();
+      } catch (error) {
+        console.error("Error checking in:", error);
+        document.getElementById("checkInStatus").innerText = "Failed to check in. You may have already checked in today.";
+      }
+    };
 
-// Load Check-In History
-const loadCheckInHistory = async () => {
-  if (!userAccount) return;
-  setLoading("checkInHistory", true);
-  try {
-    const count = await contract.methods.getCheckInCount(userAccount).call();
-    const historyList = document.getElementById("checkInHistory");
-    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
+    // Load Check-In History
+    const loadCheckInHistory = async () => {
+      if (!userAccount) return;
+      try {
+        const count = await contract.methods.getCheckInCount(userAccount).call();
+        const historyList = document.getElementById("checkInHistory");
+        historyList.innerHTML = "";
 
-    const maxDisplay = 10; // Batasi 10 entri
-    const start = Math.max(count - maxDisplay, 0);
-    const promises = [];
-    for (let i = count - 1; i >= start; i--) {
-      promises.push(contract.methods.getCheckInLog(userAccount, i).call());
-    }
-    const logs = await Promise.all(promises);
-    logs.reverse().forEach(log => {
-      const date = new Date(log.timestamp * 1000).toLocaleString();
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        Day: ${log.dayUTC}<br>
-        Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
-        Time: ${date}<br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
-  } catch (error) {
-    console.error("Error loading check-in history:", error);
-    document.getElementById("checkInHistory").innerHTML = "<li><small>Error</small></li>";
-  } finally {
-    setLoading("checkInHistory", false);
-  }
-};
+        if (count == 0) {
+          historyList.innerHTML = "<li><small>No history found.</small></li>";
+          return;
+        }
+
+        for (let i = count - 1; i >= 0; i--) {
+          const log = await contract.methods.getCheckInLog(userAccount, i).call();
+          const date = new Date(log.timestamp * 1000).toLocaleString();
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            ID: ${log.dayUTC}<br>
+            Reward: ${(log.reward / 10 ** 18).toFixed(2)} Lpoints<br>
+            Time: ${date}<br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading check-in history:", error);
+        document.getElementById("checkInHistory").innerHTML = "<li><small>Error loading history.</small></li>";
+      }
+    };
 
 // Place Bet
 const placeBet = async () => {
