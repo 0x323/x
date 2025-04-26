@@ -652,7 +652,9 @@
         alert("Please connect your wallet first.");
         return;
       }
-      document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
+      document.getElementById("checkInStatus").innerHTML = "<small style="color: #aaffaa;">
+    <img src="png/load.png" style="width: 14px; vertical-align: middle; margin-right: 5px;">
+    Processing claiming faucet...</small>";
       try {
         console.log("Initiating check-in transaction");
         const tx = await contract.methods.checkIn().send({ from: userAccount });
@@ -675,7 +677,9 @@
         }
         console.log("Transaction confirmed, receipt:", receipt);
 
-        document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
+        document.getElementById("checkInStatus").innerHTML = "<small style="color: #00ff00;">
+    <img src="img/success.svg" style="width: 14px; vertical-align: middle; margin-right: 5px;">
+    Check-in successful! You earned 1 Point!</small>";
         // Tunda untuk sinkronisasi blockchain
         console.log("Waiting for blockchain sync");
         await new Promise(resolve => setTimeout(resolve, 3000));
@@ -690,7 +694,9 @@
         } else if (error.message.includes("Transaction not confirmed")) {
           errorMessage = "Transaction timed out. Please check Basescan and try again.";
         }
-        document.getElementById("checkInStatus").innerHTML = `<small>${errorMessage}</small>`;
+        document.getElementById("checkInStatus").innerHTML = `<small style="color: #ff4c4c;">
+    <img src="img/failed.svg" style="width: 14px; vertical-align: middle; margin-right: 5px;">
+    ${errorMessage}</small>`;
         alert(errorMessage);
       }
     };
@@ -721,6 +727,7 @@ const loadCheckInHistory = async (retries = 5, delay = 2000) => {
           ID: <span style="color: #bd80ff;">${log.dayUTC}</span><br>
           Reward: <span style="color: #6683ff;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
           Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
         historyList.insertBefore(li, historyList.firstChild);
       });
       console.log("Check-in history loaded successfully");
