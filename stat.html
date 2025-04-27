@@ -184,48 +184,52 @@ ul li:nth-child(even) {
 
         // Fungsi untuk memuat statistik kontrak
         async function loadStats() {
-            try {
-                // Ambil total jumlah taruhan
-                const betCount = await contract.getBetHistoryLength();
-                betCountSpan.textContent = betCount.toString();
+    try {
+        const betCount = await contract.getBetHistoryLength();
+        betCountSpan.textContent = betCount.toString();
 
-                // Ambil total jumlah check-in
-                const checkInCount = await contract.getCheckInCount(walletAddressSpan.textContent);
-                checkInCountSpan.textContent = checkInCount.toString();
+        const checkInCount = await contract.getCheckInCount(walletAddressSpan.textContent);
+        checkInCountSpan.textContent = checkInCount.toString();
 
-                // Ambil jumlah referral
-                const referralCount = await contract.getRefereeCount(walletAddressSpan.textContent);
-                referralCountSpan.textContent = referralCount.toString();
+        const referralCount = await contract.getRefereeCount(walletAddressSpan.textContent);
+        referralCountSpan.textContent = referralCount.toString();
 
-                // Ambil bettors list
-                const bettorsLength = await contract.getBetHistoryLength();
-                bettorsList.innerHTML = ''; // Clear list
-                for (let i = 0; i < bettorsLength; i++) {
-                    const bet = await contract.getBet(i);
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${bet.user}: Bet Number ${bet.number}, Cost: ${bet.cost}, Reward: ${bet.reward}`;
-                    bettorsList.appendChild(listItem);
-                }
+        // Ambil bettors list
+        const bettorsLength = betCount.toNumber(); // karena sama dengan betCount
+        bettorsList.innerHTML = ''; // Clear list
+        for (let i = 0; i < bettorsLength; i++) {
+            const bet = await contract.getBet(i);
+            const costFormatted = ethers.utils.formatUnits(bet.cost, 18); // asumsi 18 desimal
+            const rewardFormatted = ethers.utils.formatUnits(bet.reward, 18);
 
-                // Ambil check-in log
-                const checkInLogsLength = await contract.getCheckInCount(walletAddressSpan.textContent);
-                checkInLog.innerHTML = ''; // Clear log
-                for (let i = 0; i < checkInLogsLength; i++) {
-                    const checkIn = await contract.getCheckInLog(walletAddressSpan.textContent, i);
-                    const logItem = document.createElement('li');
-                    logItem.textContent = `Day: ${checkIn.dayUTC}, Reward: ${checkIn.reward}`;
-                    checkInLog.appendChild(logItem);
-                }
-
-                // Ambil referral rewards
-                const referralRewards = await contract.referralRewards(walletAddressSpan.textContent);
-                referralRewardsSpan.textContent = referralRewards.toString();
-
-                statsDiv.style.display = 'block';
-            } catch (err) {
-                console.error(err);
-            }
+            const listItem = document.createElement('li');
+            listItem.textContent = `${bet.user}: Bet Number ${bet.number}, Cost: ${costFormatted}, Reward: ${rewardFormatted}`;
+            bettorsList.appendChild(listItem);
         }
+
+        // Ambil check-in log
+        const checkInLogsLength = checkInCount.toNumber();
+        checkInLog.innerHTML = ''; // Clear log
+        for (let i = 0; i < checkInLogsLength; i++) {
+            const checkIn = await contract.getCheckInLog(walletAddressSpan.textContent, i);
+            const rewardFormatted = ethers.utils.formatUnits(checkIn.reward, 18);
+
+            const logItem = document.createElement('li');
+            logItem.textContent = `Day: ${checkIn.dayUTC}, Reward: ${rewardFormatted}`;
+            checkInLog.appendChild(logItem);
+        }
+
+        // Ambil referral rewards
+        const referralRewards = await contract.referralRewards(walletAddressSpan.textContent);
+        const referralRewardsFormatted = ethers.utils.formatUnits(referralRewards, 18);
+
+        referralRewardsSpan.textContent = referralRewardsFormatted;
+
+        statsDiv.style.display = 'block';
+    } catch (err) {
+        console.error(err);
+    }
+}
 
         // Menambahkan event listener ke tombol "Connect Wallet"
         connectWalletBtn.addEventListener('click', connectWallet);
