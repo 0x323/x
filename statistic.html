@@ -89,93 +89,94 @@
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
 <script>
+// Initialize Ethereum provider and contract
+const provider = new ethers.BrowserProvider(window.ethereum);
 const contractAddress = '0x12802A911BE5B96202e15901d91F371a7d7747fC';
 const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
 
-let provider;
-let signer;
-let contract;
+const contract = new ethers.Contract(contractAddress, abi, provider);
+let userAddress = '';
 
-document.getElementById('connectWalletBtn').onclick = async () => {
-  if (typeof window.ethereum !== 'undefined') {
-    try {
-      await ethereum.request({ method: 'eth_requestAccounts' });
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      signer = provider.getSigner();
-      const address = await signer.getAddress();
-
-      document.getElementById('address').textContent = address;
-      document.getElementById('walletAddress').style.display = 'block';
-      document.getElementById('globalStats').style.display = 'block';
-      document.getElementById('stats').style.display = 'block';
-
-      contract = new ethers.Contract(contractAddress, abi, signer);
-
-      await loadGlobalStats();
-      await loadPersonalStats(address);
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-      alert('Failed to connect wallet.');
-    }
-  } else {
-    alert('Please install MetaMask!');
+async function connectWallet() {
+  try {
+    const accounts = await provider.request({ method: 'eth_requestAccounts' });
+    userAddress = accounts[0];
+    document.getElementById('address').textContent = userAddress;
+    document.getElementById('walletAddress').style.display = 'block';
+    loadGlobalStats();
+    loadPersonalStats();
+  } catch (err) {
+    console.error(err);
   }
-};
+}
+
+document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
 
 async function loadGlobalStats() {
-  try {
-    const totalSupply = await callSafe('totalSupply');
-    const betCount = await callSafe('getBetCount');
-    const checkInCount = await callSafe('getCheckInCount');
-    const referralCount = await callSafe('getReferralCount');
-    const totalRewardsPaid = await callSafe('getTotalRewardsPaid');
-    const totalUsers = await callSafe('getTotalUsers');
+  const totalUsers = await contract.getTotalUsers();
+  const totalSupply = await contract.getTotalSupply();
+  const totalReferrals = await contract.getTotalReferrals();
+  const totalBetAmount = await contract.getTotalBetAmount();
+  const totalRewardsPaid = await contract.getTotalRewardsPaid();
+  const globalCheckIns = await contract.getGlobalCheckIns();
 
-    document.getElementById('totalSupply').innerText = totalSupply ?? '0';
-    document.getElementById('totalBetAmount').innerText = betCount ?? '0';
-    document.getElementById('globalCheckIns').innerText = checkInCount ?? '0';
-    document.getElementById('totalReferrals').innerText = referralCount ?? '0';
-    document.getElementById('totalRewardsPaid').innerText = totalRewardsPaid ?? '0';
-    document.getElementById('totalUsers').innerText = totalUsers ?? '0';
-  } catch (error) {
-    console.error('Error loading global stats:', error);
-  }
+  document.getElementById('totalUsers').textContent = totalUsers;
+  document.getElementById('totalSupply').textContent = totalSupply;
+  document.getElementById('totalReferrals').textContent = totalReferrals;
+  document.getElementById('totalBetAmount').textContent = totalBetAmount;
+  document.getElementById('totalRewardsPaid').textContent = totalRewardsPaid;
+  document.getElementById('globalCheckIns').textContent = globalCheckIns;
+
+  document.getElementById('globalStats').style.display = 'block';
+  updateGlobalChart(totalUsers, totalReferrals, totalBetAmount, totalRewardsPaid);
 }
 
-async function loadPersonalStats(address) {
-  try {
-    const betCount = await callSafe('getUserBetCount', address);
-    const checkInCount = await callSafe('getUserCheckInCount', address);
-    const referralCount = await callSafe('getUserReferralCount', address);
-    const referralRewards = await callSafe('getReferralReward', address);
+async function loadPersonalStats() {
+  const betCount = await contract.getUserBetCount(userAddress);
+  const checkInCount = await contract.getCheckInCount(userAddress);
+  const referralCount = await contract.getRefereeCount(userAddress);
+  const referralRewards = await contract.getReferralRewards(userAddress);
 
-    document.getElementById('betCount').innerText = betCount ?? '0';
-    document.getElementById('checkInCount').innerText = checkInCount ?? '0';
-    document.getElementById('referralCount').innerText = referralCount ?? '0';
-    document.getElementById('referralRewards').innerText = referralRewards ?? '0';
-  } catch (error) {
-    console.error('Error loading personal stats:', error);
-  }
+  document.getElementById('betCount').textContent = betCount;
+  document.getElementById('checkInCount').textContent = checkInCount;
+  document.getElementById('referralCount').textContent = referralCount;
+  document.getElementById('referralRewards').textContent = referralRewards;
+
+  document.getElementById('stats').style.display = 'block';
+  updatePersonalChart(betCount, checkInCount, referralCount, referralRewards);
 }
 
-// fungsi aman supaya tidak error kalau fungsi tidak ada
-async function callSafe(functionName, ...params) {
-  try {
-    if (contract[functionName]) {
-      const result = await contract[functionName](...params);
-      if (ethers.BigNumber.isBigNumber(result)) {
-        return ethers.utils.formatUnits(result, 18);
-      }
-      return result.toString();
-    } else {
-      console.warn(`Function ${functionName} not found in contract.`);
-      return null;
+function updateGlobalChart(totalUsers, totalReferrals, totalBetAmount, totalRewardsPaid) {
+  const ctx = document.getElementById('globalChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Users', 'Referrals', 'Bet Amount', 'Rewards Paid'],
+      datasets: [{
+        label: 'Global Statistics',
+        data: [totalUsers, totalReferrals, totalBetAmount, totalRewardsPaid],
+        backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1']
+      }]
     }
-  } catch (err) {
-    console.warn(`Failed to call ${functionName}:`, err);
-    return null;
-  }
+  });
+}
+
+function updatePersonalChart(betCount, checkInCount, referralCount, referralRewards) {
+  const ctx = document.getElementById('personalChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Bet Count', 'Check-In Count', 'Referral Count', 'Referral Rewards'],
+      datasets: [{
+        label: 'Personal Statistics',
+        data: [betCount, checkInCount, referralCount, referralRewards],
+        borderColor: '#42A5F5',
+        fill: false
+      }]
+    }
+  });
 }
 </script>
+
 </body>
 </html>
