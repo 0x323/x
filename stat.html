@@ -100,6 +100,26 @@ ul li:nth-child(even) {
 #walletAddress, #stats {
     display: none;
 }
+
+/* Statistik global */
+#globalStats {
+    margin-top: 20px;
+}
+
+#globalStats h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#globalStats div {
+    margin-bottom: 10px;
+}
+
+#globalStats div strong {
+    font-weight: bold;
+    color: #007bff;
+}
     </style>
 </head>
 <body>
@@ -108,30 +128,53 @@ ul li:nth-child(even) {
         <div id="walletAddress" style="display:none;">
             <h3>Wallet Address: <span id="address"></span></h3>
         </div>
+
         <div id="stats" style="display:none;">
-            <h3>Contract Statistics:</h3>
-            <div>
-                <strong>Total Bet Count:</strong> <span id="betCount"></span>
-            </div>
-            <div>
-                <strong>Total Check-In Count:</strong> <span id="checkInCount"></span>
-            </div>
-            <div>
-                <strong>Referral Count:</strong> <span id="referralCount"></span>
-            </div>
-            <div>
-                <strong>Bettors List:</strong>
-                <ul id="bettorsList"></ul>
-            </div>
-            <div>
-                <strong>Check-In Log:</strong>
-                <ul id="checkInLog"></ul>
-            </div>
-            <div>
-                <strong>Referral Rewards:</strong> <span id="referralRewards"></span>
-            </div>
+    <h3>Contract Statistics:</h3>
+    <div>
+        <strong>Total Bet Count:</strong> <span id="betCount"></span>
+    </div>
+    <div>
+        <strong>Total Check-In Count:</strong> <span id="checkInCount"></span>
+    </div>
+    <div>
+        <strong>Referral Count:</strong> <span id="referralCount"></span>
+    </div>
+    <div>
+        <strong>Bettors List:</strong>
+        <ul id="bettorsList"></ul>
+    </div>
+    <div>
+        <strong>Check-In Log:</strong>
+        <ul id="checkInLog"></ul>
+    </div>
+    <div>
+        <strong>Referral Rewards:</strong> <span id="referralRewards"></span>
+    </div>
+    
+    <!-- Global Statistics Section -->
+    <div>
+        <h3>Global Statistics:</h3>
+        <div>
+            <strong>Total Users:</strong> <span id="totalUsers"></span>
+        </div>
+        <div>
+            <strong>Total Transactions:</strong> <span id="totalTransactions"></span>
+        </div>
+        <div>
+            <strong>Total Referrals:</strong> <span id="totalReferrals"></span>
         </div>
     </div>
+            <strong>Total Users:</strong> <span id="totalUsers"></span>
+    </div>
+    <div>
+        <strong>Total Bets Placed:</strong> <span id="totalBets"></span>
+    </div>
+    <div>
+        <strong>Total Referral Rewards:</strong> <span id="totalReferralRewards"></span>
+    </div>
+    </div>
+        </div>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
     <script>
@@ -230,6 +273,37 @@ ul li:nth-child(even) {
         console.error(err);
     }
 }
+        // Fungsi untuk mengambil statistik global
+async function fetchGlobalStats() {
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+
+    try {
+        const totalUsers = await contract.getTotalUsers(); // Contoh fungsi kontrak untuk jumlah pengguna
+        const totalBets = await contract.getTotalBets(); // Fungsi kontrak untuk total taruhan
+        const totalReferralRewards = await contract.getTotalReferralRewards(); // Fungsi kontrak untuk total hadiah referral
+
+        document.getElementById('totalUsers').textContent = totalUsers.toString();
+        document.getElementById('totalBets').textContent = totalBets.toString();
+        document.getElementById('totalReferralRewards').textContent = ethers.utils.formatEther(totalReferralRewards); // Format jika dalam Ether
+
+        // Menampilkan statistik global
+        document.getElementById('globalStats').style.display = 'block';
+    } catch (error) {
+        console.error('Error fetching global statistics:', error);
+    }
+}
+
+// Panggil fungsi untuk mengambil statistik global setelah wallet terkoneksi
+async function fetchData() {
+    await fetchGlobalStats();
+    // Fungsi lainnya untuk menampilkan statistik kontrak
+}
+
+document.getElementById('connectWalletBtn').addEventListener('click', async () => {
+    // Kode untuk menghubungkan wallet
+    // Setelah wallet terkoneksi, panggil fetchData
+    fetchData();
+});
 
         // Menambahkan event listener ke tombol "Connect Wallet"
         connectWalletBtn.addEventListener('click', connectWallet);
