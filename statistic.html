@@ -96,24 +96,27 @@ let provider;
 let signer;
 let contract;
 
-let globalChart;
-let personalChart;
-
 document.getElementById('connectWalletBtn').onclick = async () => {
   if (typeof window.ethereum !== 'undefined') {
-    await ethereum.request({ method: 'eth_requestAccounts' });
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-    signer = provider.getSigner();
-    const address = await signer.getAddress();
-    document.getElementById('address').textContent = address;
-    document.getElementById('walletAddress').style.display = 'block';
-    document.getElementById('globalStats').style.display = 'block';
-    document.getElementById('stats').style.display = 'block';
+    try {
+      await ethereum.request({ method: 'eth_requestAccounts' });
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
+      const address = await signer.getAddress();
 
-    contract = new ethers.Contract(contractAddress, abi, provider);
+      document.getElementById('address').textContent = address;
+      document.getElementById('walletAddress').style.display = 'block';
+      document.getElementById('globalStats').style.display = 'block';
+      document.getElementById('stats').style.display = 'block';
 
-    loadGlobalStats();
-    loadPersonalStats(address);
+      contract = new ethers.Contract(contractAddress, abi, signer);
+
+      await loadGlobalStats();
+      await loadPersonalStats(address);
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+      alert('Failed to connect wallet.');
+    }
   } else {
     alert('Please install MetaMask!');
   }
@@ -121,93 +124,57 @@ document.getElementById('connectWalletBtn').onclick = async () => {
 
 async function loadGlobalStats() {
   try {
-    const totalSupply = await contract.totalSupply();
-    const betCount = await contract.getBetCount();
-    const checkInCount = await contract.getCheckInCount();
-    const referralCount = await contract.getReferralCount();
-    const totalRewardsPaid = await contract.getTotalRewardsPaid();
-    const totalUsers = await contract.getTotalUsers();
+    const totalSupply = await callSafe('totalSupply');
+    const betCount = await callSafe('getBetCount');
+    const checkInCount = await callSafe('getCheckInCount');
+    const referralCount = await callSafe('getReferralCount');
+    const totalRewardsPaid = await callSafe('getTotalRewardsPaid');
+    const totalUsers = await callSafe('getTotalUsers');
 
-    document.getElementById('totalSupply').innerText = ethers.utils.formatUnits(totalSupply, 18);
-    document.getElementById('totalBetAmount').innerText = betCount.toString();
-    document.getElementById('globalCheckIns').innerText = checkInCount.toString();
-    document.getElementById('totalReferrals').innerText = referralCount.toString();
-    document.getElementById('totalRewardsPaid').innerText = ethers.utils.formatUnits(totalRewardsPaid, 18);
-    document.getElementById('totalUsers').innerText = totalUsers.toString();
-
-    renderGlobalChart(totalUsers, parseFloat(ethers.utils.formatUnits(totalSupply, 18)), referralCount, betCount, parseFloat(ethers.utils.formatUnits(totalRewardsPaid, 18)), checkInCount);
+    document.getElementById('totalSupply').innerText = totalSupply ?? '0';
+    document.getElementById('totalBetAmount').innerText = betCount ?? '0';
+    document.getElementById('globalCheckIns').innerText = checkInCount ?? '0';
+    document.getElementById('totalReferrals').innerText = referralCount ?? '0';
+    document.getElementById('totalRewardsPaid').innerText = totalRewardsPaid ?? '0';
+    document.getElementById('totalUsers').innerText = totalUsers ?? '0';
   } catch (error) {
-    console.error(error);
+    console.error('Error loading global stats:', error);
   }
 }
 
 async function loadPersonalStats(address) {
   try {
-    const betCount = await contract.getUserBetCount(address);
-    const checkInCount = await contract.getUserCheckInCount(address);
-    const referralCount = await contract.getUserReferralCount(address);
-    const referralRewards = await contract.getReferralReward(address);
+    const betCount = await callSafe('getUserBetCount', address);
+    const checkInCount = await callSafe('getUserCheckInCount', address);
+    const referralCount = await callSafe('getUserReferralCount', address);
+    const referralRewards = await callSafe('getReferralReward', address);
 
-    document.getElementById('betCount').innerText = betCount.toString();
-    document.getElementById('checkInCount').innerText = checkInCount.toString();
-    document.getElementById('referralCount').innerText = referralCount.toString();
-    document.getElementById('referralRewards').innerText = ethers.utils.formatUnits(referralRewards, 18);
-
-    renderPersonalChart(betCount.toNumber(), checkInCount.toNumber(), referralCount.toNumber());
+    document.getElementById('betCount').innerText = betCount ?? '0';
+    document.getElementById('checkInCount').innerText = checkInCount ?? '0';
+    document.getElementById('referralCount').innerText = referralCount ?? '0';
+    document.getElementById('referralRewards').innerText = referralRewards ?? '0';
   } catch (error) {
-    console.error(error);
+    console.error('Error loading personal stats:', error);
   }
 }
 
-function renderGlobalChart(users, supply, referrals, bets, rewards, checkins) {
-  const ctx = document.getElementById('globalChart').getContext('2d');
-  if (globalChart) { globalChart.destroy(); }
-  globalChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Users', 'Supply', 'Referrals', 'Bets', 'Rewards Paid', 'Check-Ins'],
-      datasets: [{
-        label: 'Global Stats',
-        data: [users, supply, referrals, bets, rewards, checkins],
-        backgroundColor: [
-          '#007bff', '#28a745', '#ffc107', '#17a2b8', '#dc3545', '#6f42c1'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true }
+// fungsi aman supaya tidak error kalau fungsi tidak ada
+async function callSafe(functionName, ...params) {
+  try {
+    if (contract[functionName]) {
+      const result = await contract[functionName](...params);
+      if (ethers.BigNumber.isBigNumber(result)) {
+        return ethers.utils.formatUnits(result, 18);
       }
+      return result.toString();
+    } else {
+      console.warn(`Function ${functionName} not found in contract.`);
+      return null;
     }
-  });
-}
-
-function renderPersonalChart(bets, checkins, referrals) {
-  const ctx = document.getElementById('personalChart').getContext('2d');
-  if (personalChart) { personalChart.destroy(); }
-  personalChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Bet Count', 'Check-In Count', 'Referral Count'],
-      datasets: [{
-        label: 'Your Progress',
-        data: [bets, checkins, referrals],
-        backgroundColor: 'rgba(0, 123, 255, 0.2)',
-        borderColor: '#007bff',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
+  } catch (err) {
+    console.warn(`Failed to call ${functionName}:`, err);
+    return null;
+  }
 }
 </script>
 </body>
