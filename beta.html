@@ -1084,50 +1084,7 @@ checkInButton.addEventListener("click", () => {
 });
 
     // Button Countdown II
-    // Fungsi untuk menghitung mundur hingga 00:00 UTC
-function startCountdown() {
-  const now = new Date();
-  const nextMidnight = new Date();
-  nextMidnight.setUTCHours(24, 0, 0, 0); // Set 00:00 UTC pada hari berikutnya
-
-  const timeRemaining = nextMidnight - now;
-
-  // Menampilkan countdown dalam format jam, menit, detik
-  const countdownElement = document.getElementById("placeBetButton");
-
-  const interval = setInterval(() => {
-    const hours = Math.floor(timeRemaining / 1000 / 60 / 60);
-    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-    countdownElement.textContent = `Wait ${hours}:${minutes}:${seconds} to place a bet`;
-
-    timeRemaining -= 1000;
-
-    // Ketika countdown selesai, reset tombol ke status semula
-    if (timeRemaining <= 0) {
-      clearInterval(interval);
-      countdownElement.textContent = "Submit Ticket";
-      countdownElement.disabled = false; // Aktifkan kembali tombol
-    }
-  }, 1000);
-}
-
-// Fungsi untuk menangani klik tombol
-function placeBet() {
-  const button = document.getElementById("placeBetButton");
-  button.disabled = true; // Nonaktifkan tombol saat diklik
-  button.textContent = "Processing...";
-
-  // Memulai countdown setelah tombol diklik
-  startCountdown();
-
-  // Simulasi pengiriman tiket (gunakan API atau logika lain di sini)
-  setTimeout(() => {
-    button.textContent = "Ticket Submitted"; // Update teks tombol
-  }, 2000); // Ganti dengan waktu yang sesuai untuk proses pengiriman tiket
-}
-
+    
     // Place Bet
     const placeBet = async () => {
   if (!userAccount) {
