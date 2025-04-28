@@ -1420,112 +1420,78 @@ userHistoryContainer.addEventListener("scroll", () => {
     };
 
     // Fungsi untuk mengambil daftar holder dari event Transfer
-const fetchTokenHolders = async () => {
+    const fetchTokenHolders = async () => {
   try {
-    console.log("Fetching token holders");
-    // Ambil semua event Transfer dari kontrak
+    console.log("Fetching token holders...");
+    // Ganti dengan block deploy kontrak yang benar dari Basescan
+    const fromBlock = 24816594; // Verifikasi di Basescan
+    console.log(`Querying Transfer events from block ${fromBlock} to latest`);
+
+    // Verifikasi kontrak
+    const contractCode = await web3.eth.getCode(contractAddress);
+    if (contractCode === "0x") {
+      console.error("No contract found at address:", contractAddress);
+      return [];
+    }
+    console.log("Contract verified at:", contractAddress);
+
+    // Verifikasi jaringan
+    const networkId = await web3.eth.net.getId();
+    console.log("Connected to network ID:", networkId); // Sepolia = 11155111
+    if (networkId !== 11155111) {
+      console.error("Wrong network, expected Sepolia (11155111)");
+      return [];
+    }
+
+    // Ambil event Transfer
     const transferEvents = await contract.getPastEvents("Transfer", {
-      fromBlock: 24816594, // Mulai dari block genesis kontrak
+      fromBlock: fromBlock,
       toBlock: "latest",
     });
+    console.log("Transfer events:", transferEvents);
 
-    // Buat set untuk menyimpan alamat holder unik
+    // Proses event untuk mengumpulkan holder
     const holderAddresses = new Set();
-
-    // Proses event Transfer untuk mengumpulkan alamat from dan to
-    transferEvents.forEach((event) => {
-      const { from, to } = event.returnValues;
+    transferEvents.forEach((event, index) => {
+      console.log(`Processing event ${index}:`, event);
+      const { from, to } = event.returnValues || {};
+      if (!from || !to) {
+        console.warn(`Event ${index} missing from/to fields:`, event);
+        return;
+      }
       if (from !== "0x0000000000000000000000000000000000000000") {
-        holderAddresses.add(from); // Tambahkan pengirim (kecuali mint)
+        holderAddresses.add(from);
       }
       if (to !== "0x0000000000000000000000000000000000000000") {
-        holderAddresses.add(to); // Tambahkan penerima (kecuali burn)
+        holderAddresses.add(to);
       }
     });
 
-    // Konversi set ke array
+    // Jika tidak ada holder, cek total supply dan deployer
+    if (holderAddresses.size === 0) {
+      console.log("No holders from events, checking total supply...");
+      const totalSupply = await contract.methods.totalSupply().call();
+      console.log("Total supply:", totalSupply / 10 ** cache.decimals);
+      if (totalSupply > 0) {
+        // Ganti dengan alamat deployer kontrak (dari Basescan, bagian Contract Creator)
+        const deployerAddress = "0xB5C218bd53Daa2Fd6491D47a46B35b18D042b287";
+        const deployerBalance = await contract.methods.balanceOf(deployerAddress).call();
+        console.log(`Deployer ${deployerAddress} balance:`, deployerBalance / 10 ** cache.decimals);
+        if (deployerBalance > 0) {
+          holderAddresses.add(deployerAddress);
+        }
+      } else {
+        console.log("Total supply is 0, no tokens minted.");
+      }
+    }
+
     holdersList = Array.from(holderAddresses);
-    console.log(`Found ${holdersList.length} unique holders`);
+    console.log(`Found ${holdersList.length} unique holders:`, holdersList);
     return holdersList;
   } catch (error) {
     console.error("Error fetching token holders:", error);
     return [];
   }
-};
-
-// Fungsi untuk memuat daftar holder ke frontend
-const loadTokenHolders = async () => {
-  if (isFetchingHolders) {
-    console.log("Skipping load: isFetchingHolders");
-    return;
-  }
-  isFetchingHolders = true;
-
-  const historyList = document.getElementById("tokenHolders");
-  try {
-    console.log("Loading token holders");
-    // Jika holdersList kosong, ambil daftar holder terlebih dahulu
-    if (holdersList.length === 0) {
-      await fetchTokenHolders();
-      if (holdersList.length === 0) {
-        historyList.innerHTML = "<li><small>No holders found.</small></li>";
-        isFetchingHolders = false;
-        return;
-      }
-    }
-
-    // Tentukan batch untuk ditampilkan
-    const end = Math.min(holdersOffset + holdersBatchSize, holdersList.length);
-    const batchAddresses = holdersList.slice(holdersOffset, end);
-
-    // Ambil saldo untuk setiap alamat di batch
-    const balancePromises = batchAddresses.map((address) =>
-      contract.methods.balanceOf(address).call()
-    );
-    const balances = await Promise.all(balancePromises);
-
-    // Tampilkan data holder
-    batchAddresses.forEach((address, index) => {
-      const balance = balances[index] / 10 ** cache.decimals; // Sesuaikan dengan desimal token
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        Address: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${address}" target="_blank">${address.slice(0, 21)}${address.slice(-21)}</a></span><br>
-        Balance: <span style="color: #00ff14;">${balance.toFixed(2)} Tokens</span><br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
-
-    holdersOffset += holdersBatchSize;
-    console.log("Token holders loaded successfully");
-  } catch (error) {
-    console.error("Error loading token holders:", error);
-    historyList.innerHTML = "<li><small>Error: Failed to load holders</small></li>";
-  } finally {
-    isFetchingHolders = false;
-  }
-};
-
-// Scroll Event Listener untuk Lazy Loading
-const tokenHoldersContainer = document.getElementById("tokenHoldersContainer");
-tokenHoldersContainer.addEventListener("scroll", () => {
-  if (
-    tokenHoldersContainer.scrollTop + tokenHoldersContainer.clientHeight >=
-    tokenHoldersContainer.scrollHeight - 10 &&
-    holdersOffset < holdersList.length &&
-    !isFetchingHolders
-  ) {
-    loadTokenHolders();
-  }
-});
-
-// Reset offset saat halaman dimuat ulang
-const resetHoldersOffset = () => {
-  holdersOffset = 0;
-  holdersList = [];
-  isFetchingHolders = false;
-  const historyList = document.getElementById("tokenHolders");
-  historyList.innerHTML = "";
 };
 
     // Event Listeners
