@@ -499,7 +499,7 @@
       <div class="input-group">
       <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
         <center><button id="copyLink">Copy Link</button></center>
-      <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>small>
+      <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
       <small><p id="referralReward" class="info-text">Reward: Loading...</small></p>
       </div>
       <h3>Invited Friends List</h3>
@@ -930,9 +930,9 @@
 
           document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
-          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:</small><br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span>`;
-          document.getElementById("refereeCount").innerHTML = `<small>Invited Friends:</small> <span style="color: #bd80ff;">${refereeCount}</span>`;
-          document.getElementById("referralReward").innerHTML = `<small>Reward:</small> <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Points`;
+          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
+          document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #bd80ff;">${refereeCount}</span></small>`;
+          document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Lpoints</small>`;
 
           await loadRefereeList();
           console.log("Critical data loaded successfully");
@@ -992,7 +992,7 @@ const loadRefereeList = async () => {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `
-            <span style="font-size: 13px; color: #32cd32;">
+            <span style="font-size: 12.5px; color: #32cd32;">
               <small>Ref ${start + index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
                 ${referee.slice(0, 21)}${referee.slice(-21)}
               </a></small>
@@ -1485,12 +1485,12 @@ const loadUserBetHistory = async () => {
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
-        Wallet: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
+        Wallet: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
         BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
         Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-        InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
+        InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
@@ -1552,12 +1552,12 @@ userHistoryContainer.addEventListener("scroll", () => {
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
-            User: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
             Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
-            InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
+            InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
