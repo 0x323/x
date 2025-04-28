@@ -1310,12 +1310,14 @@ userHistoryContainer.addEventListener("scroll", () => {
     // UTC
     function updateUtcClock() {
   const now = new Date();
-  const utcTime = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert to UTC
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+  const utcTime = `${hours}:${minutes}:${seconds} UTC`;
 
-  // Update elemen HTML dengan waktu UTC
   const clockElement = document.getElementById("utcClock");
   if (clockElement) {
-    clockElement.innerText = `UTC Time: ${utcTime.toUTCString()}`;
+    clockElement.innerText = utcTime;
   }
     }
 
