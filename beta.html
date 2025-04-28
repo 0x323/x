@@ -375,14 +375,6 @@
         </tr>
       </table>
     </div>
-
-    <!-- Token Holders -->
-<div class="section hidden">
-  <h2>Token Holders</h2>
-  <div id="tokenHoldersContainer" style="max-height: 400px; overflow-y: auto;">
-    <ul id="tokenHolders" class="info-text"></ul>
-  </div>
-</div>
   </div>
 
   <script>
@@ -407,11 +399,6 @@
     let referrerIdFromURL = null;
     let checkInHistoryOffset = 0;
     const checkInBatchSize = 10;
-    let totalCheckInCount = 0;
-    let holdersOffset = 0;
-    const holdersBatchSize = 10;
-    let isFetchingHolders = false;
-    let holdersList = [];
 
     // Cache untuk data statis dan event
     const cache = {
@@ -1351,83 +1338,6 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
         alert("Failed to copy link.");
       });
     };
-
-    // Fungsi untuk mengambil daftar holder dari event Transfer
-    const fetchTokenHolders = async () => {
-  try {
-    console.log("Fetching token holders...");
-    // Ganti dengan block deploy kontrak yang benar dari Basescan
-    const fromBlock = 24363201
-
-; // Verifikasi di Basescan
-    console.log(`Querying Transfer events from block ${fromBlock} to latest`);
-
-    // Verifikasi kontrak
-    const contractCode = await web3.eth.getCode(contractAddress);
-    if (contractCode === "0x") {
-      console.error("No contract found at address:", contractAddress);
-      return [];
-    }
-    console.log("Contract verified at:", contractAddress);
-
-    // Verifikasi jaringan
-    const networkId = await web3.eth.net.getId();
-    console.log("Connected to network ID:", networkId); // Sepolia = 11155111
-    if (networkId !== 84532) {
-      console.error("Wrong network, expected Sepolia Base Testnet (84532)");
-      return [];
-    }
-
-    // Ambil event Transfer
-    const transferEvents = await contract.getPastEvents("Transfer", {
-      fromBlock: 24363201,
-      toBlock: "latest",
-    });
-    console.log("Transfer events:", transferEvents);
-
-    // Proses event untuk mengumpulkan holder
-    const holderAddresses = new Set();
-    transferEvents.forEach((event, index) => {
-      console.log(`Processing event ${index}:`, event);
-      const { from, to } = event.returnValues || {};
-      if (!from || !to) {
-        console.warn(`Event ${index} missing from/to fields:`, event);
-        return;
-      }
-      if (from !== "0x0000000000000000000000000000000000000000") {
-        holderAddresses.add(from);
-      }
-      if (to !== "0x0000000000000000000000000000000000000000") {
-        holderAddresses.add(to);
-      }
-    });
-
-    // Jika tidak ada holder, cek total supply dan deployer
-    if (holderAddresses.size === 0) {
-      console.log("No holders from events, checking total supply...");
-      const totalSupply = await contract.methods.totalSupply().call();
-      console.log("Total supply:", totalSupply / 10 ** cache.decimals);
-      if (totalSupply > 0) {
-        // Ganti dengan alamat deployer kontrak (dari Basescan, bagian Contract Creator)
-        const deployerAddress = "0xB5C218bd53Daa2Fd6491D47a46B35b18D042b287";
-        const deployerBalance = await contract.methods.balanceOf(deployerAddress).call();
-        console.log(`Deployer ${deployerAddress} balance:`, deployerBalance / 10 ** cache.decimals);
-        if (deployerBalance > 0) {
-          holderAddresses.add(deployerAddress);
-        }
-      } else {
-        console.log("Total supply is 0, no tokens minted.");
-      }
-    }
-
-    holdersList = Array.from(holderAddresses);
-    console.log(`Found ${holdersList.length} unique holders:`, holdersList);
-    return holdersList;
-  } catch (error) {
-    console.error("Error fetching token holders:", error);
-    return [];
-  }
-};
 
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
