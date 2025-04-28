@@ -267,10 +267,12 @@
 </div>
     
     <!-- User Bet History -->
-    <div class="section hidden">
-      <h2>Your Ticket History</h2>
-      <ul id="userBetHistory" class="info-text"></ul>
-    </div>
+<div class="section hidden">
+  <h2>Your Ticket History</h2>
+  <div id="userBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+    <ul id="userBetHistory" class="info-text"></ul>
+  </div>
+</div>
 
     <!-- Global Bet History -->
     <div class="section hidden">
@@ -334,9 +336,13 @@
     const globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
     let isFetching = false;
-    let isSettingReferral = false; // Pengunci untuk setAutomaticReferralId
-    let isHandlingReferral = false; // Pengunci untuk handleReferralFromURL
-    let referrerIdFromURL = null; // Simpan referrerId dari URL
+    let userHistoryOffset = 0;
+    const userHistoryBatchSize = 10;
+    let totalUserBetCount = 0;
+    let isFetchingUserHistory = false;
+    let isSettingReferral = false;
+    let isHandlingReferral = false;
+    let referrerIdFromURL = null;
     let checkInHistoryOffset = 0;
     const checkInBatchSize = 10;
     let totalCheckInCount = 0;
@@ -1107,34 +1113,45 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
 });
     
     // Load User Bet History
-const loadUserBetHistory = async () => {
-  if (!userAccount) return;
+    const loadUserBetHistory = async () => {
+  if (!userAccount || isFetchingUserHistory) {
+    console.log("Skipping load: No userAccount or isFetchingUserHistory");
+    return;
+  }
+  isFetchingUserHistory = true;
   setLoading("userBetHistory", true);
+
   try {
     console.log("Loading user bet history");
-    const count = await contract.methods.getUserBetCount(userAccount).call();
-    const historyList = document.getElementById("userBetHistory");
-    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
-
-    const maxDisplay = 10;
-    const start = Math.max(count - maxDisplay, 0);
-    const promises = [];
-    for (let i = count - 1; i >= start; i--) {
-      promises.push(contract.methods.getUserBet(userAccount, i).call());
+    if (totalUserBetCount === 0) {
+      totalUserBetCount = await contract.methods.getUserBetCount(userAccount).call();
     }
-    const bets = await Promise.all(promises);
+
+    const historyList = document.getElementById("userBetHistory");
+
+    if (totalUserBetCount === 0 && userHistoryOffset === 0) {
+      historyList.innerHTML = "<li><small>No history found.</small></li>";
+      return;
+    }
+
+    const end = Math.max(totalUserBetCount - userHistoryOffset - 1, 0);
+    const start = Math.max(end - userHistoryBatchSize + 1, 0);
+
     const userEvents = cache.betEvents[userAccount] || {};
     const referrer = await contract.methods.referredBy(userAccount).call();
     const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
       ? "None"
       : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
 
-    bets.forEach((bet, index) => {
-      if (!bet || !bet.timestamp) return;
+    for (let i = end; i >= start; i--) {
+      const bet = await contract.methods.getUserBet(userAccount, i).call();
+      if (!bet || !bet.timestamp) continue;
+      
       const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const eventIndex = start + index;
+      const eventIndex = start + (i - start);
       const event = userEvents[eventIndex] || {};
       const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
@@ -1146,16 +1163,28 @@ const loadUserBetHistory = async () => {
         InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+
       historyList.appendChild(li);
-    });
+    }
+
+    userHistoryOffset += userHistoryBatchSize;
     console.log("User bet history loaded successfully");
   } catch (error) {
     console.error("Error loading user bet history:", error);
     document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
   } finally {
     setLoading("userBetHistory", false);
+    isFetchingUserHistory = false;
   }
 };
+
+// Handle scroll lazy loading
+document.getElementById("userBetHistoryContainer").addEventListener("scroll", async (e) => {
+  const container = e.target;
+  if (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
+    await loadUserBetHistory();
+  }
+});
 
     // Load Global Bet History
     const loadGlobalBetHistory = async () => {
