@@ -1083,104 +1083,58 @@ function renderCheckInPagination(currentPage) {
   nextButton.onclick = () => loadCheckInHistory(currentPage + 1);
   pagination.appendChild(nextButton);
 }
-    // Button Countdown untuk checkIn
-const checkInButton = document.getElementById("checkIn");
+    // Button Countdown
+    function setupCountdown(buttonId, claimedKey, initialText) {
+  const button = document.getElementById(buttonId);
 
-function startCheckInCountdown() {
-  checkInButton.disabled = true;
+  function startCountdown() {
+    button.disabled = true;
 
-  function updateCountdown() {
-    const now = new Date();
-    const nowUtc = now.getTime();
-    const nextMidnightUtc = Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1,
-      0, 0, 0, 0
-    );
+    function updateCountdown() {
+      const now = new Date();
+      const nowUtc = now.getTime();
+      const nextMidnightUtc = Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() + 1,
+        0, 0, 0, 0
+      );
 
-    const diff = nextMidnightUtc - nowUtc;
+      const diff = nextMidnightUtc - nowUtc;
 
-    if (diff <= 0) {
-      checkInButton.disabled = false;
-      checkInButton.innerText = "Claim 1 Point";
-      localStorage.removeItem("checkInClaimed");
-      clearInterval(timer);
-      return;
+      if (diff <= 0) {
+        button.disabled = false;
+        button.innerText = initialText;
+        localStorage.removeItem(claimedKey);
+        clearInterval(timer);
+        return;
+      }
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      button.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
     }
 
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    checkInButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
   }
 
-  updateCountdown();
-  const timer = setInterval(updateCountdown, 1000);
+  button.addEventListener("click", () => {
+    console.log(`${initialText} Clicked!`);
+    localStorage.setItem(claimedKey, "true");
+    startCountdown();
+  });
+
+  if (localStorage.getItem(claimedKey) === "true") {
+    startCountdown();
+  }
 }
 
-checkInButton.addEventListener("click", () => {
-  console.log("Claimed 1 Point!");
-  localStorage.setItem("checkInClaimed", "true");
-  startCheckInCountdown();
-});
-
-window.addEventListener("load", () => {
-  if (localStorage.getItem("checkInClaimed") === "true") {
-    startCheckInCountdown();
-  }
-});
-
-
-// Button Countdown untuk placeBetButton
-const placeBetButton = document.getElementById("placeBetButton");
-
-function startPlaceBetCountdown() {
-  placeBetButton.disabled = true;
-
-  function updateCountdown() {
-    const now = new Date();
-    const nowUtc = now.getTime();
-    const nextMidnightUtc = Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1,
-      0, 0, 0, 0
-    );
-
-    const diff = nextMidnightUtc - nowUtc;
-
-    if (diff <= 0) {
-      placeBetButton.disabled = false;
-      placeBetButton.innerText = "Submit Ticket";
-      localStorage.removeItem("placeBetButtonClaimed");
-      clearInterval(timer);
-      return;
-    }
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    placeBetButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-  }
-
-  updateCountdown();
-  const timer = setInterval(updateCountdown, 1000);
-}
-
-placeBetButton.addEventListener("click", () => {
-  console.log("Submit Ticket!");
-  localStorage.setItem("placeBetButtonClaimed", "true");
-  startPlaceBetCountdown();
-});
-
-window.addEventListener("load", () => {
-  if (localStorage.getItem("placeBetButtonClaimed") === "true") {
-    startPlaceBetCountdown();
-  }
-});
+// Daftar semua tombol yang mau dipasang countdown
+setupCountdown("checkIn", "checkInClaimed", "Claim 1 Point");
+setupCountdown("placeBetButton", "placeBetButtonClaimed", "Submit Ticket");
     
     // Place Bet
     const placeBet = async () => {
