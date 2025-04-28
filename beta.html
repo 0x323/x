@@ -433,7 +433,7 @@
       <center><button id="walletButton">Connect Wallet</button></center>
       <small><p id="accountInfo" class="info-text"></p>
       <p id="ethBalance" class="info-text">Balance: Loading...</p>
-      <p id="tokenBalance" class="info-text">Point: Loading...</small></p>
+      <p id="tokenBalance" class="info-text">Point: Loading...</p></small>
     </div>
 
     <!-- Check-In -->
@@ -441,9 +441,9 @@
       <h2>Daily Faucet Claim</h2>
       <h5>Faucet starts every 00:00 UTC</h5>
       <center><button id="checkIn">Claim 1 Point</button></center>
-      <p id="checkInStatus" class="info-text"></p>
+    <small><p id="checkInStatus" class="info-text"></p></small>
       <h3>Your Faucet History</h3>
-<ul id="checkInHistory" class="info-text"></ul>
+    <small><ul id="checkInHistory" class="info-text"></ul></small>
 <div class="pagination" id="checkInPagination"></div>
     </div>
 
@@ -453,17 +453,17 @@
   <h5>Ticket Submit starts every 00:00 UTC</h5>
 
   <div class="input-group">
-    <label for="betNumber"><small>Betting Number</small></label><br>
+    <label for="betNumber">Betting Number</label><br>
     <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
   </div>
 
   <div class="input-group">
-    <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
+    <label for="betTimes">Multiplication (1× - 5×)<</label><br>
     <br><input id="betTimes" type="number" min="1" max="5" step="1" placeholder="1 - 5">
   </div>
 
   <div class="input-group">
-    <label for="payoutAmount"><small>Reward Amount (Fixed 10 Points)</small></label><br>
+    <label for="payoutAmount">Reward Amount (Fixed 10 Points)</label><br>
     <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="10" value="10" readonly>
   </div>
 
@@ -481,7 +481,7 @@
 <div class="section hidden">
   <h2>Your Ticket History</h2>
   <div id="userBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
-    <ul id="userBetHistory" class="info-text"></ul>
+  <small><ul id="userBetHistory" class="info-text"></ul></small>
   </div>
 </div>
 
@@ -489,7 +489,7 @@
     <div class="section hidden">
       <h2>Global Ticket History</h2>
       <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
-        <ul id="globalBetHistory" class="info-text"></ul>
+      <small><ul id="globalBetHistory" class="info-text"></ul></small>
       </div>
     </div>
 
@@ -497,13 +497,13 @@
     <div class="section hidden">
       <h2>Referral</h2>
       <div class="input-group">
-        <p id="referralLink" class="info-text"><small>Your Referral Link: Loading...</small></p>
+      <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
         <center><button id="copyLink">Copy Link</button></center>
-        <p id="refereeCount" class="info-text"><small>Invited Friends: Loading...</small></p>
-        <p id="referralReward" class="info-text"><small>Reward: Loading...</small></p>
+      <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>small>
+      <small><p id="referralReward" class="info-text">Reward: Loading...</small></p>
       </div>
       <h3>Invited Friends List</h3>
-<ul id="refereeList" class="info-text"></ul>
+    <small><ul id="refereeList" class="info-text"></ul></small>
 <div id="refereePagination" class="pagination"></div> 
     </div>
 
