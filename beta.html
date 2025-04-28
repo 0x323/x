@@ -1135,10 +1135,10 @@ window.addEventListener("load", () => {
 });
 
     // Button Countdown II
-    const placeBetButtonButton = document.getElementById("placeBetButton");
-  
+    const placeBetButton = document.getElementById("placeBetButton");
+
 function startCountdown() {
-  placeBetButtonButton.disabled = true;
+  placeBetButton.disabled = true;
 
   function updateCountdown() {
     const now = new Date();
@@ -1153,9 +1153,9 @@ function startCountdown() {
     const diff = nextMidnightUtc - nowUtc;
 
     if (diff <= 0) {
-      placeBetButtonButton.disabled = false;
-      placeBetButtonButton.innerText = "Submit Ticket";
-      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status checkin
+      placeBetButton.disabled = false;
+      placeBetButton.innerText = "Submit Ticket";
+      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status klaim
       clearInterval(timer);
       return;
     }
@@ -1164,60 +1164,17 @@ function startCountdown() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    placeBetButtonButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    placeBetButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
   }
 
   updateCountdown();
   const timer = setInterval(updateCountdown, 1000);
 }
 
-placeBetButtonButton.addEventListener("click", () => {
-  console.log("Claimed 1 Point!");
-  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status sudah klaim
-  startCountdown();
-});
-
-// Saat halaman diload
-window.addEventListener("load", () => {
-  if (localStorage.getItem("placeBetButtonClaimed") === "true") {
-    startCountdown();
-  }
-});Button.disabled = true;
-
-  function updateCountdown() {
-    const now = new Date();
-    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
-    const nextMidnightUtc = Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1, // Besok
-      0, 0, 0, 0
-    );
-
-    const diff = nextMidnightUtc - nowUtc;
-
-    if (diff <= 0) {
-      placeBetButtonButton.disabled = false;
-      placeBetButtonButton.innerText = "Submit Ticket";
-      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status checkin
-      clearInterval(timer);
-      return;
-    }
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    placeBetButtonButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-  }
-
-  updateCountdown();
-  const timer = setInterval(updateCountdown, 1000);
-}
-
-placeBetButtonButton.addEventListener("click", () => {
+// Ketika tombol diklik
+placeBetButton.addEventListener("click", () => {
   console.log("Submit Ticket!");
-  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status sudah klaim
+  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status klaim
   startCountdown();
 });
 
