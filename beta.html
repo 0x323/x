@@ -1310,14 +1310,14 @@ userHistoryContainer.addEventListener("scroll", () => {
     // UTC
     function updateUtcClock() {
   const now = new Date();
-  const hours = String(now.getUTCHours()).padStart(2, '0');
-  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-  const utcTime = `${hours}:${minutes}:${seconds} UTC`;
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const localTime = `${hours}:${minutes}:${seconds}`;
 
   const clockElement = document.getElementById("utcClock");
   if (clockElement) {
-    clockElement.innerText = utcTime;
+    clockElement.innerText = localTime;
   }
     }
 
