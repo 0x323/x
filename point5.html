@@ -338,8 +338,8 @@
     let isFetching = false;
     let userHistoryOffset = 0;
     const userHistoryBatchSize = 10;
-    let totalUserBetCount = 0;
-    let isFetchingUserHistory = false;
+    let totalUserCount = 0;
+    let isUserFetching = false;
     let isSettingReferral = false;
     let isHandlingReferral = false;
     let referrerIdFromURL = null;
@@ -1112,29 +1112,27 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
   document.getElementById("payoutAmount").value = "10";
 });
     
-    // Load User Bet History
-    const loadUserBetHistory = async () => {
-  if (!userAccount || isFetchingUserHistory) {
-    console.log("Skipping load: No userAccount or isFetchingUserHistory");
+    // Load User Bet History (Lazy)
+const loadUserBetHistory = async () => {
+  if (!userAccount || isUserFetching) {
+    console.log("Skipping load: No userAccount or isUserFetching");
     return;
   }
-  isFetchingUserHistory = true;
-  setLoading("userBetHistory", true);
+  isUserFetching = true;
 
   try {
     console.log("Loading user bet history");
-    if (totalUserBetCount === 0) {
-      totalUserBetCount = await contract.methods.getUserBetCount(userAccount).call();
+    if (totalUserCount === 0) {
+      totalUserCount = await contract.methods.getUserBetCount(userAccount).call();
     }
 
     const historyList = document.getElementById("userBetHistory");
-
-    if (totalUserBetCount === 0 && userHistoryOffset === 0) {
+    if (totalUserCount === 0 && userHistoryOffset === 0) {
       historyList.innerHTML = "<li><small>No history found.</small></li>";
       return;
     }
 
-    const end = Math.max(totalUserBetCount - userHistoryOffset - 1, 0);
+    const end = Math.max(totalUserCount - userHistoryOffset - 1, 0);
     const start = Math.max(end - userHistoryBatchSize + 1, 0);
 
     const userEvents = cache.betEvents[userAccount] || {};
@@ -1146,9 +1144,9 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
     for (let i = end; i >= start; i--) {
       const bet = await contract.methods.getUserBet(userAccount, i).call();
       if (!bet || !bet.timestamp) continue;
-      
+
       const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const eventIndex = start + (i - start);
+      const eventIndex = i;
       const event = userEvents[eventIndex] || {};
       const betTimes = bet.cost / (1 * 10 ** cache.decimals);
 
@@ -1163,7 +1161,6 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
         InviteBy: <span style="color: #ff9900; font-size: 12.5px;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-
       historyList.appendChild(li);
     }
 
@@ -1173,16 +1170,17 @@ document.getElementById("payoutAmount").addEventListener("input", () => {
     console.error("Error loading user bet history:", error);
     document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
   } finally {
-    setLoading("userBetHistory", false);
-    isFetchingUserHistory = false;
+    isUserFetching = false;
   }
 };
 
-// Handle scroll lazy loading
-document.getElementById("userBetHistoryContainer").addEventListener("scroll", async (e) => {
-  const container = e.target;
-  if (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
-    await loadUserBetHistory();
+// Event Listener untuk Lazy Scroll
+const userHistoryContainer = document.getElementById("userBetHistoryContainer");
+userHistoryContainer.addEventListener("scroll", () => {
+  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 10) {
+    if (userHistoryOffset < totalUserCount) {
+      loadUserBetHistory();
+    }
   }
 });
 
