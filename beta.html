@@ -226,7 +226,7 @@
       <center><button id="walletButton">Connect Wallet</button></center>
       <p id="accountInfo" class="info-text"></p>
       <p id="ethBalance" class="info-text"><small>Balance: Loading...</small></p>
-      <p id="tokenBalance" class="info-text"><small>Balance: Loading...</small></p>
+      <p id="tokenBalance" class="info-text"><small>Point: Loading...</small></p>
     </div>
 
     <!-- Check-In -->
@@ -699,8 +699,8 @@
             contract.methods.referralRewards(userAccount).call(),
           ]);
 
-          document.getElementById("ethBalance").innerHTML = `<small>ETH Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
-          document.getElementById("tokenBalance").innerHTML = `<small>Token Balance: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)} ${cache.symbol}<span></small>`;
+          document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
+          document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
           document.getElementById("referralLink").innerHTML = `<small>Referral Link:</small><br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends:</small> <span style="color: #6683ff;">${refereeCount}</span>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward:</small> <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Points`;
