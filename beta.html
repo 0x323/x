@@ -1135,6 +1135,98 @@ window.addEventListener("load", () => {
 });
 
     // Button Countdown II
+    const placeBetButtonButton = document.getElementById("placeBetButton");
+  
+function startCountdown() {
+  placeBetButtonButton.disabled = true;
+
+  function updateCountdown() {
+    const now = new Date();
+    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
+    const nextMidnightUtc = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1, // Besok
+      0, 0, 0, 0
+    );
+
+    const diff = nextMidnightUtc - nowUtc;
+
+    if (diff <= 0) {
+      placeBetButtonButton.disabled = false;
+      placeBetButtonButton.innerText = "Submit Ticket";
+      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status checkin
+      clearInterval(timer);
+      return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    placeBetButtonButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+}
+
+placeBetButtonButton.addEventListener("click", () => {
+  console.log("Claimed 1 Point!");
+  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status sudah klaim
+  startCountdown();
+});
+
+// Saat halaman diload
+window.addEventListener("load", () => {
+  if (localStorage.getItem("placeBetButtonClaimed") === "true") {
+    startCountdown();
+  }
+});Button.disabled = true;
+
+  function updateCountdown() {
+    const now = new Date();
+    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
+    const nextMidnightUtc = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1, // Besok
+      0, 0, 0, 0
+    );
+
+    const diff = nextMidnightUtc - nowUtc;
+
+    if (diff <= 0) {
+      placeBetButtonButton.disabled = false;
+      placeBetButtonButton.innerText = "Submit Ticket";
+      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status checkin
+      clearInterval(timer);
+      return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    placeBetButtonButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+}
+
+placeBetButtonButton.addEventListener("click", () => {
+  console.log("Submit Ticket!");
+  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status sudah klaim
+  startCountdown();
+});
+
+// Saat halaman diload
+window.addEventListener("load", () => {
+  if (localStorage.getItem("placeBetButtonClaimed") === "true") {
+    startCountdown();
+  }
+});
     
     // Place Bet
     const placeBet = async () => {
