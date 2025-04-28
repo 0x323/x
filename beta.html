@@ -1083,6 +1083,57 @@ function renderCheckInPagination(currentPage) {
   nextButton.onclick = () => loadCheckInHistory(currentPage + 1);
   pagination.appendChild(nextButton);
 }
+
+    // Button Countdown
+    const checkInButton = document.getElementById("checkIn");
+
+function startCountdown() {
+  checkInButton.disabled = true;
+
+  function updateCountdown() {
+    const now = new Date();
+    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
+    const nextMidnightUtc = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1, // Besok
+      0, 0, 0, 0
+    );
+
+    const diff = nextMidnightUtc - nowUtc;
+
+    if (diff <= 0) {
+      checkInButton.disabled = false;
+      checkInButton.innerText = "Claim 1 Point";
+      localStorage.removeItem("checkInClaimed"); // Hapus status checkin
+      clearInterval(timer);
+      return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    checkInButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+}
+
+checkInButton.addEventListener("click", () => {
+  console.log("Claimed 1 Point!");
+  localStorage.setItem("checkInClaimed", "true"); // Simpan status sudah klaim
+  startCountdown();
+});
+
+// Saat halaman diload
+window.addEventListener("load", () => {
+  if (localStorage.getItem("checkInClaimed") === "true") {
+    startCountdown();
+  }
+});
+    
     // Button Countdown II
     const placeBetButton = document.getElementById("placeBetButton");
 
