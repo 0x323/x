@@ -1213,7 +1213,7 @@ const loadCheckInHistory = async (page = 1) => {
         li.className = "py-2";
         li.innerHTML = `<small>
            ID: <span style="color: #00bfff;">${log.dayUTC}</span><br>
-           Reward: <span style="color: #32cd32;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+           Reward: <span style="color: #32cd32;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
            Time: <span style="color: #ffa500;">${date}</span><br>
         </small><hr style="background-color: #333333; height: 1px; border: none;">`;
         historyList.appendChild(li);
@@ -1400,7 +1400,7 @@ window.addEventListener("load", () => {
   }
 
   const totalCost = costPerBet * times;
-  document.getElementById("betCost").innerText = `${totalCost} Points`;
+  document.getElementById("betCost").innerText = `${totalCost} Lpoints`;
 
   try {
     // Show processing
@@ -1488,7 +1488,7 @@ const loadUserBetHistory = async () => {
         Wallet: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
         BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
         Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
         InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
@@ -1555,7 +1555,7 @@ userHistoryContainer.addEventListener("scroll", () => {
             User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
             Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
             InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
