@@ -1332,6 +1332,8 @@ userHistoryContainer.addEventListener("scroll", () => {
         return;
       }
 
+      setInterval(updateUtcClock, 1000);
+
       await initWeb3(false);
 
       window.ethereum.on("accountsChanged", debounce(async (accounts) => {
