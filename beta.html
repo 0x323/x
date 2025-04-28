@@ -226,6 +226,8 @@
 <body>
   <div class="container">
     <h1>HK Beta Testnet</h1>
+    <h3>Result Today</h3>
+    <h2>1 2 3 4</h2>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -1043,24 +1045,25 @@ function renderCheckInPagination(currentPage) {
     // Button Countdown
     const checkInButton = document.getElementById("checkIn");
 
-const startCountdown = () => {
-  // Disable tombol
+function startCountdown() {
   checkInButton.disabled = true;
 
-  const updateCountdown = () => {
+  function updateCountdown() {
     const now = new Date();
-    const utcNow = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-    
-    // Dapatkan waktu target jam 00:00 UTC berikutnya
-    let nextUTC = new Date(Date.UTC(utcNow.getUTCFullYear(), utcNow.getUTCMonth(), utcNow.getUTCDate() + 1, 0, 0, 0));
+    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
+    const nextMidnightUtc = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1, // Besok
+      0, 0, 0, 0
+    );
 
-    const diff = nextUTC - utcNow;
+    const diff = nextMidnightUtc - nowUtc;
 
     if (diff <= 0) {
-      // Reset tombol setelah 00:00 UTC
       checkInButton.disabled = false;
       checkInButton.innerText = "Claim 1 Point";
-      clearInterval(countdownInterval);
+      clearInterval(timer);
       return;
     }
 
@@ -1069,16 +1072,13 @@ const startCountdown = () => {
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
     checkInButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-  };
+  }
 
-  // Update tiap detik
   updateCountdown();
-  const countdownInterval = setInterval(updateCountdown, 1000);
-};
+  const timer = setInterval(updateCountdown, 1000);
+}
 
-// Event klik tombol
 checkInButton.addEventListener("click", () => {
-  // Logika klaim 1 poin bisa ditaruh di sini
   console.log("Claimed 1 Point!");
   startCountdown();
 });
