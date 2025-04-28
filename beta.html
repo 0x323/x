@@ -1406,32 +1406,6 @@ userHistoryContainer.addEventListener("scroll", () => {
       });
     };
 
-    //Disable Claim Button
-    const checkInButton = document.getElementById("checkIn");
-
-// Cek kapan terakhir kali claim
-const lastClaimDate = localStorage.getItem("lastClaimDate");
-
-// Dapatkan tanggal UTC hari ini
-const todayUtc = new Date().toISOString().split("T")[0];
-
-// Jika sudah pernah claim hari ini, disable tombol
-if (lastClaimDate === todayUtc) {
-  disableButton();
-}
-
-checkInButton.addEventListener("click", () => {
-  console.log("Claimed 1 Point!");
-  localStorage.setItem("lastClaimDate", todayUtc);
-  disableButton();
-});
-
-function disableButton() {
-  checkInButton.disabled = true;
-  checkInButton.style.backgroundColor = "white";
-  checkInButton.style.color = "black";
-}
-
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
