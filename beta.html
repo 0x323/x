@@ -1064,6 +1064,7 @@ function startCountdown() {
     if (diff <= 0) {
       checkInButton.disabled = false;
       checkInButton.innerText = "Claim 1 Point";
+      localStorage.removeItem("checkInClaimed"); // Hapus status checkin
       clearInterval(timer);
       return;
     }
@@ -1081,7 +1082,15 @@ function startCountdown() {
 
 checkInButton.addEventListener("click", () => {
   console.log("Claimed 1 Point!");
+  localStorage.setItem("checkInClaimed", "true"); // Simpan status sudah klaim
   startCountdown();
+});
+
+// Saat halaman diload
+window.addEventListener("load", () => {
+  if (localStorage.getItem("checkInClaimed") === "true") {
+    startCountdown();
+  }
 });
 
     // Button Countdown II
