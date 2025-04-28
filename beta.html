@@ -1425,7 +1425,7 @@ const fetchTokenHolders = async () => {
     console.log("Fetching token holders");
     // Ambil semua event Transfer dari kontrak
     const transferEvents = await contract.getPastEvents("Transfer", {
-      fromBlock: 0, // Mulai dari block genesis kontrak
+      fromBlock: 24816594, // Mulai dari block genesis kontrak
       toBlock: "latest",
     });
 
