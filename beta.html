@@ -744,9 +744,9 @@
             console.log("Referral set successfully for referrerId:", referrerId);
             document.getElementById("accountInfo").innerHTML = `
               <span style="font-size: 13px; color: #bd80ff;">
-                Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
+                <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
                   ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-                </a>
+                </a></small>
               </span><br><small>Referral set successfully!</small>
             `;
             // Tunda untuk memastikan state blockchain tersinkron
@@ -755,9 +755,9 @@
             console.log("User already has a referrer:", hasReferrer);
             document.getElementById("accountInfo").innerHTML = `
               <span style="font-size: 13px; color: #bd80ff;">
-                Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
+                <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
                   ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-                </a>
+                </a></small>
               </span><br><small>Referral already set</small>
             `;
           }
@@ -765,9 +765,9 @@
           console.log("No referrerId found in URL");
           document.getElementById("accountInfo").innerHTML = `
             <span style="font-size: 13px; color: #bd80ff;">
-              Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
+              <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
                 ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-              </a>
+              </a></small>
             </span>
           `;
         }
@@ -775,9 +775,9 @@
         console.error("Error handling referral:", error);
         document.getElementById("accountInfo").innerHTML = `
           <span style="font-size: 13px; color: #bd80ff;">
-            Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
+            <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
               ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-            </a>
+            </a></small>
           </span><br><small>Error setting referral</small>
         `;
         alert("Failed to set referral. Please try again or check the referrer ID.");
@@ -839,9 +839,9 @@
       walletButton.classList.toggle("disconnect", isConnected);
       document.getElementById("accountInfo").innerHTML = isConnected ? `
         <span style="font-size: 13px; color: #bd80ff;">
-          Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
+          <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
             ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-          </a>
+          </a></small>
         </span>
       ` : "";
       toggleSectionsVisibility(isConnected);
@@ -993,9 +993,9 @@ const loadRefereeList = async () => {
           li.className = "py-2";
           li.innerHTML = `
             <span style="font-size: 13px; color: #32cd32;">
-              Ref ${start + index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
+              <small>Ref ${start + index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
                 ${referee.slice(0, 21)}${referee.slice(-21)}
-              </a>
+              </a></small>
             </span>
           `;
           refereeList.appendChild(li);
