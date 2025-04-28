@@ -1155,7 +1155,7 @@ function startCountdown() {
     if (diff <= 0) {
       placeBetButton.disabled = false;
       placeBetButton.innerText = "Submit Ticket";
-      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status klaim
+      localStorage.removeItem("placeBetButtonPlaceBet"); // Hapus status klaim
       clearInterval(timer);
       return;
     }
@@ -1174,13 +1174,13 @@ function startCountdown() {
 // Ketika tombol diklik
 placeBetButton.addEventListener("click", () => {
   console.log("Submit Ticket!");
-  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status klaim
+  localStorage.setItem("placeBetButtonPlaceBet", "true"); // Simpan status klaim
   startCountdown();
 });
 
 // Saat halaman diload
 window.addEventListener("load", () => {
-  if (localStorage.getItem("placeBetButtonClaimed") === "true") {
+  if (localStorage.getItem("placeBetButtonPlaceBet") === "true") {
     startCountdown();
   }
 });
