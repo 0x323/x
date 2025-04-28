@@ -391,7 +391,7 @@
     let totalGlobalCount = 0;
     let isFetching = false;
     let userHistoryOffset = 0;
-    const userHistoryBatchSize = 3;
+    const userHistoryBatchSize = 10;
     let totalUserCount = 0;
     let isUserFetching = false;
     let isSettingReferral = false;
@@ -1333,7 +1333,7 @@ const loadUserBetHistory = async () => {
 // Event Listener untuk Lazy Scroll
 const userHistoryContainer = document.getElementById("userBetHistoryContainer");
 userHistoryContainer.addEventListener("scroll", () => {
-  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 15) {
+  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 10) {
     if (userHistoryOffset < totalUserCount) {
       loadUserBetHistory();
     }
@@ -1396,6 +1396,16 @@ userHistoryContainer.addEventListener("scroll", () => {
         isFetching = false;
       }
     };
+
+    const globalHistoryContainer = document.getElementById("globalBetHistoryContainer");
+
+globalHistoryContainer.addEventListener("scroll", async () => {
+  const nearBottom = globalHistoryContainer.scrollTop + globalHistoryContainer.clientHeight >= globalHistoryContainer.scrollHeight - 15;
+  
+  if (nearBottom && !isFetching && globalHistoryOffset < totalGlobalCount) {
+    await loadGlobalBetHistory();
+  }
+});
 
     // Salin link referral
     const copyReferralLink = () => {
