@@ -1035,6 +1035,52 @@ function renderCheckInPagination(currentPage) {
   pagination.appendChild(nextButton);
 }
 
+    // Button Countdown
+    const checkInButton = document.getElementById("checkIn");
+
+const startCountdown = () => {
+  // Disable tombol
+  checkInButton.disabled = true;
+
+  const updateCountdown = () => {
+    const now = new Date();
+    const utcNow = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    
+    // Dapatkan waktu target jam 00:00 UTC berikutnya
+    let nextUTC = new Date(Date.UTC(utcNow.getUTCFullYear(), utcNow.getUTCMonth(), utcNow.getUTCDate() + 1, 0, 0, 0));
+
+    const diff = nextUTC - utcNow;
+
+    if (diff <= 0) {
+      // Reset tombol setelah 00:00 UTC
+      checkInButton.disabled = false;
+      checkInButton.innerText = "Claim 1 Point";
+      clearInterval(countdownInterval);
+      return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    checkInButton.innerText = `Reset in ${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  };
+
+  // Update tiap detik
+  updateCountdown();
+  const countdownInterval = setInterval(updateCountdown, 1000);
+};
+
+// Event klik tombol
+checkInButton.addEventListener("click", () => {
+  // Logika klaim 1 poin bisa ditaruh di sini
+  console.log("Claimed 1 Point!");
+  startCountdown();
+});
+
+    // Button Countdown II
+    
+
     // Place Bet
     const placeBet = async () => {
   if (!userAccount) {
