@@ -221,6 +221,33 @@
   box-shadow: none;
   transform: none;
 }
+    .lottery-ball {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle at 30% 30%, 90deg, #03a9f4, #f441a5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 8px 15px rgba(0, 183, 255, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    border: 3px solid white;
+        }
+
+        /* Animasi bola */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .lottery-ball:nth-child(1) { animation: bounce 1s infinite 0.1s; }
+        .lottery-ball:nth-child(2) { animation: bounce 1s infinite 0.2s; }
+        .lottery-ball:nth-child(3) { animation: bounce 1s infinite 0.3s; }
+        .lottery-ball:nth-child(4) { animation: bounce 1s infinite 0.4s; }
+    
   </style>
 </head>
 <body>
@@ -228,7 +255,16 @@
     <h1>HK Beta Testnet</h1>
     <h3>Result Today</h3>
     <h2>1 2 3 4</h2>
-    <h4 id="utcClock"></h4>
+    <h4 id="current-date-time"></h4>
+
+        <!-- Lottery Balls -->
+        <div class="lottery-balls">
+            <div class="lottery-ball">7</div>
+            <div class="lottery-ball">14</div>
+            <div class="lottery-ball">21</div>
+            <div class="lottery-ball">30</div>
+        </div>
+  </div>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -1316,20 +1352,6 @@ userHistoryContainer.addEventListener("scroll", () => {
       });
     };
 
-    // UTC
-    function updateUtcClock() {
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const localTime = `${hours}:${minutes}:${seconds}`;
-
-  const clockElement = document.getElementById("utcClock");
-  if (clockElement) {
-    clockElement.innerText = localTime;
-  }
-    }
-
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
@@ -1356,9 +1378,6 @@ userHistoryContainer.addEventListener("scroll", () => {
         return;
       }
 
-      updateUtcClock();
-      setInterval(updateUtcClock, 1000);
-
       await initWeb3(false);
 
       window.ethereum.on("accountsChanged", debounce(async (accounts) => {
@@ -1381,6 +1400,32 @@ userHistoryContainer.addEventListener("scroll", () => {
         window.location.reload();
       });
     });
+  </script>
+
+  <script>
+        function updateDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Menambahkan 1 karena bulan dimulai dari 0
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        
+        document.getElementById('current-date-time').textContent = formattedDateTime;
+    }
+
+    // Update setiap detik
+    setInterval(updateDateTime, 1000);
+
+    // Panggil updateDateTime pertama kali agar langsung muncul
+    updateDateTime();
+        
+        function toggleMenu() {
+            document.querySelector(".nav-links").classList.toggle("active");
+        }
   </script>
 </body>
   </html>
