@@ -228,6 +228,7 @@
     <h1>HK Beta Testnet</h1>
     <h3>Result Today</h3>
     <h2>1 2 3 4</h2>
+    <h4 id="utcClock"></h4>
 
     <!-- Wallet Connection -->
     <div class="section">
@@ -1306,6 +1307,15 @@ userHistoryContainer.addEventListener("scroll", () => {
       });
     };
 
+    // UTC
+function updateUtcClock() {
+  const now = new Date();
+  const hours = now.getUTCHours().toString().padStart(2, '0');
+  const minutes = now.getUTCMinutes().toString().padStart(2, '0');
+  const seconds = now.getUTCSeconds().toString().padStart(2, '0');
+  document.getElementById("utcClock").innerText = `${hours}:${minutes}:${seconds} UTC`;
+}
+
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
@@ -1332,6 +1342,7 @@ userHistoryContainer.addEventListener("scroll", () => {
         return;
       }
 
+      updateUtcClock();
       setInterval(updateUtcClock, 1000);
 
       await initWeb3(false);
