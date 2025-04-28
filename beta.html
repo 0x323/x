@@ -255,6 +255,42 @@
         .lottery-ball:nth-child(2) { animation: bounce 1s infinite 0.2s; }
         .lottery-ball:nth-child(3) { animation: bounce 1s infinite 0.3s; }
         .lottery-ball:nth-child(4) { animation: bounce 1s infinite 0.4s; }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        background: #000000;
+        color: #101010;
+        font-size: 12px;
+    }
+
+    .social-icons {
+        margin-bottom: 10px;
+    }
+
+    .social-icons a {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    transition: transform 0.5s ease, text-shadow 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.social-icons a:hover {
+    color: #1a88ff;
+    text-shadow: 0 0 10px #1a88ff, 0 0 20px #1a88ff, 0 0 30px #1a88ff;
+    box-shadow: 0 0 20px rgba(0, 0, 255, 1), 0 0 30px rgba(0, 0, 255, 0.8);
+    transform: rotate(360deg);
+}
     
   </style>
 </head>
@@ -375,6 +411,25 @@
         </tr>
       </table>
     </div>
+
+        <footer>
+    <div class="social-icons">
+        <a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        <a href="https://t.me/" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+    <p>
+  © Powered By Lotto Chain.
+  <span>
+    <a href="TermsAndConditions" style="color: #007bff; text-decoration: none;" target="_blank">
+      2025 All rights reserved.
+    </a>
+  </span>
+  Play responsibly.
+    </p>
+        </footer>
   </div>
 
   <script>
