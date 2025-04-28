@@ -375,6 +375,14 @@
         </tr>
       </table>
     </div>
+
+    <!-- Token Holders -->
+<div class="section hidden">
+  <h2>Token Holders</h2>
+  <div id="tokenHoldersContainer" style="max-height: 400px; overflow-y: auto;">
+    <ul id="tokenHolders" class="info-text"></ul>
+  </div>
+</div>
   </div>
 
   <script>
@@ -400,6 +408,10 @@
     let checkInHistoryOffset = 0;
     const checkInBatchSize = 10;
     let totalCheckInCount = 0;
+    let holdersOffset = 0;
+    const holdersBatchSize = 10;
+    let isFetchingHolders = false;
+    let holdersList = [];
 
     // Cache untuk data statis dan event
     const cache = {
@@ -499,6 +511,7 @@
               loadCheckInHistory();
               loadUserBetHistory();
               loadGlobalBetHistory();
+              loadTokenHolders();
             }, 100);
             return true;
           } catch (error) {
@@ -1406,6 +1419,115 @@ userHistoryContainer.addEventListener("scroll", () => {
       });
     };
 
+    // Fungsi untuk mengambil daftar holder dari event Transfer
+const fetchTokenHolders = async () => {
+  try {
+    console.log("Fetching token holders");
+    // Ambil semua event Transfer dari kontrak
+    const transferEvents = await contract.getPastEvents("Transfer", {
+      fromBlock: 0, // Mulai dari block genesis kontrak
+      toBlock: "latest",
+    });
+
+    // Buat set untuk menyimpan alamat holder unik
+    const holderAddresses = new Set();
+
+    // Proses event Transfer untuk mengumpulkan alamat from dan to
+    transferEvents.forEach((event) => {
+      const { from, to } = event.returnValues;
+      if (from !== "0x0000000000000000000000000000000000000000") {
+        holderAddresses.add(from); // Tambahkan pengirim (kecuali mint)
+      }
+      if (to !== "0x0000000000000000000000000000000000000000") {
+        holderAddresses.add(to); // Tambahkan penerima (kecuali burn)
+      }
+    });
+
+    // Konversi set ke array
+    holdersList = Array.from(holderAddresses);
+    console.log(`Found ${holdersList.length} unique holders`);
+    return holdersList;
+  } catch (error) {
+    console.error("Error fetching token holders:", error);
+    return [];
+  }
+};
+
+// Fungsi untuk memuat daftar holder ke frontend
+const loadTokenHolders = async () => {
+  if (isFetchingHolders) {
+    console.log("Skipping load: isFetchingHolders");
+    return;
+  }
+  isFetchingHolders = true;
+
+  const historyList = document.getElementById("tokenHolders");
+  try {
+    console.log("Loading token holders");
+    // Jika holdersList kosong, ambil daftar holder terlebih dahulu
+    if (holdersList.length === 0) {
+      await fetchTokenHolders();
+      if (holdersList.length === 0) {
+        historyList.innerHTML = "<li><small>No holders found.</small></li>";
+        isFetchingHolders = false;
+        return;
+      }
+    }
+
+    // Tentukan batch untuk ditampilkan
+    const end = Math.min(holdersOffset + holdersBatchSize, holdersList.length);
+    const batchAddresses = holdersList.slice(holdersOffset, end);
+
+    // Ambil saldo untuk setiap alamat di batch
+    const balancePromises = batchAddresses.map((address) =>
+      contract.methods.balanceOf(address).call()
+    );
+    const balances = await Promise.all(balancePromises);
+
+    // Tampilkan data holder
+    batchAddresses.forEach((address, index) => {
+      const balance = balances[index] / 10 ** cache.decimals; // Sesuaikan dengan desimal token
+      const li = document.createElement("li");
+      li.className = "py-2";
+      li.innerHTML = `<small>
+        Address: <span style="color: #bd80ff; font-size: 12.5px;"><a href="https://sepolia.basescan.org/address/${address}" target="_blank">${address.slice(0, 21)}${address.slice(-21)}</a></span><br>
+        Balance: <span style="color: #00ff14;">${balance.toFixed(2)} Tokens</span><br>
+      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+      historyList.appendChild(li);
+    });
+
+    holdersOffset += holdersBatchSize;
+    console.log("Token holders loaded successfully");
+  } catch (error) {
+    console.error("Error loading token holders:", error);
+    historyList.innerHTML = "<li><small>Error: Failed to load holders</small></li>";
+  } finally {
+    isFetchingHolders = false;
+  }
+};
+
+// Scroll Event Listener untuk Lazy Loading
+const tokenHoldersContainer = document.getElementById("tokenHoldersContainer");
+tokenHoldersContainer.addEventListener("scroll", () => {
+  if (
+    tokenHoldersContainer.scrollTop + tokenHoldersContainer.clientHeight >=
+    tokenHoldersContainer.scrollHeight - 10 &&
+    holdersOffset < holdersList.length &&
+    !isFetchingHolders
+  ) {
+    loadTokenHolders();
+  }
+});
+
+// Reset offset saat halaman dimuat ulang
+const resetHoldersOffset = () => {
+  holdersOffset = 0;
+  holdersList = [];
+  isFetchingHolders = false;
+  const historyList = document.getElementById("tokenHolders");
+  historyList.innerHTML = "";
+};
+
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
@@ -1419,6 +1541,7 @@ userHistoryContainer.addEventListener("scroll", () => {
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("placeBet").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
+    document.addEventListener("userAccountChanged", resetHoldersOffset);
 
     // Inisialisasi saat halaman dimuat
     window.addEventListener("load", async () => {
