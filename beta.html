@@ -1308,13 +1308,16 @@ userHistoryContainer.addEventListener("scroll", () => {
     };
 
     // UTC
-function updateUtcClock() {
+    function updateUtcClock() {
   const now = new Date();
-  const hours = now.getUTCHours().toString().padStart(2, '0');
-  const minutes = now.getUTCMinutes().toString().padStart(2, '0');
-  const seconds = now.getUTCSeconds().toString().padStart(2, '0');
-  document.getElementById("utcClock").innerText = `${hours}:${minutes}:${seconds} UTC`;
-}
+  const utcTime = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert to UTC
+
+  // Update elemen HTML dengan waktu UTC
+  const clockElement = document.getElementById("utcClock");
+  if (clockElement) {
+    clockElement.innerText = `UTC Time: ${utcTime.toUTCString()}`;
+  }
+    }
 
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
