@@ -1424,7 +1424,9 @@ userHistoryContainer.addEventListener("scroll", () => {
   try {
     console.log("Fetching token holders...");
     // Ganti dengan block deploy kontrak yang benar dari Basescan
-    const fromBlock = 24816594; // Verifikasi di Basescan
+    const fromBlock = 24363201
+
+; // Verifikasi di Basescan
     console.log(`Querying Transfer events from block ${fromBlock} to latest`);
 
     // Verifikasi kontrak
@@ -1438,14 +1440,14 @@ userHistoryContainer.addEventListener("scroll", () => {
     // Verifikasi jaringan
     const networkId = await web3.eth.net.getId();
     console.log("Connected to network ID:", networkId); // Sepolia = 11155111
-    if (networkId !== 11155111) {
-      console.error("Wrong network, expected Sepolia (11155111)");
+    if (networkId !== 84532) {
+      console.error("Wrong network, expected Sepolia Base Testnet (84532)");
       return [];
     }
 
     // Ambil event Transfer
     const transferEvents = await contract.getPastEvents("Transfer", {
-      fromBlock: fromBlock,
+      fromBlock: 24363201,
       toBlock: "latest",
     });
     console.log("Transfer events:", transferEvents);
