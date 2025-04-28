@@ -1127,19 +1127,19 @@ checkInButton.addEventListener("click", () => {
 });
 
 
-// Button Countdown II
-const placeBetButton = document.getElementById("placeBetButton");
+    // Button Countdown II
+    const placeBetButton = document.getElementById("placeBetButton");
 
-function startPlaceBetCountdown() {
+function startCountdown() {
   placeBetButton.disabled = true;
 
   function updateCountdown() {
     const now = new Date();
-    const nowUtc = now.getTime();
+    const nowUtc = now.getTime(); // UTC timestamp dalam milidetik
     const nextMidnightUtc = Date.UTC(
       now.getUTCFullYear(),
       now.getUTCMonth(),
-      now.getUTCDate() + 1,
+      now.getUTCDate() + 1, // Besok
       0, 0, 0, 0
     );
 
@@ -1148,7 +1148,7 @@ function startPlaceBetCountdown() {
     if (diff <= 0) {
       placeBetButton.disabled = false;
       placeBetButton.innerText = "Submit Ticket";
-      localStorage.removeItem("placeBetButtonClaimed");
+      localStorage.removeItem("placeBetButtonClaimed"); // Hapus status klaim
       clearInterval(timer);
       return;
     }
@@ -1164,23 +1164,20 @@ function startPlaceBetCountdown() {
   const timer = setInterval(updateCountdown, 1000);
 }
 
+// Ketika tombol diklik
 placeBetButton.addEventListener("click", () => {
   console.log("Submit Ticket!");
-  localStorage.setItem("placeBetButtonClaimed", "true");
-  startPlaceBetCountdown();
+  localStorage.setItem("placeBetButtonClaimed", "true"); // Simpan status klaim
+  startCountdown();
 });
 
 // Saat halaman diload
 window.addEventListener("load", () => {
-  if (localStorage.getItem("checkInClaimed") === "true") {
-    startCheckInCountdown();
-  }
-
   if (localStorage.getItem("placeBetButtonClaimed") === "true") {
-    startPlaceBetCountdown();
+    startCountdown();
   }
 });
-    
+
     // Place Bet
     const placeBet = async () => {
   if (!userAccount) {
