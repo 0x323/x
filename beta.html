@@ -292,11 +292,135 @@
     box-shadow: 0 0 20px rgba(0, 0, 255, 1), 0 0 30px rgba(0, 0, 255, 0.8);
     transform: rotate(360deg);
 }
-    
+
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 1240px;
+    z-index: 1000;
+    height: 60px; /* Tambahkan tinggi navbar agar lebih jelas */
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Menu Links */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00ff66;
+}
+
+/* Hamburger Button */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Efek Hover Hamburger */
+.hamburger:hover {
+    transform: rotate(90deg) scale(1.2);
+    color: #00ff66;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #222;
+        width: 200px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        transform: translateX(0);
+        animation: slideIn 0.3s ease-in-out;
+    }
+}
+
+/* Animasi Slide-in Menu */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
   </style>
 </head>
 <body>
-  <div class="container">
+  <nav class="navbar">
+    <a href="index" target="_blank" text-decoration: none;">
+      <div class="logo">
+        <img src="img/logo.svg" class="logo-img">
+        <span style="
+          font-size: 22px; 
+          font-weight: bold; 
+          background: linear-gradient(90deg, #03a9f4, #f441a5); 
+          -webkit-background-clip: text; 
+          -webkit-text-fill-color: transparent;
+          display: inline-block;
+        ">
+          Lotto Chain
+        </span>
+      </div>
+    </a>
+  </nav>
+    <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+    <ul class="nav-links" id="navMenu">
+        <a href="#features">4D Pools</a>
+        <a href="#prizes">Prizes</a>
+        <a href="lottery">LottoBalls (LB)</a>
+        <a href="hk">Hong Kong (HK)</a>
+        <a href="syd">Sydney (SYD)</a>
+    </ul>
+     </nav>
+    
     <h1>HK Beta Testnet</h1>
     <a href="result" target="_blank" style="color: #00bfff;"><h4>Result Today</h4><h5 style="color: #00bfff;">(click to details)</h5></a>
 
