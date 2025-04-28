@@ -1177,7 +1177,7 @@ const loadUserBetHistory = async () => {
 // Event Listener untuk Lazy Scroll
 const userHistoryContainer = document.getElementById("userBetHistoryContainer");
 userHistoryContainer.addEventListener("scroll", () => {
-  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 10) {
+  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 15) {
     if (userHistoryOffset < totalUserCount) {
       loadUserBetHistory();
     }
