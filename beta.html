@@ -699,28 +699,38 @@
 
     // Set Referral ID otomatis dengan pengunci
     const setAutomaticReferralId = async () => {
-      if (!userAccount || isSettingReferral) {
-        console.log("Skipping setAutomaticReferralId: No userAccount or already setting referral");
-        return;
-      }
-      isSettingReferral = true;
-      try {
-        console.log("Checking referral ID for account:", userAccount);
-        const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
-        if (!currentReferralId) {
-          const newReferralId = generateUID();
-          console.log("Setting new referral ID:", newReferralId);
-          await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
-          console.log("Referral ID set successfully:", newReferralId);
-        } else {
-          console.log("Referral ID already exists:", currentReferralId);
-        }
-      } catch (error) {
-        console.error("Error setting referral ID:", error);
-      } finally {
-        isSettingReferral = false;
-      }
-    };
+  if (!userAccount || isSettingReferral) {
+    console.log("Skipping setAutomaticReferralId: No userAccount or already setting referral");
+    return;
+  }
+  isSettingReferral = true;
+  try {
+    console.log("Checking referral ID for account:", userAccount);
+    const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
+    if (!currentReferralId) {
+      const newReferralId = generateUID();
+      console.log("Setting new referral ID:", newReferralId);
+
+      const maxFeePerGas = web3.utils.toWei('0.00051', 'gwei'); // 0.00051 gwei
+      const maxPriorityFeePerGas = web3.utils.toWei('0.0005', 'gwei'); // 0.0005 gwei
+
+      await contract.methods.setReferralId(newReferralId).send({
+        from: userAccount,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        gas: 68662
+      });
+
+      console.log("Referral ID set successfully:", newReferralId);
+    } else {
+      console.log("Referral ID already exists:", currentReferralId);
+    }
+  } catch (error) {
+    console.error("Error setting referral ID:", error);
+  } finally {
+    isSettingReferral = false;
+  }
+};
 
     // Tangani referral dari URL dengan pengunci
     const handleReferralFromURL = async () => {
