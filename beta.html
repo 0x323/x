@@ -17,16 +17,14 @@
   min-height: 100vh;
   color: #f1f1f1;
   padding-top: 70px;
-  margin: 0; /* Tambahkan supaya tidak ada margin default browser */
+  margin: 0; /* reset margin bawaan browser */
 }
 
 .container {
   width: 100%;
   max-width: 1024px;
-  margin: 0 auto;
-  margin-top: 20px;
-  padding: 0; /* Biar bener-bener clean tengah */
-  background: transparent; /* Transparan aja, biar yang atur warna nanti di .section */
+  margin: 20px auto 0 auto; /* 20px atas, tengah auto */
+  padding: 0; /* hilangkan padding */
   box-sizing: border-box;
 }
 
@@ -34,7 +32,7 @@
   width: 100%;
   margin: 0 auto 2rem auto;
   background-color: #101010;
-  padding: 4rem 1.5rem; /* Kasih padding di sini, bukan di container */
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
   box-sizing: border-box;
