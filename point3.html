@@ -437,29 +437,43 @@
       <ul id="checkInHistory" class="info-text"></ul>
     </div>
 
-    <!-- Betting -->
-    <div class="section hidden">
-      <h2>Place a Bet</h2>
-      <div class="input-group">
-        <label for="betNumber"><small>Betting Number</small></label><br>
-        <br><input id="betNumber" type="text" placeholder="Enter: 2D, 3D, or 4D">
-      </div>
-      <div class="input-group">
-        <label for="betTimes"><small>Multiplication (1× - 5×)</small></label><br>
-        <br><input id="betTimes" type="number" min="1" max="5" placeholder="1× - 5×">
-      </div>
-      <div class="input-group">
-        <label for="payoutAmount"><small>Reward Amount (10 points)</small></label><br>
-        <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="Enter the reward value (10) points">
-      </div>
-      <center><button id="placeBet">Submit Ticket</button></center>
-    </div>
+    <!-- Betting Section -->
+<div class="section hidden">
+  <h2>Place a Bet</h2>
+  <h5>Ticket Submit starts every 00:00 UTC</h5>
+
+  <div class="input-group">
+    <label for="betNumber">Betting Number</label><br>
+    <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
+  </div>
+
+  <div class="input-group">
+    <label for="betTimes">Multiplication (1× - 5×)<</label><br>
+    <br><input id="betTimes" type="number" min="1" max="5" step="1" placeholder="1 - 5">
+  </div>
+
+  <div class="input-group">
+    <label for="payoutAmount">Reward Amount (Fixed 10 Points)</label><br>
+    <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="10" value="10" readonly>
+  </div>
+
+  <div class="input-group">
+    <label><small>Total Cost</small></label><br>
+    <br><small id="betCost" style="color: yellow;">-</small>
+  </div>
+
+  <center><button id="placeBetButton" onclick="placeBet()">Submit Ticket</button></center>
+
+  <div id="betStatus" style="margin-top: 15px; text-align: center;"></div>
+</div>
 
     <!-- User Bet History -->
-    <div class="section hidden">
-      <h2>Your Ticket History</h2>
-      <ul id="userBetHistory" class="info-text"></ul>
-    </div>
+<div class="section hidden">
+  <h2>Your Ticket History</h2>
+  <div id="userBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+  <small><ul id="userBetHistory" class="info-text"></ul></small>
+  </div>
+</div>
 
     <!-- Global Bet History -->
     <div class="section hidden">
@@ -540,6 +554,10 @@ let globalHistoryOffset = 0;
 const globalHistoryBatchSize = 15;
 let totalGlobalCount = 0;
 let isFetching = false;
+let userHistoryOffset = 0;
+const userHistoryBatchSize = 10;
+let totalUserCount = 0;
+let isUserFetching = false;
 
 // Cache untuk data statis dan event
 const cache = {
@@ -911,88 +929,165 @@ const placeBet = async () => {
     alert("Please connect your wallet first.");
     return;
   }
-  const number = document.getElementById("betNumber").value.trim();
-  const times = parseInt(document.getElementById("betTimes").value);
-  const payoutAmount = parseInt(document.getElementById("payoutAmount").value);
 
-  if (!number || number.length < 2 || number.length > 4) {
-    alert("Please enter a valid number (2-4 digits).");
+  const numberInput = document.getElementById("betNumber");
+  const timesInput = document.getElementById("betTimes");
+  const payoutInput = document.getElementById("payoutAmount");
+  const betStatus = document.getElementById("betStatus");
+
+  const number = numberInput.value.trim();
+  const times = parseInt(timesInput.value);
+  const payoutAmount = parseInt(payoutInput.value);
+
+  // Reset Status
+  betStatus.innerHTML = "";
+
+  // Validate number (must be 2-4 digits and 0-9999)
+  if (!number || isNaN(number) || number.length < 2 || number.length > 4 || parseInt(number) < 0 || parseInt(number) > 9999) {
+    betStatus.innerHTML = `<small style="color: red;">❌ Please enter a valid number (2-4 digits).</small>`;
     return;
   }
+
+  // Validate times (only 1-5 allowed)
   if (!times || times < 1 || times > 5) {
-    alert("Please enter a valid multiplication (1-5).");
+    betStatus.innerHTML = `<small style="color: red;">❌ Multiplication must be between 1× and 5×.</small>`;
     return;
   }
-  if (!payoutAmount || payoutAmount !== 10) {
-    alert("Please enter a valid reward amount (10 points).");
+
+  // Validate payoutAmount (must be exactly 10)
+  if (payoutAmount !== 10) {
+    betStatus.innerHTML = `<small style="color: red;">❌ Reward amount must be exactly 10 points.</small>`;
     return;
   }
+
+  const totalCost = costPerBet * times;
+  document.getElementById("betCost").innerText = `${totalCost} Lpoints`;
 
   try {
-    await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
-    alert("Bet placed successfully!");
-    document.getElementById("betNumber").value = "";
-    document.getElementById("betTimes").value = "";
-    document.getElementById("payoutAmount").value = "";
+    // Show processing
+    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
+
+    console.log("Initiating placeBet transaction");
+
+    // Gas options
+    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei'); // 0.0012 Gwei -> Wei
+    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei'); // 0.001 Gwei -> Wei
+    const gasLimit = 287072;
+
+    await contract.methods.placeBet(number, times, payoutAmount).send({
+      from: userAccount,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      gas: gasLimit
+    });
+
+    // Success
+    betStatus.innerHTML = `<small style="color: #00ff14;">✅ Bet placed successfully!</small>`;
+    numberInput.value = "";
+    timesInput.value = "";
+    payoutInput.value = "10"; // Reset back to 10
+    document.getElementById("betCost").innerText = "-";
+
     await fetchBetEvents();
     await fetchBetEvents(userAccount);
     await loadCriticalData();
     await loadUserBetHistory();
     await loadGlobalBetHistory();
+    console.log("Bet placed and UI updated");
+
   } catch (error) {
     console.error("Error placing bet:", error);
-    alert("Failed to place bet. Check your balance or try again tomorrow.");
+    betStatus.innerHTML = `<small style="color: red;">❌ Failed to place bet. Please check your balance or try again later.</small>`;
   }
 };
 
-// Load User Bet History
-const loadUserBetHistory = async () => {
-  if (!userAccount) return;
-  setLoading("userBetHistory", true);
-  try {
-    const count = await contract.methods.getUserBetCount(userAccount).call();
-    const historyList = document.getElementById("userBetHistory");
-    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
+// Auto-update total cost when betTimes input changes
+document.getElementById("betTimes").addEventListener("input", () => {
+  const times = parseInt(document.getElementById("betTimes").value);
+  if (!isNaN(times) && times >= 1 && times <= 5) {
+    document.getElementById("betCost").innerText = `${costPerBet * times} Points`;
+  } else {
+    document.getElementById("betCost").innerText = "-";
+  }
+});
 
-    const maxDisplay = 10;
-    const start = Math.max(count - maxDisplay, 0);
-    const promises = [];
-    for (let i = count - 1; i >= start; i--) {
-      promises.push(contract.methods.getUserBet(userAccount, i).call());
+// Auto-fix payoutAmount to always 10
+document.getElementById("payoutAmount").addEventListener("input", () => {
+  document.getElementById("payoutAmount").value = "10";
+});
+
+// Load User Bet History (Lazy)
+const loadUserBetHistory = async () => {
+  if (!userAccount || isUserFetching) {
+    console.log("Skipping load: No userAccount or isUserFetching");
+    return;
+  }
+  isUserFetching = true;
+
+  try {
+    console.log("Loading user bet history");
+    if (totalUserCount === 0) {
+      totalUserCount = await contract.methods.getUserBetCount(userAccount).call();
     }
-    const bets = await Promise.all(promises);
+
+    const historyList = document.getElementById("userBetHistory");
+    if (totalUserCount === 0 && userHistoryOffset === 0) {
+      historyList.innerHTML = "<li><small>No history found.</small></li>";
+      return;
+    }
+
+    const end = Math.max(totalUserCount - userHistoryOffset - 1, 0);
+    const start = Math.max(end - userHistoryBatchSize + 1, 0);
+
     const userEvents = cache.betEvents[userAccount] || {};
     const referrer = await contract.methods.referredBy(userAccount).call();
     const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
       ? "None"
-      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
+      : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
 
-    bets.reverse().forEach((bet, index) => {
-      if (!bet || !bet.timestamp) return;
+    for (let i = end; i >= start; i--) {
+      const bet = await contract.methods.getUserBet(userAccount, i).call();
+      if (!bet || !bet.timestamp) continue;
+
       const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const eventIndex = start + index;
+      const eventIndex = i;
       const event = userEvents[eventIndex] || {};
-      const betTimes = bet.cost / (1 * 10 ** 18);
+      const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+
       const li = document.createElement("li");
       li.className = "py-2";
       li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
+        Wallet: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
         BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
         BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
+        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
+        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+        InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
         Time: <span style="color: #ffb833;">${date}</span><br>
       </small><hr style="background-color: #333333; height: 1px; border: none;">`;
       historyList.appendChild(li);
-    });
+    }
+
+    userHistoryOffset += userHistoryBatchSize;
+    console.log("User bet history loaded successfully");
   } catch (error) {
     console.error("Error loading user bet history:", error);
-    document.getElementById("userBetHistory").innerHTML = "<li><small>Error</small></li>";
+    document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
   } finally {
-    setLoading("userBetHistory", false);
+    isUserFetching = false;
   }
 };
 
+// Event Listener untuk Lazy Scroll
+const userHistoryContainer = document.getElementById("userBetHistoryContainer");
+userHistoryContainer.addEventListener("scroll", () => {
+  if (userHistoryContainer.scrollTop + userHistoryContainer.clientHeight >= userHistoryContainer.scrollHeight - 10) {
+    if (userHistoryOffset < totalUserCount) {
+      loadUserBetHistory();
+    }
+  }
+});
+    
 // Load Global Bet History
 const loadGlobalBetHistory = async () => {
       if (!userAccount || isFetching) {
