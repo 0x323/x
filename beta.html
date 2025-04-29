@@ -475,15 +475,6 @@
       <div class="input-group">
         <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
         <center><button id="copyLink">Copy Link</button></center><br>
-        
-    <label for="setReferralId">Create Your Referral UID</label><br>
-    <input id="setReferralId" type="text" placeholder="Create unique referral UID"><br>
-    <button id="setReferralId">Set UID</button><br>
-
-    <label for="setReferrerId">Invite Referral UID</label><br>
-    <input id="setReferrerId" type="text" placeholder="Input Friend UID"><br>
-    <button id="setReferrerId">Invite</button>
-        
         <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
         <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
       </div>
@@ -755,49 +746,6 @@
         console.error("Error handling referral:", error);
       }
     };
-
-    // Set Referral ID
-const setReferralId = async () => {
-    if (!userAccount) {
-        alert("Please connect your wallet first.");
-        return;
-    }
-    const referralId = document.getElementById("referralId").value.trim();
-    if (!referralId) {
-        alert("Please enter a referral ID.");
-        return;
-    }
-    try {
-        await contract.methods.setReferralId(referralId).send({ from: userAccount });
-        alert("Referral ID set successfully!");
-        document.getElementById("referralId").value = "";
-        loadTokenInfo();
-    } catch (error) {
-        console.error("Error setting referral ID:", error);
-        alert("Failed to set referral ID. It may already be taken or you already have one.");
-    }
-};
-
-// Set Referrer ID
-const setReferrerId = async () => {
-    if (!userAccount) {
-        alert("Please connect your wallet first.");
-        return;
-    }
-    const referrerId = document.getElementById("referrerId").value.trim();
-    if (!referrerId) {
-        alert("Please enter a referrer ID.");
-        return;
-    }
-    try {
-        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-        alert("Successfully joined referral!");
-        document.getElementById("referrerId").value = "";
-    } catch (error) {
-        console.error("Error setting referrer ID:", error);
-        alert("Failed to join referral. Check if the ID is valid or if you were already referred.");
-    }
-};
 
     const fetchBetEvents = async (user = null, fromBlock = null) => {
       try {
@@ -1467,8 +1415,6 @@ const setReferrerId = async () => {
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("placeBetButton").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-    document.getElementById("setReferralId").addEventListener("click", setReferralId);
-    document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
     
     window.addEventListener("load", async () => {
       const urlParams = new URLSearchParams(window.location.search);
