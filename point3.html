@@ -558,6 +558,9 @@ let userHistoryOffset = 0;
 const userHistoryBatchSize = 10;
 let totalUserCount = 0;
 let isUserFetching = false;
+let checkInHistoryOffset = 0;
+const checkInBatchSize = 10;
+let totalCheckInCount = 0;
 
 // Cache untuk data statis dan event
 const cache = {
@@ -888,40 +891,85 @@ const checkIn = async () => {
   }
 };
 
-// Load Check-In History
-const loadCheckInHistory = async () => {
+// Load Check-In History with Pagination
+const loadCheckInHistory = async (page = 1) => {
   if (!userAccount) return;
   setLoading("checkInHistory", true);
-  try {
-    const count = await contract.methods.getCheckInCount(userAccount).call();
-    const historyList = document.getElementById("checkInHistory");
-    historyList.innerHTML = count == 0 ? "<li><small>No history found.</small></li>" : "";
 
-    const maxDisplay = 10; // Batasi 10 entri
-    const start = Math.max(count - maxDisplay, 0);
+  try {
+    console.log(`Loading check-in history page ${page}`);
+    const historyList = document.getElementById("checkInHistory");
+    historyList.innerHTML = "";
+
+    if (totalCheckInCount === 0) {
+      totalCheckInCount = await contract.methods.getCheckInCount(userAccount).call();
+    }
+
+    const start = Math.max(totalCheckInCount - (page * checkInBatchSize), 0);
+    const end = Math.min(start + checkInBatchSize, totalCheckInCount);
+
     const promises = [];
-    for (let i = count - 1; i >= start; i--) {
+    for (let i = end - 1; i >= start; i--) {
       promises.push(contract.methods.getCheckInLog(userAccount, i).call());
     }
     const logs = await Promise.all(promises);
-    logs.reverse().forEach(log => {
-      const date = new Date(log.timestamp * 1000).toLocaleString();
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        Day: ${log.dayUTC}<br>
-        Reward: ${(log.reward / 10 ** 18).toFixed(2)} Points<br>
-        Time: ${date}<br>
-      </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    });
+
+    if (logs.length === 0) {
+      historyList.innerHTML = "<li><small>No history found.</small></li>";
+    } else {
+      logs.forEach(log => {
+        const date = new Date(log.timestamp * 1000).toLocaleString();
+        const li = document.createElement("li");
+        li.className = "py-2";
+        li.innerHTML = `<small>
+           ID: <span style="color: #00bfff;">${log.dayUTC}</span><br>
+           Reward: <span style="color: #32cd32;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
+           Time: <span style="color: #ffa500;">${date}</span><br>
+        </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+        historyList.appendChild(li);
+      });
+    }
+
+    renderCheckInPagination(page);
+    console.log("Check-in history loaded successfully");
   } catch (error) {
     console.error("Error loading check-in history:", error);
-    document.getElementById("checkInHistory").innerHTML = "<li><small>Error</small></li>";
+    document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
   } finally {
     setLoading("checkInHistory", false);
   }
 };
+
+// Render Pagination Buttons
+function renderCheckInPagination(currentPage) {
+  const pagination = document.getElementById("checkInPagination");
+  pagination.innerHTML = "";
+
+  const totalPages = Math.ceil(totalCheckInCount / checkInBatchSize);
+  if (totalPages <= 1) return; // Tidak perlu pagination kalau cuma 1 halaman
+
+  const prevButton = document.createElement("button");
+  prevButton.innerHTML = "&lt;";
+  prevButton.disabled = currentPage === 1;
+  prevButton.onclick = () => loadCheckInHistory(currentPage - 1);
+  pagination.appendChild(prevButton);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement("button");
+    pageButton.textContent = i;
+    if (i === currentPage) {
+      pageButton.classList.add("active");
+    }
+    pageButton.onclick = () => loadCheckInHistory(i);
+    pagination.appendChild(pageButton);
+  }
+
+  const nextButton = document.createElement("button");
+  nextButton.innerHTML = "&gt;";
+  nextButton.disabled = currentPage === totalPages;
+  nextButton.onclick = () => loadCheckInHistory(currentPage + 1);
+  pagination.appendChild(nextButton);
+}
 
 // Place Bet
 const placeBet = async () => {
