@@ -1507,7 +1507,7 @@ globalHistoryContainer.addEventListener("scroll", async () => {
 
     // Salin link referral
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Referral Link:", "").trim();
+      const linkText = document.getElementById("referralLink").innerText.replace("Your Referral Link:", "").trim();
       navigator.clipboard.writeText(linkText).then(() => {
         alert("Referral link copied!");
       }).catch(() => {
