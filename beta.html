@@ -726,25 +726,6 @@ const handleReferralFromURL = async () => {
   }
 };
 
-    // Periksa koneksi tersimpan
-    const checkStoredConnection = () => {
-      const connection = localStorage.getItem("walletConnection");
-      if (!connection) return false;
-      try {
-        const { account, timestamp } = JSON.parse(connection);
-        if (Date.now() - timestamp < CONNECTION_VALIDITY && account) {
-          userAccount = account;
-          return true;
-        }
-        localStorage.removeItem("walletConnection");
-        return false;
-      } catch (error) {
-        console.error("Error parsing stored connection:", error);
-        localStorage.removeItem("walletConnection");
-        return false;
-      }
-    };
-
     // Simpan koneksi
     const storeConnection = (account) => {
       localStorage.setItem("walletConnection", JSON.stringify({
