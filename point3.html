@@ -846,29 +846,183 @@ const loadCriticalData = async () => {
   }
 };
 
-// Load daftar referee
+// Load daftar referee dengan pagination
 const loadRefereeList = async () => {
   if (!userAccount) return;
   setLoading("refereeList", true);
   try {
+    console.log("Loading referee list");
+
     const refereeList = document.getElementById("refereeList");
+    const pagination = document.getElementById("refereePagination");
+
     const referees = await contract.methods.getReferees(userAccount).call();
-    refereeList.innerHTML = referees.length === 0 ? "<li><small>No referees found.</small></li>" : "";
-    referees.forEach((referee, index) => {
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `
-        <span style="font-size: 12.5px; color: #bd80ff;">
-          Referee ${index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
-            ${referee.slice(0, 6)}...${referee.slice(-4)}
-          </a>
-        </span>
-      `;
-      refereeList.appendChild(li);
-    });
+
+    let currentPage = 1;
+    const initialLoad = 10;
+    const itemsPerPage = 20;
+    let totalItems = referees.length;
+    let totalPages = Math.ceil(Math.max(totalItems - initialLoad, 0) / itemsPerPage) + 1;
+
+    const renderPage = (page) => {
+      refereeList.innerHTML = "";
+
+      let start = 0;
+      let end = 0;
+
+      if (page === 1) {
+        start = 0;
+        end = initialLoad;
+      } else {
+        start = initialLoad + (page - 2) * itemsPerPage;
+        end = start + itemsPerPage;
+      }
+
+      const pagedReferees = referees.slice(start, end);
+
+      if (pagedReferees.length === 0) {
+        refereeList.innerHTML = "<li><small>No referees found.</small></li>";
+      } else {
+        pagedReferees.forEach((referee, index) => {
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `
+            <span style="font-size: 12.5px; color: #32cd32;">
+              <small>Ref ${start + index + 1}: <a href="https://sepolia.basescan.org/address/${referee}" target="_blank">
+                ${referee.slice(0, 21)}${referee.slice(-21)}
+              </a></small>
+            </span>
+          `;
+          refereeList.appendChild(li);
+        });
+      }
+
+      renderPagination();
+    };
+
+    const renderPagination = () => {
+      pagination.innerHTML = "";
+
+      if (totalPages <= 1) return; // Tidak perlu pagination kalau cuma 1 halaman
+
+      const createButton = (content, disabled, onClick, isImage = false) => {
+  const btn = document.createElement("button");
+  btn.disabled = disabled;
+  btn.style.margin = "0 3px";
+  btn.style.padding = "5px 10px";
+  btn.style.fontSize = "12px";
+  btn.style.display = "flex";
+  btn.style.alignItems = "center";
+  btn.onclick = onClick;
+
+  if (isImage) {
+    const img = document.createElement("img");
+    img.src = content; // kalau gambar, 'content' itu URL PNG
+    img.style.width = "16px";
+    img.style.height = "16px";
+    btn.appendChild(img);
+  } else {
+    btn.innerText = content;
+  }
+
+  pagination.appendChild(btn);
+};
+
+      createButton("img/first.svg", currentPage === 1, () => {
+  currentPage = 1;
+  renderPage(currentPage);
+}, true);
+      createButton("img/prev.svg", currentPage === 1, () => {
+  currentPage--;
+  renderPage(currentPage);
+}, true);
+
+      // Numbered pages
+      if (totalPages <= 5) {
+        for (let i = 1; i <= totalPages; i++) {
+          createButton(i, currentPage === i, () => {
+            currentPage = i;
+            renderPage(currentPage);
+          });
+        }
+      } else {
+        // If banyak halaman, pakai pola: 1 2 3 ... last
+        if (currentPage <= 3) {
+          for (let i = 1; i <= 3; i++) {
+            createButton(i, currentPage === i, () => {
+              currentPage = i;
+              renderPage(currentPage);
+            });
+          }
+          const dots = document.createElement("span");
+          dots.innerText = "...";
+          dots.style.margin = "0 5px";
+          pagination.appendChild(dots);
+          createButton(totalPages, false, () => {
+            currentPage = totalPages;
+            renderPage(currentPage);
+          });
+        } else if (currentPage >= totalPages - 2) {
+          createButton(1, false, () => {
+            currentPage = 1;
+            renderPage(currentPage);
+          });
+          const dots = document.createElement("span");
+          dots.innerText = "...";
+          dots.style.margin = "0 5px";
+          pagination.appendChild(dots);
+          for (let i = totalPages - 2; i <= totalPages; i++) {
+            createButton(i, currentPage === i, () => {
+              currentPage = i;
+              renderPage(currentPage);
+            });
+          }
+        } else {
+          createButton(1, false, () => {
+            currentPage = 1;
+            renderPage(currentPage);
+          });
+          const dots1 = document.createElement("span");
+          dots1.innerText = "...";
+          dots1.style.margin = "0 5px";
+          pagination.appendChild(dots1);
+
+          for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            createButton(i, currentPage === i, () => {
+              currentPage = i;
+              renderPage(currentPage);
+            });
+          }
+
+          const dots2 = document.createElement("span");
+          dots2.innerText = "...";
+          dots2.style.margin = "0 5px";
+          pagination.appendChild(dots2);
+
+          createButton(totalPages, false, () => {
+            currentPage = totalPages;
+            renderPage(currentPage);
+          });
+        }
+      }
+
+      createButton("img/next.svg", currentPage === totalPages, () => {
+  currentPage++;
+  renderPage(currentPage);
+}, true);
+      createButton("img/last.svg", currentPage === totalPages, () => {
+  currentPage = totalPages;
+  renderPage(currentPage);
+}, true);
+    };
+
+    // Pertama kali load
+    renderPage(currentPage);
+
+    console.log("Referee list loaded with pagination");
   } catch (error) {
     console.error("Error loading referee list:", error);
-    document.getElementById("refereeList").innerHTML = "<li><small>Error</small></li>";
+    document.getElementById("refereeList").innerHTML = "<li><small>Error: Failed to load referees</small></li>";
   } finally {
     setLoading("refereeList", false);
   }
