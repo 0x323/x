@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CheckInPoint DApp</title>
+  <title>Lotto Chain Decentralized Betting</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
   <style>
-    body {
+     body {
       background-color: #000000;
       font-family: 'Ubuntu', sans-serif;
       min-height: 100vh;
       color: #f1f1f1;
+      padding-top: 70px;
     }
 
     .container {
@@ -20,6 +24,7 @@
       margin: auto;
       padding: 1.5rem;
       background: #000000;
+      margin-top: 20px;
     }
 
     h1, h2 {
@@ -33,6 +38,11 @@
       color: #F0F0F0;
       font-size: 17px;
       text-shadow: 0px 0px 10px #00aaff, 0px 0px 20px #0088ff;
+      text-align: center;
+    }
+
+    h4, h5 {
+      text-align: center;
     }
 
     a {
@@ -85,12 +95,12 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    #checkIn, #placeBet, #copyLink {
+    #checkIn, #placeBetButton, #copyLink {
       background: linear-gradient(90deg, #03a9f4, #f441a5);
       color: #fff;
     }
 
-    #checkIn:hover, #placeBet:hover, #copyLink:hover {
+    #checkIn:hover, #placeBetButton:hover, #copyLink:hover {
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
       box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -108,7 +118,7 @@
 
     input:focus {
       outline: none;
-      border-color: #00ffcc;
+      border-color: #00bfff;
       box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.3);
     }
 
@@ -162,6 +172,220 @@
       -webkit-text-fill-color: transparent;
       text-align: center;
     }
+
+     /* Pagination Container */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+    /* Tombol Pagination */
+.pagination button {
+  background-color: #f2f2f2;
+  border: 1px solid #333333;
+  color: #333;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect */
+.pagination button:hover {
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(244, 65, 165, 0.4);
+  border-color: transparent;
+}
+
+/* Tombol aktif (halaman sekarang) */
+.pagination button.active {
+  background: linear-gradient(135deg, #9333ea, #7e22ce);
+  color: white;
+  font-weight: bold;
+  border-color: transparent;
+  box-shadow: 0 4px 8px rgba(147, 51, 234, 0.5);
+}
+
+/* Tombol nonaktif (Prev/Next saat tidak bisa diklik) */
+.pagination button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  transform: none;
+}
+
+    .lottery-balls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+    }
+    
+    .lottery-ball {
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at 30% 30%, #03a9f4, #f441a5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 8px 15px rgba(0, 183, 255, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    border: 1px solid white;
+        }
+
+        /* Animasi bola */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .lottery-ball:nth-child(1) { animation: bounce 1s infinite 0.1s; }
+        .lottery-ball:nth-child(2) { animation: bounce 1s infinite 0.2s; }
+        .lottery-ball:nth-child(3) { animation: bounce 1s infinite 0.3s; }
+        .lottery-ball:nth-child(4) { animation: bounce 1s infinite 0.4s; }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        background: #000000;
+        color: #f0f0f0;
+        font-size: 12px;
+    }
+
+    .social-icons {
+        margin-bottom: 10px;
+    }
+
+    .social-icons a {
+    background: #222222;
+    border-radius: 50px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    transition: transform 0.5s ease, text-shadow 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.social-icons a:hover {
+    color: #1a88ff;
+    text-shadow: 0 0 10px #1a88ff, 0 0 20px #1a88ff, 0 0 30px #1a88ff;
+    box-shadow: 0 0 20px rgba(0, 0, 255, 1), 0 0 30px rgba(0, 0, 255, 0.8);
+    transform: rotate(360deg);
+}
+
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 1240px;
+    z-index: 1000;
+    height: 60px; /* Tambahkan tinggi navbar agar lebih jelas */
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Menu Links */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00ff66;
+}
+
+/* Hamburger Button */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Efek Hover Hamburger */
+.hamburger:hover {
+    transform: rotate(90deg) scale(1.2);
+    color: #00ff66;
+}
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #222;
+        width: 200px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        transform: translateX(0);
+        animation: slideIn 0.3s ease-in-out;
+    }
+}
+
+/* Animasi Slide-in Menu */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+  </style>
   </style>
 </head>
 <body>
@@ -724,58 +948,70 @@ const loadUserBetHistory = async () => {
 
 // Load Global Bet History
 const loadGlobalBetHistory = async () => {
-  if (!userAccount || isFetching) {
-    console.log("Skipping load: No userAccount or isFetching");
-    return;
+      if (!userAccount || isFetching) {
+        console.log("Skipping load: No userAccount or isFetching");
+        return;
+      }
+      isFetching = true;
+
+      try {
+        console.log("Loading global bet history");
+        if (totalGlobalCount === 0) {
+          totalGlobalCount = await contract.methods.getBetHistoryLength().call();
+        }
+
+        const historyList = document.getElementById("globalBetHistory");
+        const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
+        const start = Math.max(end - globalHistoryBatchSize + 1, 0);
+
+        const globalEvents = cache.betEvents["global"] || {};
+
+        for (let i = end; i >= start; i--) {
+          const bet = await contract.methods.getBet(i).call();
+          const date = new Date(bet.timestamp * 1000).toLocaleString();
+          const referrer = await contract.methods.referredBy(bet.user).call();
+          const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
+            ? "None"
+            : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
+          const eventIndex = i;
+          const event = globalEvents[eventIndex] || {};
+          const txHash = event.txHash || "N/A";
+          const blockNumber = event.blockNumber || "N/A";
+          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+
+          const li = document.createElement("li");
+          li.className = "py-2";
+          li.innerHTML = `<small>
+            User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 21)}${bet.user.slice(-21)}</a></span><br>
+            BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
+            BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
+            Time: <span style="color: #ffb833;">${date}</span><br>
+          </small><hr style="background-color: #333333; height: 1px; border: none;">`;
+          historyList.appendChild(li);
+        }
+
+        globalHistoryOffset += globalHistoryBatchSize;
+        console.log("Global bet history loaded successfully");
+      } catch (error) {
+        console.error("Error loading global bet history:", error);
+        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+      } finally {
+        isFetching = false;
+      }
+    };
+
+    const globalHistoryContainer = document.getElementById("globalBetHistoryContainer");
+
+globalHistoryContainer.addEventListener("scroll", async () => {
+  const nearBottom = globalHistoryContainer.scrollTop + globalHistoryContainer.clientHeight >= globalHistoryContainer.scrollHeight - 15;
+  
+  if (nearBottom && !isFetching && globalHistoryOffset < totalGlobalCount) {
+    await loadGlobalBetHistory();
   }
-  isFetching = true;
-
-  try {
-    if (totalGlobalCount === 0) {
-      totalGlobalCount = await contract.methods.getBetHistoryLength().call();
-    }
-
-    const historyList = document.getElementById("globalBetHistory");
-    const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
-    const start = Math.max(end - globalHistoryBatchSize + 1, 0);
-
-    const globalEvents = cache.betEvents["global"] || {};
-
-    for (let i = end; i >= start; i--) {
-      const bet = await contract.methods.getBet(i).call();
-      const date = new Date(bet.timestamp * 1000).toLocaleString();
-      const referrer = await contract.methods.referredBy(bet.user).call();
-      const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
-        ? "None"
-        : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
-      const eventIndex = i; // Global index sesuai dengan betHistory
-      const event = globalEvents[eventIndex] || {};
-      const txHash = event.txHash || "N/A";
-      const blockNumber = event.blockNumber || "N/A";
-      const betTimes = bet.cost / (1 * 10 ** 18);
-
-      const li = document.createElement("li");
-      li.className = "py-2";
-      li.innerHTML = `<small>
-        User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
-        BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
-        BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-        Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** 18).toFixed(2)} Points</span><br>
-        Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** 18).toFixed(2)} Points</span><br>
-        ReferrerBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
-        Time: <span style="color: #ffb833;">${date}</span><br>
-        </small><hr style="background-color: #333333; height: 1px; border: none;">`;
-      historyList.appendChild(li);
-    }
-
-    globalHistoryOffset += globalHistoryBatchSize;
-  } catch (error) {
-    console.error("Error loading global bet history:", error);
-    document.getElementById("globalBetHistory").innerHTML = "<li><small>Error loading history.</small></li>";
-  }
-
-  isFetching = false;
-};
+});
 
 // Salin link referral
 const copyReferralLink = () => {
