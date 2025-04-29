@@ -95,12 +95,12 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    #checkIn, #placeBetButton, #copyLink {
+    #checkIn, #placeBetButton, #copyLink, #setReferrerId, #setReferralId {
       background: linear-gradient(90deg, #03a9f4, #f441a5);
       color: #fff;
     }
 
-    #checkIn:hover, #placeBetButton:hover, #copyLink:hover {
+    #checkIn:hover, #placeBetButton:hover, #copyLink:hover, #setReferrerId, #setReferralId {
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
       box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -476,13 +476,13 @@
         <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
         <center><button id="copyLink">Copy Link</button></center><br>
         
-    <label for="setAutomaticReferralId">Create Your Referral UID</label><br>
-    <input id="setAutomaticReferralId" type="text" placeholder="Create unique referral UID"><br>
-    <button id="setAutomaticReferralId">Set UID</button><br>
+    <label for="setReferralId">Create Your Referral UID</label><br>
+    <input id="setReferralId" type="text" placeholder="Create unique referral UID"><br>
+    <button id="setReferralId">Set UID</button><br>
 
-    <label for="handleReferralFromURL">Invite Referral UID</label><br>
-    <input id="handleReferralFromURL" type="text" placeholder="Input Friend UID"><br>
-    <button id="handleReferralFromURL">Invite</button>
+    <label for="setReferrerId">Invite Referral UID</label><br>
+    <input id="setReferrerId" type="text" placeholder="Input Friend UID"><br>
+    <button id="setReferrerId">Invite</button>
         
         <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
         <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
@@ -755,6 +755,49 @@
         console.error("Error handling referral:", error);
       }
     };
+
+    // Set Referral ID
+const setReferralId = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
+    const referralId = document.getElementById("referralId").value.trim();
+    if (!referralId) {
+        alert("Please enter a referral ID.");
+        return;
+    }
+    try {
+        await contract.methods.setReferralId(referralId).send({ from: userAccount });
+        alert("Referral ID set successfully!");
+        document.getElementById("referralId").value = "";
+        loadTokenInfo();
+    } catch (error) {
+        console.error("Error setting referral ID:", error);
+        alert("Failed to set referral ID. It may already be taken or you already have one.");
+    }
+};
+
+// Set Referrer ID
+const setReferrerId = async () => {
+    if (!userAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
+    const referrerId = document.getElementById("referrerId").value.trim();
+    if (!referrerId) {
+        alert("Please enter a referrer ID.");
+        return;
+    }
+    try {
+        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
+        alert("Successfully joined referral!");
+        document.getElementById("referrerId").value = "";
+    } catch (error) {
+        console.error("Error setting referrer ID:", error);
+        alert("Failed to join referral. Check if the ID is valid or if you were already referred.");
+    }
+};
 
     const fetchBetEvents = async (user = null, fromBlock = null) => {
       try {
@@ -1417,13 +1460,16 @@
       } else {
         await initWeb3(true);
         await handleReferralFromURL();
+        await setAutomaticReferralId();
       }
     });
 
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("placeBetButton").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-
+    document.getElementById("setReferralId").addEventListener("click", setReferralId);
+    document.getElementById("setReferrerId").addEventListener("click", setReferrerId);
+    
     window.addEventListener("load", async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const referrerIdFromURL = urlParams.get("uid");
