@@ -1144,7 +1144,7 @@ const loadRefereeList = async () => {
     console.log("Initiating check-in transaction");
 
     // Hitung gas option
-    const maxFeePerGas = web3.utils.toWei('0.0012', 'gwei'); // 0.0012 Gwei -> dalam wei
+    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei'); // 0.0012 Gwei -> dalam wei
     const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei'); // 0.001 Gwei -> dalam wei
     const gasLimit = 138775;
 
@@ -1274,7 +1274,7 @@ function renderCheckInPagination(currentPage) {
 }
     
     // Place Bet
-    const placeBet = async () => {
+const placeBet = async () => {
   if (!userAccount) {
     alert("Please connect your wallet first.");
     return;
@@ -1318,7 +1318,18 @@ function renderCheckInPagination(currentPage) {
     betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
 
     console.log("Initiating placeBet transaction");
-    await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+
+    // Gas options
+    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei'); // 0.0012 Gwei -> Wei
+    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei'); // 0.001 Gwei -> Wei
+    const gasLimit = 287072;
+
+    await contract.methods.placeBet(number, times, payoutAmount).send({
+      from: userAccount,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      gas: gasLimit
+    });
 
     // Success
     betStatus.innerHTML = `<small style="color: #00ff14;">✅ Bet placed successfully!</small>`;
