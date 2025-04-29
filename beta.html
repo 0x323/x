@@ -11,56 +11,34 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
   <style>
     body {
-      width: 100%;
-      background-color: #000000;
-      font-family: 'Ubuntu', sans-serif;
-      min-height: 100vh;
-      color: #f1f1f1;
-      padding-top: 70px;
-    }
+  width: 100%;
+  background-color: #000000;
+  font-family: 'Ubuntu', sans-serif;
+  min-height: 100vh;
+  color: #f1f1f1;
+  padding-top: 70px;
+  margin: 0; /* Tambahkan supaya tidak ada margin default browser */
+}
 
-    .container {
+.container {
   width: 100%;
   max-width: 1024px;
-  margin: auto;
-  padding: 0;
-  background: #000000;
+  margin: 0 auto;
   margin-top: 20px;
-    }
+  padding: 0; /* Biar bener-bener clean tengah */
+  background: transparent; /* Transparan aja, biar yang atur warna nanti di .section */
+  box-sizing: border-box;
+}
 
-    h1, h2 {
-      background: linear-gradient(90deg, #03a9f4, #f441a5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-    }
-
-    h3, h4 {
-      color: #F0F0F0;
-      text-shadow: 0px 0px 10px #00aaff, 0px 0px 20px #0088ff;
-      text-align: center;
-    }
-
-    h5, h6 {
-      color: #F0F0F0;
-      text-align: center;
-    }
-
-    a {
-      color: #1a88ff;
-      text-decoration: none;
-    }
-
-    .section {
-      width: 100%;
-      max-width: 1024px;
-      margin: 0 auto 2rem auto;
-      background-color: #101010;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
-      box-sizing: border-box;
-    }
+.section {
+  width: 100%;
+  margin: 0 auto 2rem auto;
+  background-color: #101010;
+  padding: 4rem 1.5rem; /* Kasih padding di sini, bukan di container */
+  border-radius: 1rem;
+  box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
+  box-sizing: border-box;
+}
 
     .hidden {
       display: none;
