@@ -95,12 +95,12 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    #checkIn, #placeBetButton, #copyLink, #setReferrerId, #setReferralId {
+    #checkIn, #placeBetButton, #copyLink {
       background: linear-gradient(90deg, #03a9f4, #f441a5);
       color: #fff;
     }
 
-    #checkIn:hover, #placeBetButton:hover, #copyLink:hover, #setReferrerId, #setReferralId {
+    #checkIn:hover, #placeBetButton:hover, #copyLink:hover {
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
       box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -474,7 +474,7 @@
       <h2>Referral</h2>
       <div class="input-group">
         <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
-        <center><button id="copyLink">Copy Link</button></center><br>
+        <center><button id="copyLink">Copy Link</button></center>
         <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
         <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
       </div>
@@ -1408,14 +1408,13 @@
       } else {
         await initWeb3(true);
         await handleReferralFromURL();
-        await setAutomaticReferralId();
       }
     });
 
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("placeBetButton").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-    
+
     window.addEventListener("load", async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const referrerIdFromURL = urlParams.get("uid");
