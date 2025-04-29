@@ -695,102 +695,36 @@
       }
     };
 
-    // Set Referral ID otomatis dengan pengunci
-    const setAutomaticReferralId = async () => {
-  if (!userAccount || isSettingReferral) {
-    console.log("Skipping setAutomaticReferralId: No userAccount or already setting referral");
-    return;
-  }
-  isSettingReferral = true;
+    // Set Referral ID otomatis
+const setAutomaticReferralId = async () => {
+  if (!userAccount) return;
   try {
-    console.log("Checking referral ID for account:", userAccount);
     const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
     if (!currentReferralId) {
       const newReferralId = generateUID();
-      console.log("Setting new referral ID:", newReferralId);
-
-      const maxFeePerGas = web3.utils.toWei('0.00051', 'gwei'); // 0.00051 gwei
-      const maxPriorityFeePerGas = web3.utils.toWei('0.0005', 'gwei'); // 0.0005 gwei
-
-      await contract.methods.setReferralId(newReferralId).send({
-        from: userAccount,
-        maxFeePerGas,
-        maxPriorityFeePerGas,
-        gas: 68662
-      });
-
-      console.log("Referral ID set successfully:", newReferralId);
-    } else {
-      console.log("Referral ID already exists:", currentReferralId);
+      await contract.methods.setReferralId(newReferralId).send({ from: userAccount });
     }
   } catch (error) {
     console.error("Error setting referral ID:", error);
-  } finally {
-    isSettingReferral = false;
   }
 };
 
-    // Tangani referral dari URL dengan pengunci
-    const handleReferralFromURL = async () => {
-      if (!userAccount || isHandlingReferral) {
-        console.log("Skipping handleReferralFromURL: No userAccount or already handling referral");
-        return;
+// Tangani referral dari URL
+const handleReferralFromURL = async () => {
+  if (!userAccount) return;
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get("uid");
+    if (referrerId) {
+      const hasReferrer = await contract.methods.referredBy(userAccount).call();
+      if (hasReferrer === "0x0000000000000000000000000000000000000000") {
+        await contract.methods.setReferralById(referrerId).send({ from: userAccount });
       }
-      isHandlingReferral = true;
-      document.getElementById("accountInfo").innerHTML += `<br><small>Processing referral...</small>`;
-      try {
-        console.log("Checking for referral parameter in URL");
-        const referrerId = referrerIdFromURL;
-        if (referrerId) {
-          console.log("Found referrerId in URL:", referrerId);
-          const hasReferrer = await contract.methods.referredBy(userAccount).call();
-          if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-            console.log("No existing referrer, setting referrer with ID:", referrerId);
-            await contract.methods.setReferralById(referrerId).send({ from: userAccount });
-            console.log("Referral set successfully for referrerId:", referrerId);
-            document.getElementById("accountInfo").innerHTML = `
-              <span style="font-size: 13px; color: #bd80ff;">
-                <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-                </a></small>
-              </span><br><small>Referral set successfully!</small>
-            `;
-            // Tunda untuk memastikan state blockchain tersinkron
-            await new Promise(resolve => setTimeout(resolve, 2000));
-          } else {
-            console.log("User already has a referrer:", hasReferrer);
-            document.getElementById("accountInfo").innerHTML = `
-              <span style="font-size: 13px; color: #bd80ff;">
-                <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                  ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-                </a></small>
-              </span><br><small>Referral already set</small>
-            `;
-          }
-        } else {
-          console.log("No referrerId found in URL");
-          document.getElementById("accountInfo").innerHTML = `
-            <span style="font-size: 13px; color: #bd80ff;">
-              <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-                ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-              </a></small>
-            </span>
-          `;
-        }
-      } catch (error) {
-        console.error("Error handling referral:", error);
-        document.getElementById("accountInfo").innerHTML = `
-          <span style="font-size: 13px; color: #bd80ff;">
-            <small>Connected: <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">
-              ${userAccount.slice(0, 21)}${userAccount.slice(-21)}
-            </a></small>
-          </span><br><small>Error setting referral</small>
-        `;
-        alert("Failed to set referral. Please try again or check the referrer ID.");
-      } finally {
-        isHandlingReferral = false;
-      }
-    };
+    }
+  } catch (error) {
+    console.error("Error handling referral:", error);
+  }
+};
 
     // Periksa koneksi tersimpan
     const checkStoredConnection = () => {
