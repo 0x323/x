@@ -52,7 +52,7 @@
     }
 
     .section {
-      width: 100%;
+      width: 110%;
       max-width: 1024px;
       margin: 0 auto 2rem auto;
       background-color: #101010;
@@ -1508,8 +1508,7 @@ globalHistoryContainer.addEventListener("scroll", async () => {
 
     // Salin link referral
     const copyReferralLink = () => {
-  const referralLinkElement = document.getElementById("referralLink");
-  const linkText = referralLinkElement.querySelector("span").innerText.trim(); // Ambil teks dari <span> yang berisi URL
+  const linkText = document.getElementById("referralUrl").innerText.trim();
   navigator.clipboard.writeText(linkText).then(() => {
     alert("Referral link copied!");
   }).catch((err) => {
