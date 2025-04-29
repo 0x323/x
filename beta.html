@@ -1501,42 +1501,13 @@ globalHistoryContainer.addEventListener("scroll", async () => {
   const linkText = urlElement.innerText.trim();
   console.log("Attempting to copy link:", linkText);
 
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(linkText).then(() => {
-      console.log("Link copied successfully using Clipboard API");
-      alert("Referral link copied!");
-    }).catch((err) => {
-      console.error("Failed to copy link using Clipboard API:", err);
-      fallbackCopyText(linkText);
-    });
-  } else {
-    console.warn("Clipboard API not available, using fallback");
-    fallbackCopyText(linkText);
-  }
-};
-
-const fallbackCopyText = (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.position = "fixed";
-  textArea.style.opacity = "0";
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  try {
-    const successful = document.execCommand("copy");
-    if (successful) {
-      console.log("Link copied successfully using fallback");
-      alert("Referral link copied!");
-    } else {
-      console.error("Fallback copy failed");
-      alert("Failed to copy link. Please copy it manually.");
-    }
-  } catch (err) {
-    console.error("Fallback copy error:", err);
-    alert("Failed to copy link. Please copy it manually.");
-  }
-  document.body.removeChild(textArea);
+  navigator.clipboard.writeText(linkText).then(() => {
+    console.log("Link copied successfully");
+    alert("Referral link copied!");
+  }).catch((err) => {
+    console.error("Failed to copy link:", err);
+    alert("Failed to copy link. Please try again.");
+  });
 };
 
     // Event Listeners
