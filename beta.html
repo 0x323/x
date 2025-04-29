@@ -60,7 +60,6 @@
       border-radius: 1rem;
       box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
       box-sizing: border-box;
-      display: flex;
       justify-content: center;
     }
 
@@ -932,7 +931,7 @@
 
           document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
-          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br>${BASE_URL}?uid=${userReferralId}</small>`;
+          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #bd80ff;">${refereeCount}</span></small>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Lpoints</small>`;
 
@@ -1509,13 +1508,15 @@ globalHistoryContainer.addEventListener("scroll", async () => {
 
     // Salin link referral
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Your Referral Link:", "").trim();
-      navigator.clipboard.writeText(linkText).then(() => {
-        alert("Referral link copied!");
-      }).catch(() => {
-        alert("Failed to copy link.");
-      });
-    };
+  const referralLinkElement = document.getElementById("referralLink");
+  const linkText = referralLinkElement.querySelector("span").innerText.trim(); // Ambil teks dari <span> yang berisi URL
+  navigator.clipboard.writeText(linkText).then(() => {
+    alert("Referral link copied!");
+  }).catch((err) => {
+    console.error("Failed to copy link:", err);
+    alert("Failed to copy link.");
+  });
+};
 
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
