@@ -1525,20 +1525,17 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         disconnectWallet();
       } else {
         await initWeb3(true);
-        await handleReferralFromURL(); // Panggil setelah koneksi wallet
+        await handleReferralFromURL();
       }
     });
 
     document.getElementById("checkIn").addEventListener("click", checkIn);
-    document.getElementById("placeBet").addEventListener("click", placeBet);
+    document.getElementById("placeBetButton").addEventListener("click", placeBet);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-    document.addEventListener("userAccountChanged", resetHoldersOffset);
 
-    // Inisialisasi saat halaman dimuat
     window.addEventListener("load", async () => {
-      // Simpan referrerId dari URL saat halaman dimuat
       const urlParams = new URLSearchParams(window.location.search);
-      referrerIdFromURL = urlParams.get("uid");
+      const referrerIdFromURL = urlParams.get("uid");
       console.log("Stored referrerId from URL:", referrerIdFromURL);
 
       if (!window.ethereum) {
@@ -1568,32 +1565,42 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         window.location.reload();
       });
     });
-  </script>
 
-  <script>
-        function updateDateTime() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0'); // Menambahkan 1 karena bulan dimulai dari 0
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        
-        const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        
-        document.getElementById('current-date-time').textContent = formattedDateTime;
+    function updateDateTime() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      document.getElementById('current-date-time').textContent = formattedDateTime;
     }
 
-    // Update setiap detik
     setInterval(updateDateTime, 1000);
-
-    // Panggil updateDateTime pertama kali agar langsung muncul
     updateDateTime();
-        
-        function toggleMenu() {
-            document.querySelector(".nav-links").classList.toggle("active");
-        }
+
+    function toggleMenu() {
+      document.getElementById("navMenu").classList.toggle("show");
+    }
+  </script>
+  <script>
+    function updateAllUTCTime() {
+      const now = new Date();
+      const hours = String(now.getUTCHours()).padStart(2, '0');
+      const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+      const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+      const timeString = `${hours}:${minutes}:${seconds} UTC`;
+
+      document.querySelectorAll('.utcClock').forEach(el => {
+        el.textContent = timeString;
+      });
+    }
+
+    setInterval(updateAllUTCTime, 1000);
+    updateAllUTCTime();
   </script>
 </body>
   </html>
