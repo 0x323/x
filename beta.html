@@ -369,8 +369,8 @@
         transform: translateX(0);
       }
     }
-    #utcClock {
-      font-size: 13px;
+    .utcClock {
+      font-size: 14px;
       color: #fff;
       text-align: center;
   </style>
@@ -426,7 +426,7 @@
     <div class="section hidden">
       <h2>Daily Faucet Claim</h2>
       <h5>Faucet starts every 00:00 UTC</h5>
-      <div id="utcClock">Loading...</div>
+      <div class="utcClock"></div>
       <center><button id="checkIn">Claim 1 Point</button></center>
       <h6 style="color: #ff3b3b; display: flex; align-items: center;">
   <img src="img/warning.svg" width="20" height="20" style="margin-right: 8px;">
@@ -442,7 +442,7 @@
     <div class="section hidden">
       <h2>Place a Ticket Bet</h2>
       <h5>Ticket Submit starts every 00:00 UTC</h5>
-      <div id="utcClock">Loading...</div>
+      <div class="utcClock"></div><br>
       <div class="input-group">
         <label for="betNumber">Betting Number</label><br>
         <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
@@ -1483,16 +1483,20 @@
     }
   </script>
   <script>
-    function updateUTCTime() {
+    function updateAllUTCTime() {
       const now = new Date();
       const hours = String(now.getUTCHours()).padStart(2, '0');
       const minutes = String(now.getUTCMinutes()).padStart(2, '0');
       const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-      document.getElementById('utcClock').textContent = `${hours}:${minutes}:${seconds} UTC`;
+      const timeString = `${hours}:${minutes}:${seconds} UTC`;
+
+      document.querySelectorAll('.utcClock').forEach(el => {
+        el.textContent = timeString;
+      });
     }
 
-    setInterval(updateUTCTime, 1000);
-    updateUTCTime();
+    setInterval(updateAllUTCTime, 1000);
+    updateAllUTCTime();
   </script>
 </body>
   </html>
