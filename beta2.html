@@ -929,7 +929,7 @@
 
           document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
-          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:</small><br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span>`;
+          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #bd80ff;">${refereeCount}</span></small>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Lpoints</small>`;
 
