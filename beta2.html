@@ -617,87 +617,97 @@
     };
 
     // Inisialisasi Web3
-    const initWeb3 = async (forceConnect = false) => {
-      if (!window.ethereum) {
-        alert("MetaMask is not installed. Please install MetaMask to use this DApp.");
-        return false;
+    const initWeb3 = async (forceConnect = false, retries = 3, delay = 2000) => {
+  if (!window.ethereum) {
+    alert("MetaMask is not installed. Please install MetaMask to use this DApp.");
+    return false;
+  }
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      web3 = new Web3(window.ethereum);
+
+      // Pastikan jaringan Base Sepolia
+      const chainId = await web3.eth.getChainId();
+      const sepoliaBaseTestnetChainId = 84532;
+      if (chainId !== sepoliaBaseTestnetChainId) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: `0x${sepoliaBaseTestnetChainId.toString(16)}` }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [{
+                chainId: `0x${sepoliaBaseTestnetChainId.toString(16)}`,
+                chainName: "Base Sepolia Testnet",
+                rpcUrls: ["https://sepolia.base.org"],
+                nativeCurrency: {
+                  name: "ETH",
+                  symbol: "ETH",
+                  decimals: 18,
+                },
+                blockExplorerUrls: ["https://sepolia.basescan.org"],
+              }],
+            });
+          } else {
+            throw switchError;
+          }
+        }
       }
 
-      try {
-        web3 = new Web3(window.ethereum);
-
-        // Pastikan jaringan Base Sepolia
-        const chainId = await web3.eth.getChainId();
-        const sepoliaBaseTestnetChainId = 84532;
-        if (chainId !== sepoliaBaseTestnetChainId) {
-          try {
-            await window.ethereum.request({
-              method: "wallet_switchEthereumChain",
-              params: [{ chainId: `0x${sepoliaBaseTestnetChainId.toString(16)}` }],
-            });
-          } catch (switchError) {
-            if (switchError.code === 4902) {
-              await window.ethereum.request({
-                method: "wallet_addEthereumChain",
-                params: [{
-                  chainId: `0x${sepoliaBaseTestnetChainId.toString(16)}`,
-                  chainName: "Base Sepolia Testnet",
-                  rpcUrls: ["https://sepolia.base.org"],
-                  nativeCurrency: {
-                    name: "ETH",
-                    symbol: "ETH",
-                    decimals: 18,
-                  },
-                  blockExplorerUrls: ["https://sepolia.basescan.org"],
-                }],
-              });
-            } else {
-              throw switchError;
-            }
-          }
-        }
-
-        if (forceConnect || checkStoredConnection()) {
-          try {
-            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-            if (accounts.length === 0) {
-              alert("No accounts found. Please unlock MetaMask or connect an account.");
-              return false;
-            }
-            userAccount = accounts[0];
-            contract = new web3.eth.Contract(contractABI, contractAddress);
-            updateWalletUI(true);
-            storeConnection(userAccount);
-            await setAutomaticReferralId();
-            // Tidak panggil handleReferralFromURL di sini, akan dipanggil di event listener walletButton
-            await loadCriticalData();
-            setTimeout(() => {
-              loadCheckInHistory();
-              loadUserBetHistory();
-              loadGlobalBetHistory();
-              loadTokenHolders();
-            }, 100);
-            return true;
-          } catch (error) {
-            if (error.code === 4001) {
-              alert("Connection rejected. Please approve the connection in MetaMask.");
-            } else if (error.code === -32002) {
-              alert("MetaMask request already pending. Please check MetaMask and try again.");
-            } else {
-              console.error("Error requesting accounts:", error);
-              alert("Failed to connect to MetaMask. Please ensure MetaMask is unlocked and try again.");
-            }
-            updateWalletUI(false);
+      if (forceConnect || checkStoredConnection()) {
+        try {
+          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          if (accounts.length === 0) {
+            alert("No accounts found. Please unlock MetaMask or connect an account.");
             return false;
           }
+          userAccount = accounts[0];
+          contract = new web3.eth.Contract(contractABI, contractAddress);
+          updateWalletUI(true);
+          storeConnection(userAccount);
+          await setAutomaticReferralId();
+          await loadCriticalData();
+          setTimeout(() => {
+            loadCheckInHistory();
+            loadUserBetHistory();
+            loadGlobalBetHistory();
+            loadTokenHolders();
+          }, 100);
+          console.log(`Wallet connected successfully on attempt ${attempt}`);
+          return true;
+        } catch (error) {
+          if (error.code === 4001) {
+            alert("Connection rejected. Please approve the connection in MetaMask.");
+            return false;
+          } else if (error.code === -32002) {
+            alert("MetaMask request already pending. Please check MetaMask and try again.");
+            return false;
+          } else {
+            console.error(`Error requesting accounts (attempt ${attempt}/${retries}):`, error);
+            if (attempt === retries) {
+              alert("Failed to connect to MetaMask after multiple attempts. Please ensure MetaMask is unlocked and try again.");
+              updateWalletUI(false);
+              return false;
+            }
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
         }
-      } catch (error) {
-        console.error("Error initializing Web3:", error);
-        alert("Failed to initialize Web3. Please refresh the page and try again.");
+      }
+    } catch (error) {
+      console.error(`Error initializing Web3 (attempt ${attempt}/${retries}):`, error);
+      if (attempt === retries) {
+        alert("Failed to initialize Web3 after multiple attempts. Please refresh the page and try again.");
         updateWalletUI(false);
         return false;
       }
-    };
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+};
 
     // Set Referral ID otomatis dengan pengunci
     const handleReferralFromURL = async () => {
@@ -1420,16 +1430,21 @@ globalHistoryContainer.addEventListener("scroll", async () => {
   }
 });
 
-    // Salin link referral
     const copyReferralLink = () => {
-      const linkText = document.getElementById("referralLink").innerText.replace("Referral Link:", "").trim();
-      navigator.clipboard.writeText(linkText).then(() => {
-        alert("Referral link copied!");
-      }).catch(() => {
-        alert("Failed to copy link.");
-      });
-    };
-
+  const referralElement = document.getElementById("referralLink");
+  const linkText = referralElement.querySelector("span")?.innerText || "";
+  if (!linkText || linkText.includes("Connect wallet")) {
+    alert("Please connect your wallet to copy the referral link.");
+    return;
+  }
+  navigator.clipboard.writeText(linkText).then(() => {
+    alert("Referral link copied!");
+  }).catch((err) => {
+    console.error("Failed to copy link:", err);
+    alert("Failed to copy link. Please try again or copy manually.");
+  });
+};
+    
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
