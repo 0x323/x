@@ -1310,7 +1310,7 @@
         console.log("User bet history loaded successfully");
       } catch (error) {
         console.error("Error loading user bet history:", error);
-        document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+        document.getElementById("userBetHistory").innerHTML = "<li><small>No history yet</small></li>";
       } finally {
         isUserFetching = false;
       }
@@ -1375,7 +1375,7 @@
         console.log("Global bet history loaded successfully");
       } catch (error) {
         console.error("Error loading global bet history:", error);
-        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+        document.getElementById("globalBetHistory").innerHTML = "<li><small>Failed to load history</small></li>";
       } finally {
         isFetching = false;
       }
