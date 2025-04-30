@@ -1415,8 +1415,8 @@ const loadUserBetHistory = async () => {
     userHistoryOffset += userHistoryBatchSize;
     console.log("User bet history loaded successfully");
   } catch (error) {
-    console.error("Error loading user bet history:", error);
-    document.getElementById("userBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+    console.error("Failed loading user bet history:", error);
+    document.getElementById("userBetHistory").innerHTML = "<li><small>No history found.</small></li>";
   } finally {
     isUserFetching = false;
   }
@@ -1482,8 +1482,8 @@ userHistoryContainer.addEventListener("scroll", () => {
         globalHistoryOffset += globalHistoryBatchSize;
         console.log("Global bet history loaded successfully");
       } catch (error) {
-        console.error("Error loading global bet history:", error);
-        document.getElementById("globalBetHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+        console.error("Failed loading global bet history:", error);
+        document.getElementById("globalBetHistory").innerHTML = "<li><small>No history found.</small></li>";
       } finally {
         isFetching = false;
       }
