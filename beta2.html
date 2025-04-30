@@ -387,6 +387,11 @@
         transform: translateX(0);
     }
 }
+
+        .utcClock {
+      font-size: 14px;
+      color: #ffb833;
+      text-align: center;
   </style>
 </head>
 <body>
@@ -440,6 +445,7 @@
     <div class="section hidden">
       <h2>Daily Faucet Claim</h2>
       <h5>Faucet starts every 00:00 UTC</h5>
+       <h5>Time: <span class="utcClock"></span></h5><br>
       <center><button id="checkIn">Claim 1 Point</button></center>
     <small><p id="checkInStatus" class="info-text"></p></small>
       <h3>Your Faucet History</h3>
@@ -451,7 +457,7 @@
 <div class="section hidden">
   <h2>Place a Bet</h2>
   <h5>Ticket Submit starts every 00:00 UTC</h5>
-
+  <h5>Time: <span class="utcClock"></span></h5><br>
   <div class="input-group">
     <label for="betNumber">Betting Number</label><br>
     <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
