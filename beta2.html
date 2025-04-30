@@ -1534,7 +1534,7 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         await handleReferralFromURL();
       }
     });
-
+    document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
 
     window.addEventListener("load", async () => {
