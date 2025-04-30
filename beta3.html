@@ -1536,7 +1536,41 @@ globalHistoryContainer.addEventListener("scroll", async () => {
     
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-    document.getElementById("setReferralBtn").addEventListener("click", setReferralBtn);
+    document.getElementById("setReferralBtn").addEventListener("click", async () => {
+  if (!userAccount) {
+    alert("Wallet belum terkoneksi.");
+    return;
+  }
+
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get("uid");
+    if (!referrerId) {
+      alert("UID tidak ditemukan di URL.");
+      return;
+    }
+
+    const hasReferrer = await contract.methods.referredBy(userAccount).call();
+    if (hasReferrer === "0x0000000000000000000000000000000000000000") {
+      const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
+      const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
+
+      await contract.methods.setReferralById(referrerId).send({
+        from: userAccount,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        gas: 97880
+      });
+
+      alert("Referral berhasil diset!");
+    } else {
+      alert("Referral sudah diset sebelumnya.");
+    }
+  } catch (error) {
+    console.error("Error setting referral manually:", error);
+    alert("Terjadi kesalahan saat menyetel referral.");
+  }
+});
     
     window.addEventListener("load", async () => {
       const urlParams = new URLSearchParams(window.location.search);
