@@ -549,6 +549,7 @@
     let web3;
     let contract;
     let userAccount;
+    let isReferralProcessed = false;
     let globalHistoryOffset = 0;
     const globalHistoryBatchSize = 15;
     let totalGlobalCount = 0;
@@ -600,6 +601,18 @@
       };
     };
 
+    const validateContract = () => {
+      if (!contractABI || contractABI.length === 0) {
+        console.error("Contract ABI is empty. Please provide a valid ABI.");
+        return false;
+      }
+      if (!contract) {
+        console.error("Contract not initialized.");
+        return false;
+      }
+      return true;
+    };
+
     // Inisialisasi Web3
     const initWeb3 = async (forceConnect = false) => {
       if (!window.ethereum) {
@@ -648,9 +661,16 @@
               throw new Error("No accounts found. Please unlock MetaMask or connect an account.");
             }
             userAccount = accounts[0];
+            if (!contractABI || contractABI.length === 0) {
+              alert("Contract ABI is missing. Please contact the developer to provide a valid ABI.");
+              console.error("Contract ABI is empty. Cannot initialize contract.");
+              updateWalletUI(false);
+              return false;
+            }
             contract = new web3.eth.Contract(contractABI, contractAddress);
             updateWalletUI(true);
             storeConnection(userAccount);
+            isReferralProcessed = false; // Reset status referral
             await setAutomaticReferralId();
             await handleReferralFromURL();
             await loadCriticalData();
@@ -708,9 +728,13 @@
 
     const disconnectWallet = () => {
       userAccount = null;
+      contract = null;
+      isReferralProcessed = false;
       localStorage.removeItem("walletConnection");
       cache.betEvents = {};
       cache.checkInEvents = {};
+      cache.decimals = null;
+      cache.symbol = null;
       updateWalletUI(false);
       toggleSectionsVisibility(false);
       document.getElementById("accountInfo").innerText = "Wallet disconnected";
@@ -739,7 +763,7 @@
     };
 
     const setAutomaticReferralId = async () => {
-      if (!userAccount) return;
+      if (!userAccount || isReferralProcessed || !validateContract()) return;
       try {
         const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
         if (!currentReferralId) {
@@ -750,6 +774,7 @@
             maxPriorityFeePerGas: web3.utils.toWei('0.001', 'gwei'),
             gas: 97880,
           });
+          console.log("Referral ID set successfully:", newReferralId);
         }
       } catch (error) {
         console.error("Error setting referral ID:", error);
@@ -757,7 +782,7 @@
     };
 
     const handleReferralFromURL = async () => {
-      if (!userAccount) return;
+      if (!userAccount || isReferralProcessed || !validateContract()) return;
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const referrerId = urlParams.get("uid");
@@ -770,14 +795,17 @@
               maxPriorityFeePerGas: web3.utils.toWei('0.001', 'gwei'),
               gas: 97880,
             });
+            console.log("Referrer set successfully for ID:", referrerId);
           }
         }
+        isReferralProcessed = true; // Tandai bahwa referral telah diproses
       } catch (error) {
         console.error("Error handling referral:", error);
       }
     };
 
     const fetchBetEvents = async (user = null, fromBlock = null) => {
+      if (!validateContract()) return {};
       try {
         const latestBlock = await web3.eth.getBlockNumber();
         const startBlock = fromBlock || Math.max(latestBlock - 10000, 0);
@@ -807,6 +835,7 @@
     };
 
     const fetchCheckInEvents = async (user, fromBlock = null) => {
+      if (!validateContract()) return {};
       try {
         const latestBlock = await web3.eth.getBlockNumber();
         const startBlock = fromBlock || Math.max(latestBlock - 10000, 0);
@@ -833,7 +862,7 @@
     };
 
     const loadCriticalData = async (retries = 5, delay = 2000) => {
-      if (!userAccount) return;
+      if (!userAccount || !validateContract()) return;
       for (let attempt = 1; attempt <= retries; attempt++) {
         try {
           console.log(`Loading critical data (attempt ${attempt}/${retries})`);
@@ -843,8 +872,8 @@
             localStorage.setItem("contractDecimals", cache.decimals);
             localStorage.setItem("contractSymbol", cache.symbol);
           } else {
-            cache.decimals = cache.decimals || localStorage.getItem("contractDecimals");
-            cache.symbol = cache.symbol || localStorage.getItem("contractSymbol");
+            cache.decimals = cache.decimals || localStorage.getItem("contractDecimals") || 18;
+            cache.symbol = cache.symbol || localStorage.getItem("contractSymbol") || "Lpoints";
           }
 
           const [ethBalance, balance, userReferralId, refereeCount, referralReward] = await Promise.all([
@@ -859,7 +888,7 @@
           document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}</span> ${cache.symbol}</small>`;
           document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #bd80ff;">${refereeCount}</span></small>`;
-          document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Lpoints</small>`;
+          document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> ${cache.symbol}</small>`;
 
           await loadRefereeList();
           console.log("Critical data loaded successfully");
@@ -872,14 +901,14 @@
             ["ethBalance", "tokenBalance", "referralLink", "refereeCount", "referralReward"].forEach(id => {
               document.getElementById(id).innerHTML = `<small>Error: Failed to load data</small>`;
             });
-            alert("Failed to load wallet data after multiple attempts. Please try again later.");
+            alert("Failed to load wallet data after multiple attempts. Please ensure contract ABI is valid and try again.");
           }
         }
       }
     };
 
     const loadRefereeList = async () => {
-      if (!userAccount) return;
+      if (!userAccount || !validateContract()) return;
       setLoading("refereeList", true);
       try {
         console.log("Loading referee list");
@@ -1041,12 +1070,23 @@
         alert("Please connect your wallet first.");
         return;
       }
+      if (!validateContract()) {
+        alert("Contract ABI is missing or invalid. Please contact the developer.");
+        return;
+      }
       document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
       try {
         console.log("Initiating check-in transaction");
+        const ethBalance = await web3.eth.getBalance(userAccount);
+        const gasPrice = await web3.eth.getGasPrice();
+        const gasLimit = 138775;
+        const estimatedGasCost = BigInt(gasPrice) * BigInt(gasLimit);
+        if (BigInt(ethBalance) < estimatedGasCost) {
+          throw new Error("Insufficient ETH for gas fees. Please add funds.");
+        }
+
         const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
         const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-        const gasLimit = 138775;
 
         const tx = await contract.methods.checkIn().send({
           from: userAccount,
@@ -1082,10 +1122,12 @@
         let errorMessage = "Failed to check in. Please try again.";
         if (error.message.includes("already checked in")) {
           errorMessage = "You have already checked in today.";
-        } else if (error.message.includes("insufficient funds")) {
+        } else if (error.message.includes("insufficient funds") || error.message.includes("Insufficient ETH")) {
           errorMessage = "Insufficient ETH for gas fees. Please add funds.";
         } else if (error.message.includes("Transaction not confirmed")) {
           errorMessage = `Transaction timed out. Check <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">Basescan</a> and try again.`;
+        } else if (error.message.includes("is not a function")) {
+          errorMessage = "Contract function not found. Please ensure the contract ABI is correct.";
         }
         document.getElementById("checkInStatus").innerHTML = `<small style="color: red;">❌ ${errorMessage}</small>`;
         alert(errorMessage);
@@ -1093,7 +1135,7 @@
     };
 
     const loadCheckInHistory = async (page = 1) => {
-      if (!userAccount) return;
+      if (!userAccount || !validateContract()) return;
       setLoading("checkInHistory", true);
       try {
         console.log(`Loading check-in history page ${page}`);
@@ -1119,10 +1161,10 @@
           logs.forEach(log => {
             const date = new Date(log.timestamp * 1000).toLocaleString();
             const li = document.createElement("li");
-            li.className = "py-2";
+            li.className = "py  py-2";
             li.innerHTML = `<small>
               ID: <span style="color: #00bfff;">${log.dayUTC}</span><br>
-              Reward: <span style="color: #32cd32;">${(log.reward / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
+              Reward: <span style="color: #32cd32;">${(log.reward / 10 ** (cache.decimals || 18)).toFixed(2)} ${cache.symbol || 'Lpoints'}</span><br>
               Time: <span style="color: #ffa500;">${date}</span><br>
             </small><hr style="background-color: #333333; height: 1px; border: none;">`;
             historyList.appendChild(li);
@@ -1173,6 +1215,10 @@
         alert("Please connect your wallet first.");
         return;
       }
+      if (!validateContract()) {
+        alert("Contract ABI is missing or invalid. Please contact the developer.");
+        return;
+      }
 
       const numberInput = document.getElementById("betNumber");
       const timesInput = document.getElementById("betTimes");
@@ -1201,21 +1247,28 @@
       }
 
       const totalCost = costPerBet * times;
-      document.getElementById("betCost").innerText = `${totalCost} Lpoints`;
+      document.getElementById("betCost").innerText = `${totalCost} ${cache.symbol || 'Lpoints'}`;
 
       try {
         betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
         console.log("Initiating placeBet transaction");
 
+        const ethBalance = await web3.eth.getBalance(userAccount);
+        const gasPrice = await web3.eth.getGasPrice();
+        const gasLimit = 287072;
+        const estimatedGasCost = BigInt(gasPrice) * BigInt(gasLimit);
+        if (BigInt(ethBalance) < estimatedGasCost) {
+          throw new Error("Insufficient ETH for gas fees. Please add funds.");
+        }
+
         const balance = await contract.methods.balanceOf(userAccount).call();
-        const requiredBalance = totalCost * (10 ** cache.decimals);
+        const requiredBalance = totalCost * (10 ** (cache.decimals || 18));
         if (balance < requiredBalance) {
           throw new Error("Insufficient token balance for this bet.");
         }
 
         const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
         const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-        const gasLimit = 287072;
 
         const tx = await contract.methods.placeBet(number, times, payoutAmount).send({
           from: userAccount,
@@ -1257,11 +1310,13 @@
         console.error("Error placing bet:", error);
         let errorMessage = "Failed to place bet. Please try again.";
         if (error.message.includes("Insufficient token balance")) {
-          errorMessage = "Insufficient token balance. Please claim points or add tokens.";
-        } else if (error.message.includes("insufficient funds")) {
+          errorMessage = `Insufficient ${cache.symbol || 'token'} balance. Please claim points or add tokens.`;
+        } else if (error.message.includes("insufficient funds") || error.message.includes("Insufficient ETH")) {
           errorMessage = "Insufficient ETH for gas fees. Please add funds.";
         } else if (error.message.includes("Transaction not confirmed")) {
           errorMessage = `Transaction timed out. Check <a href="https://sepolia.basescan.org/address/${userAccount}" target="_blank">Basescan</a> and try again.`;
+        } else if (error.message.includes("is not a function")) {
+          errorMessage = "Contract function not found. Please ensure the contract ABI is correct.";
         }
         betStatus.innerHTML = `<small style="color: red;">❌ ${errorMessage}</small>`;
         alert(errorMessage);
@@ -1271,7 +1326,7 @@
     document.getElementById("betTimes").addEventListener("input", () => {
       const times = parseInt(document.getElementById("betTimes").value);
       if (!isNaN(times) && times >= 1 && times <= 5) {
-        document.getElementById("betCost").innerText = `${costPerBet * times} Points`;
+        document.getElementById("betCost").innerText = `${costPerBet * times} ${cache.symbol || 'Points'}`;
       } else {
         document.getElementById("betCost").innerText = "-";
       }
@@ -1282,8 +1337,8 @@
     });
 
     const loadUserBetHistory = async () => {
-      if (!userAccount || isUserFetching) {
-        console.log("Skipping load: No userAccount or isUserFetching");
+      if (!userAccount || isUserFetching || !validateContract()) {
+        console.log("Skipping load: No userAccount, isUserFetching, or invalid contract");
         return;
       }
       isUserFetching = true;
@@ -1315,7 +1370,7 @@
           const date = new Date(bet.timestamp * 1000).toLocaleString();
           const eventIndex = i;
           const event = userEvents[eventIndex] || {};
-          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+          const betTimes = bet.cost / (1 * 10 ** (cache.decimals || 18));
 
           const li = document.createElement("li");
           li.className = "py-2";
@@ -1323,8 +1378,8 @@
             Wallet: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** (cache.decimals || 18)).toFixed(2)} ${cache.symbol || 'Lpoints'}</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** (cache.decimals || 18)).toFixed(2)} ${cache.symbol || 'Points'}</span><br>
             InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
@@ -1351,8 +1406,8 @@
     });
 
     const loadGlobalBetHistory = async () => {
-      if (!userAccount || isFetching) {
-        console.log("Skipping load: No userAccount or isFetching");
+      if (!userAccount || isFetching || !validateContract()) {
+        console.log("Skipping load: No userAccount, isFetching, or invalid contract");
         return;
       }
       isFetching = true;
@@ -1377,7 +1432,7 @@
             : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 6)}...${referrer.slice(-4)}</a>`;
           const eventIndex = i;
           const event = globalEvents[eventIndex] || {};
-          const betTimes = bet.cost / (1 * 10 ** cache.decimals);
+          const betTimes = bet.cost / (1 * 10 ** (cache.decimals || 18));
 
           const li = document.createElement("li");
           li.className = "py-2";
@@ -1385,8 +1440,8 @@
             User: <span style="color: #bd80ff;"><a href="https://sepolia.basescan.org/address/${bet.user}" target="_blank">${bet.user.slice(0, 6)}...${bet.user.slice(-4)}</a></span><br>
             BetNumber: <span style="color: #00ff14;">${bet.number}</span><br>
             BetAmount: <span style="color: #ffcc00;">${betTimes}</span><br>
-            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** cache.decimals).toFixed(2)} Lpoints</span><br>
-            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** cache.decimals).toFixed(2)} Points</span><br>
+            Cost: <span style="color: #00ff14;">${(bet.cost / 10 ** (cache.decimals || 18)).toFixed(2)} ${cache.symbol || 'Lpoints'}</span><br>
+            Reward: <span style="color: #6683ff;">${(bet.reward / 10 ** (cache.decimals || 18)).toFixed(2)} ${cache.symbol || 'Points'}</span><br>
             InviteBy: <span style="color: #ff9900;">${referrerDisplay}</span><br>
             Time: <span style="color: #ffb833;">${date}</span><br>
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
@@ -1462,14 +1517,17 @@
         } else {
           userAccount = accounts[0];
           storeConnection(userAccount);
-          contract = new web3.eth.Contract(contractABI, contractAddress);
-          updateWalletUI(true);
-          await setAutomaticReferralId();
-          await handleReferralFromURL();
-          await loadCriticalData();
-          await loadCheckInHistory();
-          await loadUserBetHistory();
-          await loadGlobalBetHistory();
+          if (contractABI && contractABI.length > 0) {
+            contract = new web3.eth.Contract(contractABI, contractAddress);
+            updateWalletUI(true);
+            await loadCriticalData();
+            await loadCheckInHistory();
+            await loadUserBetHistory();
+            await loadGlobalBetHistory();
+          } else {
+            alert("Contract ABI is missing. Please contact the developer.");
+            disconnectWallet();
+          }
         }
       }, 1000));
 
