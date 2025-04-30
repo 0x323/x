@@ -418,7 +418,7 @@
      </nav>
     
     <h1>HK Beta Testnet</h1>
-    <a href="result" target="_blank" style="color: #00bfff;"><h3>Result Today</h3>;"></a>
+    <a href="result" target="_blank" style="color: #00bfff;"><h3>Result Today</h3></a>
 
         <div class="lottery-balls">
             <div class="lottery-ball">7</div>
@@ -617,7 +617,7 @@
     };
 
     // Inisialisasi Web3
-    const initWeb3 = async (forceConnect = false, retries = 3, delay = 2000) => {
+    const initWeb3 = async (forceConnect = false, retries = 3, delay = 3000) => {
   if (!window.ethereum) {
     alert("MetaMask is not installed. Please install MetaMask to use this DApp.");
     return false;
@@ -625,12 +625,20 @@
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
+      console.log(`Attempting to initialize Web3 (attempt ${attempt}/${retries})`);
       web3 = new Web3(window.ethereum);
+
+      // Periksa status MetaMask
+      const isMetaMaskLocked = await window.ethereum.request({ method: "eth_accounts" });
+      if (isMetaMaskLocked.length === 0 && forceConnect) {
+        console.log("MetaMask is locked or no accounts available");
+      }
 
       // Pastikan jaringan Base Sepolia
       const chainId = await web3.eth.getChainId();
       const sepoliaBaseTestnetChainId = 84532;
       if (chainId !== sepoliaBaseTestnetChainId) {
+        console.log(`Switching to Base Sepolia Testnet (chainId: ${sepoliaBaseTestnetChainId})`);
         try {
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
@@ -638,6 +646,7 @@
           });
         } catch (switchError) {
           if (switchError.code === 4902) {
+            console.log("Adding Base Sepolia Testnet to MetaMask");
             await window.ethereum.request({
               method: "wallet_addEthereumChain",
               params: [{
@@ -653,6 +662,7 @@
               }],
             });
           } else {
+            console.error("Error switching chain:", switchError);
             throw switchError;
           }
         }
@@ -660,7 +670,11 @@
 
       if (forceConnect || checkStoredConnection()) {
         try {
-          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          console.log("Requesting MetaMask accounts");
+          const accounts = await Promise.race([
+            window.ethereum.request({ method: "eth_requestAccounts" }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("MetaMask request timeout")), 10000)),
+          ]);
           if (accounts.length === 0) {
             alert("No accounts found. Please unlock MetaMask or connect an account.");
             return false;
@@ -677,30 +691,40 @@
             loadGlobalBetHistory();
             loadTokenHolders();
           }, 100);
-          console.log(`Wallet connected successfully on attempt ${attempt}`);
+          console.log(`Wallet connected successfully: ${userAccount}`);
           return true;
         } catch (error) {
+          console.error(`Error requesting accounts (attempt ${attempt}/${retries}):`, error);
           if (error.code === 4001) {
             alert("Connection rejected. Please approve the connection in MetaMask.");
             return false;
           } else if (error.code === -32002) {
             alert("MetaMask request already pending. Please check MetaMask and try again.");
             return false;
-          } else {
-            console.error(`Error requesting accounts (attempt ${attempt}/${retries}):`, error);
+          } else if (error.message.includes("MetaMask request timeout")) {
+            console.log("MetaMask request timed out");
             if (attempt === retries) {
-              alert("Failed to connect to MetaMask after multiple attempts. Please ensure MetaMask is unlocked and try again.");
+              alert("MetaMask request timed out. Please ensure MetaMask is responsive and try again.");
               updateWalletUI(false);
               return false;
             }
-            await new Promise(resolve => setTimeout(resolve, delay));
+          } else {
+            if (attempt === retries) {
+              alert(`Failed to connect to MetaMask after ${retries} attempts. Error: ${error.message}. Please ensure MetaMask is unlocked and Base Sepolia is selected.`);
+              updateWalletUI(false);
+              return false;
+            }
           }
+          await new Promise(resolve => setTimeout(resolve, delay));
         }
+      } else {
+        console.log("No stored connection or forceConnect not requested");
+        return false;
       }
     } catch (error) {
       console.error(`Error initializing Web3 (attempt ${attempt}/${retries}):`, error);
       if (attempt === retries) {
-        alert("Failed to initialize Web3 after multiple attempts. Please refresh the page and try again.");
+        alert(`Failed to initialize Web3 after ${retries} attempts. Error: ${error.message}. Please check your MetaMask installation and network connection.`);
         updateWalletUI(false);
         return false;
       }
