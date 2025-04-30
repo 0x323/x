@@ -1066,7 +1066,7 @@
 
         const maxFeePerGas = web3.utils.toWei('0.00099', 'gwei');
         const maxPriorityFeePerGas = web3.utils.toWei('0.000985', 'gwei');
-        const gasLimit = 138775;
+        const gasLimit = 200000;
 
         const tx = await contract.methods.checkIn().send({
           from: userAccount,
