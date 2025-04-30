@@ -928,7 +928,7 @@
           ]);
 
           document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
-          document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
+          document.getElementById("tokenBalance").innerHTML = `<small>Point:</small> <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}`;
           document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends:</small> <span style="color: #bd80ff;">${refereeCount}</span>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward:</small> <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span><small> Lpoints</small>`;
