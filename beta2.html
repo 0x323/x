@@ -1232,7 +1232,7 @@ const loadCheckInHistory = async (page = 1) => {
     renderCheckInPagination(page);
     console.log("Check-in history loaded successfully");
   } catch (error) {
-    console.error("Error loading check-in history:", error);
+    console.error("No history found.", error);
     document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
   } finally {
     setLoading("checkInHistory", false);
