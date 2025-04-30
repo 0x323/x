@@ -1476,19 +1476,30 @@ globalHistoryContainer.addEventListener("scroll", async () => {
 });
 
     const copyReferralLink = () => {
-  const referralElement = document.getElementById("referralLink");
-  const linkText = referralElement.querySelector("span")?.innerText || "";
-  if (!linkText || linkText.includes("Connect wallet")) {
-    alert("Please connect your wallet to copy the referral link.");
-    return;
-  }
-  navigator.clipboard.writeText(linkText).then(() => {
-    alert("Referral link copied!");
-  }).catch((err) => {
-    console.error("Failed to copy link:", err);
-    alert("Failed to copy link. Please try again or copy manually.");
-  });
-};
+      if (!userAccount) {
+        console.log("No user account connected");
+        alert("Please connect your wallet first.");
+        return;
+      }
+
+      const linkElement = document.getElementById("referralLink");
+      if (!linkElement) {
+        console.error("Referral link element not found");
+        alert("Referral link not available. Please try again.");
+        return;
+      }
+
+      const linkText = linkElement.innerText.replace("Your Referral Link:\n", "").trim();
+      console.log("Attempting to copy link:", linkText);
+
+      navigator.clipboard.writeText(linkText).then(() => {
+        console.log("Link copied successfully");
+        alert("Referral link copied!");
+      }).catch((err) => {
+        console.error("Failed to copy link:", err);
+        alert("Failed to copy link. Please try again.");
+      });
+    };
     
     // Event Listeners
     document.getElementById("walletButton").addEventListener("click", async () => {
