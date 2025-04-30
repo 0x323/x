@@ -923,7 +923,7 @@
 
           document.getElementById("ethBalance").innerHTML = `<small>Balance: <span style="color: #00bfff;">${web3.utils.fromWei(ethBalance, 'ether')}</span> ETH</small>`;
           document.getElementById("tokenBalance").innerHTML = `<small>Point: <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}</small>`;
-          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
+          document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:</small><br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends: <span style="color: #bd80ff;">${refereeCount}</span></small>`;
           document.getElementById("referralReward").innerHTML = `<small>Reward: <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span> Lpoints</small>`;
 
@@ -1127,52 +1127,62 @@ const loadRefereeList = async () => {
 };
 
     // Check-In dengan konfirmasi transaksi
-    const checkIn = async () => {
-      if (!userAccount) {
-        alert("Please connect your wallet first.");
-        return;
-      }
-      document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
-      try {
-        console.log("Initiating check-in transaction");
-        const tx = await contract.methods.checkIn().send({ from: userAccount });
-        console.log("Check-in transaction sent, hash:", tx.transactionHash);
+const checkIn = async () => {
+  if (!userAccount) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+  document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
+  try {
+    console.log("Initiating check-in transaction");
 
-        // Polling untuk konfirmasi transaksi
-        const maxAttempts = 10;
-        let attempt = 0;
-        let receipt = null;
-        while (!receipt && attempt < maxAttempts) {
-          console.log(`Polling for transaction receipt (attempt ${attempt + 1}/${maxAttempts})`);
-          receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
-          if (!receipt) {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            attempt++;
-          }
-        }
-        if (!receipt) {
-          throw new Error("Transaction not confirmed after multiple attempts");
-        }
-        console.log("Transaction confirmed, receipt:", receipt);
+    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
+    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
 
-        document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
-        console.log("Waiting for blockchain sync");
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        await loadCriticalData();
-        await loadCheckInHistory();
-        console.log("Check-in completed and UI updated");
-      } catch (error) {
-        console.error("Error checking in:", error);
-        let errorMessage = "Failed to check in. Please try again.";
-        if (error.message.includes("already checked in")) {
-          errorMessage = "You have already checked in today.";
-        } else if (error.message.includes("Transaction not confirmed")) {
-          errorMessage = "Transaction timed out. Please check Basescan and try again.";
-        }
-        document.getElementById("checkInStatus").innerHTML = `<small>${errorMessage}</small>`;
-        alert(errorMessage);
+    const tx = await contract.methods.checkIn().send({
+      from: userAccount,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+      gas: 200000
+    });
+
+    console.log("Check-in transaction sent, hash:", tx.transactionHash);
+
+    // Polling untuk konfirmasi transaksi
+    const maxAttempts = 10;
+    let attempt = 0;
+    let receipt = null;
+    while (!receipt && attempt < maxAttempts) {
+      console.log(`Polling for transaction receipt (attempt ${attempt + 1}/${maxAttempts})`);
+      receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
+      if (!receipt) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        attempt++;
       }
-    };
+    }
+    if (!receipt) {
+      throw new Error("Transaction not confirmed after multiple attempts");
+    }
+    console.log("Transaction confirmed, receipt:", receipt);
+
+    document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
+    console.log("Waiting for blockchain sync");
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await loadCriticalData();
+    await loadCheckInHistory();
+    console.log("Check-in completed and UI updated");
+  } catch (error) {
+    console.error("Error checking in:", error);
+    let errorMessage = "Failed to check in. Please try again.";
+    if (error.message.includes("already checked in")) {
+      errorMessage = "You have already checked in today.";
+    } else if (error.message.includes("Transaction not confirmed")) {
+      errorMessage = "Transaction timed out. Please check Basescan and try again.";
+    }
+    document.getElementById("checkInStatus").innerHTML = `<small>${errorMessage}</small>`;
+    alert(errorMessage);
+  }
+};
 
     // Load Check-In History with Pagination
 const loadCheckInHistory = async (page = 1) => {
@@ -1255,7 +1265,7 @@ function renderCheckInPagination(currentPage) {
 }
     
     // Place Bet
-    const placeBet = async () => {
+const placeBet = async () => {
   if (!userAccount) {
     alert("Please connect your wallet first.");
     return;
@@ -1298,8 +1308,16 @@ function renderCheckInPagination(currentPage) {
     // Show processing
     betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
 
+    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
+    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
+
     console.log("Initiating placeBet transaction");
-    await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAccount });
+    await contract.methods.placeBet(number, times, payoutAmount).send({
+      from: userAccount,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+      gas: 350000
+    });
 
     // Success
     betStatus.innerHTML = `<small style="color: #00ff14;">✅ Bet placed successfully!</small>`;
