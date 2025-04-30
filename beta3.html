@@ -689,6 +689,7 @@
           contract = new web3.eth.Contract(contractABI, contractAddress);
           updateWalletUI(true);
           storeConnection(userAccount);
+          await handleReferralFromURL();
           await loadCriticalData();
           setTimeout(() => {
             loadCheckInHistory();
@@ -1530,7 +1531,6 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         disconnectWallet();
       } else {
         await initWeb3(true);
-        await handleReferralFromURL();
       }
     });
     
