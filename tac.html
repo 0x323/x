@@ -73,17 +73,18 @@
     /* Toggle Switch */
     .toggle-container {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      z-index: 1000; /* Pastikan toggle di atas konten lain */
     }
     .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 34px;
+      width: 50px; /* Ukuran lebih kecil */
+      height: 28px;
     }
     .switch input {
       opacity: 0;
@@ -99,13 +100,13 @@
       bottom: 0;
       background-color: #ccc;
       transition: 0.4s;
-      border-radius: 34px;
+      border-radius: 28px;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
+      height: 20px;
+      width: 20px;
       left: 4px;
       bottom: 4px;
       background-color: white;
@@ -116,11 +117,36 @@
       background-color: #2196F3;
     }
     input:checked + .slider:before {
-      transform: translateX(26px);
+      transform: translateX(22px);
     }
     .theme-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Responsivitas untuk layar kecil */
+    @media (max-width: 600px) {
+      .toggle-container {
+        top: 8px;
+        right: 8px;
+      }
+      .switch {
+        width: 40px;
+        height: 24px;
+      }
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+      }
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+      .theme-icon {
+        width: 16px;
+        height: 16px;
+      }
     }
   </style>
 </head>
@@ -129,7 +155,7 @@
   <div class="toggle-container">
     <img src="img/sun.png" alt="Light Mode" class="theme-icon" id="theme-icon">
     <label class="switch">
-      <input type="checkbox" id="themeToggle">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
       <span class="slider"></span>
     </label>
   </div>
