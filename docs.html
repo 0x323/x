@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Futuristic Website</title>
+  <title>Futuristic Docs</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * {
@@ -14,17 +14,20 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #0f0f0f;
-      color: #fff;
+      background: #0a0a0a;
+      color: #e0e0e0;
     }
 
     nav {
+      background: #121212;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      background: #1a1a1a;
-      box-shadow: 0 2px 5px rgba(0, 255, 255, 0.2);
+      padding: 16px 40px;
+      box-shadow: 0 2px 8px rgba(0, 255, 255, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav h1 {
@@ -35,7 +38,7 @@
     nav ul {
       list-style: none;
       display: flex;
-      gap: 20px;
+      gap: 25px;
     }
 
     nav ul li a {
@@ -48,47 +51,33 @@
       color: #00ffff;
     }
 
-    .hero {
-      text-align: center;
-      padding: 100px 20px;
-      background: linear-gradient(145deg, #1a1a1a, #000);
+    main {
+      padding: 60px 40px;
     }
 
-    .hero h2 {
-      font-size: 48px;
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      font-size: 26px;
       color: #00ffff;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
-    .hero p {
-      font-size: 18px;
-      color: #aaa;
-      max-width: 600px;
-      margin: auto;
-      margin-bottom: 30px;
-    }
-
-    .hero a {
-      padding: 12px 25px;
-      background: #00ffff;
-      color: #000;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .hero a:hover {
-      background: #00cccc;
+    .section p {
+      line-height: 1.6;
+      color: #ccc;
     }
 
     footer {
-      background: #1a1a1a;
+      background: #121212;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      border-top: 1px solid #222;
     }
 
     footer p {
@@ -99,18 +88,29 @@
       color: #888;
       margin-left: 15px;
       font-size: 18px;
-      transition: 0.3s;
       text-decoration: none;
+      transition: 0.3s;
     }
 
     .social-icons a:hover {
       color: #00ffff;
     }
 
-    @media (max-width: 600px) {
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (max-width: 768px) {
       nav, footer {
         flex-direction: column;
         text-align: center;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
       }
 
       .social-icons {
@@ -123,32 +123,74 @@
 
   <!-- Navbar -->
   <nav>
-    <h1>Futurify</h1>
+    <h1>Futurify Docs</h1>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#api">API</a></li>
     </ul>
   </nav>
 
-  <!-- Section -->
-  <section class="hero">
-    <h2>Welcome to the Future</h2>
-    <p>Explore cutting-edge design and innovation with our modern, sleek interface built for the next generation.</p>
-    <a href="#">Get Started</a>
-  </section>
+  <!-- Main Content -->
+  <main>
+    <section class="section" id="intro">
+      <h2>Introduction</h2>
+      <p>Welcome to the futuristic documentation portal for our advanced web system. This guide will walk you through everything you need to know to get started.</p>
+    </section>
+
+    <section class="section" id="setup">
+      <h2>Setup</h2>
+      <p>Download the package, unzip the contents, and open <code>index.html</code> in your browser. Make sure your environment supports JavaScript and modern CSS features.</p>
+    </section>
+
+    <section class="section" id="usage">
+      <h2>Usage</h2>
+      <p>To use the features, call the appropriate methods from the console or include them in your own scripts. See examples below for quick implementation.</p>
+    </section>
+
+    <section class="section" id="api">
+      <h2>API Reference</h2>
+      <p>Access functions via the global <code>Futurify</code> object. Each method returns a Promise and can be chained for advanced logic flows.</p>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Futurify. All rights reserved.</p>
+    <p>&copy; 2025 Futurify Docs. All rights reserved.</p>
     <div class="social-icons">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+      <a href="#"><i class="fab fa-discord"></i></a>
       <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
       <a href="#"><i class="fab fa-linkedin-in"></i></a>
     </div>
   </footer>
+
+  <!-- JavaScript (optional scroll effect or dynamic features) -->
+  <script>
+    // Simple highlight nav on scroll (optional enhancement)
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('nav ul li a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.style.color = '#00ffff';
+        } else {
+          link.style.color = '#ccc';
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
