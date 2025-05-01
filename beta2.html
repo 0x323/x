@@ -1034,24 +1034,7 @@
   }
 };
 
-    // Event Listener untuk Modal
-    document.getElementById('agreeCheckbox').addEventListener('change', handleCheckboxChange);
-    document.getElementById('agreeButton').addEventListener('click', async () => {
-      const agreeCheckbox = document.getElementById('agreeCheckbox');
-      const warningMessage = document.getElementById('warningMessage');
-      if (agreeCheckbox.checked && userAccount) {
-        localStorage.setItem(`userAgreed_${userAccount}`, 'true');
-        hideModal();
-        await initWeb3(true);
-      } else {
-        warningMessage.style.display = 'block';
-      }
-    });
-
-    // Pastikan modal tidak muncul saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('termsModal').style.display = 'none';
-    });
+    
     
     const setAutomaticReferralId = async () => {
   if (!userAccount) return;
@@ -1861,6 +1844,25 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         alert("Please install MetaMask to use this DApp.");
         return;
       }
+
+      // Event Listener untuk Modal
+    document.getElementById('agreeCheckbox').addEventListener('change', handleCheckboxChange);
+    document.getElementById('agreeButton').addEventListener('click', async () => {
+      const agreeCheckbox = document.getElementById('agreeCheckbox');
+      const warningMessage = document.getElementById('warningMessage');
+      if (agreeCheckbox.checked && userAccount) {
+        localStorage.setItem(`userAgreed_${userAccount}`, 'true');
+        hideModal();
+        await initWeb3(true);
+      } else {
+        warningMessage.style.display = 'block';
+      }
+    });
+
+    // Pastikan modal tidak muncul saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('termsModal').style.display = 'none';
+    });
 
       await initWeb3(false);
 
