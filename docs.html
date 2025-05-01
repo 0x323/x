@@ -27,22 +27,14 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     nav h1 {
       font-size: 24px;
-      margin-bottom: 15px;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    nav ul li a {
-      color: #333;
-      text-decoration: none;
-      font-weight: 500;
     }
 
     .menu-toggle {
@@ -51,7 +43,20 @@
       border: none;
       font-size: 20px;
       cursor: pointer;
-      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
     }
 
     .container {
@@ -133,14 +138,25 @@
         margin-left: 250px;
         width: calc(100% - 250px);
       }
+
+      .menu-toggle {
+        display: none !important;
+      }
+
+      nav ul {
+        display: flex !important;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <h1>Futurify Docs</h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+    <div class="nav-header">
+      <h1>Futurify Docs</h1>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
     <ul id="nav-menu">
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#setup">Setup</a></li>
