@@ -348,7 +348,7 @@
         <div class="code-description">
           Stores details of a user's bet, including their address, the chosen number, cost, reward, and timestamp.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 struct Bet {
     address user;
     string number;
@@ -362,7 +362,7 @@ struct Bet {
         <div class="code-description">
           Tracks referral data, including the user's referral ID, their referrer's ID and address, list of referees, and accumulated referral balance.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 struct ReferralInfo {
     string referralId;
     string referrerId;
@@ -376,7 +376,7 @@ struct ReferralInfo {
         <div class="code-description">
           Records each check-in event with the user's address, UTC day, timestamp, and reward amount.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 struct CheckInLog {
     address user;
     uint256 dayUTC;
@@ -395,7 +395,7 @@ struct CheckInLog {
         <div class="code-description">
           The <code>checkIn</code> function checks if the user has already checked in today, mints 1 Point if not, updates the last check-in day, and logs the event.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 function checkIn() public {
     uint256 currentDayUTC = block.timestamp / 1 days;
     require(_lastCheckIn[msg.sender] < currentDayUTC, "You have already checked in today");
@@ -444,7 +444,7 @@ await contract.methods.checkIn().send({ from: userAddress });
         <div class="code-description">
           <code>setReferralId</code> assigns a unique referral ID to a user, and <code>setReferralById</code> links a user to a referrer, enforcing uniqueness and preventing self-referrals.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 function setReferralId(string memory referralId) public {
     require(bytes(referralIdOf[msg.sender]).length == 0, "You have already set a referral ID");
     require(userByReferralId[referralId] == address(0), "Referral ID already taken");
@@ -502,7 +502,7 @@ await contract.methods.setReferralById("myid123").send({ from: refereeAddress })
         <div class="code-description">
           The <code>placeBet</code> function validates inputs, deducts the bet cost, mints the reward, logs the bet, and awards referral rewards if applicable.
         </div>
-        <pre><code class="language-solidity">
+        <pre><code class="language-javascript">
 function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) public { 
     require(bytes(_number).length >= 1 && bytes(_number).length <= 20, "Invalid number input");
     require(_times > 0 && _times <= 10, "Bet times must be between 1 and 10");
