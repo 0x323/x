@@ -116,7 +116,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 15px; /* Jarak antar elemen: ikon, tombol, teks */
         }
 
         .switch {
@@ -170,20 +170,31 @@
             transition: opacity 0.3s;
         }
 
+        .icon-container {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+
         .sun-icon {
             opacity: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .moon-icon {
             opacity: 0;
             position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        input:checked ~ .sun-icon {
+        body.dark-mode .sun-icon {
             opacity: 0;
         }
 
-        input:checked ~ .moon-icon {
+        body.dark-mode .moon-icon {
             opacity: 1;
         }
 
@@ -205,26 +216,28 @@
             display: none;
         }
 
-        input:checked ~ .theme-label.light {
+        body.dark-mode .theme-label.light {
             display: none;
         }
 
-        input:checked ~ .theme-label.dark {
+        body.dark-mode .theme-label.dark {
             display: inline;
         }
     </style>
 </head>
 <body>
     <div class="theme-container">
+        <div class="icon-container">
+            <img src="img/sun.svg" alt="Light Mode" class="theme-icon sun-icon">
+            <img src="img/moon.svg" alt="Dark Mode" class="theme-icon moon-icon">
+        </div>
         <label class="switch">
             <input type="checkbox" id="theme-toggle">
             <span class="slider"></span>
-            <img src="img/sun.svg" class="theme-icon sun-icon">
-            <img src="img/moon.svg" class="theme-icon moon-icon">
-            <span class="theme-label light">Light</span>
-            <span class="theme-label dark">Dark</span>
         </label>
-    </div>
+        <span class="theme-label light"><strong>Light</strong></span>
+        <span class="theme-label dark">yang <strong>Dark</strong></span>
+    </div><br>
 
     <div class="container">
         <header>
