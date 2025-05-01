@@ -203,26 +203,26 @@
 </head>
 <body>
 
-  <nav>
-  <div class="nav-header" style="display: flex; align-items: center; gap: 10px; justify-content: flex-start; text-align: left;">
-    <img src="img/logo-gray.svg"  style="height: 30px;">
+  <nav style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="nav-header" style="display: flex; align-items: center; gap: 10px;">
+    <img src="img/logo-black.svg" style="height: 30px;">
     <h1>Docs</h1>
   </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  </div>
-  <ul id="nav-menu">
-    <li><a href="#intro">Introduction</a></li>
-    <li><a href="#setup">Setup</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li class="dropdown">
-  <button class="dropdown-toggle" onclick="toggleDropdown(event)">API</button>
-  <ul class="dropdown-menu">
-    <li><a href="#api-methods">Methods</a></li>
-    <li><a href="#api-options">Options</a></li>
-    <li><a href="#api-events">Events</a></li>
-      </ul>
-    </li>
-  </ul>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+</nav>
+<ul id="nav-menu">
+  <li><a href="#intro">Introduction</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#usage">Usage</a></li>
+  <li class="dropdown">
+    <button class="dropdown-toggle" onclick="toggleDropdown(event)">API</button>
+    <ul class="dropdown-menu">
+      <li><a href="#api-methods">Methods</a></li>
+      <li><a href="#api-options">Options</a></li>
+      <li><a href="#api-events">Events</a></li>
+    </ul>
+  </li>
+</ul>
   </nav>
 
   <div class="container">
