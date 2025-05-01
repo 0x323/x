@@ -171,18 +171,12 @@
 }
 
 .nav-buttons {
-  position: fixed;
-  bottom: 20px;
-  width: 100%;
-  padding: 0 30px;
-  pointer-events: none; /* agar tidak ganggu elemen lain */
-  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
 .nav-buttons button {
-  pointer-events: auto;
-  position: absolute;
-  bottom: 0;
   padding: 10px 20px;
   font-size: 16px;
   background: #007bff;
@@ -190,14 +184,6 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.nav-buttons .prev {
-  left: 0;
-}
-
-.nav-buttons .next {
-  right: 0;
 }
 
 .nav-buttons button:hover {
@@ -248,11 +234,12 @@
         <h2>API Reference</h2>
         <p>Access functions via the global <code>Futurify</code> object. Each method returns a Promise and can be chained for advanced logic flows.</p>
       </section>
-      <div class="nav-buttons">
-  <button class="prev" onclick="navigateSection(-1)">&lt; Prev</button>
-  <button class="next" onclick="navigateSection(1)">Next &gt;</button>
-      </div>
     </main>
+
+    <div class="nav-buttons">
+  <button onclick="navigateSection(-1)">&lt; Prev</button>
+  <button onclick="navigateSection(1)">Next &gt;</button>
+    </div>
 
     <footer>
       <div class="social-icons">
