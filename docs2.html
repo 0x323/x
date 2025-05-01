@@ -12,90 +12,92 @@
     document.addEventListener('DOMContentLoaded', () => {
       hljs.highlightAll();
     });
-  </script>
   <style>
-    body {
-      padding-top: 60px;
-      font-family: 'Arial', sans-serif;
-      background-color: #f8f9fa;
-    }
-    .container {
-      width: 100%;
-      max-width: 1200px;
-    }
-    .footer {
-      background-color: #f8f9fa;
-      padding: 20px 0;
-      text-align: center;
-      margin-top: 40px;
-      border-top: 1px solid #e2e8f0;
-    }
-    code {
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .code-description {
-      font-size: 0.9rem;
-      color: #4a5568;
-      background: #edf2f7;
-      padding: 1rem;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
-    table {
-      width: 100%;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #e2e8f0;
-      padding: 1rem;
-      text-align: left;
-    }
-    th {
-      background: #2b6cb0;
-      color: #fff;
-    }
-    tr:hover {
-      background: #f1f5f9;
-    }
-    h2, h3 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      color: #1a202c;
-    }
-    section {
-      width: 100%;
-      margin-bottom: 3rem;
-      padding: 1.5rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    pre {
-      border-radius: 6px;
-      padding: 1rem;
-      overflow-x: auto;
-    }
-    .pagination {
-      margin: 2rem 0;
-    }
-    .pagination .page-item.active .page-link {
-      background-color: #2b6cb0;
-      border-color: #2b6cb0;
-    }
-    .pagination .page-link {
-      color: #2b6cb0;
-      border-radius: 4px;
-    }
-    .pagination .page-link:hover {
-      background-color: #e2e8f0;
-    }
-    .pagination .disabled .page-link {
-      color: #a0aec0;
-      pointer-events: none;
-    }
-  </style>
+  body {
+    padding-top: 60px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto; /* Memusatkan container */
+    padding: 0 15px; /* Padding untuk responsivitas */
+  }
+  .footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #e2e8f0;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .code-description {
+    font-size: 0.9rem;
+    color: #4a5568;
+    background: #edf2f7;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+    text-align: left;
+  }
+  th {
+    background: #2b6cb0;
+    color: #fff;
+  }
+  tr:hover {
+    background: #f1f5f9;
+  }
+  h2, h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #1a202c;
+  }
+  section {
+    max-width: 1000px; /* Batas lebar section untuk keterbacaan */
+    margin: 0 auto 3rem auto; /* Memusatkan section dengan margin */
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  pre {
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  .pagination {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center; /* Memusatkan pagination */
+  }
+  .pagination .page-item.active .page-link {
+    background-color: #2b6cb0;
+    border-color: #2b6cb0;
+  }
+  .pagination .page-link {
+    color: #2b6cb0;
+    border-radius: 4px;
+  }
+  .pagination .page-link:hover {
+    background-color: #e2e8f0;
+  }
+  .pagination .disabled .page-link {
+    color: #a0aec0;
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -526,25 +528,25 @@ console.log(`Total Check-Ins: ${checkInCount}`);
   </section>
 
       <nav class="pagination">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" id="prev-page">
-            <a class="page-link" href="#" aria-label="Previous">&laquo;</a>
-          <center></li>
-          <li class="page-item"><a class="page-link" href="#overview">1</a></li>
-          <li class="page-item"><a class="page-link" href="#tokenomics">2</a></li>
-          <li class="page-item"><a class="page-link" href="#data-structures">3</a></li>
-          <li class="page-item"><a class="page-link" href="#checkin">4</a></li>
-          <li class="page-item"><a class="page-link" href="#referral">5</a></li>
-          <li class="page-item"><a class="page-link" href="#betting">6</a></li>
-          <li class="page-item"><a class="page-link" href="#events">7</a></li>
-          <li class="page-item"><a class="page-link" href="#api">8</a></li>
-          <li class="page-item"><a class="page-link" href="#errors">9</a></li>
-          <li class="page-item"><a class="page-link" href="#usage">10</a></li>
-          <li class="page-item" id="next-page">
-            <a class="page-link" href="#" aria-label="Next">&raquo;</a>
-          </li></center>
-        </ul>
-      </nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item" id="prev-page">
+      <a class="page-link" href="#" aria-label="Previous">«</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#overview">1</a></li>
+    <li class="page-item"><a class="page-link" href="#tokenomics">2</a></li>
+    <li class="page-item"><a class="page-link" href="#data-structures">3</a></li>
+    <li class="page-item"><a class="page-link" href="#checkin">4</a></li>
+    <li class="page-item"><a class="page-link" href="#referral">5</a></li>
+    <li class="page-item"><a class="page-link" href="#betting">6</a></li>
+    <li class="page-item"><a class="page-link" href="#events">7</a></li>
+    <li class="page-item"><a class=" | page-link" href="#api">8</a></li>
+    <li class="page-item"><a class="page-link" href="#errors">9</a></li>
+    <li class="page-item"><a class="page-link" href="#usage">10</a></li>
+    <li class="page-item" id="next-page">
+      <a class="page-link" href="#" aria-label="Next">»</a>
+    </li>
+  </ul>
+</nav>
     </div>
 
   </div>  <footer class="footer">
