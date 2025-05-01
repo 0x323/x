@@ -20,7 +20,13 @@
       font-family: 'Arial', sans-serif;
       background-color: #f8f9fa;
     }
-  
+
+    .container {
+      width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+    
     }
     .footer {
       background-color: #f8f9fa;
@@ -83,12 +89,17 @@
       color: #1a202c;
     }
     section {
-      width: 100%;
-      margin-bottom: 3rem;
-      padding: 1.5rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  width: 100%;
+  margin: 0 auto 3rem auto; /* Margin auto untuk pemusatan horizontal */
+  padding: 2rem; /* Padding lebih besar untuk keseimbangan */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
+  display: flex; /* Flexbox untuk kontrol tata letak */
+  flex-direction: column; /* Konten disusun vertikal */
+  align-items: center; /* Pemusatan horizontal konten */
+  justify-content: center;
     }
     ul {
       margin-bottom: 1.5rem;
