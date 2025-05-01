@@ -392,6 +392,52 @@
       font-size: 14px;
       color: #ffb833;
       text-align: center;
+
+      .modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  overflow-y: auto;
+  max-height: 70%;
+}
+
+.modal-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
   </style>
 </head>
 <body>
@@ -539,6 +585,122 @@
       </table>
     </div>
 
+        <div id="termsModal" class="modal">
+  <div class="modal-content">
+    <h1>Terms and Conditions</h1>
+    <p><strong>Lotto Chain 2025</strong><br>Version 1.0 – Updated April 20, 2025</p>
+
+    <h2>A. Introduction</h2>
+    <p><strong>Project Name:</strong> Lotto Chain<br>
+    <strong>Phrase:</strong> Decentralized Betting</p>
+    <p>
+      Lotto Chain is a smart contract-based blockchain platform designed to be one of the safest and most efficient decentralized betting systems. The platform also provides supporting services such as various transparent betting concepts, and administrative contract management in the environment and development.
+    </p>
+    <p>
+      The project has reached the production stage and is ready to be used in a real ecosystem, although its operation is still in the beta version framework and has not been officially commercialized publicly.
+    </p>
+
+    <h2>B. User Agreement</h2>
+    <p>By accessing, installing, or using the Lotto Chain platform in any form, you are deemed to have:</p>
+    <ul>
+      <li>Read, understood, and agreed to the entire contents of this Terms and Conditions document;</li>
+      <li>Acknowledge that the use of the platform is carried out at your own discretion and responsibility;</li>
+      <li>Recognize that this platform does not provide any guarantee, compensation, or financial support in any form.</li>
+    </ul>
+    <p>If you do not agree to any part of these terms, you are required to stop using the platform altogether.</p>
+
+    <h2>C. Platform Access and Availability</h2>
+    <p>
+      Lotto Chain is an active platform that has been technically developed and can be used on an open system (public) scale.
+    </p>
+    <p>
+      This platform is commercialized for the general public and is available to the internal community or parties with official access.
+    </p>
+    <p>
+      The development team has the right to prevent or restrict user access without prior notice if system abuse, exploitation,
+      or violation of relevant laws are found.
+    </p>
+
+    <h2>D. Use of Utilities</h2>
+    <p>
+      The utilities used in Lotto Chain have internal functions in the system and can be claimed as legal financial rewards.
+    </p>
+    <p>
+      Utilities are official payment instruments, not stocks, not collateral, and can be legally traded outside the system
+      without the user's own risk.
+    </p>
+    <p>
+      There is no fixed conversion to fiat currencies or other cryptocurrencies, because they are volatile and speculative.
+    </p>
+    <p>
+      All token activities are carried out in a commercial and internal context, at the risk of each.
+      Lotto Chain does not have the property rights or liquidity value of the personal user.
+    </p>
+
+    <h2>E. User Responsibilities</h2>
+    <p>The user is fully responsible for:</p>
+    <ul>
+      <li>Personal security, and all transactions made through the address owned;</li>
+      <li>The legality and compliance of activities carried out on the platform;</li>
+    </ul>
+    <p>It is prohibited to use the platform for:</p>
+    <ul>
+      <li>Activities that violate the laws or regulations of any country's jurisdiction;</li>
+      <li>Running bots, scraping, brute force, or system intrusion;</li>
+      <li>Spreading malware, phishing, spam, or manipulative actions;</li>
+      <li>Duplicating identity (impersonation) or exploiting system features.</li>
+    </ul>
+    <p>Violations may result in permanent blocking without compensation.</p>
+
+    <h2>F. Disclaimer</h2>
+    <p>
+      The platform is provided “as is” with no explicit or implicit guarantees regarding performance, availability of services,
+      or continuity of features.
+    </p>
+    <p>
+      The development team is not responsible for:
+    </p>
+    <ul>
+      <li>Loss of tokens, data, or digital assets due to personal error;</li>
+      <li>Downtime, or logical errors of the user;</li>
+      <li>External activity caused by third parties beyond the control of the developer;</li>
+      <li>Financial, legal, or reputational losses arising from the use of the platform.</li>
+    </ul>
+    <p>
+      Users are advised not to store any important value in this system and to act with full personal responsibility.
+    </p>
+
+    <h2>G. Changes to Terms</h2>
+    <p>
+      Lotto Chain reserves the right to change, revise, or update any or all of the contents of this document at any time without immediate notice.
+    </p>
+    <p>
+      The latest version is always available on the official channel.
+    </p>
+    <p>
+      Users are responsible for monitoring updates regularly.
+    </p>
+    <p>
+      Continued use is considered a form of acceptance of the latest changes.
+    </p>
+
+    <p>This document is an integral part of Lotto Chain 2025 legality policy.<br><br><center><strong>© 
+    Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+
+      <!-- More privacy content -->
+
+      <div class="modal-footer">
+    <label for="agreeCheckbox">
+        <input type="checkbox" id="agreeCheckbox">
+        I agree to the terms and conditions.
+    </label>
+    <button id="walletButton" disabled>Click Continue</button>
+    <p id="warningMessage" style="color: red; display: none;">Please agree to the terms before proceeding.</p>
+      </div>
+    </section>
+  </div>
+        </div>
+
         <footer>
     <div class="social-icons">
         <a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i></a>
@@ -622,8 +784,48 @@
       };
     };
 
-    // Inisialisasi Web3
-    const initWeb3 = async (forceConnect = false, retries = 3, delay = 3000) => {
+    const checkIfUserAgreed = () => {
+  // Cek apakah pengguna sudah menyetujui sebelumnya
+  return localStorage.getItem("userAgreed") === "true";
+};
+
+const showModal = () => {
+  const modal = document.getElementById("termsModal");
+  modal.style.display = "block";
+};
+
+const hideModal = () => {
+  const modal = document.getElementById("termsModal");
+  modal.style.display = "none";
+};
+
+const handleCheckboxChange = () => {
+  const agreeButton = document.getElementById("agreeButton");
+  const agreeCheckbox = document.getElementById("agreeCheckbox");
+  agreeButton.disabled = !agreeCheckbox.checked;
+};
+
+const connectWallet = async () => {
+  const isUserAgreed = checkIfUserAgreed();
+  if (!isUserAgreed) {
+    showModal();
+    document.getElementById("agreeCheckbox").addEventListener("change", handleCheckboxChange);
+    document.getElementById("agreeButton").addEventListener("click", async () => {
+      // Setelah setuju, simpan status ke localStorage
+      localStorage.setItem("userAgreed", "true");
+      hideModal();
+      await initWeb3();
+    });
+  } else {
+    await initWeb3(); // Langsung coba koneksi wallet jika sudah setuju
+  }
+};
+
+// Panggil connectWallet saat pengguna mencoba menghubungkan wallet
+document.getElementById("connectWalletButton").addEventListener("click", connectWallet);
+
+const initWeb3 = async (forceConnect = false, retries = 3, delay = 3000) => {
+  // Inisialisasi Web3 (sama seperti kode yang Anda beri sebelumnya)
   if (!window.ethereum) {
     alert("MetaMask is not installed. Please install MetaMask to use this DApp.");
     return false;
@@ -633,14 +835,10 @@
     try {
       console.log(`Attempting to initialize Web3 (attempt ${attempt}/${retries})`);
       web3 = new Web3(window.ethereum);
-
-      // Periksa status MetaMask
       const isMetaMaskLocked = await window.ethereum.request({ method: "eth_accounts" });
       if (isMetaMaskLocked.length === 0 && forceConnect) {
         console.log("MetaMask is locked or no accounts available");
       }
-
-      // Pastikan jaringan Base Sepolia
       const chainId = await web3.eth.getChainId();
       const sepoliaBaseTestnetChainId = 84532;
       if (chainId !== sepoliaBaseTestnetChainId) {
@@ -738,6 +936,7 @@
     }
   }
 };
+    
     const setAutomaticReferralId = async () => {
   if (!userAccount) return;
   try {
@@ -1526,51 +1725,63 @@ globalHistoryContainer.addEventListener("scroll", async () => {
     };
     
     // Event Listeners
-    document.getElementById("walletButton").addEventListener("click", async () => {
-      if (userAccount) {
-        disconnectWallet();
-      } else {
-        await initWeb3(true);
-        await handleReferralFromURL();
-      }
-    });
+document.getElementById("walletButton").addEventListener("click", async () => {
+  const agreeCheckbox = document.getElementById("agreeCheckbox");
+  const warningMessage = document.getElementById("warningMessage");
 
-    document.getElementById("checkIn").addEventListener("click", checkIn);
-    document.getElementById("placeBetButton").addEventListener("click", placeBet);
-    document.getElementById("copyLink").addEventListener("click", copyReferralLink);
+  // Cek apakah checkbox sudah dicentang
+  if (!agreeCheckbox.checked) {
+    warningMessage.style.display = "block"; // Tampilkan pesan peringatan
+    return; // Tidak lanjutkan proses jika belum dicentang
+  } else {
+    warningMessage.style.display = "none"; // Sembunyikan pesan peringatan jika sudah dicentang
+  }
 
-    window.addEventListener("load", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const referrerIdFromURL = urlParams.get("uid");
-      console.log("Stored referrerId from URL:", referrerIdFromURL);
+  if (userAccount) {
+    disconnectWallet();
+  } else {
+    await initWeb3(true);
+    await handleReferralFromURL();
+  }
+});
 
-      if (!window.ethereum) {
-        alert("Please install MetaMask to use this DApp.");
-        return;
-      }
+// Event listener lainnya
+document.getElementById("checkIn").addEventListener("click", checkIn);
+document.getElementById("placeBetButton").addEventListener("click", placeBet);
+document.getElementById("copyLink").addEventListener("click", copyReferralLink);
 
-      await initWeb3(false);
+window.addEventListener("load", async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const referrerIdFromURL = urlParams.get("uid");
+  console.log("Stored referrerId from URL:", referrerIdFromURL);
 
-      window.ethereum.on("accountsChanged", debounce(async (accounts) => {
-        if (accounts.length === 0) {
-          disconnectWallet();
-        } else {
-          userAccount = accounts[0];
-          storeConnection(userAccount);
-          contract = new web3.eth.Contract(contractABI, contractAddress);
-          updateWalletUI(true);
-          await setAutomaticReferralId();
-          await loadCriticalData();
-          await loadCheckInHistory();
-          await loadUserBetHistory();
-          await loadGlobalBetHistory();
-        }
-      }, 1000));
+  if (!window.ethereum) {
+    alert("Please install MetaMask to use this DApp.");
+    return;
+  }
 
-      window.ethereum.on("chainChanged", () => {
-        window.location.reload();
-      });
-    });
+  await initWeb3(false);
+
+  window.ethereum.on("accountsChanged", debounce(async (accounts) => {
+    if (accounts.length === 0) {
+      disconnectWallet();
+    } else {
+      userAccount = accounts[0];
+      storeConnection(userAccount);
+      contract = new web3.eth.Contract(contractABI, contractAddress);
+      updateWalletUI(true);
+      await setAutomaticReferralId();
+      await loadCriticalData();
+      await loadCheckInHistory();
+      await loadUserBetHistory();
+      await loadGlobalBetHistory();
+    }
+  }, 1000));
+
+  window.ethereum.on("chainChanged", () => {
+    window.location.reload();
+  });
+});
 
     function updateDateTime() {
       const now = new Date();
