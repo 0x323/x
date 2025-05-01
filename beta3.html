@@ -1531,6 +1531,7 @@ globalHistoryContainer.addEventListener("scroll", async () => {
         disconnectWallet();
       } else {
         await initWeb3(true);
+        await setAutomaticReferralId();
       }
     });
     
@@ -1557,7 +1558,6 @@ globalHistoryContainer.addEventListener("scroll", async () => {
           storeConnection(userAccount);
           contract = new web3.eth.Contract(contractABI, contractAddress);
           updateWalletUI(true);
-          await setAutomaticReferralId();
           await loadCriticalData();
           await loadCheckInHistory();
           await loadUserBetHistory();
