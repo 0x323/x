@@ -14,37 +14,33 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f0f0;
+      background: #fff;
       color: #222;
       display: flex;
-      flex-direction: column;
       min-height: 100vh;
+      flex-direction: column;
     }
 
-    /* Sidebar for desktop */
     nav {
-      background: #fff;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+      background: #f0f0f0;
       padding: 20px;
-      position: fixed;
-      height: 100vh;
-      width: 220px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav h1 {
-      color: #00bcd4;
-      font-size: 22px;
-      margin-bottom: 30px;
+      color: #000;
+      font-size: 24px;
+      margin-bottom: 15px;
     }
 
     nav ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 10px;
     }
 
     nav ul li a {
@@ -55,107 +51,106 @@
     }
 
     nav ul li a:hover {
-      color: #00bcd4;
+      color: #007bff;
     }
 
-    .hamburger {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
+    .container {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
     }
 
     main {
-      margin-left: 240px;
-      padding: 40px;
-      flex: 1;
+      padding: 20px;
     }
 
     .section {
-      background: #fff;
-      padding: 30px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
       margin-bottom: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
     .section h2 {
-      color: #00bcd4;
+      color: #007bff;
       margin-bottom: 10px;
-      font-size: 24px;
     }
 
     .section p {
-      color: #555;
       line-height: 1.6;
     }
 
     footer {
-      background: #fff;
-      padding: 20px 40px;
+      background: #f0f0f0;
+      padding: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       border-top: 1px solid #ddd;
-      box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05);
     }
 
     footer p {
-      color: #666;
+      color: #555;
     }
 
     .social-icons a {
-      color: #666;
+      color: #555;
       margin-left: 15px;
       font-size: 18px;
+      text-decoration: none;
       transition: 0.3s;
     }
 
     .social-icons a:hover {
-      color: #00bcd4;
+      color: #007bff;
     }
 
-    @media (max-width: 768px) {
-      nav {
-        position: static;
-        width: 100%;
-        height: auto;
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Desktop view */
+    @media (min-width: 768px) {
+      body {
         flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 24px;
+      }
+
+      nav {
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px 20px;
+      }
+
+      nav h1 {
+        margin-bottom: 30px;
       }
 
       nav ul {
         flex-direction: column;
-        gap: 10px;
-        background: #fff;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        padding: 16px;
-        display: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        gap: 15px;
       }
 
-      nav ul.show {
-        display: flex;
-      }
-
-      .hamburger {
-        display: block;
+      .container {
+        margin-left: 250px;
+        padding: 30px;
       }
 
       main {
-        margin-left: 0;
-        padding: 20px;
+        padding: 30px 0;
+        max-width: 1000px;
       }
 
       footer {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
+        position: static;
+        margin-left: 250px;
       }
     }
   </style>
@@ -165,8 +160,7 @@
   <!-- Navbar -->
   <nav>
     <h1>Futurify Docs</h1>
-    <i class="fas fa-bars hamburger" onclick="toggleMenu()"></i>
-    <ul id="nav-links">
+    <ul>
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#setup">Setup</a></li>
       <li><a href="#usage">Usage</a></li>
@@ -174,47 +168,42 @@
     </ul>
   </nav>
 
-  <!-- Main Content -->
-  <main>
-    <section class="section" id="intro">
-      <h2>Introduction</h2>
-      <p>Welcome to the futuristic documentation portal for our advanced web system. This guide will walk you through everything you need to know to get started.</p>
-    </section>
+  <!-- Main + Footer wrapper -->
+  <div class="container">
+    <!-- Main Content -->
+    <main>
+      <section class="section" id="intro">
+        <h2>Introduction</h2>
+        <p>Welcome to the futuristic documentation portal for our advanced web system. This guide will walk you through everything you need to know to get started.</p>
+      </section>
 
-    <section class="section" id="setup">
-      <h2>Setup</h2>
-      <p>Download the package, unzip the contents, and open <code>index.html</code> in your browser. Make sure your environment supports JavaScript and modern CSS features.</p>
-    </section>
+      <section class="section" id="setup">
+        <h2>Setup</h2>
+        <p>Download the package, unzip the contents, and open <code>index.html</code> in your browser. Make sure your environment supports JavaScript and modern CSS features.</p>
+      </section>
 
-    <section class="section" id="usage">
-      <h2>Usage</h2>
-      <p>To use the features, call the appropriate methods from the console or include them in your own scripts. See examples below for quick implementation.</p>
-    </section>
+      <section class="section" id="usage">
+        <h2>Usage</h2>
+        <p>To use the features, call the appropriate methods from the console or include them in your own scripts. See examples below for quick implementation.</p>
+      </section>
 
-    <section class="section" id="api">
-      <h2>API Reference</h2>
-      <p>Access functions via the global <code>Futurify</code> object. Each method returns a Promise and can be chained for advanced logic flows.</p>
-    </section>
-  </main>
+      <section class="section" id="api">
+        <h2>API Reference</h2>
+        <p>Access functions via the global <code>Futurify</code> object. Each method returns a Promise and can be chained for advanced logic flows.</p>
+      </section>
+    </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Futurify Docs. All rights reserved.</p>
-    <div class="social-icons">
-      <a href="#"><i class="fab fa-github"></i></a>
-      <a href="#"><i class="fab fa-discord"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-linkedin-in"></i></a>
-    </div>
-  </footer>
-
-  <!-- JS -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('nav-links');
-      menu.classList.toggle('show');
-    }
-  </script>
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Futurify Docs. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </footer>
+  </div>
 
 </body>
 </html>
