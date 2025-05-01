@@ -4,150 +4,440 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CheckInPoint Smart Contract Documentation</title>
-  <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Highlight.js CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       hljs.highlightAll();
     });
   </script>
   <style>
-    /* Custom styles for code blocks and minor tweaks */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7fafc;
+      color: #2d3748;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .navbar .logo img {
+      width: 32px;
+      height: 32px;
+    }
+    .navbar .logo span {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2b6cb0;
+    }
+    .navbar .nav-links a {
+      color: #4a5568;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+    .navbar .nav-links a:hover {
+      color: #2b6cb0;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      flex: 1;
+    }
+    aside {
+      width: 280px;
+      background: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      padding: 2rem 1.5rem;
+      height: calc(100vh - 65px);
+      position: sticky;
+      top: 65px;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+    }
+    aside.hidden {
+      transform: translateX(-100%);
+    }
+    aside h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+    }
+    aside ul {
+      list-style: none;
+    }
+    aside ul li {
+      margin-bottom: 0.75rem;
+    }
+    aside ul li a {
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    aside ul li a:hover {
+      background: #edf2f7;
+      color: #2b6cb0;
+    }
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: #2b6cb0;
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .menu-toggle:hover {
+      background: #2c5282;
+    }
+    main {
+      margin-left: 280px;
+      padding: 2rem;
+      flex: 1;
+      background: #f7fafc;
+      transition: margin-left 0.3s ease, padding 0.3s ease;
+    }
+    section {
+      margin-bottom: 2rem;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    section h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+    section h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #4a5568;
+      margin: 1rem 0 0.5rem;
+    }
+    section p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      margin-bottom: 1rem;
+    }
+    section ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    section ul li {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
     pre {
-      @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm;
+      background: #1a202c;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
     }
     code {
       font-family: 'JetBrains Mono', monospace;
     }
-    /* Ensure sidebar height accounts for navbar */
-    #sidebar {
-      height: calc(100vh - 64px);
+    .code-description {
+      font-size: 0.9rem;
+      color: #4a5568;
+      background: #edf2f7;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    table th, table td {
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    table th {
+      background: #2b6cb0;
+      color: #fff;
+      font-weight: 500;
+    }
+    .btn-copy {
+      background: #2b6cb0;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: #2c5282;
+    }
+    nav.pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+    nav.pagination a {
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      background: #2b6cb0;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+    nav.pagination a:hover {
+      background: #2c5282;
+    }
+    footer {
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 2rem;
+      text-align: center;
+      color: #4a5568;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #2b6cb0;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.2s ease;
+    }
+    footer a:hover {
+      color: #2c5282;
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+      }
+      .navbar .logo span {
+        font-size: 1.25rem;
+      }
+      .navbar .nav-links a {
+        margin-left: 1rem;
+        font-size: 0.9rem;
+      }
+      aside {
+        width: 75%;
+        max-width: 280px;
+        transform: translateX(-100%);
+      }
+      aside.active {
+        transform: translateX(0);
+      }
+      aside h2 {
+        font-size: 1.1rem;
+      }
+      aside ul li a {
+        font-size: 0.9rem;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      main {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+      section h2 {
+        font-size: 1.3rem;
+      }
+      section h3 {
+        font-size: 1.1rem;
+      }
+      section p, section ul li, table th, table td {
+        font-size: 0.85rem;
+      }
+      pre {
+        font-size: 0.75rem;
+      }
+      .code-description {
+        font-size: 0.8rem;
+      }
+      table th, table td {
+        padding: 0.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .navbar .logo img {
+        width: 24px;
+        height: 24px;
+      }
+      .navbar .logo span {
+        font-size: 1.1rem;
+      }
+      .navbar .nav-links a {
+        margin-left: 0.75rem;
+        font-size: 0.85rem;
+      }
+      aside {
+        width: 100%;
+      }
+      main {
+        padding: 1rem;
+      }
+      section {
+        padding: 1rem;
+      }
+      nav.pagination a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+      footer {
+        padding: 1.5rem;
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
-<body class="font-sans bg-gray-100 text-gray-800 flex flex-col min-h-screen">
-  <!-- Navbar -->
-  <header class="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between sticky top-0 z-10">
-    <div class="flex items-center gap-2">
-      <img src="https://via.placeholder.com/32" alt="CheckInPoint Logo" class="w-8 h-8" />
-      <span class="text-xl font-semibold text-blue-600">CheckInPoint</span>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="https://via.placeholder.com/32" alt="CheckInPoint Logo" />
+      <span>CheckInPoint</span>
     </div>
-    <div class="flex items-center gap-4">
-      <a href="#overview" class="text-gray-600 hover:text-blue-600 text-sm">Home</a>
-      <a href="#api" class="text-gray-600 hover:text-blue-600 text-sm">API</a>
-      <a href="https://github.com/checkinpoint" target="_blank" class="text-gray-600 hover:text-blue-600 text-sm">GitHub</a>
-      <a href="https://docs.sepolia.base.org" target="_blank" class="text-gray-600 hover:text-blue-600 text-sm">Sepolia Base</a>
+    <div class="nav-links">
+      <a href="#overview">Home</a>
+      <a href="#api">API</a>
+      <a href="https://github.com/checkinpoint" target="_blank">GitHub</a>
+      <a href="https://docs.sepolia.base.org" target="_blank">Sepolia Base</a>
     </div>
   </header>
-
-  <!-- Mobile Menu Toggle -->
-  <button class="md:hidden fixed top-4 left-4 bg-blue-600 text-white p-3 rounded-lg z-20" onclick="toggleMenu()">
+  <button class="menu-toggle" onclick="toggleMenu()">
     <i class="fas fa-bars"></i>
   </button>
-
-  <!-- Main Content -->
-  <div class="flex w-full max-w-7xl mx-auto flex-1">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-72 bg-white border-r border-gray-200 p-6 sticky top-16 overflow-y-auto hidden md:block">
-      <h2 class="text-lg font-semibold text-gray-800 mb-6">CheckInPoint Docs</h2>
-      <ul class="space-y-3">
-        <li><a href="#overview" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Overview</a></li>
-        <li><a href="#tokenomics" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Tokenomics</a></li>
-        <li><a href="#data-structures" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Data Structures</a></li>
-        <li><a href="#checkin" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Check-In System</a></li>
-        <li><a href="#referral" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Referral System</a></li>
-        <li><a href="#betting" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Betting System</a></li>
-        <li><a href="#events" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Events</a></li>
-        <li><a href="#api" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">API Methods</a></li>
-        <li><a href="#errors" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Error Handling</a></li>
-        <li><a href="#usage" class="text-gray-600 hover:bg-gray-100 hover:text-blue-600 block p-2 rounded text-sm" onclick="toggleMenu()">Frontend Integration</a></li>
+  <div class="container">
+    <aside id="sidebar">
+      <h2>CheckInPoint Docs</h2>
+      <ul>
+        <li><a href="#overview" onclick="toggleMenu()">Overview</a></li>
+        <li><a href="#tokenomics" onclick="toggleMenu()">Tokenomics</a></li>
+        <li><a href="#data-structures" onclick="toggleMenu()">Data Structures</a></li>
+        <li><a href="#checkin" onclick="toggleMenu()">Check-In System</a></li>
+        <li><a href="#referral" onclick="toggleMenu()">Referral System</a></li>
+        <li><a href="#betting" onclick="toggleMenu()">Betting System</a></li>
+        <li><a href="#events" onclick="toggleMenu()">Events</a></li>
+        <li><a href="#api" onclick="toggleMenu()">API Methods</a></li>
+        <li><a href="#errors" onclick="toggleMenu()">Error Handling</a></li>
+        <li><a href="#usage" onclick="toggleMenu()">Frontend Integration</a></li>
       </ul>
     </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-6 md:ml-72 bg-gray-100">
-      <section id="overview" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">1. Overview</h2>
-        <p class="text-gray-600 text-sm mb-4">
+    <main>
+      <section id="overview">
+        <h2>1. Overview</h2>
+        <p>
           The <strong>CheckInPoint</strong> smart contract, deployed on the Sepolia Base network, is a gamified token system designed to encourage user engagement through:
         </p>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <ul>
           <li><strong>Daily Check-Ins</strong>: Users earn 1 Point by checking in once per day.</li>
           <li><strong>Referral Program</strong>: Users earn 5 Points when their referees place bets.</li>
           <li><strong>Betting Game</strong>: Users can place daily bets with rewards based on number prefixes.</li>
         </ul>
-        <p class="text-gray-600 text-sm">
+        <p>
           The contract uses a token named "Point" with 18 decimals. Direct token transfers are disabled to control distribution.
         </p>
       </section>
 
-      <section id="tokenomics" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">2. Tokenomics</h2>
-        <p class="text-gray-600 text-sm mb-4">Key parameters and constants of the token system:</p>
-        <table class="w-full border-collapse text-sm">
-          <thead>
-            <tr class="bg-blue-600 text-white">
-              <th class="border border-gray-200 p-3 text-left">Parameter</th>
-              <th class="border border-gray-200 p-3 text-left">Value</th>
-              <th class="border border-gray-200 p-3 text-left">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-gray-200 p-3">Name</td>
-              <td class="border border-gray-200 p-3">Point</td>
-              <td class="border border-gray-200 p-3">Token name.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Symbol</td>
-              <td class="border border-gray-200 p-3">Point</td>
-              <td class="border border-gray-200 p-3">Token symbol.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Decimals</td>
-              <td class="border border-gray-200 p-3">18</td>
-              <td class="border border-gray-200 p-3">Token precision.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Total Supply</td>
-              <td class="border border-gray-200 p-3">Dynamic</td>
-              <td class="border border-gray-200 p-3">Increases with minting.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Points per Check-In</td>
-              <td class="border border-gray-200 p-3">1 Point</td>
-              <td class="border border-gray-200 p-3">Reward for daily check-in.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Bet Cost</td>
-              <td class="border border-gray-200 p-3">1 Point</td>
-              <td class="border border-gray-200 p-3">Cost per bet instance.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Bet Reward</td>
-              <td class="border border-gray-200 p-3">10 Points</td>
-              <td class="border border-gray-200 p-3">Base reward for bets.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3">Referral Reward</td>
-              <td class="border border-gray-200 p-3">5 Points</td>
-              <td class="border border-gray-200 p-3">Reward for referrals.</td>
-            </tr>
-          </tbody>
+      <section id="tokenomics">
+        <h2>2. Tokenomics</h2>
+        <p>Key parameters and constants of the token system:</p>
+        <table>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>Point</td>
+            <td>Token name.</td>
+          </tr>
+          <tr>
+            <td>Symbol</td>
+            <td>Point</td>
+            <td>Token symbol.</td>
+          </tr>
+          <tr>
+            <td>Decimals</td>
+            <td>18</td>
+            <td>Token precision.</td>
+          </tr>
+          <tr>
+            <td>Total Supply</td>
+            <td>Dynamic</td>
+            <td>Increases with minting.</td>
+          </tr>
+          <tr>
+            <td>Points per Check-In</td>
+            <td>1 Point</td>
+            <td>Reward for daily check-in.</td>
+          </tr>
+          <tr>
+            <td>Bet Cost</td>
+            <td>1 Point</td>
+            <td>Cost per bet instance.</td>
+          </tr>
+          <tr>
+            <td>Bet Reward</td>
+            <td>10 Points</td>
+            <td>Base reward for bets.</td>
+          </tr>
+          <tr>
+            <td>Referral Reward</td>
+            <td>5 Points</td>
+            <td>Reward for referrals.</td>
+          </tr>
         </table>
       </section>
 
-      <section id="data-structures" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">3. Data Structures</h2>
-        <p class="text-gray-600 text-sm mb-4">The contract uses the following data structures to manage data:</p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Bet</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+      <section id="data-structures">
+        <h2>3. Data Structures</h2>
+        <p>The contract uses the following data structures to manage data:</p>
+        <h3>Bet</h3>
+        <div class="code-description">
           Stores details of a user's bet, including their address, the chosen number, cost, reward, and timestamp.
         </div>
         <pre><code class="language-solidity">
@@ -160,8 +450,8 @@ struct Bet {
 }
         </code></pre>
 
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">ReferralInfo</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>ReferralInfo</h3>
+        <div class="code-description">
           Tracks referral data, including the user's referral ID, their referrer's ID and address, list of referees, and accumulated referral balance.
         </div>
         <pre><code class="language-solidity">
@@ -174,8 +464,8 @@ struct ReferralInfo {
 }
         </code></pre>
 
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">CheckInLog</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>CheckInLog</h3>
+        <div class="code-description">
           Records each check-in event with the user's address, UTC day, timestamp, and reward amount.
         </div>
         <pre><code class="language-solidity">
@@ -188,13 +478,13 @@ struct CheckInLog {
         </code></pre>
       </section>
 
-      <section id="checkin" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">4. Check-In System</h2>
-        <p class="text-gray-600 text-sm mb-4">
+      <section id="checkin">
+        <h2>4. Check-In System</h2>
+        <p>
           Users can check in once per UTC day to earn <strong>1 Point</strong>. The system prevents multiple check-ins within the same day.
         </p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Main Function</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Main Function</h3>
+        <div class="code-description">
           The <code>checkIn</code> function checks if the user has already checked in today, mints 1 Point if not, updates the last check-in day, and logs the event.
         </div>
         <pre><code class="language-solidity">
@@ -216,34 +506,34 @@ function checkIn() public {
     emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);
 }
         </code></pre>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <ul>
           <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
           <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
           <li><strong>Constraint</strong>: One check-in per UTC day.</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Example</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Example</h3>
+        <div class="code-description">
           This JavaScript code uses web3.js to call the <code>checkIn</code> function, enabling a user to check in and earn 1 Point.
         </div>
         <pre><code class="language-javascript">
 const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.checkIn().send({ from: userAddress });
         </code></pre>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">View Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm">
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
           <li><code>getCheckInLog(address user, uint256 index)</code>: Retrieves a specific check-in log.</li>
           <li><code>getCheckInCount(address user)</code>: Returns the total number of check-ins.</li>
         </ul>
       </section>
 
-      <section id="referral" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">5. Referral System</h2>
-        <p class="text-gray-600 text-sm mb-4">
+      <section id="referral">
+        <h2>5. Referral System</h2>
+        <p>
           Users can set a unique referral ID and earn <strong>5 Points</strong> when their referees place bets.
         </p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Main Functions</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Main Functions</h3>
+        <div class="code-description">
           <code>setReferralId</code> assigns a unique referral ID to a user, and <code>setReferralById</code> links a user to a referrer, enforcing uniqueness and preventing self-referrals.
         </div>
         <pre><code class="language-solidity">
@@ -268,9 +558,9 @@ function setReferralById(string memory referralId) public {
     emit Referred(msg.sender, referrer, referralId);
 }
         </code></pre>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <ul>
           <li><strong>Constraints</strong>:
-            <ul class="list-disc ml-6">
+            <ul>
               <li>Referral ID must be unique.</li>
               <li>No self-referrals allowed.</li>
               <li>Referral ID can only be set once.</li>
@@ -278,8 +568,8 @@ function setReferralById(string memory referralId) public {
           </li>
           <li><strong>Events</strong>: <code>ReferralIdSet</code>, <code>Referred</code>, <code>ReferralReward</code></li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Example</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Example</h3>
+        <div class="code-description">
           This code sets a referral ID for a user and links another user as a referee using web3.js.
         </div>
         <pre><code class="language-javascript">
@@ -287,21 +577,21 @@ const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.setReferralId("myid123").send({ from: userAddress });
 await contract.methods.setReferralById("myid123").send({ from: refereeAddress });
         </code></pre>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">View Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm">
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
           <li><code>getRefereeCount(address referrer)</code>: Returns the number of referees.</li>
           <li><code>getReferees(address referrer)</code>: Returns the list of referee addresses.</li>
         </ul>
       </section>
 
-      <section id="betting" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">6. Betting System</h2>
-        <p class="text-gray-600 text-sm mb-4">
+      <section id="betting">
+        <h2>6. Betting System</h2>
+        <p>
           Users can place a bet once per day with a number (1-20 characters), a multiplier (1-10), and a payout amount. Each bet costs <strong>1 Point</strong> per instance, with rewards based on the payout amount and a bonus for numbers starting with "00" or "01".
         </p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Main Function</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Main Function</h3>
+        <div class="code-description">
           The <code>placeBet</code> function validates inputs, deducts the bet cost, mints the reward, logs the bet, and awards referral rewards if applicable.
         </div>
         <pre><code class="language-solidity">
@@ -348,16 +638,16 @@ function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) 
     }
 }
         </code></pre>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <ul>
           <li><strong>Parameters</strong>:
-            <ul class="list-disc ml-6">
+            <ul>
               <li><code>_number</code>: String for the bet (1-20 characters).</li>
               <li><code>_times</code>: Bet multiplier (1-10).</li>
               <li><code>_payoutAmount</code>: Base reward, increased by 10 Points for "00" or "01" prefixes.</li>
             </ul>
           </li>
           <li><strong>Constraints</strong>:
-            <ul class="list-disc ml-6">
+            <ul>
               <li>One bet per UTC day.</li>
               <li>Sufficient balance for the total cost.</li>
               <li>Valid number and multiplier inputs.</li>
@@ -365,17 +655,17 @@ function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) 
           </li>
           <li><strong>Events</strong>: <code>PlaceBet</code>, <code>Transfer</code>, <code>ReferralReward</code> (if applicable)</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Example</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Example</h3>
+        <div class="code-description">
           This code places a bet with the number "01234", a multiplier of 2, and a payout of 3 Points using web3.js.
         </div>
         <pre><code class="language-javascript">
 const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
         </code></pre>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">View Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm">
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
           <li><code>getUserBetCount(address user)</code>: Returns the number of bets placed by a user.</li>
           <li><code>getUserBet(address user, uint256 index)</code>: Retrieves a specific bet for a user.</li>
           <li><code>getBetHistoryLength()</code>: Returns the total number of bets in the global history.</li>
@@ -383,103 +673,99 @@ await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
         </ul>
       </section>
 
-      <section id="events" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">7. Events</h2>
-        <p class="text-gray-600 text-sm mb-4">The contract emits events to track actions:</p>
-        <table class="w-full border-collapse text-sm">
-          <thead>
-            <tr class="bg-blue-600 text-white">
-              <th class="border border-gray-200 p-3 text-left">Event</th>
-              <th class="border border-gray-200 p-3 text-left">Parameters</th>
-              <th class="border border-gray-200 p-3 text-left">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>Transfer</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed from, address indexed to, uint256 value</code></td>
-              <td class="border border-gray-200 p-3">Emitted when tokens are minted or burned.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>TokenMinted</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed to, uint256 amount</code></td>
-              <td class="border border-gray-200 p-3">Emitted when tokens are minted.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>CheckIn</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed user, uint256 amount, uint256 timestamp</code></td>
-              <td class="border border-gray-200 p-3">Emitted on successful check-in.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>CheckInLogCreated</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed user, uint256 dayUTC, uint256 timestamp, uint256 reward</code></td>
-              <td class="border border-gray-200 p-3">Logs check-in details.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>ReferralReward</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed referrer, address indexed referee, uint256 reward, uint256 timestamp</code></td>
-              <td class="border border-gray-200 p-3">Emitted when a referrer earns a reward.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>PlaceBet</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed user, string number, uint256 cost, uint256 reward, uint256 timestamp</code></td>
-              <td class="border border-gray-200 p-3">Emitted when a bet is placed.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>Referred</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed referee, address indexed referrer, string referralId</code></td>
-              <td class="border border-gray-200 p-3">Emitted when a user is referred.</td>
-            </tr>
-            <tr>
-              <td class="border border-gray-200 p-3"><code>ReferralIdSet</code></td>
-              <td class="border border-gray-200 p-3"><code>address indexed user, string referralId</code></td>
-              <td class="border border-gray-200 p-3">Emitted when a referral ID is set.</td>
-            </tr>
-          </tbody>
+      <section id="events">
+        <h2>7. Events</h2>
+        <p>The contract emits events to track actions:</p>
+        <table>
+          <tr>
+            <th>Event</th>
+            <th>Parameters</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>Transfer</code></td>
+            <td><code>address indexed from, address indexed to, uint256 value</code></td>
+            <td>Emitted when tokens are minted or burned.</td>
+          </tr>
+          <tr>
+            <td><code>TokenMinted</code></td>
+            <td><code>address indexed to, uint256 amount</code></td>
+            <td>Emitted when tokens are minted.</td>
+          </tr>
+          <tr>
+            <td><code>CheckIn</code></td>
+            <td><code>address indexed user, uint256 amount, uint256 timestamp</code></td>
+            <td>Emitted on successful check-in.</td>
+          </tr>
+          <tr>
+            <td><code>CheckInLogCreated</code></td>
+            <td><code>address indexed user, uint256 dayUTC, uint256 timestamp, uint256 reward</code></td>
+            <td>Logs check-in details.</td>
+          </tr>
+          <tr>
+            <td><code>ReferralReward</code></td>
+            <td><code>address indexed referrer, address indexed referee, uint256 reward, uint256 timestamp</code></td>
+            <td>Emitted when a referrer earns a reward.</td>
+          </tr>
+          <tr>
+            <td><code>PlaceBet</code></td>
+            <td><code>address indexed user, string number, uint256 cost, uint256 reward, uint256 timestamp</code></td>
+            <td>Emitted when a bet is placed.</td>
+          </tr>
+          <tr>
+            <td><code>Referred</code></td>
+            <td><code>address indexed referee, address indexed referrer, string referralId</code></td>
+            <td>Emitted when a user is referred.</td>
+          </tr>
+          <tr>
+            <td><code>ReferralIdSet</code></td>
+            <td><code>address indexed user, string referralId</code></td>
+            <td>Emitted when a referral ID is set.</td>
+          </tr>
         </table>
       </section>
 
-      <section id="api" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">8. API Methods</h2>
-        <p class="text-gray-600 text-sm mb-4">The contract provides the following functions for interaction:</p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Core Token Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+      <section id="api">
+        <h2>8. API Methods</h2>
+        <p>The contract provides the following functions for interaction:</p>
+        <h3>Core Token Functions</h3>
+        <ul>
           <li><code>totalSupply() returns (uint256)</code>: Returns the total token supply.</li>
           <li><code>balanceOf(address account) returns (uint256)</code>: Returns the token balance of an account.</li>
           <li><code>transfer(address, uint256)</code>: Disabled to prevent direct transfers.</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Check-In Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <h3>Check-In Functions</h3>
+        <ul>
           <li><code>checkIn()</code>: Performs a daily check-in.</li>
           <li><code>getCheckInLog(address user, uint256 index) returns (CheckInLog)</code>: Retrieves a check-in log.</li>
           <li><code>getCheckInCount(address user) returns (uint256)</code>: Returns the number of check-ins.</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Referral Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <h3>Referral Functions</h3>
+        <ul>
           <li><code>setReferralId(string referralId)</code>: Sets a user's referral ID.</li>
           <li><code>setReferralById(string referralId)</code>: Links a user to a referrer.</li>
           <li><code>getRefereeCount(address referrer) returns (uint256)</code>: Returns the number of referees.</li>
           <li><code>getReferees(address referrer) returns (address[])</code>: Returns the list of referees.</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Betting Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm mb-4">
+        <h3>Betting Functions</h3>
+        <ul>
           <li><code>placeBet(string _number, uint256 _times, uint256 _payoutAmount)</code>: Places a bet.</li>
           <li><code>getUserBetCount(address user) returns (uint256)</code>: Returns the number of bets.</li>
           <li><code>getUserBet(address user, uint256 index) returns (Bet)</code>: Retrieves a specific bet.</li>
           <li><code>getBetHistoryLength() returns (uint256)</code>: Returns the total number of bets.</li>
           <li><code>getBet(uint256 index) returns (Bet)</code>: Retrieves a bet from the global history.</li>
         </ul>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Utility Functions</h3>
-        <ul class="list-disc ml-6 text-gray-600 text-sm">
+        <h3>Utility Functions</h3>
+        <ul>
           <li><code>compareStrings(string a, string b) returns (bool)</code>: Compares two strings for equality.</li>
           <li><code>substring(string str, uint startIndex, uint endIndex) returns (string)</code>: Extracts a substring.</li>
         </ul>
       </section>
 
-      <section id="errors" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">9. Error Handling</h2>
-        <p class="text-gray-600 text-sm mb-4">The contract includes the following error checks to handle invalid actions:</p>
-        <ul class="list-disc ml-6 text-gray-600 text-sm">
+      <section id="errors">
+        <h2>9. Error Handling</h2>
+        <p>The contract includes the following error checks to handle invalid actions:</p>
+        <ul>
           <li><code>"You have already checked in today"</code>: Prevents multiple check-ins in the same UTC day.</li>
           <li><code>"You have already set a referral ID"</code>: Ensures referral IDs are set only once.</li>
           <li><code>"Referral ID already taken"</code>: Enforces referral ID uniqueness.</li>
@@ -497,13 +783,13 @@ await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
         </ul>
       </section>
 
-      <section id="usage" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">10. Frontend Integration</h2>
-        <p class="text-gray-600 text-sm mb-4">
+      <section id="usage">
+        <h2>10. Frontend Integration</h2>
+        <p>
           The contract can be integrated into a frontend using <strong>web3.js</strong> or <strong>ethers.js</strong>. Below is an example using web3.js.
         </p>
-        <h3 class="text-xl font-medium text-gray-700 mt-4 mb-2">Example: Interaction Flow</h3>
-        <div class="text-gray-600 text-sm bg-gray-50 p-3 rounded-lg mb-2">
+        <h3>Example: Interaction Flow</h3>
+        <div class="code-description">
           This script initializes a web3 instance, checks a user's balance, performs a check-in, sets a referral ID, places a bet, and retrieves the check-in count.
         </div>
         <pre><code class="language-javascript">
@@ -531,38 +817,36 @@ await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
 const checkInCount = await contract.methods.getCheckInCount(userAddress).call();
 console.log(`Total Check-Ins: ${checkInCount}`);
         </code></pre>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm mt-2" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
       </section>
 
-      <nav class="flex justify-center gap-2 mt-8">
-        <a href="#overview" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">1</a>
-        <a href="#tokenomics" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">2</a>
-        <a href="#data-structures" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">3</a>
-        <a href="#checkin" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">4</a>
-        <a href="#referral" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">5</a>
-        <a href="#betting" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">6</a>
-        <a href="#events" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">7</a>
-        <a href="#api" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">8</a>
-        <a href="#errors" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">9</a>
-        <a href="#usage" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">10</a>
+      <nav class="pagination">
+        <a href="#overview">1</a>
+        <a href="#tokenomics">2</a>
+        <a href="#data-structures">3</a>
+        <a href="#checkin">4</a>
+        <a href="#referral">5</a>
+        <a href="#betting">6</a>
+        <a href="#events">7</a>
+        <a href="#api">8</a>
+        <a href="#errors">9</a>
+        <a href="#usage">10</a>
       </nav>
     </main>
   </div>
-
-  <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200 py-6 text-center text-gray-600 text-sm">
-    <p>© 2025 CheckInPoint. All rights reserved.</p>
-    <p class="mt-2">
-      <a href="https://github.com/checkinpoint" target="_blank" class="text-blue-600 hover:text-blue-700 mx-2">GitHub</a> |
-      <a href="https://docs.sepolia.base.org" target="_blank" class="text-blue-600 hover:text-blue-700 mx-2">Sepolia Base</a> |
-      <a href="mailto:support@checkinpoint.com" class="text-blue-600 hover:text-blue-700 mx-2">Contact</a>
+  <footer>
+    <p>&copy; 2025 CheckInPoint. All rights reserved.</p>
+    <p>
+      <a href="https://github.com/checkinpoint" target="_blank">GitHub</a> |
+      <a href="https://docs.sepolia.base.org" target="_blank">Sepolia Base</a> |
+      <a href="mailto:support@checkinpoint.com">Contact</a>
     </p>
   </footer>
-
   <script>
     function toggleMenu() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('active');
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -578,11 +862,11 @@ console.log(`Total Check-Ins: ${checkInCount}`);
 
     document.addEventListener('click', (e) => {
       const sidebar = document.getElementById('sidebar');
-      const toggle = document.querySelector('button[onclick="toggleMenu()"]');
-      if (!sidebar.contains(e.target) && !toggle.contains(e.target) && !sidebar.classList.contains('hidden')) {
+      const toggle = document.querySelector('.menu-toggle');
+      if (!sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('active')) {
         toggleMenu();
       }
     });
   </script>
-</body>
-          </html>
+</body> 
+</html>
