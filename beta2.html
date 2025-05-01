@@ -392,6 +392,73 @@
       font-size: 14px;
       color: #ffb833;
       text-align: center;
+
+      .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #101010;
+      margin: 5% auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      max-height: 70vh;
+      overflow-y: auto;
+      border-radius: 1rem;
+      box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
+      color: #f1f1f1;
+    }
+
+    .modal-content h1, .modal-content h2 {
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .modal-content p {
+      color: #f0f0f0;
+    }
+
+    .modal-footer {
+      text-align: center;
+      margin-top: 20px;
+      display: none; /* Sembunyikan footer hingga scroll ke bawah */
+    }
+
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    #agreeButton {
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      color: white;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #agreeButton:hover:not(:disabled) {
+      background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
+      box-shadow: 0 0 25px #03a9f4, 0 0 35px #f441a5, 0 0 10px #ffffff44;
+    }
+
+    #warningMessage {
+      color: #ff3333;
+      display: none;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -539,6 +606,127 @@
       </table>
     </div>
 
+        </div>
+    </div>
+
+    <!-- Global Bet History -->
+    <div class="section hidden">
+      <h2>Global Ticket History</h2>
+      <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+        <small><ul id="globalBetHistory" class="info-text"></ul></small>
+      </div>
+    </div>
+
+    <!-- Referral -->
+    <div class="section hidden">
+      <h2>Referral</h2>
+      <div class="input-group">
+        <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
+        <center><button id="copyLink">Copy Link</button></center>
+        <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
+        <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
+      </div>
+      <br><h4>Invited Friends List</h4><br>
+      <small><ul id="refereeList" class="info-text"></ul></small>
+      <div id="refereePagination" class="pagination"></div>
+    </div>
+
+    <!-- Prizes -->
+    <div id="prizes" class="section hidden">
+      <center><h2>4D USDT Reward Payout</h2></center>
+      <table>
+        <tr>
+          <th>Bet Type</th>
+          <th>Const</th>
+          <th>USDT Mainnet Reward</th>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">4D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">3D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.75 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">2D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.5 USDT</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+      <div class="modal-content">
+        <h1>Terms and Conditions</h1>
+        <p><strong>Lotto Chain 2025</strong><br>Version 1.0 – Updated April 20, 2025</p>
+        <h2>A. Introduction</h2>
+        <p><strong>Project Name:</strong> Lotto Chain<br>
+        <strong>Phrase:</strong> Decentralized Betting</p>
+        <p>Lotto Chain is a smart contract-based blockchain platform designed to be one of the safest and most efficient decentralized betting systems. The platform also provides supporting services such as various transparent betting concepts, and administrative contract management in the environment and development.</p>
+        <p>The project has reached the production stage and is ready to be used in a real ecosystem, although its operation is still in the beta version framework and has not been officially commercialized publicly.</p>
+        <h2>B. User Agreement</h2>
+        <p>By accessing, installing, or using the Lotto Chain platform in any form, you are deemed to have:</p>
+        <ul>
+          <li>Read, understood, and agreed to the entire contents of this Terms and Conditions document;</li>
+          <li>Acknowledge that the use of the platform is carried out at your own discretion and responsibility;</li>
+          <li>Recognize that this platform does not provide any guarantee, compensation, or financial support in any form.</li>
+        </ul>
+        <p>If you do not agree to any part of these terms, you are required to stop using the platform altogether.</p>
+        <h2>C. Platform Access and Availability</h2>
+        <p>Lotto Chain is an active platform that has been technically developed and can be used on an open system (public) scale.</p>
+        <p>This platform is commercialized for the general public and is available to the internal community or parties with official access.</p>
+        <p>The development team has the right to prevent or restrict user access without prior notice if system abuse, exploitation, or violation of relevant laws are found.</p>
+        <h2>D. Use of Utilities</h2>
+        <p>The utilities used in Lotto Chain have internal functions in the system and can be claimed as legal financial rewards.</p>
+        <p>Utilities are official payment instruments, not stocks, not collateral, and can be legally traded outside the system without the user's own risk.</p>
+        <p>There is no fixed conversion to fiat currencies or other cryptocurrencies, because they are volatile and speculative.</p>
+        <p>All token activities are carried out in a commercial and internal context, at the risk of each. Lotto Chain does not have the property rights or liquidity value of the personal user.</p>
+        <h2>E. User Responsibilities</h2>
+        <p>The user is fully responsible for:</p>
+        <ul>
+          <li>Personal security, and all transactions made through the address owned;</li>
+          <li>The legality and compliance of activities carried out on the platform;</li>
+        </ul>
+        <p>It is prohibited to use the platform for:</p>
+        <ul>
+          <li>Activities that violate the laws or regulations of any country's jurisdiction;</li>
+          <li>Running bots, scraping, brute force, or system intrusion;</li>
+          <li>Spreading malware, phishing, spam, or manipulative actions;</li>
+          <li>Duplicating identity (impersonation) or exploiting system features.</li>
+        </ul>
+        <p>Violations may result in permanent blocking without compensation.</p>
+        <h2>F. Disclaimer</h2>
+        <p>The platform is provided “as is” with no explicit or implicit guarantees regarding performance, availability of services, or continuity of features.</p>
+        <p>The development team is not responsible for:</p>
+        <ul>
+          <li>Loss of tokens, data, or digital assets due to personal error;</li>
+          <li>Downtime, or logical errors of the user;</li>
+          <li>External activity caused by third parties beyond the control of the developer;</li>
+          <li>Financial, legal, or reputational losses arising from the use of the platform.</li>
+        </ul>
+        <p>Users are advised not to store any important value in this system and to act with full personal responsibility.</p>
+        <h2>G. Changes to Terms</h2>
+        <p>Lotto Chain reserves the right to change, revise, or update any or all of the contents of this document at any time without immediate notice.</p>
+        <p>The latest version is always available on the official channel.</p>
+        <p>Users are responsible for monitoring updates regularly.</p>
+        <p>Continued use is considered a form of acceptance of the latest changes.</p>
+        <p>This document is an integral part of Lotto Chain 2025 legality policy.<br><br>
+        <center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+        <div class="modal-footer" id="modalFooter">
+          <label for="agreeCheckbox">
+            <input type="checkbox" id="agreeCheckbox">
+            I agree to the terms and conditions.
+          </label>
+          <button id="agreeButton" disabled>Click Continue</button>
+          <p id="warningMessage" style="color: #ff3333; display: none;">Please agree to the terms before proceeding.</p>
+        </div>
+      </div>
+    </div>
+
         <footer>
     <div class="social-icons">
         <a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i></a>
@@ -620,6 +808,97 @@
         clearTimeout(timeout);
         timeout = setTimeout(() => func(...args), wait);
       };
+    };
+
+      const element = document.getElementById(elementId);
+      if (isLoading) {
+        element.innerHTML = '<li class="loading">Loading...</li>';
+      } else if (element.innerHTML.includes('class="loading"')) {
+        element.innerHTML = '';
+      }
+    };
+
+    const toggleSectionsVisibility = (isConnected) => {
+      document.querySelectorAll('.section').forEach((section, index) => {
+        if (index === 0) return; // Skip Wallet Connection section
+        section.classList.toggle('hidden', !isConnected);
+      });
+    };
+
+    const debounce = (func, wait) => {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+      };
+    };
+
+    // Modal Logic
+    const checkIfUserAgreed = (address) => {
+      return localStorage.getItem(`userAgreed_${address}`) === 'true';
+    };
+
+    const showModal = () => {
+      const modal = document.getElementById('termsModal');
+      const modalFooter = document.getElementById('modalFooter');
+      const agreeCheckbox = document.getElementById('agreeCheckbox');
+      const agreeButton = document.getElementById('agreeButton');
+      modal.style.display = 'block';
+      modalFooter.style.display = 'none'; // Sembunyikan footer saat modal muncul
+      agreeCheckbox.checked = false;
+      agreeButton.disabled = true;
+    };
+
+    const hideModal = () => {
+      const modal = document.getElementById('termsModal');
+      modal.style.display = 'none';
+    };
+
+    // Deteksi scroll untuk menampilkan footer
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.addEventListener('scroll', () => {
+      const scrollPosition = modalContent.scrollTop + modalContent.clientHeight;
+      const scrollHeight = modalContent.scrollHeight;
+      if (scrollPosition >= scrollHeight - 10) {
+        document.getElementById('modalFooter').style.display = 'block';
+      }
+    });
+
+    // Aktifkan tombol setuju saat checkbox dicentang
+    const handleCheckboxChange = () => {
+      const agreeButton = document.getElementById('agreeButton');
+      const agreeCheckbox = document.getElementById('agreeCheckbox');
+      const warningMessage = document.getElementById('warningMessage');
+      agreeButton.disabled = !agreeCheckbox.checked;
+      warningMessage.style.display = agreeCheckbox.checked ? 'none' : 'block';
+    };
+
+    // Connect Wallet Logic
+    const connectWallet = async () => {
+      if (!window.ethereum) {
+        alert('MetaMask is not installed. Please install MetaMask to use this DApp.');
+        return;
+      }
+
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        userAccount = accounts[0];
+        const isUserAgreed = checkIfUserAgreed(userAccount);
+
+        if (!isUserAgreed) {
+          showModal();
+        } else {
+          await initWeb3(true); // Force connect jika sudah setuju
+          await handleReferralFromURL();
+        }
+      } catch (error) {
+        console.error('Error connecting wallet:', error);
+        if (error.code === 4001) {
+          alert('Connection rejected. Please approve the connection in MetaMask.');
+        } else {
+          alert('Failed to connect wallet. Please try again.');
+        }
+      }
     };
 
     // Inisialisasi Web3
@@ -738,6 +1017,26 @@
     }
   }
 };
+
+    // Event Listener untuk Modal
+    document.getElementById('agreeCheckbox').addEventListener('change', handleCheckboxChange);
+    document.getElementById('agreeButton').addEventListener('click', async () => {
+      const agreeCheckbox = document.getElementById('agreeCheckbox');
+      const warningMessage = document.getElementById('warningMessage');
+      if (agreeCheckbox.checked && userAccount) {
+        localStorage.setItem(`userAgreed_${userAccount}`, 'true');
+        hideModal();
+        await initWeb3(true);
+      } else {
+        warningMessage.style.display = 'block';
+      }
+    });
+
+    // Pastikan modal tidak muncul saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('termsModal').style.display = 'none';
+    });
+    
     const setAutomaticReferralId = async () => {
   if (!userAccount) return;
   try {
