@@ -263,19 +263,20 @@
   </div>
 
   <script>
-  function toggleMenu() {
-    const menu = document.getElementById('nav-menu');
-    menu.classList.toggle('active');
+  function toggleDropdown(event) {
+    event.stopPropagation(); // cegah menutup langsung
+    const dropdown = event.target.closest('.dropdown');
+    dropdown.classList.toggle('open');
   }
 
-  const sections = ['intro', 'setup', 'usage', 'api'];
-  let currentSection = 0;
-
-  function navigateSection(direction) {
-    currentSection = Math.min(Math.max(0, currentSection + direction), sections.length - 1);
-    const target = document.getElementById(sections[currentSection]);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  }
+  // Tutup dropdown kalau klik di luar
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.dropdown.open').forEach(d => {
+      if (!d.contains(e.target)) {
+        d.classList.remove('open');
+      }
+    });
+  });
   </script>
 </body>
 </html>
