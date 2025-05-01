@@ -17,21 +17,17 @@
       background: #fff;
       color: #222;
       display: flex;
-      min-height: 100vh;
       flex-direction: column;
+      min-height: 100vh;
     }
 
     nav {
       background: #f0f0f0;
       padding: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
 
     nav h1 {
-      color: #000;
       font-size: 24px;
       margin-bottom: 15px;
     }
@@ -47,21 +43,26 @@
       color: #333;
       text-decoration: none;
       font-weight: 500;
-      transition: 0.3s;
     }
 
-    nav ul li a:hover {
-      color: #007bff;
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      margin-bottom: 10px;
     }
 
     .container {
       display: flex;
-      flex: 1;
       flex-direction: column;
+      flex: 1;
+      padding: 20px;
     }
 
     main {
-      padding: 20px;
+      flex: 1;
     }
 
     .section {
@@ -77,22 +78,13 @@
       margin-bottom: 10px;
     }
 
-    .section p {
-      line-height: 1.6;
-    }
-
     footer {
       background: #f0f0f0;
       padding: 20px;
+      border-top: 1px solid #ddd;
       display: flex;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-      border-top: 1px solid #ddd;
-    }
-
-    footer p {
-      color: #555;
     }
 
     .social-icons a {
@@ -100,18 +92,24 @@
       margin-left: 15px;
       font-size: 18px;
       text-decoration: none;
-      transition: 0.3s;
     }
 
-    .social-icons a:hover {
-      color: #007bff;
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Desktop view */
+    /* Desktop Styles */
     @media (min-width: 768px) {
       body {
         flex-direction: row;
@@ -123,44 +121,27 @@
         position: fixed;
         top: 0;
         left: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 30px 20px;
-      }
-
-      nav h1 {
-        margin-bottom: 30px;
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 15px;
       }
 
       .container {
         margin-left: 250px;
         padding: 30px;
-      }
-
-      main {
-        padding: 30px 0;
-        max-width: 1000px;
+        max-width: calc(100% - 250px);
       }
 
       footer {
-        position: static;
         margin-left: 250px;
+        width: calc(100% - 250px);
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav>
     <h1>Futurify Docs</h1>
-    <ul>
+    <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+    <ul id="nav-menu">
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#setup">Setup</a></li>
       <li><a href="#usage">Usage</a></li>
@@ -168,9 +149,7 @@
     </ul>
   </nav>
 
-  <!-- Main + Footer wrapper -->
   <div class="container">
-    <!-- Main Content -->
     <main>
       <section class="section" id="intro">
         <h2>Introduction</h2>
@@ -193,7 +172,6 @@
       </section>
     </main>
 
-    <!-- Footer -->
     <footer>
       <p>&copy; 2025 Futurify Docs. All rights reserved.</p>
       <div class="social-icons">
@@ -205,5 +183,11 @@
     </footer>
   </div>
 
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('nav-menu');
+      menu.classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
