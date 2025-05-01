@@ -851,71 +851,70 @@
 
     // Modal Logic
     const checkIfUserAgreed = (address) => {
-      return localStorage.getItem(`userAgreed_${address}`) === 'true';
-    };
+  return localStorage.getItem(`userAgreed_${address}`) === 'true';
+};
 
-    const showModal = () => {
-      const modal = document.getElementById('termsModal');
-      const modalFooter = document.getElementById('modalFooter');
-      const agreeCheckbox = document.getElementById('agreeCheckbox');
-      const agreeButton = document.getElementById('agreeButton');
-      modal.style.display = 'block';
-      modalFooter.style.display = 'none'; // Sembunyikan footer saat modal muncul
-      agreeCheckbox.checked = false;
-      agreeButton.disabled = true;
-    };
+const showModal = () => {
+  const modal = document.getElementById('termsModal');
+  const modalFooter = document.getElementById('modalFooter');
+  const agreeCheckbox = document.getElementById('agreeCheckbox');
+  const agreeButton = document.getElementById('agreeButton');
+  modal.style.display = 'block';
+  modalFooter.style.display = 'none';
+  agreeCheckbox.checked = false;
+  agreeButton.disabled = true;
+  document.querySelector('.modal-content').scrollTop = 0;
+};
 
-    const hideModal = () => {
-      const modal = document.getElementById('termsModal');
-      modal.style.display = 'none';
-    };
+const hideModal = () => {
+  const modal = document.getElementById('termsModal');
+  modal.style.display = 'none';
+};
 
-    // Deteksi scroll untuk menampilkan footer
-    const modalContent = document.querySelector('.modal-content');
-    modalContent.addEventListener('scroll', () => {
-      const scrollPosition = modalContent.scrollTop + modalContent.clientHeight;
-      const scrollHeight = modalContent.scrollHeight;
-      if (scrollPosition >= scrollHeight - 10) {
-        document.getElementById('modalFooter').style.display = 'block';
-      }
-    });
+const modalContent = document.querySelector('.modal-content');
+modalContent.addEventListener('scroll', () => {
+  const scrollPosition = modalContent.scrollTop + modalContent.clientHeight;
+  const scrollHeight = modalContent.scrollHeight;
+  if (scrollPosition >= scrollHeight - 10) {
+    document.getElementById('modalFooter').style.display = 'block';
+  }
+});
 
-    // Aktifkan tombol setuju saat checkbox dicentang
-    const handleCheckboxChange = () => {
-      const agreeButton = document.getElementById('agreeButton');
-      const agreeCheckbox = document.getElementById('agreeCheckbox');
-      const warningMessage = document.getElementById('warningMessage');
-      agreeButton.disabled = !agreeCheckbox.checked;
-      warningMessage.style.display = agreeCheckbox.checked ? 'none' : 'block';
-    };
+const handleCheckboxChange = () => {
+  const agreeButton = document.getElementById('agreeButton');
+  const agreeCheckbox = document.getElementById('agreeCheckbox');
+  const warningMessage = document.getElementById('warningMessage');
+  agreeButton.disabled = !agreeCheckbox.checked;
+  warningMessage.style.display = agreeCheckbox.checked ? 'none' : 'block';
+};
 
-    // Connect Wallet Logic
-    const connectWallet = async () => {
-      if (!window.ethereum) {
-        alert('MetaMask is not installed. Please install MetaMask to use this DApp.');
-        return;
-      }
+// Connect Wallet Logic (GANTI dengan ini)
+const connectWallet = async () => {
+  if (!window.ethereum) {
+    alert('MetaMask is not installed. Please install MetaMask to use this DApp.');
+    return;
+  }
 
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        userAccount = accounts[0];
-        const isUserAgreed = checkIfUserAgreed(userAccount);
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    userAccount = accounts[0];
+    const isUserAgreed = checkIfUserAgreed(userAccount);
 
-        if (!isUserAgreed) {
-          showModal();
-        } else {
-          await initWeb3(true); // Force connect jika sudah setuju
-          await handleReferralFromURL();
-        }
-      } catch (error) {
-        console.error('Error connecting wallet:', error);
-        if (error.code === 4001) {
-          alert('Connection rejected. Please approve the connection in MetaMask.');
-        } else {
-          alert('Failed to connect wallet. Please try again.');
-        }
-      }
-    };
+    if (!isUserAgreed) {
+      showModal();
+    } else {
+      await initWeb3(true);
+      await handleReferralFromURL();
+    }
+  } catch (error) {
+    console.error('Error connecting wallet:', error);
+    if (error.code === 4001) {
+      alert('Connection rejected. Please approve the connection in MetaMask.');
+    } else {
+      alert('Failed to connect wallet. Please try again.');
+    }
+  }
+};
 
     // Inisialisasi Web3
     const initWeb3 = async (forceConnect = false, retries = 3, delay = 3000) => {
@@ -1033,8 +1032,6 @@
     }
   }
 };
-
-    
     
     const setAutomaticReferralId = async () => {
   if (!userAccount) return;
@@ -1824,47 +1821,47 @@ globalHistoryContainer.addEventListener("scroll", async () => {
     };
     
     // Event Listeners
-    document.getElementById("walletButton").addEventListener("click", async () => {
-      if (userAccount) {
-        disconnectWallet();
-      } else {
-        await initWeb3(true);
-        await handleReferralFromURL();
-      }
-    });
-    document.getElementById("checkIn").addEventListener("click", checkIn);
-    document.getElementById("copyLink").addEventListener("click", copyReferralLink);
+    document.getElementById('walletButton').addEventListener('click', async () => {
+  if (userAccount) {
+    disconnectWallet();
+  } else {
+    await connectWallet();
+  }
+});
+document.getElementById('checkIn').addEventListener('click', checkIn);
+document.getElementById('copyLink').addEventListener('click', copyReferralLink);
 
-    window.addEventListener("load", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const referrerIdFromURL = urlParams.get("uid");
-      console.log("Stored referrerId from URL:", referrerIdFromURL);
+window.addEventListener('load', async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const referrerIdFromURL = urlParams.get('uid');
+  console.log('Stored referrerId from URL:', referrerIdFromURL);
 
-      if (!window.ethereum) {
-        alert("Please install MetaMask to use this DApp.");
-        return;
-      }
+  if (!window.ethereum) {
+    alert('Please install MetaMask to use this DApp.');
+    return;
+  }
 
-      // Event Listener untuk Modal
-    document.getElementById('agreeCheckbox').addEventListener('change', handleCheckboxChange);
-    document.getElementById('agreeButton').addEventListener('click', async () => {
-      const agreeCheckbox = document.getElementById('agreeCheckbox');
-      const warningMessage = document.getElementById('warningMessage');
-      if (agreeCheckbox.checked && userAccount) {
-        localStorage.setItem(`userAgreed_${userAccount}`, 'true');
-        hideModal();
-        await initWeb3(true);
-      } else {
-        warningMessage.style.display = 'block';
-      }
-    });
+  // Event Listener untuk Modal (TAMBAHKAN di sini)
+  document.getElementById('agreeCheckbox').addEventListener('change', handleCheckboxChange);
+  document.getElementById('agreeButton').addEventListener('click', async () => {
+    const agreeCheckbox = document.getElementById('agreeCheckbox');
+    const warningMessage = document.getElementById('warningMessage');
+    if (agreeCheckbox.checked && userAccount) {
+      localStorage.setItem(`userAgreed_${userAccount}`, 'true');
+      hideModal();
+      await initWeb3(true);
+      await handleReferralFromURL();
+    } else {
+      warningMessage.style.display = 'block';
+    }
+  });
 
-    // Pastikan modal tidak muncul saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('termsModal').style.display = 'none';
-    });
+  // Pastikan modal tidak muncul saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('termsModal').style.display = 'none';
+  });
 
-      await initWeb3(false);
+  await initWeb3(false);
 
       window.ethereum.on("accountsChanged", debounce(async (accounts) => {
         if (accounts.length === 0) {
