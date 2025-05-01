@@ -265,18 +265,11 @@
   </div>
 
   <script>
-  function toggleDropdown(event) {
-    event.stopPropagation(); // cegah menutup langsung
-    const dropdown = event.target.closest('.dropdown');
-    dropdown.classList.toggle('open');
-  }
-
-  // Tutup dropdown kalau klik di luar
-  document.addEventListener('click', function (e) {
-    document.querySelectorAll('.dropdown.open').forEach(d => {
-      if (!d.contains(e.target)) {
-        d.classList.remove('open');
-      }
+  document.querySelectorAll('.dropdown > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault(); // mencegah scroll ke anchor
+      const parent = this.parentElement;
+      parent.classList.toggle('open');
     });
   });
   </script>
