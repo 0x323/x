@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CheckInPoint Smart Contract Documentation</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      hljs.registerLanguage('solidity', window.hljsDefineSolidity);
       hljs.highlightAll();
     });
   </script>
@@ -18,190 +17,195 @@
     * {
       box-sizing: border-box;
       margin: 0;
-      padding: 0;
+      padding: *u;
     }
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f4f6f8;
-      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7fafc;
+      color: #2d3748;
       line-height: 1.6;
       display: flex;
       min-height: 100vh;
     }
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
     aside {
-      width: 260px;
-      background: #1a1a2e;
-      color: #fff;
-      padding: 20px;
+      width: 280px;
+      background: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      padding: 2rem 1.5rem;
       position: fixed;
       height: 100vh;
       overflow-y: auto;
-      transition: transform 0.3s ease, width 0.3s ease;
-      z-index: 1000;
+      transition: transform 0.3s ease;
     }
     aside.hidden {
       transform: translateX(-100%);
     }
     aside h2 {
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-      transition: font-size 0.3s ease;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
     }
     aside ul {
       list-style: none;
     }
     aside ul li {
-      margin-bottom: 10px;
+      margin-bottom: 0.75rem;
     }
     aside ul li a {
-      color: #b0b0c0;
+      color: #4a5568;
       text-decoration: none;
       font-size: 0.95rem;
-      transition: color 0.3s ease, padding-left 0.3s ease;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s ease, color 0.2s ease;
     }
     aside ul li a:hover {
-      color: #fff;
-      padding-left: 5px;
+      background: #edf2f7;
+      color: #2b6cb0;
     }
     .menu-toggle {
       display: none;
       position: fixed;
-      top: 15px;
-      left: 15px;
-      background: #007bff;
+      top: 1rem;
+      left: 1rem;
+      background: #2b6cb0;
       color: #fff;
       border: none;
-      padding: 8px;
-      border-radius: 5px;
+      padding: 0.75rem;
+      border-radius: 6px;
       cursor: pointer;
       z-index: 1001;
-      transition: background 0.3s ease;
     }
     .menu-toggle:hover {
-      background: #0056b3;
+      background: #2c5282;
     }
     main {
-      margin-left: 260px;
-      padding: 30px;
+      margin-left: 280px;
+      padding: 2rem;
       flex: 1;
-      max-width: 100%;
+      background: #f7fafc;
       transition: margin-left 0.3s ease, padding 0.3s ease;
     }
     section {
-      margin-bottom: 30px;
-      background: #fff;
-      padding: 20px;
+      margin-bottom: 2rem;
+      background: #ffffff;
+      padding: 1.5rem;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    section:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     section h2 {
-      font-size: 1.6rem;
-      color: #1a1a2e;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #007bff;
-      padding-bottom: 5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
     }
     section h3 {
-      font-size: 1.3rem;
-      color: #333;
-      margin: 15px 0 10px;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #4a5568;
+      margin: 1rem 0 0.5rem;
     }
     section p {
       font-size: 0.95rem;
-      color: #444;
-      margin-bottom: 12px;
+      color: #4a5568;
+      margin-bottom: 1rem;
     }
     section ul {
       list-style: disc;
-      margin-left: 20px;
-      margin-bottom: 12px;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
     }
     section ul li {
-      margin-bottom: 6px;
       font-size: 0.9rem;
+      margin-bottom: 0.5rem;
     }
     pre {
-      background: #2d2d44;
-      padding: 15px;
-      border-radius: 5px;
+      background: #1a202c;
+      padding: 1rem;
+      border-radius: 6px;
       overflow-x: auto;
-      margin-bottom: 12px;
+      margin-bottom: 1rem;
       font-size: 0.85rem;
     }
     code {
-      font-family: 'Consolas', monospace;
+      font-family: 'JetBrains Mono', monospace;
     }
     .code-description {
-      font-size: 0.85rem;
-      color: #555;
-      background: #f0f0f0;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      background: #edf2f7;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 15px;
-      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
     }
     table th, table td {
-      border: 1px solid #ddd;
-      padding: 8px;
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem;
       text-align: left;
     }
     table th {
-      background: #007bff;
+      background: #2b6cb0;
       color: #fff;
+      font-weight: 500;
     }
     .btn-copy {
-      background: #007bff;
+      background: #2b6cb0;
       color: #fff;
       border: none;
-      padding: 6px 10px;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.85rem;
-      margin-top: 8px;
-      transition: background 0.3s ease;
+      transition: background 0.2s ease;
     }
     .btn-copy:hover {
-      background: #0056b3;
+      background: #2c5282;
     }
     nav.pagination {
-      text-align: center;
-      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
     }
     nav.pagination a {
-      margin: 0 6px;
-      padding: 8px 14px;
+      padding: 0.5rem 1rem;
       text-decoration: none;
-      background: #007bff;
+      background: #2b6cb0;
       color: #fff;
-      border-radius: 5px;
-      font-size: 0.85rem;
-      transition: background 0.3s ease, transform 0.3s ease;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
     }
     nav.pagination a:hover {
-      background: #0056b3;
-      transform: scale(1.05);
+      background: #2c5282;
     }
     @media (max-width: 768px) {
       aside {
-        width: 80%;
-        max-width: 300px;
+        width: 75%;
+        max-width: 280px;
         transform: translateX(-100%);
       }
       aside.active {
         transform: translateX(0);
       }
       aside h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
       aside ul li a {
         font-size: 0.9rem;
@@ -211,25 +215,25 @@
       }
       main {
         margin-left: 0;
-        padding: 20px;
+        padding: 1.5rem;
       }
       section h2 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
       section h3 {
         font-size: 1.1rem;
       }
       section p, section ul li, table th, table td {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
       }
       pre {
         font-size: 0.75rem;
       }
       .code-description {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
       }
       table th, table td {
-        padding: 6px;
+        padding: 0.5rem;
       }
     }
     @media (max-width: 480px) {
@@ -237,14 +241,14 @@
         width: 100%;
       }
       main {
-        padding: 15px;
+        padding: 1rem;
       }
       section {
-        padding: 15px;
+        padding: 1rem;
       }
       nav.pagination a {
-        padding: 6px 10px;
-        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -253,97 +257,98 @@
   <button class="menu-toggle" onclick="toggleMenu()">
     <i class="fas fa-bars"></i>
   </button>
-  <aside id="sidebar" class="hidden">
-    <h2>CheckInPoint Docs</h2>
-    <ul>
-      <li><a href="#overview" onclick="toggleMenu()">Overview</a></li>
-      <li><a href="#tokenomics" onclick="toggleMenu()">Tokenomics</a></li>
-      <li><a href="#data-structures" onclick="toggleMenu()">Data Structures</a></li>
-      <li><a href="#checkin" onclick="toggleMenu()">Check-In System</a</li>
-      <li><a href="#referral" onclick="toggleMenu()">Referral System</a></li>
-      <li><a href="#betting" onclick="toggleMenu()">Betting System</a></li>
-      <li><a href="#events" onclick="toggleMenu()">Events</a></li>
-      <li><a href="#api" onclick="toggleMenu()">API Methods</a></li>
-      <li><a href="#errors" onclick="toggleMenu()">Error Handling</a></li>
-      <li><a href="#usage" onclick="toggleMenu()">Frontend Integration</a></li>
-    </ul>
-  </aside>
-  <main>
-    <section id="overview">
-      <h2>1. Overview</h2>
-      <p>
-        The <strong>CheckInPoint</strong> smart contract, deployed on Sepolia Base, is a gamified token system promoting user engagement via:
-      </p>
+  <div class="container">
+    <aside id="sidebar" class="hidden">
+      <h2>CheckInPoint Docs</h2>
       <ul>
-        <li><strong>Daily Check-Ins</strong>: Earn 1 Point daily.</li>
-        <li><strong>Referral Program</strong>: Earn 5 Points per referee bet.</li>
-        <li><strong>Betting Game</strong>: Bet daily with rewards based on number prefixes.</li>
+        <li><a href="#overview" onclick="toggleMenu()">Overview</a></li>
+        <li><a href="#tokenomics" onclick="toggleMenu()">Tokenomics</a></li>
+        <li><a href="#data-structures" onclick="toggleMenu()">Data Structures</a></li>
+        <li><a href="#checkin" onclick="toggleMenu()">Check-In System</a></li>
+        <li><a href="#referral" onclick="toggleMenu()">Referral System</a></li>
+        <li><a href="#betting" onclick="toggleMenu()">Betting System</a></li>
+        <li><a href="#events" onclick="toggleMenu()">Events</a></li>
+        <li><a href="#api" onclick="toggleMenu()">API Methods</a></li>
+        <li><a href="#errors" onclick="toggleMenu()">Error Handling</a></li>
+        <li><a href="#usage" onclick="toggleMenu()">Frontend Integration</a></li>
       </ul>
-      <p>
-        Uses "Point" token (18 decimals), with direct transfers disabled.
-      </p>
-    </section>
+    </aside>
+    <main>
+      <section id="overview">
+        <h2>1. Overview</h2>
+        <p>
+          The <strong>CheckInPoint</strong> smart contract, deployed on the Sepolia Base network, is a gamified token system designed to encourage user engagement through:
+        </p>
+        <ul>
+          <li><strong>Daily Check-Ins</strong>: Users earn 1 Point by checking in once per day.</li>
+          <li><strong>Referral Program</strong>: Users earn 5 Points when their referees place bets.</li>
+          <li><strong>Betting Game</strong>: Users can place daily bets with rewards based on number prefixes.</li>
+        </ul>
+        <p>
+          The contract uses a token named "Point" with 18 decimals. Direct token transfers are disabled to control distribution.
+        </p>
+      </section>
 
-    <section id="tokenomics">
-      <h2>2. Tokenomics</h2>
-      <p>Token parameters and constants:</p>
-      <table>
-        <tr>
-          <th>Parameter</th>
-          <th>Value</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td>Name</td>
-          <td>Point</td>
-          <td>Token name.</td>
-        </tr>
-        <tr>
-          <td>Symbol</td>
-          <td>Point</td>
-          <td>Token symbol.</td>
-        </tr>
-        <tr>
-          <td>Decimals</td>
-          <td>18</td>
-          <td>Token precision.</td>
-        </tr>
-        <tr>
-          <td>Total Supply</td>
-          <td>Dynamic</td>
-          <td>Increases with minting.</td>
-        </tr>
-        <tr>
-          <td>Points per Check-In</td>
-          <td>1 Point</td>
-          <td>Daily check-in reward.</td>
-        </tr>
-        <tr>
-          <td>Bet Cost</td>
-          <td>1 Point</td>
-          <td>Cost per bet instance.</td>
-        </tr>
-        <tr>
-          <td>Bet Reward</td>
-          <td>10 Points</td>
-          <td>Base bet reward.</td>
-        </tr>
-        <tr>
-          <td>Referral Reward</td>
-          <td>5 Points</td>
-          <td>Referral reward.</td>
-        </tr>
-      </table>
-    </section>
+      <section id="tokenomics">
+        <h2>2. Tokenomics</h2>
+        <p>Key parameters and constants of the token system:</p>
+        <table>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>Point</td>
+            <td>Token name.</td>
+          </tr>
+          <tr>
+            <td>Symbol</td>
+            <td>Point</td>
+            <td>Token symbol.</td>
+          </tr>
+          <tr>
+            <td>Decimals</td>
+            <td>18</td>
+            <td>Token precision.</td>
+          </tr>
+          <tr>
+            <td>Total Supply</td>
+            <td>Dynamic</td>
+            <td>Increases with minting.</td>
+          </tr>
+          <tr>
+            <td>Points per Check-In</td>
+            <td>1 Point</td>
+            <td>Reward for daily check-in.</td>
+          </tr>
+          <tr>
+            <td>Bet Cost</td>
+            <td>1 Point</td>
+            <td>Cost per bet instance.</td>
+          </tr>
+          <tr>
+            <td>Bet Reward</td>
+            <td>10 Points</td>
+            <td>Base reward for bets.</td>
+          </tr>
+          <tr>
+            <td>Referral Reward</td>
+            <td>5 Points</td>
+            <td>Reward for referrals.</td>
+          </tr>
+        </table>
+      </section>
 
-    <section id="data-structures">
-      <h2>3. Data Structures</h2>
-      <p>Structures for managing contract data:</p>
-      <h3>Bet</h3>
-      <div class="code-description">
-        Stores details of a user's bet, including their address, chosen number, cost, reward, and timestamp.
-      </div>
-      <pre><code class="language-solidity">
+      <section id="data-structures">
+        <h2>3. Data Structures</h2>
+        <p>The contract uses the following data structures to manage data:</p>
+        <h3>Bet</h3>
+        <div class="code-description">
+          Stores details of a user's bet, including their address, the chosen number, cost, reward, and timestamp.
+        </div>
+        <pre><code class="language-solidity">
 struct Bet {
     address user;
     string number;
@@ -351,13 +356,13 @@ struct Bet {
     uint256 reward;
     uint256 timestamp;
 }
-      </code></pre>
+        </code></pre>
 
-      <h3>ReferralInfo</h3>
-      <div class="code-description">
-        Tracks referral data: user's referral ID, referrer's ID and address, list of referees, and referral balance.
-      </div>
-      <pre><code class="language-solidity">
+        <h3>ReferralInfo</h3>
+        <div class="code-description">
+          Tracks referral data, including the user's referral ID, their referrer's ID and address, list of referees, and accumulated referral balance.
+        </div>
+        <pre><code class="language-solidity">
 struct ReferralInfo {
     string referralId;
     string referrerId;
@@ -365,32 +370,32 @@ struct ReferralInfo {
     address[] referees;
     uint256 referralBalance;
 }
-      </code></pre>
+        </code></pre>
 
-      <h3>CheckInLog</h3>
-      <div class="code-description">
-        Records each check-in with user address, UTC day, timestamp, and reward.
-      </div>
-      <pre><code class="language-solidity">
+        <h3>CheckInLog</h3>
+        <div class="code-description">
+          Records each check-in event with the user's address, UTC day, timestamp, and reward amount.
+        </div>
+        <pre><code class="language-solidity">
 struct CheckInLog {
     address user;
     uint256 dayUTC;
     uint256 timestamp;
     uint256 reward;
 }
-      </code></pre>
-    </section>
+        </code></pre>
+      </section>
 
-    <section id="checkin">
-      <h2>4. Check-In System</h2>
-      <p>
-        Earn <strong>1 Point</strong> by checking in once per UTC day.
-      </p>
-      <h3>Main Function</h3>
-      <div class="code-description">
-        Mints 1 Point if the user hasn't checked in today, updates the last check-in day, and logs the event.
-      </div>
-      <pre><code class="language-solidity">
+      <section id="checkin">
+        <h2>4. Check-In System</h2>
+        <p>
+          Users can check in once per UTC day to earn <strong>1 Point</strong>. The system prevents multiple check-ins within the same day.
+        </p>
+        <h3>Main Function</h3>
+        <div class="code-description">
+          The <code>checkIn</code> function checks if the user has already checked in today, mints 1 Point if not, updates the last check-in day, and logs the event.
+        </div>
+        <pre><code class="language-solidity">
 function checkIn() public {
     uint256 currentDayUTC = block.timestamp / 1 days;
     require(_lastCheckIn[msg.sender] < currentDayUTC, "You have already checked in today");
@@ -408,38 +413,38 @@ function checkIn() public {
     emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);
     emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);
 }
-      </code></pre>
-      <ul>
-        <li><strong>Logic</strong>: Checks daily limit, mints reward, logs check-in.</li>
-        <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
-        <li><strong>Constraint</strong>: One check-in per day.</li>
-      </ul>
-      <h3>Example</h3>
-      <div class="code-description">
-        Calls the check-in function using web3.js to earn 1 Point.
-      </div>
-      <pre><code class="language-javascript">
+        </code></pre>
+        <ul>
+          <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
+          <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
+          <li><strong>Constraint</strong>: One check-in per UTC day.</li>
+        </ul>
+        <h3>Example</h3>
+        <div class="code-description">
+          This JavaScript code uses web3.js to call the <code>checkIn</code> function, enabling a user to check in and earn 1 Point.
+        </div>
+        <pre><code class="language-javascript">
 const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.checkIn().send({ from: userAddress });
-      </code></pre>
-      <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-      <h3>View Functions</h3>
-      <ul>
-        <li><code>getCheckInLog(address user, uint256 index)</code>: Get check-in log.</li>
-        <li><code>getCheckInCount(address user)</code>: Total check-ins.</li>
-      </ul>
-    </section>
+        </code></pre>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
+          <li><code>getCheckInLog(address user, uint256 index)</code>: Retrieves a specific check-in log.</li>
+          <li><code>getCheckInCount(address user)</code>: Returns the total number of check-ins.</li>
+        </ul>
+      </section>
 
-    <section id="referral">
-      <h2>5. Referral System</h2>
-      <p>
-        Set a unique referral ID and earn <strong>5 Points</strong> when referees bet.
-      </p>
-      <h3>Main Functions</h3>
-      <div class="code-description">
-        <code>setReferralId</code> sets a unique ID; <code>setReferralById</code> links a user to a referrer, ensuring no self-referrals.
-      </div>
-      <pre><code class="language-solidity">
+      <section id="referral">
+        <h2>5. Referral System</h2>
+        <p>
+          Users can set a unique referral ID and earn <strong>5 Points</strong> when their referees place bets.
+        </p>
+        <h3>Main Functions</h3>
+        <div class="code-description">
+          <code>setReferralId</code> assigns a unique referral ID to a user, and <code>setReferralById</code> links a user to a referrer, enforcing uniqueness and preventing self-referrals.
+        </div>
+        <pre><code class="language-solidity">
 function setReferralId(string memory referralId) public {
     require(bytes(referralIdOf[msg.sender]).length == 0, "You have already set a referral ID");
     require(userByReferralId[referralId] == address(0), "Referral ID already taken");
@@ -460,38 +465,44 @@ function setReferralById(string memory referralId) public {
     referees[referrer].push(msg.sender);
     emit Referred(msg.sender, referrer, referralId);
 }
-      </code></pre>
-      <ul>
-        <li><strong>Constraints</strong>: Unique ID, no self-referrals, one-time ID setting.</li>
-        <li><strong>Events</strong>: <code>ReferralIdSet</code>, <code>Referred</code>, <code>ReferralReward</code></li>
-      </ul>
-      <h3>Example</h3>
-      <div class="code-description">
-        Sets a referral ID and links a referee to it using web3.js.
-      </div>
-      <pre><code class="language-javascript">
+        </code></pre>
+        <ul>
+          <li><strong>Constraints</strong>:
+            <ul>
+              <li>Referral ID must be unique.</li>
+              <li>No self-referrals allowed.</li>
+              <li>Referral ID can only be set once.</li>
+            </ul>
+          </li>
+          <li><strong>Events</strong>: <code>ReferralIdSet</code>, <code>Referred</code>, <code>ReferralReward</code></li>
+        </ul>
+        <h3>Example</h3>
+        <div class="code-description">
+          This code sets a referral ID for a user and links another user as a referee using web3.js.
+        </div>
+        <pre><code class="language-javascript">
 const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.setReferralId("myid123").send({ from: userAddress });
 await contract.methods.setReferralById("myid123").send({ from: refereeAddress });
-      </code></pre>
-      <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-      <h3>View Functions</h3>
-      <ul>
-        <li><code>getRefereeCount(address referrer)</code>: Number of referees.</li>
-        <li><code>getReferees(address referrer)</code>: Referee addresses.</li>
-      </ul>
-    </section>
+        </code></pre>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
+          <li><code>getRefereeCount(address referrer)</code>: Returns the number of referees.</li>
+          <li><code>getReferees(address referrer)</code>: Returns the list of referee addresses.</li>
+        </ul>
+      </section>
 
-    <section id="betting">
-      <h2>6. Betting System</h2>
-      <p>
-        Bet once daily with a number (1-20 chars), multiplier (1-10), and payout. Costs <strong>1 Point</strong> per instance; rewards include a bonus for "00" or "01" prefixes.
-      </p>
-      <h3>Main Function</h3>
-      <div class="code-description">
-        Deducts bet cost, mints reward based on payout and number prefix, logs the bet, and awards referral rewards if applicable.
-      </div>
-      <pre><code class="language-solidity">
+      <section id="betting">
+        <h2>6. Betting System</h2>
+        <p>
+          Users can place a bet once per day with a number (1-20 characters), a multiplier (1-10), and a payout amount. Each bet costs <strong>1 Point</strong> per instance, with rewards based on the payout amount and a bonus for numbers starting with "00" or "01".
+        </p>
+        <h3>Main Function</h3>
+        <div class="code-description">
+          The <code>placeBet</code> function validates inputs, deducts the bet cost, mints the reward, logs the bet, and awards referral rewards if applicable.
+        </div>
+        <pre><code class="language-solidity">
 function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) public { 
     require(bytes(_number).length >= 1 && bytes(_number).length <= 20, "Invalid number input");
     require(_times > 0 && _times <= 10, "Bet times must be between 1 and 10");
@@ -534,156 +545,162 @@ function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) 
         emit ReferralReward(referrer, msg.sender, REFERRAL_REWARD, block.timestamp);
     }
 }
-      </code></pre>
-      <ul>
-        <li><strong>Parameters</strong>:
-          <ul>
-            <li><code>_number</code>: Bet string.</li>
-            <li><code>_times</code>: Multiplier (1-10).</li>
-            <li><code>_payoutAmount</code>: Base reward, plus bonus.</li>
-          </ul>
-        </li>
-        <li><strong>Constraints</strong>: One bet/day, sufficient balance, valid inputs.</li>
-        <li><strong>Events</strong>: <code>PlaceBet</code>, <code>Transfer</code>, <code>ReferralReward</code></li>
-      </ul>
-      <h3>Example</h3>
-      <div class="code-description">
-        Places a bet with number "01234", multiplier 2, and payout 3 Points.
-      </div>
-      <pre><code class="language-javascript">
+        </code></pre>
+        <ul>
+          <li><strong>Parameters</strong>:
+            <ul>
+              <li><code>_number</code>: String for the bet (1-20 characters).</li>
+              <li><code>_times</code>: Bet multiplier (1-10).</li>
+              <li><code>_payoutAmount</code>: Base reward, increased by 10 Points for "00" or "01" prefixes.</li>
+            </ul>
+          </li>
+          <li><strong>Constraints</strong>:
+            <ul>
+              <li>One bet per UTC day.</li>
+              <li>Sufficient balance for the total cost.</li>
+              <li>Valid number and multiplier inputs.</li>
+            </ul>
+          </li>
+          <li><strong>Events</strong>: <code>PlaceBet</code>, <code>Transfer</code>, <code>ReferralReward</code> (if applicable)</li>
+        </ul>
+        <h3>Example</h3>
+        <div class="code-description">
+          This code places a bet with the number "01234", a multiplier of 2, and a payout of 3 Points using web3.js.
+        </div>
+        <pre><code class="language-javascript">
 const contract = new web3.eth.Contract(abi, contractAddress);
 await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
-      </code></pre>
-      <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-      <h3>View Functions</h3>
-      <ul>
-        <li><code>getUserBetCount(address user)</code>: Number of bets.</li>
-        <li><code>getUserBet(address user, uint256 index)</code>: Bet details.</li>
-        <li><code>getBetHistoryLength()</code>: Total bets.</li>
-        <li><code>getBet(uint256 index)</code>: Global bet details.</li>
-      </ul>
-    </section>
+        </code></pre>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+        <h3>View Functions</h3>
+        <ul>
+          <li><code>getUserBetCount(address user)</code>: Returns the number of bets placed by a user.</li>
+          <li><code>getUserBet(address user, uint256 index)</code>: Retrieves a specific bet for a user.</li>
+          <li><code>getBetHistoryLength()</code>: Returns the total number of bets in the global history.</li>
+          <li><code>getBet(uint256 index)</code>: Retrieves a specific bet from the global history.</li>
+        </ul>
+      </section>
 
-    <section id="events">
-      <h2>7. Events</h2>
-      <p>Tracks contract actions:</p>
-      <table>
-        <tr>
-          <th>Event</th>
-          <th>Parameters</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><code>Transfer</code></td>
-          <td><code>address indexed from, address indexed to, uint256 value</code></td>
-          <td>Token mint/burn.</td>
-        </tr>
-        <tr>
-          <td><code>TokenMinted</code></td>
-          <td><code>address indexed to, uint256 amount</code></td>
-          <td>Tokens minted.</td>
-        </tr>
-        <tr>
-          <td><code>CheckIn</code></td>
-          <td><code>address indexed user, uint256 amount, uint256 timestamp</code></td>
-          <td>Check-in success.</td>
-        </tr>
-        <tr>
-          <td><code>CheckInLogCreated</code></td>
-          <td><code>address indexed user, uint256 dayUTC, uint256 timestamp, uint256 reward</code></td>
-          <td>Check-in logged.</td>
-        </tr>
-        <tr>
-          <td><code>ReferralReward</code></td>
-          <td><code>address indexed referrer, address indexed referee, uint256 reward, uint256 timestamp</code></td>
-          <td>Referral reward.</td>
-        </tr>
-        <tr>
-          <td><code>PlaceBet</code></td>
-          <td><code>address indexed user, string number, uint256 cost, uint256 reward, uint256 timestamp</code></td>
-          <td>Bet placed.</td>
-        </tr>
-        <tr>
-          <td><code>Referred</code></td>
-          <td><code>address indexed referee, address indexed referrer, string referralId</code></td>
-          <td>User referred.</td>
-        </tr>
-        <tr>
-          <td><code>ReferralIdSet</code></td>
-          <td><code>address indexed user, string referralId</code></td>
-          <td>Referral ID set.</td>
-        </tr>
-      </table>
-    </section>
+      <section id="events">
+        <h2>7. Events</h2>
+        <p>The contract emits events to track actions:</p>
+        <table>
+          <tr>
+            <th>Event</th>
+            <th>Parameters</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>Transfer</code></td>
+            <td><code>address indexed from, address indexed to, uint256 value</code></td>
+            <td>Emitted when tokens are minted or burned.</td>
+          </tr>
+          <tr>
+            <td><code>TokenMinted</code></td>
+            <td><code>address indexed to, uint256 amount</code></td>
+            <td>Emitted when tokens are minted.</td>
+          </tr>
+          <tr>
+            <td><code>CheckIn</code></td>
+            <td><code>address indexed user, uint256 amount, uint256 timestamp</code></td>
+            <td>Emitted on successful check-in.</td>
+          </tr>
+          <tr>
+            <td><code>CheckInLogCreated</code></td>
+            <td><code>address indexed user, uint256 dayUTC, uint256 timestamp, uint256 reward</code></td>
+            <td>Logs check-in details.</td>
+          </tr>
+          <tr>
+            <td><code>ReferralReward</code></td>
+            <td><code>address indexed referrer, address indexed referee, uint256 reward, uint256 timestamp</code></td>
+            <td>Emitted when a referrer earns a reward.</td>
+          </tr>
+          <tr>
+            <td><code>PlaceBet</code></td>
+            <td><code>address indexed user, string number, uint256 cost, uint256 reward, uint256 timestamp</code></td>
+            <td>Emitted when a bet is placed.</td>
+          </tr>
+          <tr>
+            <td><code>Referred</code></td>
+            <td><code>address indexed referee, address indexed referrer, string referralId</code></td>
+            <td>Emitted when a user is referred.</td>
+          </tr>
+          <tr>
+            <td><code>ReferralIdSet</code></td>
+            <td><code>address indexed user, string referralId</code></td>
+            <td>Emitted when a referral ID is set.</td>
+          </tr>
+        </table>
+      </section>
 
-    <section id="api">
-      <h2>8. API Methods</h2>
-      <p>Contract interaction functions:</p>
-      <h3>Core Token</h3>
-      <ul>
-        <li><code>totalSupply() returns (uint256)</code>: Total supply.</li>
-        <li><code>balanceOf(address account) returns (uint256)</code>: Balance.</li>
-        <li><code>transfer(address, uint256)</code>: Disabled.</li>
-      </ul>
-      <h3>Check-In</h3>
-      <ul>
-        <li><code>checkIn()</code>: Daily check-in.</li>
-        <li><code>getCheckInLog(address user, uint256 index) returns (CheckInLog)</code>: Check-in log.</li>
-        <li><code>getCheckInCount(address user) returns (uint256)</code>: Check-in count.</li>
-      </ul>
-      <h3>Referral</h3>
-      <ul>
-        <li><code>setReferralId(string referralId)</code>: Set ID.</li>
-        <li><code>setReferralById(string referralId)</code>: Link referrer.</li>
-        <li><code>getRefereeCount(address referrer) returns (uint256)</code>: Referee count.</li>
-        <li><code>getReferees(address referrer) returns (address[])</code>: Referee list.</li>
-      </ul>
-      <h3>Betting</h3>
-      <ul>
-        <li><code>placeBet(string _number, uint256 _times, uint256 _payoutAmount)</code>: Place bet.</li>
-        <li><code>getUserBetCount(address user) returns (uint256)</code>: Bet count.</li>
-        <li><code>getUserBet(address user, uint256 index) returns (Bet)</code>: Bet details.</li>
-        <li><code>getBetHistoryLength() returns (uint256)</code>: Total bets.</li>
-        <li><code>getBet(uint256 index) returns (Bet)</code>: Global bet.</li>
-      </ul>
-      <h3>Utility</h3>
-      <ul>
-        <li><code>compareStrings(string a, string b) returns (bool)</code>: String comparison.</li>
-        <li><code>substring(string str, uint startIndex, uint endIndex) returns (string)</code>: Substring.</li>
-      </ul>
-    </section>
+      <section id="api">
+        <h2>8. API Methods</h2>
+        <p>The contract provides the following functions for interaction:</p>
+        <h3>Core Token Functions</h3>
+        <ul>
+          <li><code>totalSupply() returns (uint256)</code>: Returns the total token supply.</li>
+          <li><code>balanceOf(address account) returns (uint256)</code>: Returns the token balance of an account.</li>
+          <li><code>transfer(address, uint256)</code>: Disabled to prevent direct transfers.</li>
+        </ul>
+        <h3>Check-In Functions</h3>
+        <ul>
+          <li><code>checkIn()</code>: Performs a daily check-in.</li>
+          <li><code>getCheckInLog(address user, uint256 index) returns (CheckInLog)</code>: Retrieves a check-in log.</li>
+          <li><code>getCheckInCount(address user) returns (uint256)</code>: Returns the number of check-ins.</li>
+        </ul>
+        <h3>Referral Functions</h3>
+        <ul>
+          <li><code>setReferralId(string referralId)</code>: Sets a user's referral ID.</li>
+          <li><code>setReferralById(string referralId)</code>: Links a user to a referrer.</li>
+          <li><code>getRefereeCount(address referrer) returns (uint256)</code>: Returns the number of referees.</li>
+          <li><code>getReferees(address referrer) returns (address[])</code>: Returns the list of referees.</li>
+        </ul>
+        <h3>Betting Functions</h3>
+        <ul>
+          <li><code>placeBet(string _number, uint256 _times, uint256 _payoutAmount)</code>: Places a bet.</li>
+          <li><code>getUserBetCount(address user) returns (uint256)</code>: Returns the number of bets.</li>
+          <li><code>getUserBet(address user, uint256 index) returns (Bet)</code>: Retrieves a specific bet.</li>
+          <li><code>getBetHistoryLength() returns (uint256)</code>: Returns the total number of bets.</li>
+          <li><code>getBet(uint256 index) returns (Bet)</code>: Retrieves a bet from the global history.</li>
+        </ul>
+        <h3>Utility Functions</h3>
+        <ul>
+          <li><code>compareStrings(string a, string b) returns (bool)</code>: Compares two strings for equality.</li>
+          <li><code>substring(string str, uint startIndex, uint endIndex) returns (string)</code>: Extracts a substring.</li>
+        </ul>
+      </section>
 
-    <section id="errors">
-      <h2>9. Error Handling</h2>
-      <p>Errors for invalid actions:</p>
-      <ul>
-        <li><code>"You have already checked in today"</code>: Daily check-in limit.</li>
-        <li><code>"You have already set a referral ID"</code>: One-time ID.</li>
-        <li><code>"Referral ID already taken"</code>: Unique ID.</li>
-        <li><code>"You have already been referred"</code>: Single referrer.</li>
-        <li><code>"Referral ID not valid"</code>: Invalid ID.</li>
-        <li><code>"You cannot refer yourself"</code>: No self-referral.</li>
-        <li><code>"Invalid number input"</code>: Number 1-20 chars.</li>
-        <li><code>"Bet times must be between 1 and 10"</code>: Valid multiplier.</li>
-        <li><code>"Invalid payout amount"</code>: Positive payout.</li>
-        <li><code>"You can only place bet once per day"</code>: Daily bet limit.</li>
-        <li><code>"Insufficient token to place bet"</code>: Balance check.</li>
-        <li><code>"Index out of bounds"</code>: Valid index.</li>
-        <li><code>"Cannot mint to zero address"</code>: Valid address.</li>
-        <li><code>"Transfers are not allowed"</code>: No transfers.</li>
-      </ul>
-    </section>
+      <section id="errors">
+        <h2>9. Error Handling</h2>
+        <p>The contract includes the following error checks to handle invalid actions:</p>
+        <ul>
+          <li><code>"You have already checked in today"</code>: Prevents multiple check-ins in the same UTC day.</li>
+          <li><code>"You have already set a referral ID"</code>: Ensures referral IDs are set only once.</li>
+          <li><code>"Referral ID already taken"</code>: Enforces referral ID uniqueness.</li>
+          <li><code>"You have already been referred"</code>: Prevents changing referrers.</li>
+          <li><code>"Referral ID not valid"</code>: Ensures the referral ID exists.</li>
+          <li><code>"You cannot refer yourself"</code>: Prevents self-referrals.</li>
+          <li><code>"Invalid number input"</code>: Ensures bet number is 1-20 characters.</li>
+          <li><code>"Bet times must be between 1 and 10"</code>: Validates bet multiplier.</li>
+          <li><code>"Invalid payout amount"</code>: Ensures payout amount is positive.</li>
+          <li><code>"You can only place bet once per day"</code>: Limits bets to one per day.</li>
+          <li><code>"Insufficient token to place bet"</code>: Checks for sufficient balance.</li>
+          <li><code>"Index out of bounds"</code>: Prevents accessing invalid array indices.</li>
+          <li><code>"Cannot mint to zero address"</code>: Prevents minting to the zero address.</li>
+          <li><code>"Transfers are not allowed"</code>: Blocks direct token transfers.</li>
+        </ul>
+      </section>
 
-    <section id="usage">
-      <h2>10. Frontend Integration</h2>
-      <p>
-        Use web3.js or ethers.js for frontend integration.
-      </p>
-      <h3>Example</h3>
-      <div class="code-description">
-        Initializes web3, checks balance, performs check-in, sets referral ID, places bet, and retrieves check-in count.
-      </div>
-      <pre><code class="language-javascript">
+      <section id="usage">
+        <h2>10. Frontend Integration</h2>
+        <p>
+          The contract can be integrated into a frontend using <strong>web3.js</strong> or <strong>ethers.js</strong>. Below is an example using web3.js.
+        </p>
+        <h3>Example: Interaction Flow</h3>
+        <div class="code-description">
+          This script initializes a web3 instance, checks a user's balance, performs a check-in, sets a referral ID, places a bet, and retrieves the check-in count.
+        </div>
+        <pre><code class="language-javascript">
 const Web3 = require('web3');
 const web3 = new Web3('https://sepolia.base.org');
 const contractAddress = 'YOUR_CONTRACT_ADDRESS';
@@ -707,23 +724,24 @@ await contract.methods.placeBet("01234", 2, 3).send({ from: userAddress });
 // Get check-in count
 const checkInCount = await contract.methods.getCheckInCount(userAddress).call();
 console.log(`Total Check-Ins: ${checkInCount}`);
-      </code></pre>
-      <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
-    </section>
+        </code></pre>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">Copy Code</button>
+      </section>
 
-    <nav class="pagination">
-      <a href="#overview">1</a>
-      <a href="#tokenomics">2</a>
-      <a href="#data-structures">3</a>
-      <a href="#checkin">4</a>
-      <a href="#referral">5</a>
-      <a href="#betting">6</a>
-      <a href="#events">7</a>
-      <a href="#api">8</a>
-      <a href="#errors">9</a>
-      <a href="#usage">10</a>
-    </nav>
-  </main>
+      <nav class="pagination">
+        <a href="#overview">1</a>
+        <a href="#tokenomics">2</a>
+        <a href="#data-structures">3</a>
+        <a href="#checkin">4</a>
+        <a href="#referral">5</a>
+        <a href="#betting">6</a>
+        <a href="#events">7</a>
+        <a href="#api">8</a>
+        <a href="#errors">9</a>
+        <a href="#usage">10</a>
+      </nav>
+    </main>
+  </div>
   <script>
     function toggleMenu() {
       const sidebar = document.getElementById('sidebar');
@@ -751,4 +769,4 @@ console.log(`Total Check-Ins: ${checkInCount}`);
     });
   </script>
 </body>
-  </html>
+                                                                                                  </html>
