@@ -205,8 +205,8 @@
 
   <nav style="display: flex; justify-content: space-between; align-items: center;">
   <div class="nav-header" style="display: flex; align-items: center; gap: 10px;">
-    <img src="img/logo-gray.svg" style="height: 30px;">
-    <h1>Docs</h1>
+    <img src="img/logo-black.svg" style="height: 30px;">
+    <h1>Docs Beta</h1>
   </div>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 <ul id="nav-menu">
@@ -264,11 +264,18 @@
   </div>
 
   <script>
-  document.querySelectorAll('.dropdown > a').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault(); // mencegah scroll ke anchor
-      const parent = this.parentElement;
-      parent.classList.toggle('open');
+  function toggleDropdown(event) {
+    event.stopPropagation(); // cegah menutup langsung
+    const dropdown = event.target.closest('.dropdown');
+    dropdown.classList.toggle('open');
+  }
+
+  // Tutup dropdown kalau klik di luar
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.dropdown.open').forEach(d => {
+      if (!d.contains(e.target)) {
+        d.classList.remove('open');
+      }
     });
   });
   </script>
