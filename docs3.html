@@ -206,7 +206,7 @@
   <nav style="display: flex; justify-content: space-between; align-items: center;">
   <div class="nav-header" style="display: flex; align-items: center; gap: 10px;">
     <img src="img/logo-black.svg" style="height: 30px;">
-    <h1>Docs Beta</h1>
+    <h1>Docs Bet</h1>
   </div>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 <ul id="nav-menu">
@@ -264,20 +264,19 @@
   </div>
 
   <script>
-  function toggleDropdown(event) {
-    event.stopPropagation(); // cegah menutup langsung
-    const dropdown = event.target.closest('.dropdown');
-    dropdown.classList.toggle('open');
+  function toggleMenu() {
+    const menu = document.getElementById('nav-menu');
+    menu.classList.toggle('active');
   }
 
-  // Tutup dropdown kalau klik di luar
-  document.addEventListener('click', function (e) {
-    document.querySelectorAll('.dropdown.open').forEach(d => {
-      if (!d.contains(e.target)) {
-        d.classList.remove('open');
-      }
-    });
-  });
+  const sections = ['intro', 'setup', 'usage', 'api'];
+  let currentSection = 0;
+
+  function navigateSection(direction) {
+    currentSection = Math.min(Math.max(0, currentSection + direction), sections.length - 1);
+    const target = document.getElementById(sections[currentSection]);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
   </script>
 </body>
 </html>
