@@ -203,22 +203,17 @@
 </head>
 <body>
 
-  <nav style="display: flex; justify-content: space-between; align-items: center;">
-  <div class="nav-header" style="display: flex; align-items: center; gap: 10px;">
+  <div class="nav-header">
     <img src="img/logo-black.svg" style="height: 30px;">
     <h1>Docs Bet</h1>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-<ul id="nav-menu">
-  <li><a href="#intro">Introduction</a></li>
-  <li><a href="#setup">Setup</a></li>
-  <li><a href="#usage">Usage</a></li>
-  <li class="dropdown">
-    <button class="dropdown-toggle" onclick="toggleDropdown(event)">API</button>
-    <ul class="dropdown-menu">
-      <li><a href="#api-methods">Methods</a></li>
-      <li><a href="#api-options">Options</a></li>
-      <li><a href="#api-events">Events</a></li>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li><a href="#intro">Introduction</a></li>  
+      <li><a href="#setup">Setup</a></li>  
+      <li><a href="#usage">Usage</a></li>  
+      <li><a href="#api">API</a></li>
     </ul>
   </li>
 </ul>
@@ -263,20 +258,11 @@
     </footer>
   </div>
 
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById('nav-menu');
-    menu.classList.toggle('active');
-  }
-
-  const sections = ['intro', 'setup', 'usage', 'api'];
-  let currentSection = 0;
-
-  function navigateSection(direction) {
-    currentSection = Math.min(Math.max(0, currentSection + direction), sections.length - 1);
-    const target = document.getElementById(sections[currentSection]);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  }
+  <script>  
+    function toggleMenu() {  
+      const menu = document.getElementById('nav-menu');  
+      menu.classList.toggle('active');  
+    }  
   </script>
 </body>
 </html>
