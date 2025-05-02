@@ -167,7 +167,25 @@
   background: #808080;
   color: #000000;
 }
-    
+
+    table {
+      width: 100%;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 1rem;
+      text-align: left;
+    }
+    th {
+      background: #2b6cb0;
+      color: #fff;
+    }
+    tr:hover {
+      background: #f1f5f9;
+    }
   </style>
 </head>
 <body>
@@ -224,17 +242,19 @@ The <strong>Beta Testnet</strong> smart contract, deployed on the Sepolia Base n
       <section class="section" id="developers">
         <h2>For Developers</h2>
         <h3>Prerequisites</h3><br>
-<p>Make sure you have:</p>
+<p>Make sure you have:</p><br>
 <ol>
-<li><strong>Crypto Wallet</strong>:
+<li><strong>Crypto Wallet</strong>:<br>
 <ul>
 <li>Install <a href="https://metamask.io" target="_blank">MetaMask</a>.</li>
-<li>Add Sepolia Base network:
+<li>Add Sepolia Base Testnet network:
 <table>
 <tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>RPC URL</td><td>https://sepolia.base.org</td></tr>
+<tr><td>Name</td><td>Sepolia Base Testnet</td></tr>
 <tr><td>ID Chain</td><td>84532</td></tr>
 <tr><td>Symbol</td><td>ETH</td></tr>
+<tr><td>RPC URL</td><td>https://sepolia.base.org</td></tr>
+<tr><td>Explorer</td><td>https://sepolia.basescan.org</td></tr>
 </table>
 </li>
 <li>Get ETH Sepolia Base Testnet from.....</li>
