@@ -280,7 +280,7 @@
       <section class="section" id="faucet">
         <h2>5. Betting System</h2>
             <p>
-              Users can place a bet once per day with a number (1-20 characters), a multiplier (1-10), and a payout amount. Each bet costs <strong>1 Point</strong> per instance, with rewards based on the payout amount and a bonus for numbers starting with "00" or "01".
+              Users can place a bet once per day with a number (1-20 characters), a multiplier (1-10), and a payout amount.<br><br>Each bet costs <strong>1 Point</strong> per instance, with rewards based on the payout amount and a bonus for numbers starting with "00" or "01".
             </p>
              <br><p><span style="color: orange;">Note: However, we can modify this on the frontend.</span></p>
             <h3>Main Function</h3>
@@ -335,10 +335,10 @@
             <button class="btn-copy" data-clipboard-text="const contract = new web3.Contract(contract); contract.methods.placeBet("01234", 2, 3).send({ from: address })">Copy Code</button>
             <h3>View Functions</h3>
             <ul>
-              <li><code>getUserBetCount(address user)</code>: Returns the number of bets placed by a user.</li>
-              <li><code>getUserBet(address user, uint256 index)</code>: Retrieves a specific bet for a user.</li>
-              <li><code>getBetHistoryLength()</code>: Returns the total number of bets in the global history.</li>
-              <li><code>getBet(uint256 index)</code>: Retrieves a specific bet from the global history.</li>
+              <li><code>getUserBetCount(address user)</code>:<br>Returns the number of bets placed by a user.</li>
+              <li><code>getUserBet(address user, uint256 index)</code>:<br>Retrieves a specific bet for a user.</li>
+              <li><code>getBetHistoryLength()</code>:<br>Returns the total number of bets in the global history.</li>
+              <li><code>getBet(uint256 index)</code>:<br>Retrieves a specific bet from the global history.</li>
             </ul>
       </section>
 
