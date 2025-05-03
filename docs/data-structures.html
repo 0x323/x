@@ -152,26 +152,24 @@
   }
 }
 
-.nav-buttons {
+.more-btn {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.nav-link {
-  display: inline-block;
+  justify-content: center;
+  align-items: center;
   padding: 6px 20px;
   font-size: 12px;
   background: #333333;
   color: white;
+  border: none;
   border-radius: 25px;
-  text-decoration: none;
-  margin: 0 5px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.3s, color 0.3s;
 }
 
-.nav-link:hover {
+.more-btn:hover {
   background: #999999;
-  color: black;
+  color: #000000;
 }
   </style>
 </head>
@@ -206,7 +204,8 @@
     <main>
       <section class="section" id="overview">
         <h2>Data Structures</h2>
-        <h3>Overview</h3> <p> The <strong>HKBetaTestnet</strong> smart contract, deployed on the Sepolia Base network, is a gamification token system designed to drive user engagement through: </p> <ul> <li><strong>Daily Faucet Check-In</strong>: Users earn 1 Point by checking in to the faucet once per day.</li> <li><strong>Referral Program</strong>: Users earn 5 Points when their invited friend successfully places a bet, but if your invited friend does not place a bet, the referral point bonus will automatically be void</li> <li><strong>Betting Game</strong>: Users can place daily bets by earning points that can be accumulated.</li> </ul> <p> The contract uses a token called "Lpoint" with 18 decimal places. Direct token transfers are disabled to control distribution. </p>
+        <h3>Overview</h3><br>
+        <p> The <strong>HKBetaTestnet</strong> smart contract, deployed on the Sepolia Base network, is a gamification token system designed to drive user engagement through: </p> <ul> <li><strong>Daily Faucet Check-In</strong>: Users earn 1 Point by checking in to the faucet once per day.</li> <li><strong>Referral Program</strong>: Users earn 5 Points when their invited friend successfully places a bet, but if your invited friend does not place a bet, the referral point bonus will automatically be void</li> <li><strong>Betting Game</strong>: Users can place daily bets by earning points that can be accumulated.</li> </ul> <p> The contract uses a token called "Lpoint" with 18 decimal places. Direct token transfers are disabled to control distribution. </p>
       </section>
 
       <section class="section" id="setup">
@@ -225,9 +224,9 @@
       </section>
     </main>
 
-    <div class="nav-buttons">
-  <a href="docs/previous" class="nav-link">&lt; Prev</a>
-  <a href="docs/page" class="nav-link">Next &gt;</a>
+    <div class="nav-buttons">  
+  <button onclick="window.location.href='install'">&lt; Prev</button>  
+  <button onclick="window.location.href='deploy'">Next &gt;</button>  
     </div><br>
 
     <footer>
