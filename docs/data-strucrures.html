@@ -170,6 +170,25 @@
   background: #4d4d4d;
   color: black;
 }
+
+    table {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 1.5rem auto;
+      font-size: 0.9rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 1rem;
+      text-align: left;
+    }
+    th {
+      background: #2b6cb0;
+      color: #fff;
+    }
+    tr:hover {
+      background: #f1f5f9;
   </style>
 </head>
 <body>
@@ -216,8 +235,55 @@ The contract uses a token called "Lpoint" with 18 decimal places. Direct token t
       </section>
 
       <section class="section" id="setup">
-        <h2>Points</h2>
-        <p>Download the package, unzip the contents, and open <code>index.html</code> in your browser. Make sure your environment supports JavaScript and modern CSS features.</p>
+        <h2>2. Tokenomics</h2>
+            <p>Key parameters and constants of the token system:</p>
+            <table>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>Point</td>
+                <td>Token name.</td>
+              </tr>
+              <tr>
+                <td>Symbol</td>
+                <td>Point</td>
+                <td>Token symbol.</td>
+              </tr>
+              <tr>
+                <td>Decimals</td>
+                <td>18</td>
+                <td>Token precision.</td>
+              </tr>
+              <tr>
+                <td>Total Supply</td>
+                <td>Dynamic</td>
+                <td>Increases with minting.</td>
+              </tr>
+              <tr>
+                <td>Points per Check-In</td>
+                <td>1 Point</td>
+                <td>Reward for daily check-in.</td>
+              </tr>
+              <tr>
+                <td>Bet Cost</td>
+                <td>1 Point</td>
+                <td>Cost per bet instance.</td>
+              </tr>
+              <tr>
+                <td>Bet Reward</td>
+                <td>10 Points</td>
+                <td>Base reward for bets.</td>
+              </tr>
+              <tr>
+                <td>Referral Reward</td>
+                <td>5 Points</td>
+                <td>Reward for referrals.</td>
+              </tr>
+            </table>
       </section>
     </main>
 
