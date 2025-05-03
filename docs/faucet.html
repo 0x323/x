@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotto Chain Docs</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+      new ClipboardJS('.btn-copy');
+    });
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      color: #1a202c;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    h3 {
+      color: #2b6cb0;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .section h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1400px;
+  background: #f0f0f0;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin-left: 15px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+  body {
+    flex-direction: row;
+  }
+
+  nav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .container {
+        margin-left: 250px;
+        padding: 30px;
+        max-width: calc(100% - 250px);
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.nav-buttons button {
+  padding: 6px 20px;
+  font-size: 12px;
+  background: #333333;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  background: #999999;
+  color: #000000;
+}
+
+    pre {
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+   .code-description {
+      font-size: 0.9rem;
+      color: #4a5568;
+      background: #edf2f7;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+   }
+
+    .btn-copy {
+      padding: 6px 20px;
+      font-size: 12px;
+      background-color: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-copy:hover {
+      background: #1e4976;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>  
+    <div class="nav-header">  
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="docs-menu" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+  <img src="https://raw.githubusercontent.com/0x323/x/refs/heads/main/img/logo-black.svg" style="height: 30px;">
+  <h1 style="margin: 0;">Lotto Chain</h1>
+        </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li class="nav-item"><a class="nav-link" href="docs-menu">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="data">Data</a></li>
+          <li class="nav-item"><a class="nav-link" href="structures">Structures</a></li>
+          <li class="nav-item"><a class="nav-link" href="faucet">Faucet Check-In System</a></li>
+          <li class="nav-item"><a class="nav-link" href="betting">Betting System</a></li>
+          <li class="nav-item"><a class="nav-link" href="referral">Referral System</a></li>
+          <li class="nav-item"><a class="nav-link" href="events">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="api">API Methods</a></li>
+          <li class="nav-item"><a class="nav-link" href="errors">Error Handling</a></li>
+          <li class="nav-item"><a class="nav-link" href="usage">Frontend Integration</a></li>
+    </ul>  
+  </nav>  
+
+  <div class="container">
+  <center><h1>Beta Testnet Documentation</h1><h3>(Data Structures)</h3></center><br>
+    <main>
+      <section class="section" id="faucet">
+        <h2>4. Check-In System</h2>
+            <p>
+              Users can check in once per UTC day to earn <strong>1 Point</strong>. The system prevents multiple check-ins within the same day.
+            </p>
+            <h3>Main Function</h3>
+            <div class="code-description">
+              The <code>checkIn</code> function checks if the user has already checked in today, mints 1 Point if not, updates the last check-in day, and logs the event.
+            </div>
+            <pre><code class="language-solidity">function checkIn() public {
+    uint256 currentDayUTC = block.timestamp / 1 days;
+    require(_lastCheckIn[msg.sender] < currentDayUTC, "You have already checked in today");
+
+    _mint(msg.sender, POINTS_PER_CHECKIN);
+    _lastCheckIn[msg.sender] = currentDayUTC;
+
+    checkInHistory[msg.sender].push(CheckInLog({
+        user: msg.sender,
+        dayUTC: currentDayUTC,
+        timestamp: block.timestamp,
+        reward: POINTS_PER_CHECKIN
+    }));
+
+    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);
+    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);
+}</code></pre>
+            <button class="btn-copy" data-clipboard-text="function checkIn() public {\n    uint256 currentDayUTC = block.timestamp / 1 days;\n    require(_lastCheckIn[msg.sender] < currentDayUTC, \"You have already checked in today\");\n\n    _mint(msg.sender, POINTS_PER_CHECKIN);\n    _lastCheckIn[msg.sender] = currentDayUTC;\n\n    checkInHistory[msg.sender].push(CheckInLog({\n        user: msg.sender,\n        dayUTC: currentDayUTC,\n        timestamp: block.timestamp,\n        reward: POINTS_PER_CHECKIN\n    }));\n\n    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);\n    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);\n}">Copy Code</button>
+            <ul>
+              <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
+              <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
+              <li><strong>Constraint</strong>: One check-in per UTC day.</li>
+            </ul>
+      </section>
+
+      <section class="section" id="example">
+         <h3>Example</h3>
+            <div class="code-description">
+              This JavaScript code uses web3.js to call the <code>checkIn</code> function, enabling a user to check in and earn 1 Point.
+            </div>
+            <pre><code class="language-javascript">const contract = new web3.eth.Contract(abi, contractAddress);
+await contract.methods.checkIn().send({ from: userAddress });</code></pre>
+            <button class="btn-copy" data-clipboard-text="const contract = new web3.eth.Contract(abi, contractAddress);\nawait contract.methods.checkIn().send({ from: userAddress });">Copy Code</button>
+            <h3>View Functions</h3>
+            <ul>
+              <li><code>getCheckInLog(address user, uint256 index)</code>: Retrieves a specific check-in log.</li>
+              <li><code>getCheckInCount(address user)</code>: Returns the total number of check-ins.</li>
+            </ul>
+      </section>
+
+    <div class="nav-buttons">
+  <button onclick="window.location.href='structures'">&lt; Prev: Structures</button>
+  <button onclick="window.location.href='betting'">Next: Betting &gt;</button>
+    </div><br>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-x"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <br><br><p>&copy; Powered By Lotto Chain.<a href="Term&Condition" target="_blank" style="text-decoration: none; color: #007bff;">2025 All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>  
+    function toggleMenu() {  
+      const menu = document.getElementById('nav-menu');  
+      menu.classList.toggle('active');  
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Alert on copy
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Kode berhasil disalin!');
+        });
+      });
+    });
+  </script>
+</body>
+    </html>
