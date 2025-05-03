@@ -276,7 +276,7 @@
             <p>
               Users can place a bet once per day with a number (1-20 characters), a multiplier (1-10), and a payout amount. Each bet costs <strong>1 Point</strong> per instance, with rewards based on the payout amount and a bonus for numbers starting with "00" or "01".
             </p>
-             <p><span style="color: orange;">Note: However, we can modify this on the frontend.</span></p>
+             <br><p><span style="color: orange;">Note: However, we can modify this on the frontend.</span></p>
             <h3>Main Function</h3>
             <div class="code-description">
               The <code>placeBet</code> function validates inputs, deducts the bet cost, mints the reward, logs the bet, and awards referral rewards if applicable.
@@ -299,7 +299,7 @@
         referralRewards[referrer] += REFERRAL_REWARD;
     }
 }</code></pre>
-            
+            <br>
             <ul>
               <li><strong>Parameters</strong>:
                 <ul>
@@ -307,17 +307,17 @@
                   <li><code>_times</code>: Bet multiplier (1-10).</li>
                   <li><code>_payoutAmount</code>: Base reward, increased by 10 Points for "00" or "01" prefixes.</li>
                 </ul>
-              </li>
+              </li><br>
               <li><strong>Constraints</strong>:
                 <ul>
                   <li>One bet per UTC day.</li>
                   <li>Sufficient balance for the total cost.</li>
                   <li>Valid number and multiplier inputs.</li>
                 </ul>
-              </li>
+              </li><br>
               <li><strong>Events</strong>: <code>PlaceBet</code>, <code>Transfer</code>, <code>ReferralReward</code> (if applicable)</li>
             </ul>
-              <p><span style="color: orange;">Note: However, we can modify this on the frontend.</span></p>
+              <br><p><span style="color: orange;">Note: However, we can modify this on the frontend.</span></p>
       </section>
 
       <section class="section" id="example">
