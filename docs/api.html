@@ -244,20 +244,19 @@
               <li><code>balanceOf(address account) returns (uint256)</code>: Returns the token balance of an account.</li>
               <li><code>transfer(address, uint256)</code>: Disabled to prevent direct transfers.</li>
             </ul>
-            <h3>Check-In Functions</h3>
+      </section>
+
+      <section class="section" id="setup">
+        <h3>Check-In Functions</h3>
             <ul>
               <li><code>checkIn()</code>: Performs a daily check-in.</li>
               <li><code>getCheckInLog(address user, uint256 index) returns (CheckInLog)</code>: Retrieves a check-in log.</li>
               <li><code>getCheckInCount(address user) returns (uint256)</code>: Returns the number of check-ins.</li>
             </ul>
-            <h3>Referral Functions</h3>
-            <ul>
-              <li><code>setReferralId(string referralId)</code>: Sets a user's referral ID.</li>
-              <li><code>setReferralById(string referralId)</code>: Links a user to a referrer.</li>
-              <li><code>getRefereeCount(address referrer) returns (uint256)</code>: Returns the number of referees.</li>
-              <li><code>getReferees(address referrer) returns (address[])</code>: Returns the list of referees.</li>
-            </ul>
-            <h3>Betting Functions</h3>
+      </section>
+
+      <section class="section" id="setup">
+        <h3>Betting Functions</h3>
             <ul>
               <li><code>placeBet(string _number, uint256 _times, uint256 _payoutAmount)</code>: Places a bet.</li>
               <li><code>getUserBetCount(address user) returns (uint256)</code>: Returns the number of bets.</li>
@@ -265,12 +264,26 @@
               <li><code>getBetHistoryLength() returns (uint256)</code>: Returns the total number of bets.</li>
               <li><code>getBet(uint256 index) returns (Bet)</code>: Retrieves a bet from the global history.</li>
             </ul>
-            <h3>Utility Functions</h3>
+      </section>
+
+      <section class="section" id="setup">
+        <h3>Referral Functions</h3>
+            <ul>
+              <li><code>setReferralId(string referralId)</code>: Sets a user's referral ID.</li>
+              <li><code>setReferralById(string referralId)</code>: Links a user to a referrer.</li>
+              <li><code>getRefereeCount(address referrer) returns (uint256)</code>: Returns the number of referees.</li>
+              <li><code>getReferees(address referrer) returns (address[])</code>: Returns the list of referees.</li>
+            </ul>
+      </section>
+
+      <section class="section" id="setup">
+        <h3>Utility Functions</h3>
             <ul>
               <li><code>compareStrings(string a, string b) returns (bool)</code>: Compares two strings for equality.</li>
               <li><code>substring(string str, uint startIndex, uint endIndex) returns (string)</code>: Extracts a substring.</li>
             </ul>
       </section>
+      
     </main>
 
     <div class="nav-buttons">
