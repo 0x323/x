@@ -178,12 +178,12 @@
 }
 
     table {
-      width: 50%;
-      max-width: 1200px;
-      margin: 0 auto 1.5rem auto;
-      font-size: 0.9rem;
-      border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.9rem;
+  border-collapse: collapse;
     }
+    
     th, td {
       border: 1px solid #e2e8f0;
       padding: 1rem;
@@ -231,7 +231,8 @@
       <section class="section" id="events">
         <h2>7. Events</h2>
             <p>The contract emits events to track actions:</p><br>
-            <center><table>
+            <div style="overflow-x: auto;">
+            <table>
               <tr>
                 <th>Event</th>
                 <th>Parameters</th>
@@ -277,7 +278,8 @@
                 <td><code>address indexed user, string referralId</code></td>
                 <td>Emitted when a referral ID is set.</td>
               </tr>
-            </table></center>
+            </table>
+            </div>
       </section>
     </main>
 
