@@ -289,7 +289,8 @@
 
 }</code></pre>
             <button class="btn-copy" data-clipboard-text="function checkIn() public {\n    uint256 currentDayUTC = block.timestamp / 1 days;\n    require(_lastCheckIn[msg.sender] < currentDayUTC, \"You have already checked in today\");\n\n    _mint(msg.sender, POINTS_PER_CHECKIN);\n    _lastCheckIn[msg.sender] = currentDayUTC;\n\n    checkInHistory[msg.sender].push(CheckInLog({\n        user: msg.sender,\n        dayUTC: currentDayUTC,\n        timestamp: block.timestamp,\n        reward: POINTS_PER_CHECKIN\n    }));\n\n    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);\n    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);\n}">Copy Code</button>
-            <br><ul>
+            <br><br>
+            <ul>
               <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
               <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
               <li><strong>Constraint</strong>: One check-in per UTC day.</li>
