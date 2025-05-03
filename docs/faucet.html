@@ -304,8 +304,8 @@
 }">Copy Code</button>
             <br><br>
             <ul>
-              <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
-              <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
+              <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li><br>
+              <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li><br>
               <li><strong>Constraint</strong>: One check-in per UTC day.</li>
             </ul>
       </section>
@@ -320,8 +320,8 @@ await contract.methods.checkIn().send({ from: address });</code></pre>
             <button class="btn-copy" data-clipboard-text="const contract = new web3.eth.Contract(abi, contract);\nawait contract.methods.checkIn().send({ from: address });">Copy Code</button>
             <h3>View Functions</h3>
             <ul>
-              <li><code>getCheckInLog(address user, uint256 index)</code>: Retrieves a specific check-in log.</li>
-              <li><code>getCheckInCount(address user)</code>: Returns the total number of check-ins.</li>
+              <li><code>getCheckInLog(address user, uint256 index)</code>:<br>Retrieves a specific check-in log.</li><br>
+              <li><code>getCheckInCount(address user)</code>:<br>Returns the total number of check-ins.</li>
             </ul>
       </section>
 
