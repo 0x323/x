@@ -272,7 +272,7 @@
   <center><h1>Beta Testnet Documentation</h1><h3>(Data Structures)</h3></center><br>
     <main>
       <section class="section" id="faucet">
-        <h2>4. Check-In System</h2>
+        <h2>4. Faucet Check-In System</h2>
             <p>
               Users can check in once per UTC day to earn <strong>1 Point</strong>. The system prevents multiple check-ins within the same day.
             </p>
@@ -287,18 +287,9 @@
     _mint(msg.sender, POINTS_PER_CHECKIN);
     _lastCheckIn[msg.sender] = currentDayUTC;
 
-    checkInHistory[msg.sender].push(CheckInLog({
-        user: msg.sender,
-        dayUTC: currentDayUTC,
-        timestamp: block.timestamp,
-        reward: POINTS_PER_CHECKIN
-    }));
-
-    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);
-    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);
 }</code></pre>
             <button class="btn-copy" data-clipboard-text="function checkIn() public {\n    uint256 currentDayUTC = block.timestamp / 1 days;\n    require(_lastCheckIn[msg.sender] < currentDayUTC, \"You have already checked in today\");\n\n    _mint(msg.sender, POINTS_PER_CHECKIN);\n    _lastCheckIn[msg.sender] = currentDayUTC;\n\n    checkInHistory[msg.sender].push(CheckInLog({\n        user: msg.sender,\n        dayUTC: currentDayUTC,\n        timestamp: block.timestamp,\n        reward: POINTS_PER_CHECKIN\n    }));\n\n    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);\n    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);\n}">Copy Code</button>
-            <ul>
+            <br><ul>
               <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
               <li><strong>Events</strong>: <code>CheckIn</code>, <code>CheckInLogCreated</code></li>
               <li><strong>Constraint</strong>: One check-in per UTC day.</li>
@@ -310,8 +301,8 @@
             <div class="code-description">
               This JavaScript code uses web3.js to call the <code>checkIn</code> function, enabling a user to check in and earn 1 Point.
             </div>
-            <pre><code class="language-javascript">const contract = new web3.eth.Contract(abi, contractAddress);
-await contract.methods.checkIn().send({ from: userAddress });</code></pre>
+            <pre><code class="language-javascript">const contract = new web3.eth.Contract(abi, contract);
+await contract.methods.checkIn().send({ from: address });</code></pre>
             <button class="btn-copy" data-clipboard-text="const contract = new web3.eth.Contract(abi, contractAddress);\nawait contract.methods.checkIn().send({ from: userAddress });">Copy Code</button>
             <h3>View Functions</h3>
             <ul>
