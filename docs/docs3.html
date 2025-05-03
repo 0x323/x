@@ -152,26 +152,24 @@
   }
 }
 
-.nav-buttons {
+.more-btn {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.nav-link {
-  display: inline-block;
+  justify-content: center;
+  align-items: center;
   padding: 6px 20px;
   font-size: 12px;
   background: #333333;
   color: white;
+  border: none;
   border-radius: 25px;
-  text-decoration: none;
-  margin: 0 5px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.3s, color 0.3s;
 }
 
-.nav-link:hover {
+.more-btn:hover {
   background: #999999;
-  color: black;
+  color: #000000;
 }
   </style>
 </head>
@@ -225,9 +223,9 @@
       </section>
     </main>
 
-    <div class="nav-buttons">
-  <a href="docs/previous" class="nav-link">&lt; Prev</a>
-  <a href="docs/page" class="nav-link">Next &gt;</a>
+    <div class="nav-buttons">  
+  <button onclick="window.location.href='install.html'">&lt; Prev</button>  
+  <button onclick="window.location.href='deploy.html'">Next &gt;</button>  
     </div><br>
 
     <footer>
