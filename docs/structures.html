@@ -7,6 +7,15 @@
   <link href="img/logo.svg" rel="icon">
   <link href="img/logo.svg" rel="apple-touch-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+      new ClipboardJS('.btn-copy');
+    });
+  </script>
   <style>
     * {
       margin: 0;
@@ -241,7 +250,36 @@
     function toggleMenu() {  
       const menu = document.getElementById('nav-menu');  
       menu.classList.toggle('active');  
-    }  
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Alert on copy
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Kode berhasil disalin!');
+        });
+      });
+    });
   </script>
 </body>
 </html>
