@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotto Chain Docs</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1400px;
+  background: #f0f0f0;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin-left: 15px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+  body {
+    flex-direction: row;
+  }
+
+  nav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .container {
+        margin-left: 250px;
+        padding: 30px;
+        max-width: calc(100% - 250px);
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+.more-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 20px;
+  font-size: 12px;
+  background: #333333;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.more-btn:hover {
+  background: #999999;
+  color: #000000;
+}
+
+    table {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto 1.5rem auto;
+  font-size: 0.7rem;
+  border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 1rem;
+      text-align: left;
+    }
+    th {
+      background: #2b6cb0;
+      color: #fff;
+    }
+    tr:hover {
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>  
+    <div class="nav-header">  
+      <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="docs-menu" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+  <img src="img/logo-black.svg" style="height: 30px;">
+  <h1 style="margin: 0;">Lotto Chain</h1>
+      </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li class="nav-item"><a class="nav-link" href="#data-structures">Data Structures</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tutorials">Tutorials</a></li>
+          <li class="nav-item"><a class="nav-link" href="#developers">For Developers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#IP-Policy">IP Policy</a></li>
+    </ul>  
+  </nav>  
+
+  <div class="container">
+    <center><h1>Beta Testnet Docs Menu</h1></center><br>
+    <main>
+      <section class="section" id="data-structures">
+        <h2>Data Structures</h2>
+        <h3>Overview</h3><br>
+<p>
+The <strong>Beta Testnet</strong> smart contract, deployed on the Sepolia Base network, is a gamified points system designed to drive user engagement through:
+</p><br>
+<ul>
+<li><strong>Daily Faucet Claim</strong></li><br>
+<li><strong>Betting Game</strong></li><br>
+<li><strong>Referral Program</strong></li>
+</ul>
+        <br><button class="more-btn" onclick="window.open('docs/data-structures', '_blank')">Learn More<img src="img/arnext.svg" style="height: 18px; margin-left: 5px;"></button>
+      </section>
+
+      <section class="section" id="tutorials">
+        <h2>Tutorials</h2>
+        <h3>Overview</h3><br>
+            <p>
+              The <strong>Beta Testnet</strong> smart contract, deployed on the Sepolia Base network, is a gamified token system designed to encourage user engagement through:
+            </p><br>
+              <p><strong>• Daily Check-Ins</strong>: Users earn 1 Point by checking in once per day.</p><br>
+              <p><strong>• Betting Game</strong>: Users can place daily bets with rewards based on number prefixes.</p><br>
+              <p><strong>• Referral Program</strong>: Users earn 5 Points when their referees place bets.</p><br>
+            <p>
+            The contract uses a token called "Lpoint" with 18 decimal places. Automatic token transfer is disabled to prevent.....
+            </p>
+        <br><button class="more-btn" onclick="window.open('docs/tutorials', '_blank')">Learn More<img src="img/arnext.svg" style="height: 18px; margin-left: 5px;"></button>
+      </section>
+
+      <section class="section" id="developers">
+        <h2>For Developers</h2>
+        <h3>Prerequisites</h3><br>
+<p>Make sure you have:</p><br>
+<li><strong>Crypto Wallet</strong>:</li><br>
+<li>Install <a href="https://metamask.io" target="_blank" style="text-decoration: none;">MetaMask</a>. Or any other wallet that supports EVM.</li><br>
+<li>Add Sepolia Base Testnet network:</li><br>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Name</td><td>Sepolia Base Testnet</td></tr>
+<tr><td>ID Chain</td><td>84532</td></tr>
+<tr><td>Symbol</td><td>ETH</td></tr>
+<tr><td>RPC URL</td><td>https://sepolia.base.org</td></tr>
+<tr><td>Explorer</td><td>https://sepolia.basescan.org</td></tr>
+</table>
+<li>Get ETH Sepolia Base Testnet from.....</li>
+        <br><button class="more-btn" onclick="window.open('docs/developers', '_blank')">Learn More<img src="img/arnext.svg" style="height: 18px; margin-left: 5px;"></button>
+      </section>
+
+     <section class="section" id="IP-Policy">
+        <h2>IP Policy</h2>
+        <h3>Introduction</h3><br>
+            <p><strong>Lotto Chain</strong> is a decentralized smart contract platform</p><p> built on blockchain technology, designed to support digital lotteries,</p><p> gamification incentives, and decentralized financial services.</p><br>
+             <p>The brand, logo, and source code of <strong>Lotto Chain</strong> are core assets representing</p><p> the platform’s identity, trust, and technological innovation.</p><br>
+             <p>This policy governs the global protection, usage, and enforcement of these assets,</p><p> independent of governmental jurisdictions, to ensure integrity, consistency, and.....</p>
+        <br><button class="more-btn" onclick="window.open('docs/IP-Policy', '_blank')">Learn More<img src="img/arnext.svg" style="height: 18px; margin-left: 5px;"></button>
+     </section>
+      
+    </main><br>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <br><br><p>&copy; Powered By Lotto Chain.<a href="Term&Condition" target="_blank" style="text-decoration: none; color: #007bff;">2025 All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>  
+    function toggleMenu() {  
+      const menu = document.getElementById('nav-menu');  
+      menu.classList.toggle('active');  
+    }  
+  </script>
+</body>
+</html>
