@@ -298,7 +298,23 @@
         referralRewards[referrer] += REFERRAL_REWARD;
     }
 }</code></pre>
-            <button class="btn-copy" data-clipboard-text="function placeBet(string memory _number, uint256 _times, uint256 _payoutAmount) public { \n    require(bytes(_number).length >= 1 && bytes(_number).length <= 20, \"Invalid number input\");\n    require(_times > 0 && _times <= 10, \"Bet times must be between 1 and 10\");\n    require(_payoutAmount > 0, \"Invalid payout amount\");\n\n    string memory frontDigits = substring(_number, 0, 2);\n    if (compareStrings(frontDigits, \"00\") || compareStrings(frontDigits, \"01\")) {\n        _payoutAmount += 10 * (10 ** 18);\n    }\n\n    uint256 currentDayUTC = block.timestamp / 1 days;\n    require(_lastBetDayUTC[msg.sender] < currentDayUTC, \"You can only place bet once per day\");\n\n    uint256 totalCost = BET_COST * _times;\n    uint256 totalReward = _payoutAmount * (10 ** 18);\n    require(_balances[msg.sender] >= totalCost, \"Insufficient token to place bet\");\n\n    _balances[msg.sender] -= totalCost;\n    emit Transfer(msg.sender, address(0), totalCost);\n\n    _mint(msg.sender, totalReward);\n    _lastBetDayUTC[msg.sender] = currentDayUTC;\n\n    Bet memory newBet = Bet({\n        user: msg.sender,\n        number: _number,\n        cost: totalCost,\n        reward: totalReward,\n        timestamp: block.timestamp\n    });\n\n    betHistory.push(newBet);\n    userBets[msg.sender].push(newBet);\n    emit PlaceBet(msg.sender, _number, totalCost, totalReward, block.timestamp);\n\n    address referrer = referredBy[msg.sender];\n    if (referrer != address(0)) {\n        _mint(referrer, REFERRAL_REWARD);\n        referralRewards[referrer] += REFERRAL_REWARD;\n        emit ReferralReward(referrer, msg.sender, REFERRAL_REWARD, block.timestamp);\n    }\n}">Copy Code</button>
+            <button class="btn-copy" data-clipboard-text="function placeBet(string memory number, uint256 _times ) public { 
+              
+    uint256 currentDayUTC = block.timestamp / 1 days;
+    require(_lastBetDayUTC[msg.sender] < currentDayUTC, "You can only place bet once per day");
+
+    uint256 totalCost = BET_COST * _times;
+    uint256 totalReward = _payoutAmount * (10 ** 18);
+    require(_balances[msg.sender] >= totalCost, "Insufficient token to place bet");
+      
+    _mint(msg.sender, totalReward);
+    _lastBetDayUTC[msg.sender] = currentDayUTC;
+
+    address referrer = referredBy[msg.sender];
+    if (referrer != address(0)) {
+        _mint(referrer, REFERRAL_REWARD);
+        referralRewards[referrer] += REFERRAL_REWARD;
+    }">Copy Code</button>
             <ul>
               <li><strong>Parameters</strong>:
                 <ul>
