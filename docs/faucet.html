@@ -288,7 +288,14 @@
     _lastCheckIn[msg.sender] = currentDayUTC;
 
 }</code></pre>
-            <button class="btn-copy" data-clipboard-text="function checkIn() public {\n    uint256 currentDayUTC = block.timestamp / 1 days;\n    require(_lastCheckIn[msg.sender] < currentDayUTC, \"You have already checked in today\");\n\n    _mint(msg.sender, POINTS_PER_CHECKIN);\n    _lastCheckIn[msg.sender] = currentDayUTC;\n\n    checkInHistory[msg.sender].push(CheckInLog({\n        user: msg.sender,\n        dayUTC: currentDayUTC,\n        timestamp: block.timestamp,\n        reward: POINTS_PER_CHECKIN\n    }));\n\n    emit CheckIn(msg.sender, POINTS_PER_CHECKIN, block.timestamp);\n    emit CheckInLogCreated(msg.sender, currentDayUTC, block.timestamp, POINTS_PER_CHECKIN);\n}">Copy Code</button>
+            <button class="btn-copy" data-clipboard-text="function checkIn() public {
+    uint256 currentDayUTC = block.timestamp / 1 days;
+    require(_lastCheckIn[msg.sender] < currentDayUTC, "You have already checked in today");
+
+    _mint(msg.sender, POINTS_PER_CHECKIN);
+    _lastCheckIn[msg.sender] = currentDayUTC;
+
+}">Copy Code</button>
             <br><br>
             <ul>
               <li><strong>Logic</strong>: Verifies daily check-in limit, mints 1 Point, and logs the event.</li>
@@ -304,7 +311,7 @@
             </div>
             <pre><code class="language-javascript">const contract = new web3.eth.Contract(abi, contract);
 await contract.methods.checkIn().send({ from: address });</code></pre>
-            <button class="btn-copy" data-clipboard-text="const contract = new web3.eth.Contract(abi, contractAddress);\nawait contract.methods.checkIn().send({ from: userAddress });">Copy Code</button>
+            <button class="btn-copy" data-clipboard-text="const contract = new web3.eth.Contract(abi, contract);\nawait contract.methods.checkIn().send({ from: address });">Copy Code</button>
             <h3>View Functions</h3>
             <ul>
               <li><code>getCheckInLog(address user, uint256 index)</code>: Retrieves a specific check-in log.</li>
