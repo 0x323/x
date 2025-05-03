@@ -11,6 +11,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-solidity.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       hljs.highlightAll();
@@ -202,6 +205,16 @@
   overflow-x: auto;
   white-space: pre-wrap;
   color: #333;
+    }
+
+    pre {
+  background-color: #1e1e1e;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  color: #ffffff;
     }
 
    .code-description {
