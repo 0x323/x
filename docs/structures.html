@@ -191,6 +191,13 @@
   color: #000000;
 }
 
+    pre {
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
    .code-description {
       font-size: 0.9rem;
       color: #4a5568;
@@ -228,7 +235,8 @@
   <center><h1>Beta Testnet Documentation</h1></center><br>
     <main>
       <section class="section" id="intro">
-        <h3>CheckInLog</h3>
+        <h2>3. Structures</h2><br>
+        <h3>Faucet CheckInLog</h3>
             <div class="code-description">
               Records each check-in event with the user's address, UTC day, timestamp, and reward amount.
             </div>
@@ -238,11 +246,10 @@
     uint256 timestamp;
     uint256 reward;
 }</code></pre>
-            <button class="btn-copy" data-clipboard-text="struct CheckInLog {\n    address user;\n    uint256 dayUTC;\n    uint256 timestamp;\n    uint256 reward;\n}">Copy Code</button>
+            <br><button class="btn-copy" data-clipboard-text="struct CheckInLog {\n    address user;\n    uint256 dayUTC;\n    uint256 timestamp;\n    uint256 reward;\n}">Copy Code</button>
       </section>
 
       <section class="section" id="setup">
-        <h2>3. Structures</h2>
             <p>The contract uses the following data structures to manage data:</p>
             <h3>Bet</h3>
             <div class="code-description">
@@ -255,7 +262,7 @@
     uint256 reward;
     uint256 timestamp;
 }</code></pre>
-            <button class="btn-copy" data-clipboard-text="struct Bet {\n    address user;\n    string number;\n    uint256 cost;\n    uint256 reward;\n    uint256 timestamp;\n}">Copy Code</button>
+            <br><button class="btn-copy" data-clipboard-text="struct Bet {\n    address user;\n    string number;\n    uint256 cost;\n    uint256 reward;\n    uint256 timestamp;\n}">Copy Code</button>
         
       </section>
 
@@ -271,7 +278,7 @@
     address[] referees;
     uint256 referralBalance;
 }</code></pre>
-            <button class="btn-copy" data-clipboard-text="struct ReferralInfo {\n    string referralId;\n    string referrerId;\n    address referrer;\n    address[] referees;\n    uint256 referralBalance;\n}">Copy Code</button>
+            <br><button class="btn-copy" data-clipboard-text="struct ReferralInfo {\n    string referralId;\n    string referrerId;\n    address referrer;\n    address[] referees;\n    uint256 referralBalance;\n}">Copy Code</button>
   
       </section>
 
