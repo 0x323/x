@@ -255,13 +255,13 @@
             <div class="code-description">
               Records each check-in event with the user's address, UTC day, timestamp, and reward amount.
             </div>
-            <pre><code class="language-javascript">struct Faucet CheckInLog {
+            <pre><code class="language-solidity">
     address user;
     uint256 dayUTC;
     uint256 timestamp;
     uint256 reward;
-}</code></pre>
-            <br><button class="btn-copy" data-clipboard-text="struct CheckInLog {\n    address user;\n    uint256 dayUTC;\n    uint256 timestamp;\n    uint256 reward;\n}">Copy Code</button>
+</code></pre>
+            <button class="btn-copy" data-clipboard-text="struct CheckInLog {\n    address user;\n    uint256 dayUTC;\n    uint256 timestamp;\n    uint256 reward;\n}">Copy Code</button>
       </section>
 
       <section class="section" id="bet">
@@ -270,14 +270,14 @@
             <div class="code-description">
               Stores details of a user's bet, including their address, the chosen number, cost, reward, and timestamp.
             </div>
-            <pre><code class="language-javascript">struct Bet {
+            <pre><code class="language-solidity">
     address user;
     string number;
     uint256 cost;
     uint256 reward;
     uint256 timestamp;
-}</code></pre>
-            <br><button class="btn-copy" data-clipboard-text="struct Bet {\n    address user;\n    string number;\n    uint256 cost;\n    uint256 reward;\n    uint256 timestamp;\n}">Copy Code</button>
+</code></pre>
+            <button class="btn-copy" data-clipboard-text="struct Bet {\n    address user;\n    string number;\n    uint256 cost;\n    uint256 reward;\n    uint256 timestamp;\n}">Copy Code</button>
         
       </section>
 
@@ -286,14 +286,14 @@
             <div class="code-description">
               Tracks referral data, including the user's referral ID, their referrer's ID and address, list of referees, and accumulated referral balance.
             </div>
-            <pre><code class="language-javascript">struct ReferralInfo {
-    string referralId;
+            <pre><code class="language-solidity">
+    string referraId;
     string referrerId;
     address referrer;
-    address[] referees;
+    address referes;
     uint256 referralBalance;
-}</code></pre>
-            <br><button class="btn-copy" data-clipboard-text="struct ReferralInfo {\n    string referralId;\n    string referrerId;\n    address referrer;\n    address[] referees;\n    uint256 referralBalance;\n}">Copy Code</button>
+</code></pre>
+            <button class="btn-copy" data-clipboard-text="struct ReferralInfo {\n    string referralId;\n    string referrerId;\n    address referrer;\n    address[] referees;\n    uint256 referralBalance;\n}">Copy Code</button>
   
       </section>
 
