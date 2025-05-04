@@ -219,8 +219,8 @@
     <ul id="nav-menu">
       <li class="nav-item"><a class="nav-link" href="docs-menu">Menu</a></li>
           <li class="nav-item"><a class="nav-link" href="intro">Introduction</a></li>
-          <li class="nav-item"><a class="nav-link" href="prerequisites">Prerequisite</a></li>
-          <li class="nav-item"><a class="nav-link" href="setup">Siapkan MetaMask</a></li>
+          <li class="nav-item"><a class="nav-link" href="prerequisites">#Prerequisite</a></li>
+          <li class="nav-item"><a class="nav-link" href="setup">Prepare Wallet</a></li>
           <li class="nav-item"><a class="nav-link" href="access">DApp Access</a></li>
           <li class="nav-item"><a class="nav-link" href="check-in">Check-In Faucet</a></li>
           <li class="nav-item"><a class="nav-link" href="bet">Betting</a></li>
@@ -231,79 +231,40 @@
   </nav>  
 
   <div class="container">
-    <center><h1>Beta Testnet Documentation</h1><br><h3>(Data Structures)</h3></center><br>
+    <center><h1>Beta Testnet Documentation</h1><br><h3>(Tutorials)</h3></center><br>
     <main>
-      <section class="section" id="overview">
-        <h2>1. Overview</h3><br>
-            <p>
-The <strong>HKBetaTestnet</strong> smart contract, deployed on the Sepolia Base network, is a gamification token system designed to drive user engagement through:
-</p><br>
+      <section class="section" id="intro">
+        <h2>Introduction</h2>
+<p><strong>CheckInPoint</strong> is a blockchain-based application (DApp) on the <strong>Sepolia Base</strong> network, a testbed for Ethereum. With this DApp, you can:</p>
 <ul>
-<li><strong>Daily Faucet Check-In</strong>: Users earn 1 Point by faucet checking in once per day.</li><br>
-<li><strong>Betting Game</strong>: Users can place daily bets by earning points that can be accumulated.</li><br>
-<li><strong>Referral Program</strong>: Users earn 5 Points when their friends have successfully placed a bet.</li><br>
+<li><strong>Daily check-in</strong>: Earn 1 Point every day with just a click of a button.</li>
+<li><strong>Betting</strong>: Place a bet on your chosen number to win up to 10 Points or more.</li>
+<li><strong>Referral program</strong>: Invite friends and earn 5 Points when they place a bet.</li>
+<li><strong>Points</strong>: The tokens used in the DApp cannot be transferred directly to another person.</li>
 </ul>
-<p>
-The contract uses a token called "Lpoint" with 18 decimal places. Direct token transfer is disabled to control transfer.
-</p>
-      </section>
+<p>This tutorial will walk you through the steps to get started with the DApp, from setting up your wallet to interacting with all the features. You only need a web browser (like Chrome) and the MetaMask crypto wallet extension, and other wallets that support EVM for PC mode, and for mobile mode you just need to install the MetaMask wallet app and other wallets that support EVM.
 
-      <section class="section" id="points">
-        <h2>2. Points</h2>
-            <p>Key parameters and constants of the point system:</p><br>
-            <center><table>
-              <tr>
-                <th>Parameter</th>
-                <th>Value</th>
-                <th>Description</th>
-              </tr>
-              <tr>
-                <td>Name</td>
-                <td>Lpoint</td>
-                <td>Token name.</td>
-              </tr>
-              <tr>
-                <td>Symbol</td>
-                <td>Lpoint</td>
-                <td>Token symbol.</td>
-              </tr>
-              <tr>
-                <td>Decimals</td>
-                <td>18</td>
-                <td>Token precision.</td>
-              </tr>
-              <tr>
-                <td>Total Supply</td>
-                <td>Dynamic</td>
-                <td>Increases with minting.</td>
-              </tr>
-              <tr>
-                <td>Points Faucet per Check-In</td>
-                <td>1 Point</td>
-                <td>Reward for daily faucet check-in.</td>
-              </tr>
-              <tr>
-                <td>Bet Cost</td>
-                <td>1 Point</td>
-                <td>Cost per bet instance.</td>
-              </tr>
-              <tr>
-                <td>Bet Reward</td>
-                <td>10 Points</td>
-                <td>Base reward for bets.</td>
-              </tr>
-              <tr>
-                <td>Referral Reward</td>
-                <td>5 Points</td>
-                <td>Reward for referrals.</td>
-              </tr>
-            </table></center>
+      <section class="section" id="Prerequisites">
+        <h2>Prerequisites</h2>
+<p>Before you start, make sure you have:</p>
+<ol>
+<li><strong>Device with Browser</strong>: Computer or mobile with browser like Google Chrome, Firefox, or Safari for PC mode. Or prepare MetaMask application and other wallet that supports EVM which can be downloaded in Play Store and App Store (iOS).</li>
+<li><strong>MetaMask Installed</strong>:
+<ul>
+<li>Computer: Add MetaMask extension from <a href="https://metamask.io" target="_blank">metamask.io</a>. Or another wallet that supports EVM</li>
+<li>Mobile: Install the MetaMask app, or another wallet that supports EVM from the App Store (iOS) or Play Store (Android).</li>
+</ul>
+</li>
+<li><strong>Sepolia ETH</strong>: A little ETH on the Sepolia network for transaction fees (get it for free from <a href="https://faucet.base.org" target="_blank">Base Sepolia Faucet</a>).</li>
+<li><strong>Access to the DApp</strong>: Go to the CheckInPoint DApp at <a href="https://checkinpoint-dapp.com" target="_blank">https://checkinpoint-dapp.com</a
+</li>
+</ol>
       </section>
     </main>
 
     <div class="nav-buttons">
-  <button onclick="window.location.href='IP-Policy'">&lt; Prev: IP Policy</button>
-  <button onclick="window.location.href='structures'">Next: Structures &gt;</button>
+  <button onclick="window.location.href='usage'">&lt; Prev: Integration</button>
+  <button onclick="window.location.href='setup'">Next: Setup &gt;</button>
     </div><br>
 
     <footer>
