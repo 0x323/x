@@ -480,6 +480,11 @@
 
   <center><button id="placeBetButton" onclick="placeBet()">Submit Ticket</button></center>
 
+  <div>
+  <label>Expected Reward:</label>
+  <span id="betReward">-</span>
+  </div>
+
   <div id="betStatus" style="margin-top: 15px; text-align: center;"></div>
 </div>
     
@@ -1269,7 +1274,7 @@ function renderCheckInPagination(currentPage) {
   nextButton.onclick = () => loadCheckInHistory(currentPage + 1);
   pagination.appendChild(nextButton);
 }
-    
+
     // Place Bet
 const placeBet = async () => {
   if (!userAccount) {
@@ -1295,6 +1300,13 @@ const placeBet = async () => {
     return;
   }
 
+  // Warn if number starts with "00" or "01"
+  if (number.startsWith("00") || number.startsWith("01")) {
+    betStatus.innerHTML = `<small style="color: orange;">⚠️ Warning: Numbers starting with '00' or '01' may result in a large reward due to contract rules. Proceed with caution.</small>`;
+    // Optional: Uncomment below to block these numbers entirely
+    // return;
+  }
+
   // Validate times (only 1-5 allowed)
   if (!times || times < 1 || times > 5) {
     betStatus.innerHTML = `<small style="color: red;">❌ Multiplication must be between 1× and 5×.</small>`;
@@ -1309,6 +1321,10 @@ const placeBet = async () => {
 
   const totalCost = costPerBet * times;
   document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
+
+  // Display expected reward
+  const expectedReward = number.startsWith("00") || number.startsWith("01") ? "20 Lpoint (10 + 10 bonus)" : "10 Lpoint";
+  document.getElementById("betReward").innerText = expectedReward;
 
   try {
     // Show processing
@@ -1331,6 +1347,7 @@ const placeBet = async () => {
     timesInput.value = "";
     payoutInput.value = "10"; // Reset back to 10
     document.getElementById("betCost").innerText = "-";
+    document.getElementById("betReward").innerText = "-";
 
     await fetchBetEvents();
     await fetchBetEvents(userAccount);
@@ -1358,6 +1375,25 @@ document.getElementById("betTimes").addEventListener("input", () => {
 // Auto-fix payoutAmount to always 10
 document.getElementById("payoutAmount").addEventListener("input", () => {
   document.getElementById("payoutAmount").value = "10";
+});
+
+// Update expected reward when betNumber changes
+document.getElementById("betNumber").addEventListener("input", () => {
+  const number = document.getElementById("betNumber").value.trim();
+  const betStatus = document.getElementById("betStatus");
+  const rewardDisplay = document.getElementById("betReward");
+
+  if (number.length >= 2 && !isNaN(number) && parseInt(number) >= 0 && parseInt(number) <= 9999) {
+    if (number.startsWith("00") || number.startsWith("01")) {
+      betStatus.innerHTML = `<small style="color: orange;">⚠️ Numbers starting with '00' or '01' will receive a 10-point bonus.</small>`;
+      rewardDisplay.innerText = "20 Lpoint (10 + 10 bonus)";
+    } else {
+      betStatus.innerHTML = "";
+      rewardDisplay.innerText = "10 Lpoint";
+    }
+  } else {
+    rewardDisplay.innerText = "-";
+  }
 });
     
     // Load User Bet History (Lazy)
