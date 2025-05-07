@@ -771,13 +771,6 @@ const handleReferralFromURL = async () => {
     if (referrerId) {
       const hasReferrer = await contract.methods.referredBy(userAccount).call();
       if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-        // Estimasi gas lebih dulu
-        const estimatedGas = await contract.methods.setReferralById(referrerId).estimateGas({
-          from: userAccount
-        });
-        console.log("Estimated Gas:", estimatedGas);
-
-        // Kirim transaksi tanpa opsi gas manual
         await contract.methods.setReferralById(referrerId).send({
           from: userAccount
         });
