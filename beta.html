@@ -508,7 +508,7 @@
       <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
       <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
       </div>
-      <br><h4>Invited Friends List</h4><br>
+      <br><h4>Your Invited Friends List</h4><br>
     <small><ul id="refereeList" class="info-text"></ul></small>
 <div id="refereePagination" class="pagination"></div> 
     </div>
@@ -593,7 +593,7 @@
 
     // Durasi validitas koneksi (7 hari)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
-    const BASE_URL = "https://0x323.github.io/x/beta";
+    const BASE_URL = "https://lottochain.xyz/beta";
 
     // Fungsi utilitas
     const generateUID = () => 'uid_' + Math.random().toString(36).substr(2, 9);
@@ -1179,9 +1179,9 @@ const checkIn = async () => {
     console.log("Check-in completed and UI updated");
   } catch (error) {
     console.error("Error checking in:", error);
-    let errorMessage = "Failed to check in. Please try again.";
-    if (error.message.includes("already checked in")) {
-      errorMessage = "You have already checked in today.";
+    let errorMessage = "Failed to check in faucet. Please try again.";
+    if (error.message.includes("already checked in faucet")) {
+      errorMessage = "You have already checked in faucet today.";
     } else if (error.message.includes("Transaction not confirmed")) {
       errorMessage = "Transaction timed out. Please check Basescan and try again.";
     }
@@ -1312,7 +1312,7 @@ const placeBet = async () => {
 
   try {
     // Show processing
-    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing your bet...</small>`;
+    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
 
     const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
     const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
@@ -1326,7 +1326,7 @@ const placeBet = async () => {
     });
 
     // Success
-    betStatus.innerHTML = `<small style="color: #00ff14;">✅ Bet placed successfully!</small>`;
+    betStatus.innerHTML = `<small style="color: #00ff14;">✅ Submit Ticket Successfully!</small>`;
     numberInput.value = "";
     timesInput.value = "";
     payoutInput.value = "10"; // Reset back to 10
@@ -1341,7 +1341,7 @@ const placeBet = async () => {
 
   } catch (error) {
     console.error("Error placing bet:", error);
-    betStatus.innerHTML = `<small style="color: red;">❌ Failed to place bet. Please check your balance or try again later.</small>`;
+    betStatus.innerHTML = `<small style="color: red;">❌ Failed to Submit Ticket. Please check your balance or try again tomorrow.</small>`;
   }
 };
 
