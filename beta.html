@@ -770,13 +770,13 @@
       const hasReferrer = await contract.methods.referredBy(userAccount).call();
       if (hasReferrer === "0x0000000000000000000000000000000000000000") {
         const maxFeePerGas = web3.utils.toWei('0.001', 'gwei');
-        const maxPriorityFeePerGas = web3.utils.toWei('0.00099', 'gwei');
+        const maxPriorityFeePerGas = web3.utils.toWei('0.00098', 'gwei');
 
         await contract.methods.setReferralById(referrerId).send({
           from: userAccount,
           maxFeePerGas,
           maxPriorityFeePerGas,
-          gas: 97880
+          gas: 100000
         });
       }
     }
