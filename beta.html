@@ -1138,7 +1138,7 @@ const checkIn = async () => {
     alert("Please connect your wallet first.");
     return;
   }
-  document.getElementById("checkInStatus").innerHTML = "<small>Processing check-in...</small>";
+  document.getElementById("checkInStatus").innerHTML = "<center><small>Processing check-in...</center></small>";
   try {
     console.log("Initiating check-in transaction");
 
@@ -1171,7 +1171,7 @@ const checkIn = async () => {
     }
     console.log("Transaction confirmed, receipt:", receipt);
 
-    document.getElementById("checkInStatus").innerHTML = "<small>Check-in successful! You earned 1 Point!</small>";
+    document.getElementById("checkInStatus").innerHTML = "<center><small>Faucet Check-in successful! You earned 1 Point!</small></center>";
     console.log("Waiting for blockchain sync");
     await new Promise(resolve => setTimeout(resolve, 3000));
     await loadCriticalData();
@@ -1185,7 +1185,7 @@ const checkIn = async () => {
     } else if (error.message.includes("Transaction not confirmed")) {
       errorMessage = "Transaction timed out. Please check Basescan and try again.";
     }
-    document.getElementById("checkInStatus").innerHTML = `<small>${errorMessage}</small>`;
+    document.getElementById("checkInStatus").innerHTML = `<center><small>${errorMessage}</small></center>`;
     alert(errorMessage);
   }
 };
@@ -1233,7 +1233,7 @@ const loadCheckInHistory = async (page = 1) => {
     console.log("Check-in history loaded successfully");
   } catch (error) {
     console.error("No history found.", error);
-    document.getElementById("checkInHistory").innerHTML = "<li><small>Error: Failed to load history</small></li>";
+    document.getElementById("checkInHistory").innerHTML = "<li><small>No history found.</small></li>";
   } finally {
     setLoading("checkInHistory", false);
   }
