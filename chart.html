@@ -22,66 +22,81 @@
             max-width: 600px;
             height: 500px;
         }
+        #error {
+            display: none;
+            color: red;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div id="chartdiv"></div>
+    <div id="error">Gagal memuat chart. Pastikan koneksi internet aktif dan coba lagi.</div>
 
     <script>
-        am5.ready(function() {
-            // Buat root element
-            var root = am5.Root.new("chartdiv");
+        // Cek apakah am5 tersedia
+        if (typeof am5 === 'undefined') {
+            document.getElementById('error').style.display = 'block';
+        } else {
+            am5.ready(function() {
+                try {
+                    // Buat root element
+                    var root = am5.Root.new("chartdiv");
 
-            // Buat chart
-            var chart = root.container.children.push(
-                am5percent.PieChart.new(root, {
-                    layout: root.verticalLayout,
-                    innerRadius: am5.percent(40), // Buat efek donut
-                    radius: am5.percent(80),
-                    startAngle: 270,
-                    endAngle: 270
-                })
-            );
+                    // Buat chart
+                    var chart = root.container.children.push(
+                        am5percent.PieChart.new(root, {
+                            layout: root.verticalLayout,
+                            innerRadius: am5.percent(40), // Buat efek donut
+                            radius: am5.percent(80),
+                            startAngle: 270,
+                            endAngle: 270
+                        })
+                    );
 
-            // Buat series
-            var series = chart.series.push(
-                am5percent.PieSeries.new(root, {
-                    valueField: "value",
-                    categoryField: "category",
-                    alignLabels: true
-                })
-            );
+                    // Buat series
+                    var series = chart.series.push(
+                        am5percent.PieSeries.new(root, {
+                            valueField: "value",
+                            categoryField: "category",
+                            alignLabels: true
+                        })
+                    );
 
-            // Data tokenomik
-            series.data.setAll([
-                { category: "Tim Pengembang", value: 20 },
-                { category: "Investor", value: 30 },
-                { category: "Komunitas", value: 25 },
-                { category: "Pemasaran", value: 15 },
-                { category: "Cadangan", value: 10 }
-            ]);
+                    // Data tokenomik
+                    series.data.setAll([
+                        { category: "Tim Pengembang", value: 20 },
+                        { category: "Investor", value: 30 },
+                        { category: "Komunitas", value: 25 },
+                        { category: "Pemasaran", value: 15 },
+                        { category: "Cadangan", value: 10 }
+                    ]);
 
-            // Styling untuk efek 3D dan interaktivitas
-            series.slices.template.setAll({
-                templateField: "sliceSettings",
-                stroke: am5.color(0xffffff),
-                strokeWidth: 2,
-                shadowColor: am5.color(0x000000),
-                shadowBlur: 10,
-                shadowOpacity: 0.2,
-                tooltipText: "{category}: {value}%"
+                    // Styling untuk efek 3D dan interaktivitas
+                    series.slices.template.setAll({
+                        stroke: am5.color(0xffffff),
+                        strokeWidth: 2,
+                        shadowColor: am5.color(0x000000),
+                        shadowBlur: 10,
+                        shadowOpacity: 0.2,
+                        tooltipText: "{category}: {value}%"
+                    });
+
+                    // Animasi saat chart muncul
+                    series.appear(1000, 100);
+
+                    // Efek hover
+                    series.slices.template.states.create("hover", {
+                        scale: 1.1,
+                        shadowOpacity: 0.4,
+                        shadowBlur: 15
+                    });
+                } catch (e) {
+                    console.error("Error rendering chart:", e);
+                    document.getElementById('error').style.display = 'block';
+                }
             });
-
-            // Animasi saat chart muncul
-            series.appear(1000, 100);
-
-            // Efek hover
-            series.slices.template.states.create("hover", {
-                scale: 1.1,
-                shadowOpacity: 0.4,
-                shadowBlur: 15
-            });
-        });
+        }
     </script>
 </body>
 </html>
