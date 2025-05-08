@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokenomik Donut Chart</title>
+    <!-- Include amCharts 5 Library -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        #chartdiv {
+            width: 100%;
+            max-width: 600px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chartdiv"></div>
+
+    <script>
+        am5.ready(function() {
+            // Buat root element
+            var root = am5.Root.new("chartdiv");
+
+            // Buat chart
+            var chart = root.container.children.push(
+                am5percent.PieChart.new(root, {
+                    layout: root.verticalLayout,
+                    innerRadius: am5.percent(40), // Buat efek donut
+                    radius: am5.percent(80),
+                    startAngle: 270,
+                    endAngle: 270
+                })
+            );
+
+            // Buat series
+            var series = chart.series.push(
+                am5percent.PieSeries.new(root, {
+                    valueField: "value",
+                    categoryField: "category",
+                    alignLabels: true
+                })
+            );
+
+            // Data tokenomik
+            series.data.setAll([
+                { category: "Tim Pengembang", value: 20 },
+                { category: "Investor", value: 30 },
+                { category: "Komunitas", value: 25 },
+                { category: "Pemasaran", value: 15 },
+                { category: "Cadangan", value: 10 }
+            ]);
+
+            // Styling untuk efek 3D dan interaktivitas
+            series.slices.template.setAll({
+                templateField: "sliceSettings",
+                stroke: am5.color(0xffffff),
+                strokeWidth: 2,
+                shadowColor: am5.color(0x000000),
+                shadowBlur: 10,
+                shadowOpacity: 0.2,
+                tooltipText: "{category}: {value}%"
+            });
+
+            // Animasi saat chart muncul
+            series.appear(1000, 100);
+
+            // Efek hover
+            series.slices.template.states.create("hover", {
+                scale: 1.1,
+                shadowOpacity: 0.4,
+                shadowBlur: 15
+            });
+        });
+    </script>
+</body>
+</html>
