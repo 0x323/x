@@ -5,98 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tokenomik Donut Chart</title>
     <!-- Include amCharts 5 Library -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        #chartdiv {
-            width: 100%;
-            max-width: 600px;
-            height: 500px;
-        }
-        #error {
-            display: none;
-            color: red;
-            text-align: center;
-        }
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv {
+  width: 100%;
+  height: 500px
+}
     </style>
 </head>
 <body>
     <div id="chartdiv"></div>
-    <div id="error">Gagal memuat chart. Pastikan koneksi internet aktif dan coba lagi.</div>
-
+    
     <script>
-        // Cek apakah am5 tersedia
-        if (typeof am5 === 'undefined') {
-            document.getElementById('error').style.display = 'block';
-        } else {
-            am5.ready(function() {
-                try {
-                    // Buat root element
-                    var root = am5.Root.new("chartdiv");
+       // Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
 
-                    // Buat chart
-                    var chart = root.container.children.push(
-                        am5percent.PieChart.new(root, {
-                            layout: root.verticalLayout,
-                            innerRadius: am5.percent(40), // Buat efek donut
-                            radius: am5.percent(80),
-                            startAngle: 270,
-                            endAngle: 270
-                        })
-                    );
+var chart = am4core.create("chartdiv", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-                    // Buat series
-                    var series = chart.series.push(
-                        am5percent.PieSeries.new(root, {
-                            valueField: "value",
-                            categoryField: "category",
-                            alignLabels: true
-                        })
-                    );
+chart.legend = new am4charts.Legend();
 
-                    // Data tokenomik
-                    series.data.setAll([
-                        { category: "Tim Pengembang", value: 20 },
-                        { category: "Investor", value: 30 },
-                        { category: "Komunitas", value: 25 },
-                        { category: "Pemasaran", value: 15 },
-                        { category: "Cadangan", value: 10 }
-                    ]);
+chart.data = [
+  {
+    country: "Lithuania",
+    litres: 501.9
+  },
+  {
+    country: "Czech Republic",
+    litres: 301.9
+  },
+  {
+    country: "Ireland",
+    litres: 201.1
+  },
+  {
+    country: "Germany",
+    litres: 165.8
+  },
+  {
+    country: "Australia",
+    litres: 139.9
+  },
+  {
+    country: "Austria",
+    litres: 128.3
+  },
+  {
+    country: "UK",
+    litres: 99
+  },
+  {
+    country: "Belgium",
+    litres: 60
+  },
+  {
+    country: "The Netherlands",
+    litres: 50
+  }
+];
 
-                    // Styling untuk efek 3D dan interaktivitas
-                    series.slices.template.setAll({
-                        stroke: am5.color(0xffffff),
-                        strokeWidth: 2,
-                        shadowColor: am5.color(0x000000),
-                        shadowBlur: 10,
-                        shadowOpacity: 0.2,
-                        tooltipText: "{category}: {value}%"
-                    });
+chart.innerRadius = 100;
 
-                    // Animasi saat chart muncul
-                    series.appear(1000, 100);
-
-                    // Efek hover
-                    series.slices.template.states.create("hover", {
-                        scale: 1.1,
-                        shadowOpacity: 0.4,
-                        shadowBlur: 15
-                    });
-                } catch (e) {
-                    console.error("Error rendering chart:", e);
-                    document.getElementById('error').style.display = 'block';
-                }
-            });
-        }
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "litres";
+series.dataFields.category = "country";
     </script>
 </body>
 </html>
