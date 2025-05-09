@@ -292,18 +292,11 @@ tr:hover {
   &lt;script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"&gt;&lt;/script&gt;
   &lt;script&gt;
     let web3, contract, userAddress;
-    const contractAddress = '0xYourContractAddress';
-    const abi = [/* ABI JSON goes here */];
 
     async function connectWallet() {
       if (window.ethereum) {
         web3 = new Web3(window.ethereum);
-        try {
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          userAddress = (await web3.eth.getAccounts())[0];
-          contract = new web3.eth.Contract(abi, contractAddress);
-          document.getElementById('output').innerText = `Connected: ${userAddress}`;
-        } catch (error) {
+        try catch (error) {
           document.getElementById('output').innerText = `Error: ${error.message}`;
         }
       } else {
@@ -312,10 +305,7 @@ tr:hover {
     }
 
     async function doCheckIn() {
-      try {
-        await contract.methods.checkIn().send({ from: userAddress });
-        document.getElementById('output').innerText = 'Check-in successful!';
-      } catch (error) {
+      try  catch (error) {
         document.getElementById('output').innerText = `Error: ${error.message}`;
       }
     }
@@ -323,19 +313,13 @@ tr:hover {
     async function setReferral() {
       const referralId = prompt('Enter Referral ID:');
       if (referralId) {
-        try {
-          await contract.methods.setReferralId(referralId).send({ from: userAddress });
-          document.getElementById('output').innerText = `Referral ID "${referralId}" has been set.`;
-        } catch (error) {
+        try  catch (error) {
           document.getElementById('output').innerText = `Error: ${error.message}`;
         }
       }
     }
 
     async function placeBet() {
-      const number = prompt('Enter your number (1–20 characters):');
-      const times = parseInt(prompt('Enter multiplier (1–10):'));
-      const payout = parseInt(prompt('Enter payout amount:'));
       if (number && times && payout) {
         try {
           await contract.methods.placeBet(number, times, payout).send({ from: userAddress });
@@ -347,11 +331,7 @@ tr:hover {
     }
 
     async function checkBalance() {
-      try {
-        const balance = await contract.methods.balanceOf(userAddress).call();
-        document.getElementById('output').innerText =
-          `Balance: ${web3.utils.fromWei(balance, 'ether')} Points`;
-      } catch (error) {
+      try  catch (error) {
         document.getElementById('output').innerText = `Error: ${error.message}`;
       }
     }
