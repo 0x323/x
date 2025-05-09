@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotto Chain Docs</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+      // Initialize Clipboard.js
+      new ClipboardJS('.btn-copy');
+    });
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+  background: #f9f9f9;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1400px;
+  background: #f0f0f0;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin-left: 15px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+  body {
+    flex-direction: row;
+  }
+
+  nav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .container {
+        margin-left: 250px;
+        padding: 30px;
+        max-width: calc(100% - 250px);
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.nav-buttons button {
+  padding: 6px 20px;
+  font-size: 12px;
+  background: #333333;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  background: #999999;
+  color: #000000;
+}
+
+      code {
+    color: #ff5c85;
+    padding: 1rem;
+    border-radius: 6px;
+      }
+  </style>
+</head>
+<body>
+
+  <nav>  
+    <div class="nav-header">  
+      <div style="display: flex; align-items: center; gap: 10px;">
+  <a href="docs-menu" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+  <img src="https://lottochain.xyz/img/logo-black.svg" style="height: 30px;">
+  <h1 style="margin: 0;">Lotto Chain</h1>
+  </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li class="nav-item"><a class="nav-link" href="docs-menu">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="#introduction">Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="#prerequisites">Prerequisite</a></li>
+          <li class="nav-item"><a class="nav-link" href="settings">Settings</a></li>
+          <li class="nav-item"><a class="nav-link" href="initialize-web3">Web3 Initialization</a></li>
+          <li class="nav-item"><a class="nav-link" href="checkin">Check-In</a></li>
+          <li class="nav-item"><a class="nav-link" href="referral-system">Referral</a></li>
+          <li class="nav-item"><a class="nav-link" href="betting-system">Betting</a></li>
+          <li class="nav-item"><a class="nav-link" href="frontend">Frontend Integration</a></li>
+          <li class="nav-item"><a class="nav-link" href="error-handling">Error Handling</a></li>
+          <li class="nav-item"><a class="nav-link" href="additional">Other Functions</a></li>
+    </ul>
+  </nav>  
+
+  <div class="container">
+  <center><h1>Beta Testnet Documentation</h1><br><h3>(Developers)</h3></center><br>
+    <main>
+      <section class="section" id="introduction">
+        <h2>Prerequisites</h2>
+<p>Please make sure you have the following:</p>
+<ol>
+  <li>
+    <strong>Crypto Wallet</strong>:
+    <ul>
+      <li>
+        Install <a href="https://metamask.io" target="_blank">MetaMask</a>.
+      </li>
+      <li>
+        Add the Sepolia Base Testnet network:
+        <table>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>RPC URL</td>
+            <td>https://sepolia.base.org</td>
+          </tr>
+          <tr>
+            <td>Chain ID</td>
+            <td>84532</td>
+          </tr>
+          <tr>
+            <td>Symbol</td>
+            <td>ETH</td>
+          </tr>
+        </table>
+      </li>
+      <li>
+        Claim Sepolia ETH from the <a href="https://faucet.base.org" target="_blank">faucet</a>.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Node.js and npm</strong>: Install Node.js (version 16 or above) and npm.
+  </li>
+  <li>
+    <strong>web3.js</strong>: Install the library using the following command:
+    <div class="code-description">Run this in your project terminal:</div>
+    <pre><code class="language-bash">npm install web3</code></pre>
+    <button class="btn-copy" data-clipboard-text="npm install web3">Copy Code</button>
+  </li>
+  <li>
+    <strong>ABI</strong>: Get the ABI JSON file from the contract developer.
+  </li>
+  <li>
+    <strong>Address</strong>: The address of the deployed contract on Sepolia Base Testnet (e.g., <code>YourAddress</code>).
+  </li>
+  <li>
+    <strong>Text Editor</strong>: Use Visual Studio Code (VS Code) or any other code editor you prefer.
+  </li>
+</ol>
+      </section>
+      
+    </main>
+
+    <div class="nav-buttons">
+  <button onclick="window.location.href='tips'">&lt; Tips</button>
+  <button onclick="window.location.href='settings'">Settings Next &gt;</button>
+    </div><br>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-x"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <br><br><p>&copy; Powered By Lotto Chain.<a href="Term&Condition" target="_blank" style="text-decoration: none; color: #007bff;">2025 All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>  
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Code copied successfully!');
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
