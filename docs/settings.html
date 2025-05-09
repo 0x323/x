@@ -270,19 +270,19 @@ tr:hover {
 <ol>
   <li><strong>Create the Project</strong>:
     <ul>
-      <li>Create a project folder:
+      <li>Create a project folder:<br>
         <br><pre><code class="language-bash">mkdir checkinpoint-app
 cd checkinpoint-app
 npm init -y</code></pre>
         <button class="btn-copy" data-clipboard-text="mkdir checkinpoint-app\ncd checkinpoint-app\nnpm init -y">Copy Code</button>
       </li><br>
-      <li>Install web3.js:
+      <li>Install web3.js:<br>
         <br><pre><code class="language-bash">npm install web3</code></pre>
         <button class="btn-copy" data-clipboard-text="npm install web3">Copy Code</button>
       </li><br>
     </ul>
   </li>
-  <li><strong>Configure MetaMask</strong>:
+  <li><strong>Configure MetaMask</strong>:<br>
     <ul>
       <li>Add the Sepolia Base network (see Prerequisites).</li>
       <li>Securely store your private key or account address.</li>
@@ -291,14 +291,14 @@ npm init -y</code></pre>
   <li><strong>Prepare the ABI and Contract Address</strong>:
     <ul>
       <li>Save the ABI in a file named <code>CheckInPointABI.json</code>.</li>
-      <li>Sample simplified ABI:
+      <li>Sample simplified ABI:<br>
         <br><pre><code class="language-json">[
   {"constant": false, "inputs": [], "name": "checkIn", "outputs": [], "type": "function"},
   {"constant": false, "inputs": [{"name": "referralId", "type": "string"}], "name": "setReferralId", "outputs": [], "type": "function"}
 ]</code></pre>
         <button class="btn-copy" data-clipboard-text='[\n  {"constant": false, "inputs": [], "name": "checkIn", "outputs": [], "type": "function"},\n  {"constant": false, "inputs": [{"name": "referralId", "type": "string"}], "name": "setReferralId", "outputs": [], "type": "function"}\n]'>Copy Code</button>
       </li><br>
-      <li>Define the contract address:
+      <li>Define the contract address:<br>
         <br><pre><code class="language-javascript">const contractAddress = '0xYourContractAddress';</code></pre>
         <button class="btn-copy" data-clipboard-text="const contractAddress = '0xYourContractAddress';">Copy Code</button>
       </li><br>
