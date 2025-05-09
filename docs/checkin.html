@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotto Chain Docs</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+      // Initialize Clipboard.js
+      new ClipboardJS('.btn-copy');
+    });
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+  background: #f9f9f9;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      color: #2b6cb0;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1400px;
+  background: #f0f0f0;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin-left: 15px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+  body {
+    flex-direction: row;
+  }
+
+  nav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .container {
+        margin-left: 250px;
+        padding: 30px;
+        max-width: calc(100% - 250px);
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+    table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.9rem;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #e2e8f0;
+  padding: 1rem;
+  text-align: left;
+}
+th {
+  background: #2b6cb0;
+  color: #fff;
+}
+tr:hover {
+  background: #f1f5f9;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.nav-buttons button {
+  padding: 6px 20px;
+  font-size: 12px;
+  background: #333333;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  background: #999999;
+  color: #000000;
+}
+
+    .btn-copy {
+      padding: 0.5rem 1rem;
+      background-color: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .btn-copy:hover {
+      background-color: #1e4976;
+    }
+
+      code {
+    color: #ff5c85;
+    padding: 1rem;
+    border-radius: 6px;
+      }
+  </style>
+</head>
+<body>
+
+  <nav>  
+    <div class="nav-header">  
+      <div style="display: flex; align-items: center; gap: 10px;">
+  <a href="docs-menu" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+  <img src="https://lottochain.xyz/img/logo-black.svg" style="height: 30px;">
+  <h1 style="margin: 0;">Lotto Chain</h1>
+  </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li class="nav-item"><a class="nav-link" href="docs-menu">0. Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="developers">Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="developers">Prerequisite</a></li>
+          <li class="nav-item"><a class="nav-link" href="settings">1. Settings</a></li>
+          <li class="nav-item"><a class="nav-link" href="initialize-web3">2. Web3 Initialization</a></li>
+          <li class="nav-item"><a class="nav-link" href="checkin">3. Check-In</a></li>
+          <li class="nav-item"><a class="nav-link" href="referral-system">4. Referral</a></li>
+          <li class="nav-item"><a class="nav-link" href="betting-system">5. Betting</a></li>
+          <li class="nav-item"><a class="nav-link" href="frontend">6. Frontend Integration</a></li>
+          <li class="nav-item"><a class="nav-link" href="error-handling">7. Error Handling</a></li>
+          <li class="nav-item"><a class="nav-link" href="additional">8. Other Functions</a></li>
+    </ul>
+  </nav>  
+
+  <div class="container">
+  <center><h1>Beta Testnet Documentation</h1><br><h3>(Developers)</h3></center><br>
+    <main>
+      
+     <section class="section" id="referral">
+       <h2>Step 3: Using the Check-In Feature</h2>
+<p>The check-in feature grants <strong>1 Point</strong> per day.</p>
+<ol>
+  <li><strong>Check Balance</strong>:
+    <div class="code-description">Retrieve the user's current Point balance.</div>
+    <pre><code class="language-javascript">async function checkBalance() {
+  try {
+    const balance = await contract.methods.balanceOf(userAddress).call();
+    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);
+  } catch (error) {
+    console.error('Error checking balance:', error);
+  }
+}
+checkBalance();</code></pre>
+    <button class="btn-copy" data-clipboard-text="async function checkBalance() {\n  try {\n    const balance = await contract.methods.balanceOf(userAddress).call();\n    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);\n  } catch (error) {\n    console.error('Error checking balance:', error);\n  }\n}\ncheckBalance();">Copy Code</button>
+  </li>
+
+  <li><strong>Perform Check-In</strong>:
+    <div class="code-description">Call the <code>checkIn</code> function.</div>
+    <pre><code class="language-javascript">async function doCheckIn() {
+  try {
+    const result = await contract.methods.checkIn().send({ from: userAddress });
+    console.log('Check-in successful:', result);
+    await checkBalance();
+  } catch (error) {
+    console.error('Check-in error:', error.message);
+  }
+}
+doCheckIn();</code></pre>
+    <button class="btn-copy" data-clipboard-text="async function doCheckIn() {\n  try {\n    const result = await contract.methods.checkIn().send({ from: userAddress });\n    console.log('Check-in successful:', result);\n    await checkBalance();\n  } catch (error) {\n    console.error('Check-in error:', error.message);\n  }\n}\ndoCheckIn();">Copy Code</button>
+  </li>
+
+  <li><strong>View History</strong>:
+    <div class="code-description">Display the user’s check-in history.</div>
+    <pre><code class="language-javascript">async function checkInHistory() {
+  try {
+    const count = await contract.methods.getCheckInCount(userAddress).call();
+    console.log(`Total Check-Ins: ${count}`);
+    if (count > 0) {
+      const log = await contract.methods.getCheckInLog(userAddress, count - 1).call();
+      console.log('Most Recent Log:', log);
+    }
+  } catch (error) {
+    console.error('Error retrieving check-in history:', error);
+  }
+}
+checkInHistory();</code></pre>
+    <button class="btn-copy" data-clipboard-text="async function checkInHistory() {\n  try {\n    const count = await contract.methods.getCheckInCount(userAddress).call();\n    console.log(`Total Check-Ins: ${count}`);\n    if (count > 0) {\n      const log = await contract.methods.getCheckInLog(userAddress, count - 1).call();\n      console.log('Most Recent Log:', log);\n    }\n  } catch (error) {\n    console.error('Error retrieving check-in history:', error);\n  }\n}\ncheckInHistory();">Copy Code</button>
+  </li>
+
+  <li><strong>Note</strong>: You may check in only once per day (UTC). Ensure that your wallet has enough ETH to cover gas fees.</li>
+</ol>
+     </section>
+      
+    </main>
+
+    <div class="nav-buttons">
+  <button onclick="window.location.href='initialize-web3'">&lt; Initialization</button>
+  <button onclick="window.location.href='referral-system'">Referral Next &gt;</button>
+    </div><br>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-x"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <br><br><p>&copy; Powered By Lotto Chain.<a href="Term&Condition" target="_blank" style="text-decoration: none; color: #007bff;">2025 All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>  
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Code copied successfully!');
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
