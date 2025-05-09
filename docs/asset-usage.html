@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotto Chain Docs</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/solidity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+      // Initialize Clipboard.js
+      new ClipboardJS('.btn-copy');
+    });
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+  background: #f9f9f9;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      color: #2b6cb0;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 1400px;
+  background: #f0f0f0;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin-left: 15px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+  body {
+    flex-direction: row;
+  }
+
+  nav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .container {
+        margin-left: 250px;
+        padding: 30px;
+        max-width: calc(100% - 250px);
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+    table {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.9rem;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #e2e8f0;
+  padding: 1rem;
+  text-align: left;
+}
+th {
+  background: #2b6cb0;
+  color: #fff;
+}
+tr:hover {
+  background: #f1f5f9;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.nav-buttons button {
+  padding: 6px 20px;
+  font-size: 12px;
+  background: #333333;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  background: #999999;
+  color: #000000;
+}
+
+.btn-copy {
+      padding: 6px 20px;
+      font-size: 12px;
+      background-color: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-copy:hover {
+      background: #1e4976;
+      color: #fff;
+    }
+
+      code {
+    color: #ff5c85;
+    padding: 1rem;
+    border-radius: 6px;
+      }
+  </style>
+</head>
+<body>
+
+  <nav>  
+    <div class="nav-header">  
+      <div style="display: flex; align-items: center; gap: 10px;">
+  <a href="docs-menu" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+  <img src="https://lottochain.xyz/img/logo-black.svg" style="height: 30px;">
+  <h1 style="margin: 0;">Lotto Chain</h1>
+  </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
+    </div>  
+    <ul id="nav-menu">  
+      <li class="nav-item"><a class="nav-link" href="docs-menu">0. Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="IP-Policy">1. Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="IP-Policy">2. Definitions</a></li>
+          <li class="nav-item"><a class="nav-link" href="scope">3. Scope & Principles</a></li>
+          <li class="nav-item"><a class="nav-link" href="protection">4. Asset Protection</a></li>
+          <li class="nav-item"><a class="nav-link" href="asset-usage">5. Asset Usage</a></li>
+          <li class="nav-item"><a class="nav-link" href="violations">6. Violations & Sanctions</a></li>
+          <li class="nav-item"><a class="nav-link" href="disputes">7. Dispute Resolution</a></li>
+          <li class="nav-item"><a class="nav-link" href="governance">8. Governance & Updates</a></li>
+          <li class="nav-item"><a class="nav-link" href="closing">9. Closing Provisions</a></li>
+    </ul>
+  </nav>  
+
+  <div class="container">
+  <center><h1>Beta Testnet Documentation</h1><h3>(For Developers)</h3></center><br>
+    <main>
+      
+     <section class="section" id="usage">
+       <h2>5. Asset Usage</h2>
+            <h3>5.1 Permitted Usage</h3>
+            <ol>
+              <li><strong>Brand and Logo</strong>:
+                <ul>
+                  <li>Used by the Asset Owner or authorized licensees.</li>
+                  <li>Examples: Logo on dApps, “Lotto Chain” in whitepapers, branding in NFTs.</li>
+                  <li>Must include ™ (unregistered) or ® (registered) symbols.</li>
+                </ul>
+              </li>
+              <li><strong>Source Code</strong>:
+                <ul>
+                  <li>Restricted to the Asset Owner or explicit licensees.</li>
+                  <li>Limited to platform operations or licensed projects.</li>
+                  <li>Examples: Official smart contract deployment, dApp integration by partners.</li>
+                </ul>
+              </li>
+              <li>Non-commercial community use (e.g., tutorials) is allowed with attribution: “© Lotto Chain, all rights reserved.”</li>
+            </ol>
+     </section>
+
+      <section class="section" id="licensing">
+        <h3>5.2 Asset Licensing</h3>
+            <ol>
+              <li><strong>License Types</strong>:
+                <ul>
+                  <li><strong>Brand and Logo</strong>: For branding (e.g., partner dApps).</li>
+                  <li><strong>Source Code</strong>: Limited licenses for code use or modification (e.g., forks for licensed projects).</li>
+                </ul>
+              </li>
+              <li><strong>License Mechanisms</strong>:
+                <ul>
+                  <li><strong>License Smart Contract</strong>: Automates rights, duration, and royalties.
+                    <div class="code-description">Example smart contract function for granting a license.</div>
+                    <pre><code class="language-solidity">function grantLicense(address user, uint256 duration, bytes32 assetType) public onlyDAO {
+    licenses[user] = License(user, assetType, block.timestamp, duration);
+    emit LicenseGranted(user, assetType, duration);
+}</code></pre>
+                    <button class="btn-copy" data-clipboard-text="function grantLicense(address user, uint256 duration, bytes32 assetType) public onlyDAO {\n    licenses[user] = License(user, assetType, block.timestamp, duration);\n    emit LicenseGranted(user, assetType, duration);\n}">Copy Code</button>
+                  </li>
+                  <li><strong>Written Agreement</strong>: For strategic partners, digitally signed and hashed on the blockchain.</li>
+                </ul>
+              </li>
+              <li><strong>License Terms</strong>:
+                <ul>
+                  <li>Scope: Virtual regions, service types (e.g., lotteries, DeFi).</li>
+                  <li>Duration: E.g., 1 year, renewable via DAO.</li>
+                  <li>Royalties: 5-10% of revenue, paid in <strong>Lotto Chain</strong> tokens or stablecoins.</li>
+                  <li>Prohibitions: Modifying logo/code without approval, use for illegal purposes.</li>
+                </ul>
+              </li>
+              <li><strong>License Revocation</strong>: Automatic via smart contract for:
+                <ul>
+                  <li>Failure to pay royalties.</li>
+                  <li>Violation of guidelines (e.g., altering logo colors).</li>
+                  <li>Harm to platform reputation.</li>
+                </ul>
+              </li>
+            </ol>
+      </section>
+
+      <section class="section" id="guidelines">
+       <h3>5.3 Usage Guidelines</h3>
+            <ol>
+              <li><strong>Brand and Logo</strong>:
+                <ul>
+                  <li>Colors: Blue (#2b6cb0), white (#ffffff).</li>
+                  <li>Resolution: 300 dpi (digital), 1200 dpi (print).</li>
+                  <li>Prohibited: Altering design, adding elements, use in fraudulent contexts.</li>
+                </ul>
+              </li>
+              <li><strong>Source Code</strong>:
+                <ul>
+                  <li>Must follow official documentation (e.g., smart contract ABI).</li>
+                  <li>Modifications only for licensees, with DAO approval.</li>
+                  <li>Attribution required: “Source code © Lotto Chain”.</li>
+                </ul>
+              </li>
+              <li>Full guidelines are accessible via IPFS or the official <strong>Lotto Chain</strong> website.</li>
+            </ol>
+     </section>
+
+      <section class="section" id="use">
+        <h3>5.4 Non-Commercial Use</h3>
+            <ol>
+              <li>Community may use brand/logo for education (e.g., blogs, videos) with attribution.</li>
+              <li>Source code is not permitted for non-commercial use unless open-sourced under a specific license (e.g., MIT, approved by DAO).</li>
+              <li>Harmful non-commercial use (e.g., FUD, phishing) is considered a violation.</li>
+            </ol>
+      </section>
+      
+    </main>
+
+    <div class="nav-buttons">
+  <button onclick="window.location.href='protection'">&lt; Prev Asset Protection</button>
+  <button onclick="window.location.href='violations'">Violations & Sanctions Next &gt;</button>
+    </div><br>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-x"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <br><br><p>&copy; Powered By Lotto Chain.<a href="Term&Condition" target="_blank" style="text-decoration: none; color: #007bff;">2025 All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleMenu() {  
+      const menu = document.getElementById('nav-menu');  
+      menu.classList.toggle('active');  
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').substring(1) === current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Code copied successfully!');
+        });
+      });
+    });
+  </script>
+</body>
+                      </html>
