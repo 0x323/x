@@ -270,7 +270,7 @@ tr:hover {
 <p>Place one bet per day using a number and multiplier.</p>
 <ol>
   <li><strong>Place a Bet</strong>:
-    <div class="code-description">Call the <code>placeBet</code> function.</div>
+    <div class="code-description">Call the <code>placeBet</code> function.</div><br>
     <pre><code class="language-javascript">async function placeBet(number, times, payoutAmount) {
   try {
     const result = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAddress });
@@ -282,10 +282,10 @@ tr:hover {
 }
 placeBet('01234', 2, 3);</code></pre>
     <button class="btn-copy" data-clipboard-text="async function placeBet(number, times, payoutAmount) {\n  try {\n    const result = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAddress });\n    console.log('Bet placed successfully:', result);\n    await checkBalance();\n  } catch (error) {\n    console.error('Error placing bet:', error.message);\n  }\n}\nplaceBet('01234', 2, 3);">Copy Code</button>
-  </li>
+  </li><br>
 
   <li><strong>View Betting History</strong>:
-    <div class="code-description">Check the user’s betting history.</div>
+    <div class="code-description">Check the user’s betting history.</div><br>
     <pre><code class="language-javascript">async function checkBetHistory() {
   try {
     const userBetCount = await contract.methods.getUserBetCount(userAddress).call();
@@ -302,12 +302,11 @@ placeBet('01234', 2, 3);</code></pre>
 }
 checkBetHistory();</code></pre>
     <button class="btn-copy" data-clipboard-text="async function checkBetHistory() {\n  try {\n    const userBetCount = await contract.methods.getUserBetCount(userAddress).call();\n    console.log(`Total Bets Made: ${userBetCount}`);\n    if (userBetCount > 0) {\n      const lastBet = await contract.methods.getUserBet(userAddress, userBetCount - 1).call();\n      console.log('Most Recent Bet:', lastBet);\n    }\n    const totalBets = await contract.methods.getBetHistoryLength().call();\n    console.log(`Total Global Bets: ${totalBets}`);\n  } catch (error) {\n    console.error('Error retrieving betting history:', error);\n  }\n}\ncheckBetHistory();">Copy Code</button>
-  </li>
+  </li><br>
 
   <li><strong>Notes</strong>:
     <ul>
-      <li>Parameters: Number (1–20 characters), multiplier (1–10), payout amount (minimum 1).</li>
-      <li>Earn a 10 Point bonus for numbers starting with “00” or “01”.</li>
+      <li>Parameters: Number (00–9999 characters), multiplier (1–10), payout amount (minimum 1).</li>
       <li>Only one bet can be placed per day.</li>
     </ul>
   </li>
