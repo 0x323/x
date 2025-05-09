@@ -261,7 +261,7 @@ tr:hover {
   </nav>  
 
   <div class="container">
-  <center><h1>Beta Testnet Documentation</h1><br><h3>(Developers)</h3></center><br>
+  <center><h1>Beta Testnet Documentation</h1><br><h3>(For Developers)</h3></center><br>
     <main>
       
      <section class="section" id="referral">
@@ -338,7 +338,12 @@ checkReferees(userAddress);</code></pre>
   </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>  
+  <script>
+    function toggleMenu() {  
+      const menu = document.getElementById('nav-menu');  
+      menu.classList.toggle('active');  
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
       const sections = document.querySelectorAll('section');
       const navLinks = document.querySelectorAll('.sidebar .nav-link');
