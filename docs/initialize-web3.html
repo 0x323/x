@@ -269,7 +269,7 @@ tr:hover {
        <h2>Step 2: Initialize Web3 and the Contract</h2>
 <ol>
   <li><strong>Import Web3</strong>:
-    <div class="code-description">Initialize Web3 and the contract in <code>index.js</code>.</div>
+    <div class="code-description">Initialize Web3 and the contract in <code>index.js</code></div><br>
     <pre><code class="language-javascript">const Web3 = require('web3');
 const abi = require('./CheckInPointABI.json');
 const web3 = new Web3('https://sepolia.base.org');
@@ -277,9 +277,9 @@ const contractAddress = '0xYourContractAddress';
 const userAddress = '0xYourUserAddress';
 const contract = new web3.eth.Contract(abi, contractAddress);</code></pre>
     <button class="btn-copy" data-clipboard-text="const Web3 = require('web3');\nconst abi = require('./CheckInPointABI.json');\nconst web3 = new Web3('https://sepolia.base.org');\nconst contractAddress = '0xYourContractAddress';\nconst userAddress = '0xYourUserAddress';\nconst contract = new web3.eth.Contract(abi, contractAddress);">Copy Code</button>
-  </li>
+  </li><br>
   <li><strong>Connect MetaMask (Frontend)</strong>:
-    <div class="code-description">For frontend applications, use MetaMask for user wallet interaction.</div>
+    <div class="code-description">For frontend applications, use MetaMask for user wallet interaction.</div><br>
     <pre><code class="language-javascript">if (window.ethereum) {
   const web3 = new Web3(window.ethereum);
   try {
