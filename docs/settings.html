@@ -271,15 +271,15 @@ tr:hover {
   <li><strong>Create the Project</strong>:
     <ul>
       <li>Create a project folder:
-        <pre><code class="language-bash">mkdir checkinpoint-app
+        <br><pre><code class="language-bash">mkdir checkinpoint-app
 cd checkinpoint-app
 npm init -y</code></pre>
         <button class="btn-copy" data-clipboard-text="mkdir checkinpoint-app\ncd checkinpoint-app\nnpm init -y">Copy Code</button>
-      </li>
+      </li><br>
       <li>Install web3.js:
-        <pre><code class="language-bash">npm install web3</code></pre>
+        <br><pre><code class="language-bash">npm install web3</code></pre>
         <button class="btn-copy" data-clipboard-text="npm install web3">Copy Code</button>
-      </li>
+      </li><br>
     </ul>
   </li>
   <li><strong>Configure MetaMask</strong>:
@@ -292,16 +292,16 @@ npm init -y</code></pre>
     <ul>
       <li>Save the ABI in a file named <code>CheckInPointABI.json</code>.</li>
       <li>Sample simplified ABI:
-        <pre><code class="language-json">[
+        <br><pre><code class="language-json">[
   {"constant": false, "inputs": [], "name": "checkIn", "outputs": [], "type": "function"},
   {"constant": false, "inputs": [{"name": "referralId", "type": "string"}], "name": "setReferralId", "outputs": [], "type": "function"}
 ]</code></pre>
         <button class="btn-copy" data-clipboard-text='[\n  {"constant": false, "inputs": [], "name": "checkIn", "outputs": [], "type": "function"},\n  {"constant": false, "inputs": [{"name": "referralId", "type": "string"}], "name": "setReferralId", "outputs": [], "type": "function"}\n]'>Copy Code</button>
-      </li>
+      </li><br>
       <li>Define the contract address:
-        <pre><code class="language-javascript">const contractAddress = '0xYourContractAddress';</code></pre>
+        <br><pre><code class="language-javascript">const contractAddress = '0xYourContractAddress';</code></pre>
         <button class="btn-copy" data-clipboard-text="const contractAddress = '0xYourContractAddress';">Copy Code</button>
-      </li>
+      </li><br>
     </ul>
   </li>
   <li><strong>Create the Script</strong>: Create a file named <code>index.js</code>.</li>
