@@ -265,66 +265,45 @@ tr:hover {
   <center><h1>Beta Testnet Documentation</h1><h3>(For Developers)</h3></center><br>
     <main>
       
-     <section class="section" id="checkin">
-       <h2>Step 3: Using the Check-In Feature</h2>
-<p>The check-in feature grants <strong>1 Point</strong> per day.</p>
+     <section class="section" id="initialize">
+       <h2>Step 2: Initialize Web3 and the Contract</h2>
 <ol>
-  <li><strong>Check Balance</strong>:
-    <div class="code-description">Retrieve the user's current Point balance.</div>
-    <br><pre><code class="language-javascript">async function checkBalance() {
+  <li><strong>Import Web3</strong>:
+    <div class="code-description">Initialize Web3 and the contract in <code>index.js</code>.</div>
+    <pre><code class="language-javascript">const Web3 = require('web3');
+const abi = require('./CheckInPointABI.json');
+const web3 = new Web3('https://sepolia.base.org');
+const contractAddress = '0xYourContractAddress';
+const userAddress = '0xYourUserAddress';
+const contract = new web3.eth.Contract(abi, contractAddress);</code></pre>
+    <button class="btn-copy" data-clipboard-text="const Web3 = require('web3');\nconst abi = require('./CheckInPointABI.json');\nconst web3 = new Web3('https://sepolia.base.org');\nconst contractAddress = '0xYourContractAddress';\nconst userAddress = '0xYourUserAddress';\nconst contract = new web3.eth.Contract(abi, contractAddress);">Copy Code</button>
+  </li>
+  <li><strong>Connect MetaMask (Frontend)</strong>:
+    <div class="code-description">For frontend applications, use MetaMask for user wallet interaction.</div>
+    <pre><code class="language-javascript">if (window.ethereum) {
+  const web3 = new Web3(window.ethereum);
   try {
-    const balance = await contract.methods.balanceOf(userAddress).call();
-    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await web3.eth.getAccounts();
+    const userAddress = accounts[0];
+    const contract = new web3.eth.Contract(abi, contractAddress);
+    console.log('Connected to MetaMask:', userAddress);
   } catch (error) {
-    console.error('Error checking balance:', error);
+    console.error('MetaMask connection error:', error);
   }
-}
-checkBalance();</code></pre>
-    <button class="btn-copy" data-clipboard-text="async function checkBalance() {\n  try {\n    const balance = await contract.methods.balanceOf(userAddress).call();\n    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);\n  } catch (error) {\n    console.error('Error checking balance:', error);\n  }\n}\ncheckBalance();">Copy Code</button>
-  </li><br>
-
-  <li><strong>Perform Check-In</strong>:
-    <div class="code-description">Call the <code>checkIn</code> function.</div>
-    <br><pre><code class="language-javascript">async function doCheckIn() {
-  try {
-    const result = await contract.methods.checkIn().send({ from: userAddress });
-    console.log('Check-in successful:', result);
-    await checkBalance();
-  } catch (error) {
-    console.error('Check-in error:', error.message);
-  }
-}
-doCheckIn();</code></pre>
-    <button class="btn-copy" data-clipboard-text="async function doCheckIn() {\n  try {\n    const result = await contract.methods.checkIn().send({ from: userAddress });\n    console.log('Check-in successful:', result);\n    await checkBalance();\n  } catch (error) {\n    console.error('Check-in error:', error.message);\n  }\n}\ndoCheckIn();">Copy Code</button>
-  </li><br>
-
-  <li><strong>View History</strong>:
-    <div class="code-description">Display the user’s check-in history.</div>
-    <br><pre><code class="language-javascript">async function checkInHistory() {
-  try {
-    const count = await contract.methods.getCheckInCount(userAddress).call();
-    console.log(`Total Check-Ins: ${count}`);
-    if (count > 0) {
-      const log = await contract.methods.getCheckInLog(userAddress, count - 1).call();
-      console.log('Most Recent Log:', log);
-    }
-  } catch (error) {
-    console.error('Error retrieving check-in history:', error);
-  }
-}
-checkInHistory();</code></pre>
-    <button class="btn-copy" data-clipboard-text="async function checkInHistory() {\n  try {\n    const count = await contract.methods.getCheckInCount(userAddress).call();\n    console.log(`Total Check-Ins: ${count}`);\n    if (count > 0) {\n      const log = await contract.methods.getCheckInLog(userAddress, count - 1).call();\n      console.log('Most Recent Log:', log);\n    }\n  } catch (error) {\n    console.error('Error retrieving check-in history:', error);\n  }\n}\ncheckInHistory();">Copy Code</button>
-  </li><br>
-
-  <li><strong>Note</strong>: You may check in only once per day (UTC). Ensure that your wallet has enough ETH to cover gas fees.</li>
+} else {
+  console.error('MetaMask not detected.');
+}</code></pre>
+    <button class="btn-copy" data-clipboard-text="if (window.ethereum) {\n  const web3 = new Web3(window.ethereum);\n  try {\n    await window.ethereum.request({ method: 'eth_requestAccounts' });\n    const accounts = await web3.eth.getAccounts();\n    const userAddress = accounts[0];\n    const contract = new web3.eth.Contract(abi, contractAddress);\n    console.log('Connected to MetaMask:', userAddress);\n  } catch (error) {\n    console.error('MetaMask connection error:', error);\n  }\n} else {\n  console.error('MetaMask not detected.');\n}">Copy Code</button>
+  </li>
 </ol>
      </section>
       
     </main>
 
     <div class="nav-buttons">
-  <button onclick="window.location.href='initialize'">&lt; Initialization</button>
-  <button onclick="window.location.href='referral-system'">Referral Next &gt;</button>
+  <button onclick="window.location.href='settings'">&lt; Settings</button>
+  <button onclick="window.location.href='checkin'">Check-In &gt;</button>
     </div><br>
 
     <footer>
