@@ -268,22 +268,22 @@ tr:hover {
        <h2>Step 8: Utilizing Additional Functions</h2>
 <ol>
   <li><strong>Check Total Supply</strong>:
-    <div class="code-description">Retrieve the total token supply.</div>
+    <div class="code-description">Retrieve the total token supply.</div><br>
     <pre><code class="language-javascript">async function checkTotalSupply() {
   const supply = await contract.methods.totalSupply().call();
   console.log(`Total Supply: ${web3.utils.fromWei(supply, 'ether')} Points`);
 }
 checkTotalSupply();</code></pre>
     <button class="btn-copy" data-clipboard-text="async function checkTotalSupply() {\n  const supply = await contract.methods.totalSupply().call();\n  console.log(`Total Supply: ${web3.utils.fromWei(supply, 'ether')} Points`);\n}\ncheckTotalSupply();">Copy Code</button>
-  </li>
+  </li><br>
 
   <li><strong>Monitor Events</strong>:
-    <div class="code-description">Listen for the <code>CheckIn</code> event.</div>
+    <div class="code-description">Listen for the <code>CheckIn</code> event.</div><br>
     <pre><code class="language-javascript">contract.events.CheckIn({ filter: { user: userAddress } })
   .on('data', event => console.log('CheckIn Event:', event.returnValues))
   .on('error', error => console.error('Error:', error));</code></pre>
     <button class="btn-copy" data-clipboard-text="contract.events.CheckIn({ filter: { user: userAddress } })\n  .on('data', event => console.log('CheckIn Event:', event.returnValues))\n  .on('error', error => console.error('Error:', error));">Copy Code</button>
-  </li>
+  </li><br>
 
   <li><strong>Tips</strong>:
     <ul>
