@@ -274,13 +274,12 @@ tr:hover {
     <br><pre><code class="language-javascript">async function checkBalance() {
   try {
     const balance = await contract.methods.balanceOf(userAddress).call();
-    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);
   } catch (error) {
     console.error('Error checking balance:', error);
   }
 }
-checkBalance();</code></pre>
-    <button class="btn-copy" data-clipboard-text="async function checkBalance() {\n  try {\n    const balance = await contract.methods.balanceOf(userAddress).call();\n    console.log(`Balance: ${web3.utils.fromWei(balance, 'ether')} Points`);\n  } catch (error) {\n    console.error('Error checking balance:', error);\n  }\n}\ncheckBalance();">Copy Code</button>
+</code></pre>
+    <button class="btn-copy" data-clipboard-text="async function checkBalance() {\n  try {\n    const balance = await contract.methods.balanceOf(userAddress).call();\n   catch (error) {\n    console.error('Error checking balance:', error);\n  }\n}\n">Copy Code</button>
   </li><br>
 
   <li><strong>Perform Check-In</strong>:
