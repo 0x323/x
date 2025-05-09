@@ -265,50 +265,52 @@ tr:hover {
     <main>
       
      <section class="section" id="betting">
-       <h2>Langkah 5: Menggunakan Fitur Betting</h2>
-            <p>Pasang taruhan sekali per hari dengan nomor dan pengali.</p>
-            <ol>
-              <li><strong>Pasang Taruhan</strong>:
-                <div class="code-description">Panggil placeBet.</div>
-                <pre><code class="language-javascript">async function placeBet(number, times, payoutAmount) {
+       <h2>Step 5: Using the Betting Feature</h2>
+<p>Place one bet per day using a number and multiplier.</p>
+<ol>
+  <li><strong>Place a Bet</strong>:
+    <div class="code-description">Call the <code>placeBet</code> function.</div>
+    <pre><code class="language-javascript">async function placeBet(number, times, payoutAmount) {
   try {
     const result = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAddress });
-    console.log('Taruhan berhasil:', result);
+    console.log('Bet placed successfully:', result);
     await checkBalance();
   } catch (error) {
-    console.error('Error memasang taruhan:', error.message);
+    console.error('Error placing bet:', error.message);
   }
 }
 placeBet('01234', 2, 3);</code></pre>
-                <button class="btn-copy" data-clipboard-text="async function placeBet(number, times, payoutAmount) {\n  try {\n    const result = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAddress });\n    console.log('Taruhan berhasil:', result);\n    await checkBalance();\n  } catch (error) {\n    console.error('Error memasang taruhan:', error.message);\n  }\n}\nplaceBet('01234', 2, 3);">Salin Kode</button>
-              </li>
-              <li><strong>Cek Riwayat Taruhan</strong>:
-                <div class="code-description">Lihat riwayat taruhan pengguna.</div>
-                <pre><code class="language-javascript">async function checkBetHistory() {
+    <button class="btn-copy" data-clipboard-text="async function placeBet(number, times, payoutAmount) {\n  try {\n    const result = await contract.methods.placeBet(number, times, payoutAmount).send({ from: userAddress });\n    console.log('Bet placed successfully:', result);\n    await checkBalance();\n  } catch (error) {\n    console.error('Error placing bet:', error.message);\n  }\n}\nplaceBet('01234', 2, 3);">Copy Code</button>
+  </li>
+
+  <li><strong>View Betting History</strong>:
+    <div class="code-description">Check the user’s betting history.</div>
+    <pre><code class="language-javascript">async function checkBetHistory() {
   try {
     const userBetCount = await contract.methods.getUserBetCount(userAddress).call();
-    console.log(`Jumlah Taruhan: ${userBetCount}`);
+    console.log(`Total Bets Made: ${userBetCount}`);
     if (userBetCount > 0) {
       const lastBet = await contract.methods.getUserBet(userAddress, userBetCount - 1).call();
-      console.log('Taruhan Terakhir:', lastBet);
+      console.log('Most Recent Bet:', lastBet);
     }
     const totalBets = await contract.methods.getBetHistoryLength().call();
-    console.log(`Total Taruhan Global: ${totalBets}`);
+    console.log(`Total Global Bets: ${totalBets}`);
   } catch (error) {
-    console.error('Error riwayat taruhan:', error);
+    console.error('Error retrieving betting history:', error);
   }
 }
 checkBetHistory();</code></pre>
-                <button class="btn-copy" data-clipboard-text="async function checkBetHistory() {\n  try {\n    const userBetCount = await contract.methods.getUserBetCount(userAddress).call();\n    console.log(`Jumlah Taruhan: ${userBetCount}`);\n    if (userBetCount > 0) {\n      const lastBet = await contract.methods.getUserBet(userAddress, userBetCount - 1).call();\n      console.log('Taruhan Terakhir:', lastBet);\n    }\n    const totalBets = await contract.methods.getBetHistoryLength().call();\n    console.log(`Total Taruhan Global: ${totalBets}`);\n  } catch (error) {\n    console.error('Error riwayat taruhan:', error);\n  }\n}\ncheckBetHistory();">Salin Kode</button>
-              </li>
-              <li><strong>Catatan</strong>:
-                <ul>
-                  <li>Parameter: Nomor (1-20 karakter), pengali (1-10), pembayaran (min. 1).</li>
-                  <li>Bonus 10 Poin untuk nomor mulai “00” atau “01”.</li>
-                  <li>Satu taruhan per hari.</li>
-                </ul>
-              </li>
-            </ol>
+    <button class="btn-copy" data-clipboard-text="async function checkBetHistory() {\n  try {\n    const userBetCount = await contract.methods.getUserBetCount(userAddress).call();\n    console.log(`Total Bets Made: ${userBetCount}`);\n    if (userBetCount > 0) {\n      const lastBet = await contract.methods.getUserBet(userAddress, userBetCount - 1).call();\n      console.log('Most Recent Bet:', lastBet);\n    }\n    const totalBets = await contract.methods.getBetHistoryLength().call();\n    console.log(`Total Global Bets: ${totalBets}`);\n  } catch (error) {\n    console.error('Error retrieving betting history:', error);\n  }\n}\ncheckBetHistory();">Copy Code</button>
+  </li>
+
+  <li><strong>Notes</strong>:
+    <ul>
+      <li>Parameters: Number (1–20 characters), multiplier (1–10), payout amount (minimum 1).</li>
+      <li>Earn a 10 Point bonus for numbers starting with “00” or “01”.</li>
+      <li>Only one bet can be placed per day.</li>
+    </ul>
+  </li>
+</ol>
      </section>
       
     </main>
