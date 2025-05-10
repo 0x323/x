@@ -301,7 +301,7 @@ tr:hover {
                   <li>Seize related tokens (e.g., staking rewards).</li>
                   <li>Disable license via <code>revokeLicense(address user)</code>.
                     <div class="code-description">Example smart contract function for revoking a license.</div>
-                    <pre><code class="language-solidity">function revokeLicense(address user) public onlyDAO {
+                    <pre><code class="language-javascript">function revokeLicense(address user) public onlyDAO {
     delete licenses[user];
     emit LicenseRevoked(user);
 }</code></pre>
