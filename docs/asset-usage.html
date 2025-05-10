@@ -299,7 +299,7 @@ tr:hover {
                 <ul>
                   <li><strong>License Smart Contract</strong>: Automates rights, duration, and royalties.
                     <div class="code-description">Example smart contract function for granting a license.</div>
-                    <pre><code class="language-solidity">function grantLicense(address user, uint256 duration, bytes32 assetType) public onlyDAO {
+                    <pre><code class="language-javascript">function grantLicense(address user, uint256 duration, bytes32 assetType) public onlyDAO {
     licenses[user] = License(user, assetType, block.timestamp, duration);
     emit LicenseGranted(user, assetType, duration);
 }</code></pre>
