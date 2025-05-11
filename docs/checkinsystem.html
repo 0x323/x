@@ -208,16 +208,15 @@
   <div class="container">
   <center><h1>Beta Testnet Documentation</h1><h3>(System)</h3></center><br>
     <main>
-      <section class="section" id="management">
-        <h2>Point Management</h2>
+      <section class="section" id="checkin">
+        <h2>Check-In System</h2>
         <p><strong>Related functions:</strong><br><br>
-          <code>constructor, totalSupply, balanceOf, _mint, transfer</code></p>
+          <code>checkIn, getCheckInLog, getCheckInCount</code></p>
         <img src="https://raw.githubusercontent.com/0x323/x/refs/heads/main/img/t2.png" style="width: 200px; height: auto;"><br><br>
         <p><strong>Explanation:<strong/></p><br>
         <ul>
-<li>This diagram includes all functions that manage tokens, such as initialization, balance checking, and minting.</li><br>
-<li><code>_mint</code> has a conditional flow to ensure the address is not null.</li><br>
-<li><code>transfer</code> immediately reverts because it is not allowed.</li>
+<li>This diagram focuses on the check-in system, including checking the last check-in time and updating the history.</li><br>
+<li><code>getCheckInLog</code> and <code>getCheckInCount</code> are view functions to access check-in data.</li><br>
         </ul>
       </section>
     </main>
