@@ -1,148 +1,178 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lotto Chain - Terms & Privacy</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Terms & Privacy | Lotto Chain</title>
   <style>
     :root {
-      --bg-light: #f5f7fa;
-      --bg-dark: #0d1117;
-      --text-light: #0d1117;
-      --text-dark: #f5f7fa;
-      --accent: #2b6cb0;
-    }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      padding: 2rem;
-      line-height: 1.6;
-      transition: background 0.3s, color 0.3s;
-    }
-    body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
-    h1, h2, h3 {
-      color: var(--accent);
-    }
-    .toggle-switch {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 40px;
-      height: 19px;
-    }
-    .switch input { display: none; }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 14px; width: 14px;
-      left: 4px; bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .slider {
-      background-color: #4caf50;
-    }
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-    section {
-      margin-bottom: 2rem;
-    }
+      --transition: 0.3s;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --text-light: #000000;
+      --text-dark: #ffffff;
+      --card-light: #f3f3f3;
+      --card-dark: #1e1e1e;
+    }[data-theme="light"] {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+[data-theme="dark"] {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 1rem;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+h1 {
+  color: #000 !important;
+}
+
+section {
+  background-color: var(--card-light);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: background-color var(--transition);
+}
+
+[data-theme="dark"] section {
+  background-color: var(--card-dark);
+}
+
+.toggle-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: var(--transition);
+  border-radius: 20px;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #00bcd4;
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
   </style>
 </head>
 <body>
-  <div class="toggle-switch">
-    <label class="switch">
-      <input type="checkbox" id="themeToggle" />
-      <span class="slider"></span>
+  <div class="toggle-container">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="toggle-slider"></span>
     </label>
-    <strong><span><small>Mode</small></span></strong>
-  </div>  <center><h2>Terms and Conditions</h2></center>
-  <p><strong>Beta Version 0.1 – Updated May 13, 2025</strong></p>
+  </div>  <h1>Terms and Conditions</h1>
+  <p><strong>Beta Version 0.1 — Updated May 13, 2025</strong></p>
   <p><em>Lotto Chain: Decentralized Betting Web3 Social</em></p>  <section>
-    <h3>1. Acceptance of Terms</h3>
-    <p>By participating in the Lotto Chain Beta testing program, you acknowledge that you have read, understood, and agreed to all terms and conditions listed below.</p>
+    <h2>1. Acceptance of Terms</h2>
+    <p>By participating in the Beta testing program of Lotto Chain, you agree that you have read, understood, and accepted all the terms and conditions below.</p>
   </section>  <section>
-    <h3>2. Eligibility</h3>
+    <h2>2. Eligibility</h2>
     <ul>
-      <li>Participants must be at least 18 years old or meet the legal age in their jurisdiction.</li>
-      <li>Only one valid X account, Telegram account, and wallet per individual is allowed.</li>
-      <li>Use of bots, fake accounts, or fraudulent activity will result in disqualification.</li>
+      <li>Participants must be at least 18 years old or meet the legal age requirement in their respective country.</li>
+      <li>Only one valid X account, Telegram account, and wallet address is allowed per individual.</li>
+      <li>Use of bots, fake accounts, or fraudulent activities will result in disqualification.</li>
     </ul>
   </section>  <section>
-    <h3>3. How to Participate</h3>
+    <h2>3. How to Participate</h2>
     <ul>
-      <li>Join the official Lotto Chain X account and Telegram channel.</li>
-      <li>Engage with platform features and complete the verification process.</li>
-      <li>Upon successful verification, points will be automatically sent to your wallet.</li>
+      <li>Join the official Lotto Chain X and Telegram accounts.</li>
+      <li>Test and share the platform's available features, then complete the verification process.</li>
+      <li>Upon successful verification, points will be automatically sent to the participant’s wallet.</li>
     </ul>
   </section>  <section>
-    <h3>4. Points</h3>
+    <h2>4. Points</h2>
     <ul>
-      <li>Points are only awarded to verified participants who meet all requirements.</li>
-      <li>Lotto Chain reserves the right to withhold points from users suspected of fraudulent activity.</li>
-      <li>Point supply is provisional and subject to change without prior notice.</li>
+      <li>Points are awarded only to users who meet all conditions and pass system verification.</li>
+      <li>Lotto Chain reserves the right to withhold points from users suspected of fraud.</li>
+      <li>Point distribution is unlimited and may change at any time without prior notice.</li>
     </ul>
   </section>  <section>
-    <h3>5. Delays and Cancellations</h3>
-    <p>Lotto Chain may cancel or postpone the Beta Testnet program at any time without compensation in cases of force majeure or technical disruptions.</p>
+    <h2>5. Delay and Cancellation</h2>
+    <p>Lotto Chain reserves the right to delay or cancel the Beta Testnet program without compensation due to force majeure or technical issues.</p>
   </section>  <section>
-    <h3>6. Limitation of Liability</h3>
+    <h2>6. Limitation of Liability</h2>
     <ul>
-      <li>Lotto Chain is not responsible for incorrect wallet addresses submitted by users.</li>
-      <li>We are not liable for losses caused by market fluctuations.</li>
-      <li>We are not liable for third-party technical failures, including wallets or blockchain networks.</li>
+      <li>We are not liable for wallet address errors submitted by participants.</li>
+      <li>We are not responsible for financial losses due to price fluctuations.</li>
+      <li>We are not responsible for third-party technical failures, including wallet services or blockchain networks.</li>
     </ul>
   </section>  <section>
-    <h3>7. Terms Revisions</h3>
-    <p>We reserve the right to update these terms at any time. Changes will be announced through official channels.</p>
-  </section>  <center><h2>Privacy Policy:</h2></center>  <section>
+    <h2>7. Changes to Terms</h2>
+    <p>We may update these terms and conditions at any time. Changes will be announced via Lotto Chain’s official channels.</p>
+  </section>  <h1>Privacy Policy — Lotto Chain Beta Testnet Program</h1>  <section>
     <h2>1. Data Collected</h2>
     <ul>
-      <li>X username (for verification purposes only)</li>
-      <li>Telegram username (for verification purposes only)</li>
-      <li>Public wallet address (for point distribution)</li>
+      <li>X Username (for verification only)</li>
+      <li>Telegram Username (for verification only)</li>
+      <li>Public Wallet Address (for point distribution)</li>
     </ul>
   </section>  <section>
-    <h3>2. Use of Data</h3>
-    <p>Data is solely used for verifying participation and distributing points. No other personal data is collected.</p>
+    <h2>2. Data Usage</h2>
+    <p>All collected data is used strictly for participant verification and point distribution. No other personal data is collected.</p>
   </section>  <section>
-    <h3>3. Storage and Security</h3>
-    <p>Data is not stored centrally. Validation occurs through automated systems. No personal data is stored outside the blockchain.</p>
+    <h2>3. Storage & Security</h2>
+    <p>Data is not stored centrally. All validation is conducted automatically via system scripts. No private data is stored outside the blockchain.</p>
   </section>  <section>
-    <h3>4. Disclosure to Third Parties</h3>
-    <p>We do not sell or share your data with third parties. All processes are automated, smart contract-based, and transparent.</p>
+    <h2>4. Third-Party Disclosure</h2>
+    <p>We do not sell or share your data with third parties. All processes are smart contract-based and transparent.</p>
   </section>  <section>
-    <h3>5. Participant Rights</h3>
-    <p>You may cancel your participation at any time before the mainnet launch. Once points are distributed, the process is final and cannot be reversed.</p>
+    <h2>5. Participant Rights</h2>
+    <p>You may cancel your participation at any time before the mainnet release. Once points are distributed, the transaction is final and irreversible.</p>
   </section>  <section>
-    <h3>6. Policy Updates</h3>
-    <p>This policy may be updated from time to time. The latest version will be published through Lotto Chain’s official channels.</p><br>
-    <center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center>
+    <h2>6. Policy Updates</h2>
+    <p>This policy may be updated at any time. The latest version will be available on Lotto Chain’s official channels.</p>
   </section>  <script>
     const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
     toggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark');
+      const currentTheme = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
     });
   </script></body>
 </html>
