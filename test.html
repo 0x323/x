@@ -144,9 +144,9 @@
     document.getElementById("continueBtn").disabled = !allChecked;
   }
 
-  function finish() {
-    document.getElementById("taskModal").style.display = 'none';
-    alert("All tasks completed!");
+  function finish(url) {
+  document.getElementById("taskModal").style.display = 'none';
+  window.location.href = url;
   }
 
   window.console = {
