@@ -431,16 +431,18 @@
       background: linear-gradient(90deg, #03a9f4, #f441a5);
       color: #fff;
       padding: 0.5rem 1rem;
-      margin-bottom: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
     }
 
-    .btn-task:hover {
+    .btn-task:hover:not(:disabled) {
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
       box-shadow: 0 0 15px #03a9f4;
     }
 
-    .checkbox {
-      margin-top: 0.5rem;
+    .btn-task:disabled {
+      background: #555;
+      cursor: not-allowed;
     }
 
     #continueBtn {
@@ -467,39 +469,27 @@
   <div class="modal" id="taskModal">
     <div class="modal-content">
       <h3>Complete Social Tasks</h3>
-      <!-- Twitter Follow Only -->
+      <!-- Twitter Follow -->
       <div class="task" id="task0">
         <b>1. Follow Twitter Account</b><br><br>
-        <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task0')">Follow & Confirm</button>
-        <div class="checkbox">
-          <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-        </div>
+        <button class="btn-task" id="task0Btn" onclick="completeTask('task0', 'https://twitter.com/LottoChainXyz')">Follow Twitter</button>
       </div>
       <!-- Twitter Engage -->
       <div class="task" id="task1">
         <b>2. Like, Retweet, and Comment on Twitter</b><br><br>
-        <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz/status/YOUR_TWEET_ID', 'task1')">Engage & Confirm</button>
-        <div class="checkbox">
-          <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-        </div>
+        <button class="btn-task" id="task1Btn" onclick="completeTask('task1', 'https://twitter.com/LottoChainXyz/status/YOUR_TWEET_ID')">Engage on Twitter</button>
       </div>
       <!-- Telegram -->
       <div class="task" id="task2">
         <b>3. Join Telegram Channel</b><br><br>
-        <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Confirm</button>
-        <div class="checkbox">
-          <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-        </div>
+        <button class="btn-task" id="task2Btn" onclick="completeTask('task2', 'https://t.me/LottoChainXyz')">Join Telegram</button>
       </div>
       <!-- Facebook -->
       <div class="task" id="task3">
         <b>4. Like Facebook Page</b><br><br>
-        <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Confirm</button>
-        <div class="checkbox">
-          <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-        </div>
+        <button class="btn-task" id="task3Btn" onclick="completeTask('task3', 'https://facebook.com/LottoChainXyz')">Like Facebook</button>
       </div>
-      <button id="continueBtn" disabled onclick="finish()">Continue</button>
+      <button id="continueBtn" disabled onclick="finishTasks()">Continue</button>
     </div>
   </div>
 
@@ -648,7 +638,7 @@
     <footer>
       <div class="social-icons">
         <a href="https://twitter.com/LottoChainXyz" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-        <a href="https://t.me/LottoChainXyz" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://t.me Syarikat: Telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a>
         <a href="" target="_blank"><i class="fa-brands fa-discord"></i></a>
         <a href="https://facebook.com/LottoChainXyz" target="_blank"><i class="fa-brands fa-facebook"></i></a>
         <a href="" target="_blank"><i class="fa-brands fa-youtube"></i></a>
@@ -667,49 +657,74 @@
 
   <script>
     // Modal Logic
-    function handleTaskClick(button, url, taskId) {
+    function completeTask(taskId, url) {
       window.open(url, '_blank');
+      const button = document.getElementById(`${taskId}Btn`);
       button.disabled = true;
-      button.innerText = 'Task Opened';
-      localStorage.setItem(taskId + '_opened', 'true');
+      button.innerText = 'Completed';
+      localStorage.setItem(taskId, 'completed');
+      checkAllTasks();
     }
 
-    function checkAll() {
-      const checkboxes = document.querySelectorAll('.task input[type="checkbox"]');
-      const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-      document.getElementById('continueBtn').disabled = !allChecked;
+    function checkAllTasks() {
+      const tasks = ['task0', 'task1', 'task2', 'task3'];
+      const allCompleted = tasks.every(taskId => localStorage.getItem(taskId) === 'completed');
+      document.getElementById('continueBtn').disabled = !allCompleted;
     }
 
-    function finish() {
+    function finishTasks() {
+      const tasks = ['task0', 'task1', 'task2', 'task3'];
+      tasks.forEach(taskId => localStorage.setItem(taskId, 'completed'));
       localStorage.setItem('tasksCompleted', 'true');
+      localStorage.setItem('tasksCompletedTime', Date.now().toString());
       document.getElementById('taskModal').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
     }
 
-    window.addEventListener('load', () => {
+    function shouldShowModal() {
       const tasksCompleted = localStorage.getItem('tasksCompleted');
-      if (tasksCompleted === 'true') {
-        document.getElementById('taskModal').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-      } else {
+      const completedTime = localStorage.getItem('tasksCompletedTime');
+      const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+      if (tasksCompleted === 'true' && completedTime) {
+        const timeSinceCompletion = Date.now() - parseInt(completedTime);
+        if (timeSinceCompletion >= twentyFourHours) {
+          // Reset tasks for the new day
+          const tasks = ['task0', 'task1', 'task2', 'task3'];
+          tasks.forEach(taskId => localStorage.removeItem(taskId));
+          localStorage.setItem('tasksCompleted', 'false');
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+
+    window.addEventListener('load', () => {
+      if (shouldShowModal()) {
         document.getElementById('taskModal').style.display = 'flex';
         document.getElementById('mainContent').style.display = 'none';
         // Restore button states
-        ['task0', 'task1', 'task2', 'task3'].forEach(taskId => {
-          if (localStorage.getItem(taskId + '_opened') === 'true') {
-            const button = document.querySelector(`#${taskId} .btn-task`);
+        const tasks = ['task0', 'task1', 'task2', 'task3'];
+        tasks.forEach(taskId => {
+          if (localStorage.getItem(taskId) === 'completed') {
+            const button = document.getElementById(`${taskId}Btn`);
             button.disabled = true;
-            button.innerText = 'Task Opened';
+            button.innerText = 'Completed';
           }
         });
+        checkAllTasks();
+      } else {
+        document.getElementById('taskModal').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
       }
     });
 
-    // Existing Script (with your ABI included)
+    // Existing Script
     const contractAddress = "0xA9cedF1fc66a841a80Ad7e4A2a2D138378FE5cB8";
     const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
     const costPerBet = 1;
-
+    
     let web3;
     let contract;
     let userAccount;
@@ -1632,4 +1647,4 @@
     };
   </script>
 </body>
-                                      </html>
+  </html>
