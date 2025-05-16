@@ -118,7 +118,7 @@
   </div>
 </div>
 
-    <button id="continueBtn" disabled onclick="finish('https://lottochain.xyz/beta')">Continue</button>
+    <button id="continueBtn" disabled onclick="finish()">Continue</button>
   </div>
 </div>
 
@@ -144,9 +144,9 @@
     document.getElementById("continueBtn").disabled = !allChecked;
   }
 
-  function finish(url) {
-  document.getElementById("taskModal").style.display = 'none';
-  window.location.href = url;
+  function finish() {  
+    document.getElementById("taskModal").style.display = 'none';  
+    alert("All tasks completed!");  
   }
 
   window.console = {
