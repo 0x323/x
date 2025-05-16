@@ -17,6 +17,7 @@
       min-height: 100vh;
       color: #f1f1f1;
       padding-top: 70px;
+      margin: 0;
     }
 
     .container {
@@ -26,6 +27,11 @@
       padding: 4rem;
       background: #000000;
       margin-top: 20px;
+    }
+
+    /* Hide main content initially */
+    #mainContent {
+      display: none;
     }
 
     h1, h2 {
@@ -345,24 +351,29 @@
       color: #00ff66;
     }
 
-    .navりんks {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      right: 0;
-      background: #222;
-      width: 200px;
-      padding: 10px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease-in-out;
-    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #222;
+        width: 200px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease-in-out;
+      }
 
-    .nav-links.show {
-      display: flex;
-      flex-direction: column;
-      transform: translateX(0);
-      animation: slideIn 0.3s ease-in-out;
+      .nav-links.show {
+        display: flex;
+        transform: translateX(0);
+        animation: slideIn 0.3s ease-in-out;
+      }
+
+      .hamburger {
+        display: block;
+      }
     }
 
     @keyframes slideIn {
@@ -382,232 +393,78 @@
       text-align: center;
     }
 
-    /* CSS untuk Modal Popup */
+    /* Modal Styles */
     .modal {
+      display: none;
       position: fixed;
-      z-index: 9999;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
       align-items: center;
-      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
     }
 
     .modal-content {
-      background: white;
-      padding: 24px;
-      border-radius: 14px;
+      background-color: #101010;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 500px;
       width: 90%;
-      max-width: 420px;
-      box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 153, 255, 0.3);
+    }
+
+    .modal-content h3 {
+      margin-bottom: 1.5rem;
+      color: #f0f0f0;
     }
 
     .task {
-      margin-bottom: 20px;
+      margin: 1rem 0;
+      text-align: left;
     }
 
     .btn-task {
-      width: 100%;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      padding: 12px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.2s;
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
     }
 
-    .btn-task.confirm {
-      background-color: #28a745;
-    }
-
-    .btn-task:disabled {
-      background-color: #aaa;
-      cursor: not-allowed;
+    .btn-task:hover {
+      background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
+      box-shadow: 0 0 15px #03a9f4;
     }
 
     .checkbox {
-      margin-top: 10px;
-      display: none;
+      margin-top: 0.5rem;
     }
 
     #continueBtn {
-      margin-top: 24px;
-      padding: 12px;
+      background: linear-gradient(90deg, #03a9f4, #f441a5);
+      color: #fff;
+      padding: 0.8rem 2rem;
       width: 100%;
-      background: #111;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      font-weight: bold;
-      font-size: 15px;
+      margin-top: 1rem;
+    }
+
+    #continueBtn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    #continueBtn:hover:not(:disabled) {
+      background: linear-gradient(90deg, #03a9f4, #f441a5, #ffffff33);
+      box-shadow: 0 0 15px #f441a5;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="index" target="_blank" text-decoration: none;">
-      <div class="logo">
-        <img src="img/logo.svg" class="logo-img">
-        <span style="
-          font-size: 22px; 
-          font-weight: bold; 
-          background: linear-gradient(90deg, #03a9f4, #f441a5); 
-          -webkit-background-clip: text; 
-          -webkit-text-fill-color: transparent;
-          display: inline-block;
-        ">
-          Lotto Chain
-        </span>
-      </div>
-    </a>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <ul class="nav-links" id="navMenu">
-      <a href="#features">4D Pools</a>
-      <a href="#prizes">Prizes</a>
-      <a href="lottery">LottoBalls (LB)</a>
-      <a href="hk">Hong Kong (HK)</a>
-      <a href="syd">Sydney (SYD)</a>
-    </ul>
-  </nav>
-  
-  <h1>HK Beta Testnet</h1>
-  <a href="result" target="_blank" style="color: #00bfff;"><h3>Result Today</h3></a>
-
-  <div class="lottery-balls">
-    <div class="lottery-ball">1</div>
-    <div class="lottery-ball">2</div>
-    <div class="lottery-ball">3</div>
-    <div class="lottery-ball">4</div>
-  </div>
-  <small><h4 id="current-date-time"></h4></small><br>
-
-  <!-- Wallet Connection -->
-  <div class="section">
-    <center><button id="walletButton">Connect Wallet</button></center>
-    <small><p id="accountInfo" class="info-text"></p>
-    <p id="ethBalance" class="info-text">Loading...</p>
-    <p id="tokenBalance" class="info-text"></p></small>
-  </div>
-  
-  <!-- Check-In -->
-  <div class="section hidden">
-    <h2>Daily Faucet Claim</h2>
-    <h5>Faucet starts every <span style="color: #ffb833;">00:00 UTC</span></h5>
-    <h5>Time: <span class="utcClock"></span></h5><br>
-    <center><button id="checkIn">Faucet 1 Lpoint</button></center>
-    <small><p id="checkInStatus" class="info-text"></p></small>
-    <h3>Your Faucet History</h3>
-    <small><ul id="checkInHistory" class="info-text"></ul></small>
-    <div class="pagination" id="checkInPagination"></div>
-  </div>
-
-  <!-- Betting Section -->
-  <div class="section hidden">
-    <h2>Place a Bet</h2>
-    <h5>Place a Bet starts every <span style="color: #ffb833;">00:00 UTC</span></h5>
-    <h5>Time: <span class="utcClock"></span></h5><br>
-    <div class="input-group">
-      <label for="betNumber">Betting Number</label><br>
-      <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
-    </div>
-    <div class="input-group">
-      <label for="betTimes">Multiplication (1× - 5×)</label><br>
-      <br><input id="betTimes" type="number" min="1" max="5" step="1" placeholder="1 - 5">
-    </div>
-    <div class="input-group">
-      <label for="payoutAmount">Reward Amount (Fixed 10 Points)</label><br>
-      <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="10" value="10" readonly>
-    </div>
-    <div class="input-group">
-      <label><small>Total Cost</small></label><br>
-      <br><small id="betCost" style="color: yellow;">-</small>
-    </div>
-    <center><button id="placeBetButton" onclick="placeBet()">Submit Ticket</button></center>
-    <div id="betStatus" style="margin-top: 15px; text-align: center;"></div>
-  </div>
-  
-  <!-- User Bet History -->
-  <div class="section hidden">
-    <h2>Your Ticket History</h2>
-    <div id="userBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
-      <small><ul id="userBetHistory" class="info-text"></ul></small>
-    </div>
-  </div>
-
-  <!-- Global Bet History -->
-  <div class="section hidden">
-    <h2>Global Ticket History</h2>
-    <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
-      <small><ul id="globalBetHistory" class="info-text"></ul></small>
-    </div>
-  </div>
-
-  <!-- Referral -->
-  <div class="section hidden">
-    <h2>Referral</h2>
-    <div class="input-group">
-      <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
-      <center><button id="copyLink">Copy Link</button></center>
-      <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
-      <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
-    </div>
-    <br><h4>Your Invited Friends List</h4><br>
-    <small><ul id="refereeList" class="info-text"></ul></small>
-    <div id="refereePagination" class="pagination"></div> 
-  </div>
-
-  <div id="prizes" class="section hidden">
-    <center><h2>4D USDT Reward Payout</h2></center>
-    <table>
-      <tr>
-        <th>Bet Type</th>
-        <th>Const</th>
-        <th>USDT Mainnet Reward</th>
-      </tr>
-      <tr>
-        <td style="color: orange; font-weight: bold;">4D</td>
-        <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-        <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
-      </tr>
-      <tr>
-        <td style="color: orange; font-weight: bold;">3D</td>
-        <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-        <td style="color: #1a88ff; font-weight: bold;">0.75 USDT</td>
-      </tr>
-      <tr>
-        <td style="color: orange; font-weight: bold;">2D</td>
-        <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
-        <td style="color: #1a88ff; font-weight: bold;">0.5 USDT</td>
-      </tr>
-    </table>
-  </div>
-
-  <footer>
-    <div class="social-icons">
-      <a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-      <a href="https://t.me/" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-      <a href="" target="_blank"><i class="fa-brands fa-discord"></i></a>
-      <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-      <a href="" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-    </div>
-    <p>
-      © Powered By Lotto Chain.
-      <span>
-        <a href="T&ABetaTestnet" style="color: #007bff; text-decoration: none;" target="_blank">
-          2025 All rights reserved.
-        </a>
-      </span>
-      Play responsibly.
-    </p>
-  </footer>
-
-  <!-- Modal Popup untuk Verifikasi Sosial -->
-  <div class="modal" id="taskModal" style="display: none;">
+  <!-- Modal -->
+  <div class="modal" id="taskModal">
     <div class="modal-content">
       <h3>Complete Social Tasks</h3>
       <!-- Twitter Follow Only -->
@@ -646,12 +503,213 @@
     </div>
   </div>
 
+  <!-- Main Content -->
+  <div id="mainContent">
+    <nav class="navbar">
+      <a href="index" target="_blank" style="text-decoration: none;">
+        <div class="logo">
+          <img src="img/logo.svg" class="logo-img">
+          <span style="
+            font-size: 22px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #03a9f4, #f441a5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+          ">
+            Lotto Chain
+          </span>
+        </div>
+      </a>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <a href="#features">4D Pools</a>
+        <a href="#prizes">Prizes</a>
+        <a href="lottery">LottoBalls (LB)</a>
+        <a href="hk">Hong Kong (HK)</a>
+        <a href="syd">Sydney (SYD)</a>
+      </ul>
+    </nav>
+
+    <h1>HK Beta Testnet</h1>
+    <a href="result" target="_blank" style="color: #00bfff;"><h3>Result Today</h3></a>
+
+    <div class="lottery-balls">
+      <div class="lottery-ball">1</div>
+      <div class="lottery-ball">2</div>
+      <div class="lottery-ball">3</div>
+      <div class="lottery-ball">4</div>
+    </div>
+    <small><h4 id="current-date-time"></h4></small><br>
+
+    <!-- Wallet Connection -->
+    <div class="section">
+      <center><button id="walletButton">Connect Wallet</button></center>
+      <small><p id="accountInfo" class="info-text"></p>
+      <p id="ethBalance" class="info-text">Loading...</p>
+      <p id="tokenBalance" class="info-text"></p></small>
+    </div>
+
+    <!-- Check-In -->
+    <div class="section hidden">
+      <h2>Daily Faucet Claim</h2>
+      <h5>Faucet starts every <span style="color: #ffb833;">00:00 UTC</span></h5>
+      <h5>Time: <span class="utcClock"></span></h5><br>
+      <center><button id="checkIn">Faucet 1 Lpoint</button></center>
+      <small><p id="checkInStatus" class="info-text"></p></small>
+      <h3>Your Faucet History</h3>
+      <small><ul id="checkInHistory" class="info-text"></ul></small>
+      <div class="pagination" id="checkInPagination"></div>
+    </div>
+
+    <!-- Betting Section -->
+    <div class="section hidden">
+      <h2>Place a Bet</h2>
+      <h5>Place a Bet starts every <span style="color: #ffb833;">00:00 UTC</span></h5>
+      <h5>Time: <span class="utcClock"></span></h5><br>
+      <div class="input-group">
+        <label for="betNumber">Betting Number</label><br>
+        <br><input id="betNumber" type="number" min="0" max="9999" placeholder="Enter: 2D, 3D, or 4D">
+      </div>
+      <div class="input-group">
+        <label for="betTimes">Multiplication (1× - 5×)</label><br>
+        <br><input id="betTimes" type="number" min="1" max="5" step="1" placeholder="1 - 5">
+      </div>
+      <div class="input-group">
+        <label for="payoutAmount">Reward Amount (Fixed 10 Points)</label><br>
+        <br><input id="payoutAmount" type="number" min="10" max="10" placeholder="10" value="10" readonly>
+      </div>
+      <div class="input-group">
+        <label><small>Total Cost</small></label><br>
+        <br><small id="betCost" style="color: yellow;">-</small>
+      </div>
+      <center><button id="placeBetButton" onclick="placeBet()">Submit Ticket</button></center>
+      <div id="betStatus" style="margin-top: 15px; text-align: center;"></div>
+    </div>
+
+    <!-- User Bet History -->
+    <div class="section hidden">
+      <h2>Your Ticket History</h2>
+      <div id="userBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+        <small><ul id="userBetHistory" class="info-text"></ul></small>
+      </div>
+    </div>
+
+    <!-- Global Bet History -->
+    <div class="section hidden">
+      <h2>Global Ticket History</h2>
+      <div id="globalBetHistoryContainer" style="max-height: 400px; overflow-y: auto;">
+        <small><ul id="globalBetHistory" class="info-text"></ul></small>
+      </div>
+    </div>
+
+    <!-- Referral -->
+    <div class="section hidden">
+      <h2>Referral</h2>
+      <div class="input-group">
+        <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
+        <center><button id="copyLink">Copy Link</button></center>
+        <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
+        <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
+      </div>
+      <br><h4>Your Invited Friends List</h4><br>
+      <small><ul id="refereeList" class="info-text"></ul></small>
+      <div id="refereePagination" class="pagination"></div>
+    </div>
+
+    <!-- Prizes -->
+    <div id="prizes" class="section hidden">
+      <center><h2>4D USDT Reward Payout</h2></center>
+      <table>
+        <tr>
+          <th>Bet Type</th>
+          <th>Const</th>
+          <th>USDT Mainnet Reward</th>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">4D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">1 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">3D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.75 USDT</td>
+        </tr>
+        <tr>
+          <td style="color: orange; font-weight: bold;">2D</td>
+          <td style="color: #00ca09; font-weight: bold;">1× / 5×</td>
+          <td style="color: #1a88ff; font-weight: bold;">0.5 USDT</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="social-icons">
+        <a href="https://twitter.com/LottoChainXyz" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        <a href="https://t.me/LottoChainXyz" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://facebook.com/LottoChainXyz" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+      <p>
+        © Powered By Lotto Chain.
+        <span>
+          <a href="T&ABetaTestnet" style="color: #007bff; text-decoration: none;" target="_blank">
+            2025 All rights reserved.
+          </a>
+        </span>
+        Play responsibly.
+      </p>
+    </footer>
+  </div>
+
   <script>
-    // Konfigurasi Web3 dan kontrak
+    // Modal Logic
+    function handleTaskClick(button, url, taskId) {
+      window.open(url, '_blank');
+      button.disabled = true;
+      button.innerText = 'Task Opened';
+      localStorage.setItem(taskId + '_opened', 'true');
+    }
+
+    function checkAll() {
+      const checkboxes = document.querySelectorAll('.task input[type="checkbox"]');
+      const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+      document.getElementById('continueBtn').disabled = !allChecked;
+    }
+
+    function finish() {
+      localStorage.setItem('tasksCompleted', 'true');
+      document.getElementById('taskModal').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+    }
+
+    window.addEventListener('load', () => {
+      const tasksCompleted = localStorage.getItem('tasksCompleted');
+      if (tasksCompleted === 'true') {
+        document.getElementById('taskModal').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+      } else {
+        document.getElementById('taskModal').style.display = 'flex';
+        document.getElementById('mainContent').style.display = 'none';
+        // Restore button states
+        ['task0', 'task1', 'task2', 'task3'].forEach(taskId => {
+          if (localStorage.getItem(taskId + '_opened') === 'true') {
+            const button = document.querySelector(`#${taskId} .btn-task`);
+            button.disabled = true;
+            button.innerText = 'Task Opened';
+          }
+        });
+      }
+    });
+
+    // Existing Script (with your ABI included)
     const contractAddress = "0xA9cedF1fc66a841a80Ad7e4A2a2D138378FE5cB8";
     const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
     const costPerBet = 1;
-    
+
     let web3;
     let contract;
     let userAccount;
@@ -670,7 +728,6 @@
     const checkInBatchSize = 10;
     let totalCheckInCount = 0;
 
-    // Cache untuk data statis dan event
     const cache = {
       decimals: null,
       symbol: null,
@@ -678,11 +735,9 @@
       checkInEvents: {},
     };
 
-    // Durasi validitas koneksi (7 hari)
     const CONNECTION_VALIDITY = 7 * 24 * 60 * 60 * 1000;
     const BASE_URL = "https://lottochain.xyz/beta";
 
-    // Fungsi utilitas
     const generateUID = () => 'uid_' + Math.random().toString(36).substr(2, 9);
 
     const setLoading = (elementId, isLoading) => {
@@ -696,7 +751,7 @@
 
     const toggleSectionsVisibility = (isConnected) => {
       document.querySelectorAll('.section').forEach((section, index) => {
-        if (index === 0) return; // Skip Wallet Connection section
+        if (index === 0) return;
         section.classList.toggle('hidden', !isConnected);
       });
     };
@@ -709,69 +764,6 @@
       };
     };
 
-    // Manajemen tugas sosial
-    const taskStates = {};
-
-    // Fungsi untuk memeriksa apakah semua tugas sosial selesai
-    const areSocialTasksCompleted = () => {
-      if (!userAccount) {
-        return localStorage.getItem("socialTasksCompleted") === "true";
-      }
-      const taskStatus = localStorage.getItem(`socialTasks_${userAccount}`);
-      return taskStatus === "completed";
-    };
-
-    // Fungsi untuk menandai tugas sosial sebagai selesai
-    const markSocialTasksCompleted = () => {
-      if (userAccount) {
-        localStorage.setItem(`socialTasks_${userAccount}`, "completed");
-      } else {
-        localStorage.setItem("socialTasksCompleted", "true");
-      }
-    };
-
-    // Fungsi untuk menangani klik tombol tugas
-    function handleTaskClick(button, url Trustee, taskId) {
-      if (!taskStates[taskId]) {
-        window.open(url, "_blank");
-        taskStates[taskId] = true;
-        button.textContent = "Click to Confirm";
-        button.classList.add("confirm");
-      } else {
-        const checkboxDiv = document.querySelector(`#${taskId} .checkbox`);
-        checkboxDiv.style.display = "block";
-        button.disabled = true;
-      }
-    }
-
-    // Fungsi untuk memeriksa apakah semua checkbox dicentang
-    function checkAll() {
-      const checkboxes = document.querySelectorAll('.checkbox input[type="checkbox"]');
-      const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
-      document.getElementById("continueBtn").disabled = !allChecked;
-    }
-
-    // Fungsi untuk menyelesaikan tugas dan melanjutkan ke MetaMask
-    async function finish() {
-      document.getElementById("taskModal").style.display = "none";
-      markSocialTasksCompleted();
-      await initWeb3(true);
-      await setAutomaticReferralId();
-    }
-
-    // Blokir console.log jika tugas belum selesai
-    window.console = {
-      log: function () {
-        const checkboxes = document.querySelectorAll('.checkbox input[type="checkbox"]');
-        const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
-        if (!allChecked && !areSocialTasksCompleted()) {
-          alert("Please complete all tasks before accessing the console.");
-          throw new Error("Console access blocked.");
-        }
-      },
-    };
-
-    // Inisialisasi Web3
     const initWeb3 = async (forceConnect = false, retries = 3, delay = 3000) => {
       if (!window.ethereum) {
         alert("MetaMask is not installed. Please install MetaMask to use this DApp.");
@@ -892,10 +884,8 @@
         const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
         if (!currentReferralId) {
           const newReferralId = generateUID();
-
           const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
           const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-
           await contract.methods.setReferralId(newReferralId).send({
             from: userAccount,
             maxFeePerGas,
@@ -918,7 +908,6 @@
           if (hasReferrer === "0x0000000000000000000000000000000000000000") {
             const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
             const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-
             await contract.methods.setReferralById(referrerId).send({
               from: userAccount,
               maxFeePerGas,
@@ -960,7 +949,6 @@
     const disconnectWallet = () => {
       userAccount = null;
       localStorage.removeItem("walletConnection");
-      localStorage.removeItem(`socialTasks_${userAccount}`);
       cache.betEvents = {};
       cache.checkInEvents = {};
       updateWalletUI(false);
@@ -1008,7 +996,7 @@
             user: event.returnValues.user,
             number: event.returnValues.number,
             cost: event.returnValues.cost,
-            reward: event.returnValues.reward
+            reward: event.returnValues.reward,
           };
         });
         cache.betEvents[user || "global"] = eventMap;
@@ -1063,7 +1051,7 @@
           const [ethBalance, balance, userReferralId, refereeCount, referralReward] = await Promise.all([
             web3.eth.getBalance(userAccount),
             contract.methods.balanceOf(userAccount).call(),
-           ellaralIdOf(userAccount).call(),
+            contract.methods.referralIdOf(userAccount).call(),
             contract.methods.getRefereeCount(userAccount).call(),
             contract.methods.referralRewards(userAccount).call(),
           ]);
@@ -1096,10 +1084,8 @@
       setLoading("refereeList", true);
       try {
         console.log("Loading referee list");
-
         const refereeList = document.getElementById("refereeList");
         const pagination = document.getElementById("refereePagination");
-
         const referees = await contract.methods.getReferees(userAccount).call();
 
         let currentPage = 1;
@@ -1110,18 +1096,8 @@
 
         const renderPage = (page) => {
           refereeList.innerHTML = "";
-
-          let start = 0;
-          let end = 0;
-
-          if (page === 1) {
-            start = 0;
-            end = initialLoad;
-          } else {
-            start = initialLoad + (page - 2) * itemsPerPage;
-            end = start + itemsPerPage;
-          }
-
+          let start = page === 1 ? 0 : initialLoad + (page - 2) * itemsPerPage;
+          let end = page === 1 ? initialLoad : start + itemsPerPage;
           const pagedReferees = referees.slice(start, end);
 
           if (pagedReferees.length === 0) {
@@ -1140,13 +1116,11 @@
               refereeList.appendChild(li);
             });
           }
-
           renderPagination();
         };
 
         const renderPagination = () => {
           pagination.innerHTML = "";
-
           if (totalPages <= 1) return;
 
           const createButton = (content, disabled, onClick, isImage = false) => {
@@ -1158,7 +1132,6 @@
             btn.style.display = "flex";
             btn.style.alignItems = "center";
             btn.onclick = onClick;
-
             if (isImage) {
               const img = document.createElement("img");
               img.src = content;
@@ -1168,7 +1141,6 @@
             } else {
               btn.innerText = content;
             }
-
             pagination.appendChild(btn);
           };
 
@@ -1228,19 +1200,16 @@
               dots1.innerText = "...";
               dots1.style.margin = "0 5px";
               pagination.appendChild(dots1);
-
               for (let i = currentPage - 1; i <= currentPage + 1; i++) {
                 createButton(i, currentPage === i, () => {
                   currentPage = i;
                   renderPage(currentPage);
                 });
               }
-
               const dots2 = document.createElement("span");
               dots2.innerText = "...";
               dots2.style.margin = "0 5px";
               pagination.appendChild(dots2);
-
               createButton(totalPages, false, () => {
                 currentPage = totalPages;
                 renderPage(currentPage);
@@ -1276,19 +1245,15 @@
       document.getElementById("checkInStatus").innerHTML = "<center><small>Processing check-in...</center></small>";
       try {
         console.log("Initiating check-in transaction");
-
         const maxFeePerGas = web3.utils.toWei('0.001', 'gwei');
         const maxPriorityFeePerGas = web3.utils.toWei('0.00098', 'gwei');
-
         const tx = await contract.methods.checkIn().send({
           from: userAccount,
           maxFeePerGas,
           maxPriorityFeePerGas,
           gas: 200000
         });
-
         console.log("Check-in transaction sent, hash:", tx.transactionHash);
-
         const maxAttempts = 10;
         let attempt = 0;
         let receipt = null;
@@ -1304,7 +1269,6 @@
           throw new Error("Transaction not confirmed after multiple attempts");
         }
         console.log("Transaction confirmed, receipt:", receipt);
-
         document.getElementById("checkInStatus").innerHTML = "<center><small>Faucet Check-in successful! You earned 1 Point!</small></center>";
         console.log("Waiting for blockchain sync");
         await new Promise(resolve => setTimeout(resolve, 3000));
@@ -1327,25 +1291,20 @@
     const loadCheckInHistory = async (page = 1) => {
       if (!userAccount) return;
       setLoading("checkInHistory", true);
-
       try {
         console.log(`Loading check-in history page ${page}`);
         const historyList = document.getElementById("checkInHistory");
         historyList.innerHTML = "";
-
         if (totalCheckInCount === 0) {
           totalCheckInCount = await contract.methods.getCheckInCount(userAccount).call();
         }
-
         const start = Math.max(totalCheckInCount - (page * checkInBatchSize), 0);
         const end = Math.min(start + checkInBatchSize, totalCheckInCount);
-
         const promises = [];
         for (let i = end - 1; i >= start; i--) {
           promises.push(contract.methods.getCheckInLog(userAccount, i).call());
         }
         const logs = await Promise.all(promises);
-
         if (logs.length === 0) {
           historyList.innerHTML = "<li><small>No history found.</small></li>";
         } else {
@@ -1361,7 +1320,6 @@
             historyList.appendChild(li);
           });
         }
-
         renderCheckInPagination(page);
         console.log("Check-in history loaded successfully");
       } catch (error) {
@@ -1375,16 +1333,13 @@
     function renderCheckInPagination(currentPage) {
       const pagination = document.getElementById("checkInPagination");
       pagination.innerHTML = "";
-
       const totalPages = Math.ceil(totalCheckInCount / checkInBatchSize);
       if (totalPages <= 1) return;
-
       const prevButton = document.createElement("button");
       prevButton.innerHTML = "<";
       prevButton.disabled = currentPage === 1;
       prevButton.onclick = () => loadCheckInHistory(currentPage - 1);
       pagination.appendChild(prevButton);
-
       for (let i = 1; i <= totalPages; i++) {
         const pageButton = document.createElement("button");
         pageButton.textContent = i;
@@ -1394,55 +1349,44 @@
         pageButton.onclick = () => loadCheckInHistory(i);
         pagination.appendChild(pageButton);
       }
-
       const nextButton = document.createElement("button");
       nextButton.innerHTML = ">";
       nextButton.disabled = currentPage === totalPages;
       nextButton.onclick = () => loadCheckInHistory(currentPage + 1);
       pagination.appendChild(nextButton);
     }
-    
+
     const placeBet = async () => {
       if (!userAccount) {
         alert("Please connect your wallet first.");
         return;
       }
-
       const numberInput = document.getElementById("betNumber");
       const timesInput = document.getElementById("betTimes");
       const payoutInput = document.getElementById("payoutAmount");
       const betStatus = document.getElementById("betStatus");
-
       const number = numberInput.value.trim();
       const times = parseInt(timesInput.value);
       const payoutAmount = parseInt(payoutInput.value);
-
       betStatus.innerHTML = "";
-
       if (!number || isNaN(number) || number.length < 2 || number.length > 4 || parseInt(number) < 0 || parseInt(number) > 9999) {
         betStatus.innerHTML = `<small style="color: red;">❌ Please enter a valid number (2-4 digits).</small>`;
         return;
       }
-
       if (!times || times < 1 || times > 5) {
         betStatus.innerHTML = `<small style="color: red;">❌ Multiplication must be between 1× and 5×.</small>`;
         return;
       }
-
       if (payoutAmount !== 10) {
         betStatus.innerHTML = `<small style="color: red;">❌ Reward amount must be exactly 10 points.</small>`;
         return;
       }
-
       const totalCost = costPerBet * times;
       document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
-
       try {
         betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
-
         const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
         const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-
         console.log("Initiating placeBet transaction");
         await contract.methods.placeBet(number, times, payoutAmount).send({
           from: userAccount,
@@ -1450,13 +1394,11 @@
           maxPriorityFeePerGas,
           gas: 350000
         });
-
         betStatus.innerHTML = `<small style="color: #00ff14;">✅ Submit Ticket Successfully!</small>`;
         numberInput.value = "";
         timesInput.value = "";
         payoutInput.value = "10";
         document.getElementById("betCost").innerText = "-";
-
         await fetchBetEvents();
         await fetchBetEvents(userAccount);
         await loadCriticalData();
@@ -1481,44 +1423,37 @@
     document.getElementById("payoutAmount").addEventListener("input", () => {
       document.getElementById("payoutAmount").value = "10";
     });
-    
+
     const loadUserBetHistory = async () => {
       if (!userAccount || isUserFetching) {
         console.log("Skipping load: No userAccount or isUserFetching");
         return;
       }
       isUserFetching = true;
-
       try {
         console.log("Loading user bet history");
         if (totalUserCount === 0) {
           totalUserCount = await contract.methods.getUserBetCount(userAccount).call();
         }
-
         const historyList = document.getElementById("userBetHistory");
         if (totalUserCount === 0 && userHistoryOffset === 0) {
           historyList.innerHTML = "<li><small>No history found.</small></li>";
           return;
         }
-
         const end = Math.max(totalUserCount - userHistoryOffset - 1, 0);
         const start = Math.max(end - userHistoryBatchSize + 1, 0);
-
         const userEvents = cache.betEvents[userAccount] || {};
         const referrer = await contract.methods.referredBy(userAccount).call();
         const referrerDisplay = referrer === "0x0000000000000000000000000000000000000000"
           ? "None"
           : `<a href="https://sepolia.basescan.org/address/${referrer}" target="_blank">${referrer.slice(0, 21)}${referrer.slice(-21)}</a>`;
-
         for (let i = end; i >= start; i--) {
           const bet = await contract.methods.getUserBet(userAccount, i).call();
           if (!bet || !bet.timestamp) continue;
-
           const date = new Date(bet.timestamp * 1000).toLocaleString();
           const eventIndex = i;
           const event = userEvents[eventIndex] || {};
           const betTimes = bet.cost / (1 * 10 ** cache.decimals);
-
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
@@ -1532,7 +1467,6 @@
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
         }
-
         userHistoryOffset += userHistoryBatchSize;
         console.log("User bet history loaded successfully");
       } catch (error) {
@@ -1558,19 +1492,15 @@
         return;
       }
       isFetching = true;
-
       try {
         console.log("Loading global bet history");
         if (totalGlobalCount === 0) {
           totalGlobalCount = await contract.methods.getBetHistoryLength().call();
         }
-
         const historyList = document.getElementById("globalBetHistory");
         const end = Math.max(totalGlobalCount - globalHistoryOffset - 1, 0);
         const start = Math.max(end - globalHistoryBatchSize + 1, 0);
-
         const globalEvents = cache.betEvents["global"] || {};
-
         for (let i = end; i >= start; i--) {
           const bet = await contract.methods.getBet(i).call();
           const date = new Date(bet.timestamp * 1000).toLocaleString();
@@ -1583,7 +1513,6 @@
           const txHash = event.txHash || "N/A";
           const blockNumber = event.blockNumber || "N/A";
           const betTimes = bet.cost / (1 * 10 ** cache.decimals);
-
           const li = document.createElement("li");
           li.className = "py-2";
           li.innerHTML = `<small>
@@ -1597,7 +1526,6 @@
           </small><hr style="background-color: #333333; height: 1px; border: none;">`;
           historyList.appendChild(li);
         }
-
         globalHistoryOffset += globalHistoryBatchSize;
         console.log("Global bet history loaded successfully");
       } catch (error) {
@@ -1622,17 +1550,14 @@
         alert("Please connect your wallet first.");
         return;
       }
-
       const linkElement = document.getElementById("referralLink");
       if (!linkElement) {
         console.error("Referral link element not found");
         alert("Referral link not available. Please try again.");
         return;
       }
-
       const linkText = linkElement.innerText.replace("Your Referral Link:\n", "").trim();
       console.log("Attempting to copy link:", linkText);
-
       navigator.clipboard.writeText(linkText).then(() => {
         console.log("Link copied successfully");
         alert("Referral link copied!");
@@ -1641,36 +1566,28 @@
         alert("Failed to copy link. Please try again.");
       });
     };
-    
-    // Event Listeners
+
     document.getElementById("walletButton").addEventListener("click", async () => {
       if (userAccount) {
         disconnectWallet();
       } else {
-        if (areSocialTasksCompleted()) {
-          await initWeb3(true);
-          await setAutomaticReferralId();
-        } else {
-          document.getElementById("taskModal").style.display = "flex";
-        }
+        await initWeb3(true);
+        await setAutomaticReferralId();
       }
     });
-    
+
     document.getElementById("checkIn").addEventListener("click", checkIn);
     document.getElementById("copyLink").addEventListener("click", copyReferralLink);
-    
+
     window.addEventListener("load", async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const referrerIdFromURL = urlParams.get("uid");
       console.log("Stored referrerId from URL:", referrerIdFromURL);
-
       if (!window.ethereum) {
         alert("Please install MetaMask to use this DApp.");
         return;
       }
-
       await initWeb3(false);
-
       window.ethereum.on("accountsChanged", debounce(async (accounts) => {
         if (accounts.length === 0) {
           disconnectWallet();
@@ -1685,7 +1602,6 @@
           await loadGlobalBetHistory();
         }
       }, 1000));
-
       window.ethereum.on("chainChanged", () => {
         window.location.reload();
       });
@@ -1699,7 +1615,6 @@
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
-
       const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       document.getElementById('current-date-time').textContent = formattedDateTime;
     }
@@ -1710,6 +1625,11 @@
     function toggleMenu() {
       document.getElementById("navMenu").classList.toggle("show");
     }
+
+    // Dummy loadTokenHolders to avoid undefined error
+    const loadTokenHolders = async () => {
+      console.log("loadTokenHolders not implemented");
+    };
   </script>
 </body>
-             </html>
+                                      </html>
