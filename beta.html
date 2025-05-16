@@ -395,16 +395,16 @@
 
 
     .modal {
-      position: fixed;
-      z-index: 9999;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.85);
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none; /* ubah dari flex ke none dulu */
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.85);
     }
-
+          
     .modal-content {
       background: white;
       padding: 24px;
@@ -1739,6 +1739,13 @@ globalHistoryContainer.addEventListener("scroll", async () => {
       }
     }
   };
+
+  window.addEventListener('load', function () {
+    const modal = document.getElementById('taskModal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  });
 </script>
 
 </body>
