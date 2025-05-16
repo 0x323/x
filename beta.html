@@ -503,6 +503,50 @@
       <p id="tokenBalance" class="info-text"></p></small>
     </div>
 
+  <div class="modal" id="taskModal">
+  <div class="modal-content">
+    <h3>Complete Social Tasks</h3>
+
+<!-- Twitter Follow Only -->
+<div class="task" id="task0">
+  <b>1. Follow Twitter Account</b><br><br>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task0')">Follow & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
+    
+<!-- Twitter Engage -->
+<div class="task" id="task1">
+  <b>2. Like, Retweet, and Comment on Twitter</b><br><br>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz/status/YOUR_TWEET_ID', 'task1')">Engage & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
+
+<!-- Telegram -->
+<div class="task" id="task2">
+  <b>3. Join Telegram Channel</b><br><br>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
+
+<!-- Facebook -->
+<div class="task" id="task3">
+  <b>4. Like Facebook Page</b><br><br>
+  <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Confirm</button>
+  <div class="checkbox">
+    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
+  </div>
+</div>
+
+    <button id="continueBtn" disabled onclick="finish()">Continue</button>
+  </div>
+  </div>
+
     <!-- Check-In -->
     <div class="section hidden">
       <h2>Daily Faucet Claim</h2>
@@ -619,50 +663,6 @@
   Play responsibly.
     </p>
         </footer>
-  </div>
-
-  <div class="modal" id="taskModal">
-  <div class="modal-content">
-    <h3>Complete Social Tasks</h3>
-
-<!-- Twitter Follow Only -->
-<div class="task" id="task0">
-  <b>1. Follow Twitter Account</b><br><br>
-  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz', 'task0')">Follow & Confirm</button>
-  <div class="checkbox">
-    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-  </div>
-</div>
-    
-<!-- Twitter Engage -->
-<div class="task" id="task1">
-  <b>2. Like, Retweet, and Comment on Twitter</b><br><br>
-  <button class="btn-task" onclick="handleTaskClick(this, 'https://twitter.com/LottoChainXyz/status/YOUR_TWEET_ID', 'task1')">Engage & Confirm</button>
-  <div class="checkbox">
-    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-  </div>
-</div>
-
-<!-- Telegram -->
-<div class="task" id="task2">
-  <b>3. Join Telegram Channel</b><br><br>
-  <button class="btn-task" onclick="handleTaskClick(this, 'https://t.me/LottoChainXyz', 'task2')">Join & Confirm</button>
-  <div class="checkbox">
-    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-  </div>
-</div>
-
-<!-- Facebook -->
-<div class="task" id="task3">
-  <b>4. Like Facebook Page</b><br><br>
-  <button class="btn-task" onclick="handleTaskClick(this, 'https://facebook.com/LottoChainXyz', 'task3')">Like & Confirm</button>
-  <div class="checkbox">
-    <label><input type="checkbox" onchange="checkAll()"> I have completed this task</label>
-  </div>
-</div>
-
-    <button id="continueBtn" disabled onclick="finish()">Continue</button>
-  </div>
   </div>
 
   <script>
