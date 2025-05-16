@@ -441,8 +441,6 @@
       <p id="ethBalance" class="info-text">Loading...</p>
       <p id="tokenBalance" class="info-text"></p></small>
     </div>
-
-  <iframe src="test" id="taskModal" style="position:fixed; top:0; left:0; width:90%; height:100%; border:none; z-index:9999;"></iframe>
   
     <!-- Check-In -->
     <div class="section hidden">
@@ -1594,16 +1592,6 @@ globalHistoryContainer.addEventListener("scroll", async () => {
       document.getElementById("navMenu").classList.toggle("show");
     }
   </script>
-
-<script>
-  function finish() {  
-  document.getElementById("taskModal").style.display = 'none';  
-  
-  const iframe = document.getElementById("test");
-  iframe.src = window.location.href; // atau arahkan ke halaman utama kamu
-  iframe.style.display = 'block';
-  }
-</script>
 
 </body>
   </html>
