@@ -19,7 +19,8 @@
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="assets/css/main.cs" rel="stylesheet">
@@ -1198,7 +1199,7 @@ button:active::before {
 .clients .swiper-slide img {
   opacity: 0.5;
   transition: 0.3s;
-  filter: grayscale(100);
+  filter: grayscale(100%);
 }
 
 .clients .swiper-slide img:hover {
@@ -1219,13 +1220,12 @@ button:active::before {
   width: 12px;
   height: 12px;
   opacity: 1;
-  background-color: color-mix(in srgb, var(--default-color), transparent 80%);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .clients .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: var(--accent-color);
+  background-color: #007bff; /* Ganti sesuai dengan --accent-color */
 }
-
 /*--------------------------------------------------------------
 # Table
 --------------------------------------------------------------*/
@@ -1425,62 +1425,29 @@ button:active::before {
 
     </section><!-- /About Section -->
 
-  <!-- Clients Section -->
-    <section id="clients" class="clients section">
+  <!-- Backed By Section -->
+<section id="backed-by" class="clients section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <h2 class="text-center mb-5">Backed By</h2>
 
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              },
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 2,
-                  "spaceBetween": 40
-                },
-                "480": {
-                  "slidesPerView": 3,
-                  "spaceBetween": 60
-                },
-                "640": {
-                  "slidesPerView": 4,
-                  "spaceBetween": 80
-                },
-                "992": {
-                  "slidesPerView": 6,
-                  "spaceBetween": 120
-                }
-              }
-            }
-          </script>
-          <div class="swiper-wrapper align-items-center">
-            <div class="swiper-slide"><img src="assets/img/clients/client-1.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-2.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-3.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-4.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-5.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-6.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-7.png" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/client-8.png" class="img-fluid" alt=""></div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-
+    <div class="swiper backed-by-swiper">
+      <div class="swiper-wrapper align-items-center">
+        <div class="swiper-slide"><img src="assets/img/clients/client-1.png" class="img-fluid" alt="Backer 1"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-2.png" class="img-fluid" alt="Backer 2"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-3.png" class="img-fluid" alt="Backer 3"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-4.png" class="img-fluid" alt="Backer 4"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-5.png" class="img-fluid" alt="Backer 5"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-6.png" class="img-fluid" alt="Backer 6"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-7.png" class="img-fluid" alt="Backer 7"></div>
+        <div class="swiper-slide"><img src="assets/img/clients/client-8.png" class="img-fluid" alt="Backer 8"></div>
       </div>
+      <div class="swiper-pagination"></div>
+    </div>
 
-    </section><!-- /Clients Section -->
-
+  </div>
+</section>
+  
   <!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <div class="heading">
@@ -1622,8 +1589,6 @@ button:active::before {
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -1637,17 +1602,46 @@ button:active::before {
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".init-swiper").forEach(function (el) {
-      const configEl = el.querySelector(".swiper-config");
-      if (configEl) {
-        const config = JSON.parse(configEl.textContent);
-        new Swiper(el, config);
+  <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<!-- AOS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  new Swiper('.backed-by-swiper', {
+    loop: true,
+    speed: 600,
+    autoplay: {
+      delay: 5000
+    },
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    },
+    breakpoints: {
+      320: {
+        slidesPerView: 2,
+        spaceBetween: 40
+      },
+      480: {
+        slidesPerView: 3,
+        spaceBetween: 60
+      },
+      640: {
+        slidesPerView: 4,
+        spaceBetween: 80
+      },
+      992: {
+        slidesPerView: 6,
+        spaceBetween: 120
       }
-    });
+    }
   });
-  </script>
+</script>
 
 </body>
 
