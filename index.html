@@ -1236,22 +1236,26 @@ button:active::before {
 
 .scroll-btn {
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 2;
   background: rgba(255, 255, 255, 0.8);
   border: none;
   padding: 5px 5px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   color: #333;
   transition: background 0.3s;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 4px;
 }
 
 .scroll-btn-left {
-  left: 20px;
+  left: 40px;
 }
 
 .scroll-btn-right {
-  right: 20px;
+  right: 40px;
 }
 
 .scroll-btn:hover {
