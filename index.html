@@ -20,7 +20,10 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
 
   <!-- Main CSS File -->
   <link href="assets/css/main.cs" rel="stylesheet">
@@ -1196,35 +1199,42 @@ button:active::before {
 /*--------------------------------------------------------------
 # Clients Section
 --------------------------------------------------------------*/
-.clients .swiper-slide img {
-  opacity: 0.5;
-  transition: 0.3s;
-  filter: grayscale(100%);
-}
-
-.clients .swiper-slide img:hover {
-  filter: none;
-  opacity: 1;
-}
-
-.clients .swiper-wrapper {
-  height: auto;
-}
-
-.clients .swiper-pagination {
-  margin-top: 20px;
+.backed-by-slider {
+  overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
-.clients .swiper-pagination .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
+.backed-by-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 40s linear infinite;
+}
+
+.backed-by-slider:hover .backed-by-track {
+  animation-play-state: paused;
+}
+
+.backed-by-track img {
+  height: 80px;
+  margin: 0 40px;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: opacity 0.3s, filter 0.3s;
+}
+
+.backed-by-track img:hover {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.1);
+  filter: none;
 }
 
-.clients .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #007bff; /* Ganti sesuai dengan --accent-color */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 /*--------------------------------------------------------------
 # Table
@@ -1428,23 +1438,29 @@ button:active::before {
   <!-- Backed By Section -->
 <section id="backed-by" class="clients section">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
-
     <h2 class="text-center mb-5">Backed By</h2>
+    <div class="backed-by-slider">
+      <div class="backed-by-track">
+        <img src="assets/img/clients/client-1.png" alt="Client 1" class="img-fluid">
+        <img src="assets/img/clients/client-2.png" alt="Client 2" class="img-fluid">
+        <img src="assets/img/clients/client-3.png" alt="Client 3" class="img-fluid">
+        <img src="assets/img/clients/client-4.png" alt="Client 4" class="img-fluid">
+        <img src="assets/img/clients/client-5.png" alt="Client 5" class="img-fluid">
+        <img src="assets/img/clients/client-6.png" alt="Client 6" class="img-fluid">
+        <img src="assets/img/clients/client-7.png" alt="Client 7" class="img-fluid">
+        <img src="assets/img/clients/client-8.png" alt="Client 8" class="img-fluid">
 
-    <div class="swiper backed-by-swiper">
-      <div class="swiper-wrapper align-items-center">
-        <div class="swiper-slide"><img src="assets/img/clients/client-1.png" class="img-fluid" alt="Backer 1"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-2.png" class="img-fluid" alt="Backer 2"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-3.png" class="img-fluid" alt="Backer 3"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-4.png" class="img-fluid" alt="Backer 4"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-5.png" class="img-fluid" alt="Backer 5"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-6.png" class="img-fluid" alt="Backer 6"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-7.png" class="img-fluid" alt="Backer 7"></div>
-        <div class="swiper-slide"><img src="assets/img/clients/client-8.png" class="img-fluid" alt="Backer 8"></div>
+        <!-- Duplikat untuk loop tak terputus -->
+        <img src="assets/img/clients/client-1.png" alt="Client 1" class="img-fluid">
+        <img src="assets/img/clients/client-2.png" alt="Client 2" class="img-fluid">
+        <img src="assets/img/clients/client-3.png" alt="Client 3" class="img-fluid">
+        <img src="assets/img/clients/client-4.png" alt="Client 4" class="img-fluid">
+        <img src="assets/img/clients/client-5.png" alt="Client 5" class="img-fluid">
+        <img src="assets/img/clients/client-6.png" alt="Client 6" class="img-fluid">
+        <img src="assets/img/clients/client-7.png" alt="Client 7" class="img-fluid">
+        <img src="assets/img/clients/client-8.png" alt="Client 8" class="img-fluid">
       </div>
-      <div class="swiper-pagination"></div>
     </div>
-
   </div>
 </section>
   
