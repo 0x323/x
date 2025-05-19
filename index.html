@@ -1621,9 +1621,16 @@ button:active::before {
       <h2 class="sitename">Join Now!</h2>
       <br><button onclick="window.open('cs', '_blank')" style="background: linear-gradient(90deg, #03a9f4, #f441a5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border: none;"><i class="bi bi-play"></i>Play!</button><br><br>
       <p>Be part of the blockchain lottery revolution. Experience the exciting experience of privacy, transparency, security, and speed in every bet. Try your luck now!</p>
-      <br><form action="https://formspree.io/f/mgvkqvzb" method="POST">
-  <input type="email" name="email" placeholder="Enter Your Email" required>
-  <button type="submit">Get Whitelist</button>
+      <br><form action="https://formspree.io/f/mgvkqvzb" method="POST" onsubmit="clearEmail(this)" style="background: #fff; padding: 20px 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      
+      <input type="email" name="email" placeholder="Enter Your Email" required
+        style="padding: 10px; width: 250px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; display: block;">
+      
+      <button type="submit"
+        style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+        Get Whitelist
+      </button>
+
       </form><br><br>
       <div class="social-links d-flex justify-content-center">
         <a href="https://x.com/LottoChainXyz" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter-x"></i></a>
@@ -1662,6 +1669,12 @@ button:active::before {
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init();
+
+    function clearEmail(form) {
+        setTimeout(() => {
+          form.reset();
+        }, 10000);
+    }
   </script>
 
 </body>
