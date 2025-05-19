@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Token Holders - Base Sepolia (Auto Load)</title>
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; }
+    th { background: #eee; }
+    #loading { text-align: center; font-size: 18px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>Token Holders (Base Sepolia)</h1>
+<div id="loading">Loading holders...</div>
+
+<table id="holdersTable" style="display:none;">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Address</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  const provider = new ethers.providers.JsonRpcProvider("https://sepolia.base.org"); // Ganti dengan Alchemy/Infura jika perlu
+  const contractAddress = "0x12802A911BE5B96202e15901d91F371a7d7747fC";
+  const abi = [ /* ABI kamu, pastikan benar */ ];
+
+  const contract = new ethers.Contract(contractAddress, abi, provider);
+
+  async function fetchHolders() {
+    try {
+      console.log("Fetching holders...");
+      const latestBlock = await provider.getBlockNumber();
+      console.log("Latest block:", latestBlock);
+
+      const events = await contract.queryFilter("Transfer", 0, latestBlock);
+      console.log("Events found:", events.length);
+
+      const holdersMap = new Map();
+      events.forEach((e) => {
+        const from = e.args.from;
+        const to = e.args.to;
+        const value = ethers.BigNumber.from(e.args.value);
+        console.log("Transfer:", from, to, value.toString());
+
+        if (from !== ethers.constants.AddressZero) {
+          holdersMap.set(from, (holdersMap.get(from) || ethers.BigNumber.from(0)).sub(value));
+        }
+        if (to !== ethers.constants.AddressZero) {
+          holdersMap.set(to, (holdersMap.get(to) || ethers.BigNumber.from(0)).add(value));
+        }
+      });
+
+      const holders = [];
+      for (let [address, balance] of holdersMap.entries()) {
+        if (balance.gt(0)) {
+          holders.push({ address, balance: balance.toString() });
+        }
+      }
+      console.log("Holders:", holders);
+
+      render Table(holders);
+
+    } catch (error) {
+      console.error("Error loading holders:", error);
+      document.getElementById("loading").innerText = "Error: " + error.message;
+    }
+  }
+
+  function renderTable(holders) {
+    console.log("Rendering table with", holders.length, "holders");
+    const loadingDiv = document.getElementById("loading");
+    loadingDiv.style.display = "none";
+
+    const table = document.getElementById("holdersTable");
+    table.style.display = "table";
+
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+
+    holders.forEach((holder, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${holder.address}</td>
+        <td>${holder.balance}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  window.onload = fetchHolders;
+</script>
+</body>
+</html>
