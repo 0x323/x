@@ -1306,7 +1306,33 @@ button:active::before {
         <h3>A secure and trusted blockchain-based lottery platform.</h3>
         <br><br><button onclick="window.open('cs', '_blank')"><i class="bi bi-play"></i> Play Now!</button>
       </div>
+      <br><br><form action="https://formspree.io/f/mgvkqvzb" method="POST" onsubmit="clearEmail(this)">
+      
+      <center>
+  <input type="email" name="email" placeholder="Enter Your Email" required
+    style="
+      padding: 10px;
+      width: 300px; 
+      background: #151515;
+      color: white;
+      margin-bottom: 15px; 
+      border: 1px solid #007bff; 
+      border-radius: 9px; 
+      display: block; 
+      box-shadow: 0 0 15px 3px rgba(0, 123, 255, 0.7);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    "
+    onmouseover="this.style.boxShadow='0 0 20px 5px rgba(0, 123, 255, 1)'; this.style.borderColor='#3399ff';"
+    onmouseout="this.style.boxShadow='0 0 15px 3px rgba(0, 123, 255, 0.7)'; this.style.borderColor='#007bff';"
+  >
+      </center>
+        
+      <button type="submit"
+        style="padding: 6.5px 15px; font-size: 12px;">
+        Get Whitelist
+      </button>
 
+      </form>
     </section><!-- /Hero Section -->
 
   </main>
@@ -1621,34 +1647,7 @@ button:active::before {
       <h2 class="sitename">Join Now!</h2>
       <br><button onclick="window.open('cs', '_blank')" style="background: linear-gradient(90deg, #03a9f4, #f441a5);"><i class="bi bi-play"></i>Play!</button><br><br>
       <p>Be part of the blockchain lottery revolution. Experience the exciting experience of privacy, transparency, security, and speed in every bet. Try your luck now!</p>
-      <br><form action="https://formspree.io/f/mgvkqvzb" method="POST" onsubmit="clearEmail(this)">
       
-      <center>
-  <input type="email" name="email" placeholder="Enter Your Email" required
-    style="
-      padding: 10px;
-      max-width: 400px;
-      width: 300px; 
-      background: #151515;
-      color: white;
-      margin-bottom: 15px; 
-      border: 1px solid #007bff; 
-      border-radius: 9px; 
-      display: block; 
-      box-shadow: 0 0 15px 3px rgba(0, 123, 255, 0.7);
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    "
-    onmouseover="this.style.boxShadow='0 0 20px 5px rgba(0, 123, 255, 1)'; this.style.borderColor='#3399ff';"
-    onmouseout="this.style.boxShadow='0 0 15px 3px rgba(0, 123, 255, 0.7)'; this.style.borderColor='#007bff';"
-  >
-      </center>
-        
-      <button type="submit"
-        style="padding: 6.5px 15px; background: linear-gradient(90deg, #03a9f4, #f441a5); font-size: 12px; border-radius: 9px; cursor: pointer;">
-        Get Whitelist
-      </button>
-
-      </form><br><br>
       <div class="social-links d-flex justify-content-center">
         <a href="https://x.com/LottoChainXyz" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter-x"></i></a>
         <a href="https://t.me/LottoChainXyZ" target="_blank" rel="noopener noreferrer"><i class="bi bi-telegram"></i></a>
@@ -1690,7 +1689,7 @@ button:active::before {
     function clearEmail(form) {
         setTimeout(() => {
           form.reset();
-        }, 10000);
+        }, 5000);
     }
   </script>
 
