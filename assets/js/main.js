@@ -1,10 +1,3 @@
-/**
-* Template Name: Personal
-* Template URL: https://bootstrapmade.com/personal-free-resume-bootstrap-template/
-* Updated: Mar 05 2025 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
 (function() {
   "use strict";
@@ -69,6 +62,14 @@
       preloader.remove();
     });
   }
+
+  AOS.init();
+
+    function clearEmail(form) {
+        setTimeout(() => {
+          form.reset();
+        }, 5000);
+    }
 
   /**
    * Scroll top button
