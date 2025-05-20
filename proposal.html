@@ -176,8 +176,8 @@ hr {
         <p><strong>Masalah</strong>:</p>
         <ul>
             <li>Lotre tradisional tidak transparan dan rentan manipulasi.</li>
-            <li>Platform lotre kripto kurang interaktif, gagal mempertahankan pengguna.</li>
-            <li>Biaya listing bursa besar mahal.</li>
+            <li>Platform taruhan dalam tahap pengembangan, dengan tujuan memperbanyak pengguna aktif.</li>
+            <li>Sedangkan biaya listing bursa besar mahal.</li>
         </ul>
         <p><strong>Solusi</strong>:</p>
         <ul>
@@ -189,15 +189,15 @@ hr {
         <h2>3. Produk dan Teknologi</h2>
         <h3>3.1. Fitur Utama</h3>
         <ol>
-            <li><strong>Mekanisme Taruhan</strong>: Nomor 1-4 karakter, biaya 0,000256 ETH atau LCHP per taruhan. Taruhan disimpan dalam struktur <code>Bet</code> (ID unik, alamat pemain, hash transaksi).</li>
+            <li><strong>Mekanisme Taruhan</strong>: Nomor 1-4 karakter, biaya umumnya 0,000256 ETH per taruhan. Taruhan disimpan dalam struktur <code>Bet</code> (ID unik, alamat pemain, hash transaksi).</li>
             <li><strong>Fitur Sosial</strong>: Like (satu per pengguna per taruhan, tipe “heart”) di <code>LikeData</code>. Komentar (tambah/edit/hapus) di <code>BetComment</code>.</li>
             <li><strong>Leaderboard dan Hadiah</strong>: Hadiah 5% dari total taruhan mingguan, via <code>distributeReward</code>. Maksimal tiga kemenangan per pemain.</li>
-            <li><strong>Pemilihan Pemenang</strong>: Pemilik kontrak menetapkan pemenang via <code>setWinner</code>. Klaim hadiah via <code>claimETH</code> atau <code>claimLCHP</code>.</li>
+            <li><strong>Pemilihan Pemenang</strong>: Pemilik kontrak menetapkan pemenang via <code>setWinner</code>. Klaim hadiah via <code>claimETH</code> atau <code>claimLOT</code>.</li>
         </ol>
 
         <h3>3.2. Arsitektur Teknologi</h3>
         <ul>
-            <li><strong>Kontrak Pintar</strong>: Solidity, di-deploy di Sepolia Base, migrasi ke layer-2 (Optimism/Arbitrum).</li>
+            <li><strong>Kontrak Pintar</strong>: Solidity, di-deploy di Sepolia Base Testnet, dan migrasi ke layer-1 atau layer-2 dan multi chain EVM.</li>
             <li><strong>Struktur Data</strong>:
                 <ul>
                     <li><code>Bet</code>: Detail taruhan.</li>
@@ -213,12 +213,12 @@ hr {
                 </ul>
             </li>
             <li><strong>Frontend</strong>: Web (React), mobile (Flutter), terintegrasi web3.js/ethers.js.</li>
-            <li><strong>API Trading</strong>: Integrasi CCXT untuk perdagangan LCHP di bursa.</li>
+            <li><strong>API Trading</strong>: Integrasi CCXT untuk perdagangan LOT di bursa.</li>
         </ul>
 
         <h3>3.3. Keunggulan Kompetitif</h3>
         <ul>
-            <li>Biaya taruhan rendah (0,000256 ETH/LCHP).</li>
+            <li>Biaya taruhan rendah (0,000256 ETH, Atau jenis koin lainnya).</li>
             <li>Fitur sosial unik.</li>
             <li>Tokenomik mendukung partisipasi dan likuiditas.</li>
             <li>Kesiapan listing di bursa besar.</li>
@@ -227,14 +227,15 @@ hr {
         <h2>4. Tokenomik</h2>
         <h3>4.1. Ikhtisar Token</h3>
         <ul>
-            <li><strong>Nama</strong>: LottoChainHKPool Token (LCHP)</li>
-            <li><strong>Jenis</strong>: ERC-20 (rencana ekspansi ke BEP-20).</li>
-            <li><strong>Total Pasokan</strong>: 1.000.000.000 LCHP</li>
+            <li><strong>Nama</strong>: Lotto Chain (LOT)</li>
+            <li><strong>Jenis</strong>: ERC-20 (rencana ekspansi ke Blockchain Mandiri "Lotto Chain"). Meskipun ini perlu waktu dan dana yang cukup besar</li>
+            <li><strong>Total Pasokan</strong>: 1.000.000.000 LOT</li>
             <li><strong>Fungsi</strong>:
                 <ul>
                     <li>Pembayaran taruhan.</li>
-                    <li>Akses fitur premium (like berbayar, NFT komentar).</li>
-                    <li>Staking untuk hadiah.</li>
+                    <li>Akses fitur premium</li>
+                    <li>Tip dan hadiah.</li>
+                    <li>Penggalangan atau Donasi antar member didalam Web3 Sosial</li>
                     <li>Hadiah leaderboard dan kemenangan.</li>
                 </ul>
             </li>
@@ -245,7 +246,7 @@ hr {
             <tr>
                 <th>Kategori</th>
                 <th>Persentase</th>
-                <th>Jumlah (LCHP)</th>
+                <th>Jumlah (LOT)</th>
                 <th>Deskripsi</th>
             </tr>
             <tr>
@@ -288,11 +289,11 @@ hr {
 
         <h3>4.3. Mekanisme Token</h3>
         <ol>
-            <li><strong>Taruhan</strong>: LCHP sebagai alternatif ETH, 2% dari taruhan LCHP dibakar.</li>
-            <li><strong>Staking</strong>: APY 10–15% untuk LCHP yang dikunci.</li>
-            <li><strong>Fitur Premium</strong>: Like berbayar dan NFT komentar memerlukan LCHP.</li>
-            <li><strong>Buyback dan Burn</strong>: 20% pendapatan platform untuk buyback dan burn LCHP.</li>
-            <li><strong>Hadiah Leaderboard</strong>: Pilihan hadiah dalam LCHP.</li>
+            <li><strong>Taruhan</strong>: LOT sebagai alternatif ETH, 2% dari taruhan LOT dibakar.</li>
+            <li><strong>Staking</strong>: APY 10–15% untuk LOT yang dikunci.</li>
+            <li><strong>Fitur Premium</strong>: Tip, dan NFT komentar memerlukan LOT.</li>
+            <li><strong>Buyback dan Burn</strong>: 20% pendapatan platform untuk buyback dan burn LOT.</li>
+            <li><strong>Hadiah Leaderboard</strong>: Pilihan hadiah dalam LOT.</li>
         </ol>
 
         <h3>4.4. Jadwal Pelepasan</h3>
@@ -305,11 +306,11 @@ hr {
 
         <h3>4.5. Nilai Token</h3>
         <ul>
-            <li><strong>Harga IEO</strong>: USD 0,05 per LCHP (valuasi awal USD 20 juta untuk 40% pasokan).</li>
+            <li><strong>Harga IEO</strong>: USD 0,05 per LOT (valuasi awal USD 10 juta untuk 20% pasokan).</li>
             <li><strong>Proyeksi Harga</strong>:
                 <ul>
-                    <li>2026: USD 0,15 (listing di Binance/OKX).</li>
-                    <li>2027: USD 0,30 (pertumbuhan pengguna, pembakaran token).</li>
+                    <li>Estimasi USD 0,15 (listing di Binance/OKX dll).</li>
+                    <li>Estimasi USD 0,22 (pertumbuhan pengguna).</li>
                 </ul>
             </li>
             <li><strong>Faktor Pendorong</strong>:
@@ -324,9 +325,9 @@ hr {
         <h2>5. Model Bisnis</h2>
         <h3>5.1. Sumber Pendapatan</h3>
         <ol>
-            <li><strong>Biaya Taruhan</strong>: 0,000256 ETH/LCHP per taruhan. 100.000 taruhan/bulan = 25,6 ETH (~USD 64.000, ETH USD 2.500).</li>
+            <li><strong>Biaya Taruhan</strong>: 0,000256 ETH/LOT per taruhan. 100.000 taruhan/bulan = 25,6 ETH (~USD 64.000, ETH USD 2.500).</li>
             <li><strong>Biaya Listing</strong>: USD 100.000–500.000 per bursa.</li>
-            <li><strong>Fitur Premium</strong>: Monetisasi like berbayar, NFT komentar.</li>
+            <li><strong>Fitur Premium</strong>: Monetisasi Tip, NFT komentar.</li>
             <li><strong>Staking dan DeFi</strong>: Pendapatan dari pool staking.</li>
         </ol>
 
@@ -364,11 +365,11 @@ hr {
         <p><em>Asumsi: ETH = USD 2.500, 10 taruhan/pengguna/bulan, tidak termasuk pendapatan listing/staking.</em></p>
 
         <h3>5.3. Penggunaan Dana</h3>
-        <p>Pendanaan USD 5 juta:</p>
+        <p>Estimasi Pendanaan USD:</p>
         <ul>
-            <li>40% (USD 2 juta): Teknologi (frontend, mobile, audit, layer-2).</li>
+            <li>40% (USD 1 juta): Teknologi (frontend, mobile, audit, layer-2).</li>
             <li>30% (USD 1,5 juta): Pemasaran (CoinGecko, Binance Square, influencer).</li>
-            <li>20% (USD 1 juta): Listing bursa (Binance, OKX, KuCoin, dll.).</li>
+            <li>20% (USD 2 juta): Listing bursa (Binance, OKX, KuCoin, dll.).</li>
             <li>10% (USD 500.000): Operasional (tim, server, kepatuhan).</li>
         </ul>
         <p><strong>Estimasi Biaya Listing</strong>:</p>
@@ -382,7 +383,7 @@ hr {
         <h3>6.1. Target Pasar</h3>
         <ul>
             <li>Trader kripto (18-40 tahun) di Binance, OKX, KuCoin.</li>
-            <li>Komunitas Web3 (DeFi, NFT, SosialFi) di Asia, Eropa, Amerika.</li>
+            <li>Komunitas Web3 (DeFi, NFT, SosialFi) di Asia, Eropa, Amerika, dan seluruh dunia.</li>
             <li>Pemain lotre kripto yang mencari transparansi.</li>
         </ul>
 
@@ -390,7 +391,7 @@ hr {
         <ol>
             <li><strong>Kampanye Digital</strong>: Iklan di CoinGecko, CoinMarketCap, Binance Square.</li>
             <li><strong>Kemitraan</strong>: Listing via Binance Launchpad, integrasi MetaMask.</li>
-            <li><strong>Insentif</strong>: Airdrop 50 juta LCHP, kompetisi taruhan.</li>
+            <li><strong>Insentif</strong>: Airdrop 100 juta LOT, kompetisi taruhan.</li>
             <li><strong>Komunitas</strong>: Discord, Telegram, Twitter/X, AMA di Binance Live.</li>
         </ol>
 
@@ -404,16 +405,16 @@ hr {
 
         <h3>6.4. Rencana Ekspansi</h3>
         <ul>
-            <li>2025: Peluncuran global (Asia, Eropa).</li>
-            <li>2026: Amerika Utara, Amerika Latin, multi-bahasa.</li>
-            <li>2027: Integrasi Solana, BNB Chain, fitur DeFi.</li>
+            <li>Peluncuran global.</li>
+            <li>Integrasi multi chain</li>
+            <li>Membangun Blockchain</li>
         </ul>
 
         <h2>7. Tim</h2>
         <ul>
-            <li><strong>Pendiri & CEO</strong>: [Nama Pendiri], 7 tahun di blockchain/DeFi.</li>
-            <li><strong>CTO</strong>: [Nama CTO], ahli Solidity, 12+ kontrak diaudit.</li>
-            <li><strong>CMO</strong>: [Nama CMO], pemasaran Web3, pengalaman di Binance/OKX.</li>
+            <li><strong>Pendiri & CEO</strong>: [Nama Pendiri], 7 tahun di blockchain, 5 tahun di Web3.</li>
+            <li><strong>CTO</strong>: [Nama CTO], Penulis Solidity</li>
+            <li><strong>CMO</strong>: [Nama CMO], penulis frontend UI/UX</li>
             <li><strong>Penasihat</strong>: [Nama Penasihat], veteran VC kripto.</li>
         </ul>
         <p><em>Rencana rekrut: 8 developer, 5 pemasaran, 2 kepatuhan.</em></p>
@@ -426,7 +427,7 @@ hr {
             </tr>
             <tr>
                 <td>Volatilitas ETH</td>
-                <td>Opsi stablecoin (USDC, USDT) pada 2026.</td>
+                <td>Opsi stablecoin (USDC, USDT)</td>
             </tr>
             <tr>
                 <td>Regulasi global</td>
@@ -442,26 +443,26 @@ hr {
             </tr>
             <tr>
                 <td>Adopsi lambat</td>
-                <td>Airdrop 50 juta LCHP, insentif pengguna.</td>
+                <td>Airdrop 100 juta LOT, insentif pengguna.</td>
             </tr>
         </table>
 
         <h2>9. Permintaan Pendanaan</h2>
-        <p>Kami mengajukan <span class="highlight">USD 5 juta</span> untuk 15% ekuitas. Dana untuk teknologi, pemasaran, listing bursa, dan peluncuran LCHP. Investor mendapatkan:</p>
+        <p>Kami mengajukan beberapa persen dari estimasi minimal <span class="highlight">USD/USDT 5 juta</span> untuk ekuitas. Dana untuk teknologi, pemasaran, listing bursa, dan peluncuran LOT. Investor mendapatkan:</p>
         <ul>
-            <li>ROI tinggi dari pendapatan dan harga LCHP.</li>
+            <li>ROI tinggi dari pendapatan dan harga LOT.</li>
             <li>Akses ekosistem Web3/SosialFi.</li>
             <li>Peran penasihat strategis.</li>
         </ul>
 
         <h2>10. Penutup</h2>
-        <p>LottoChainHKPool adalah peluang investasi di lotre, SosialFi, dan blockchain. Dengan tokenomik kuat, fitur sosial unik, dan rencana listing di bursa terkemuka, kami siap mendominasi lotre terdesentralisasi. Bergabunglah untuk merevolusi perjudian kripto global.</p>
+        <p>Lotto Chain adalah peluang investasi di lotre, SosialFi, dan blockchain. Dengan tokenomik kuat, fitur sosial unik, dan rencana listing di bursa terkemuka, kami siap mendominasi lotre terdesentralisasi. Bergabunglah untuk merevolusi platform taruhan kripto global.</p>
         <p><strong>Kontak</strong>:</p>
         <ul>
-            <li>Email: support@lottochainhkpool.com</li>
-            <li>Telegram: @LottoChainHKPool</li>
-            <li>Twitter/X: @LottoChainHK</li>
-            <li>Website: [Segera Diluncurkan]</li>
+            <li>Email: service@lottochain.xyz</li>
+            <li>Telegram: @LottoChainXyz</li>
+            <li>Twitter/X: @LottoChainXyz</li>
+            <li>Website: https://lottochain.xyz</li>
         </ul>
 
         <h2>11. Lampiran</h2>
@@ -473,7 +474,7 @@ hr {
         </ol>
 
         <div class="footer">
-            <p>© 2025 LottoChainHKPool. Semua hak dilindungi.</p>
+            <p>© 2025 Lotto Chain. Semua hak dilindungi.</p>
         </div>
     </div>
 </body>
