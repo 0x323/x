@@ -1,13 +1,10 @@
 const style = document.createElement('style');
 style.textContent = `
-/* Smooth scroll */
+
 html {
   scroll-behavior: smooth;
 }
 
-/*--------------------------------------------------------------
-# General Styling & Shared Classes
---------------------------------------------------------------*/
 body {
   color: #fafafa;
   background-color: #000000;
@@ -44,9 +41,6 @@ h6 {
   font-family: 'Ubuntu', sans-serif;
 }
 
-/*--------------------------------------------------------------
-# Global Header
---------------------------------------------------------------*/
 .header {
   --background-color: rgba(255, 255, 255, 0.1);
   color: #fafafa;
@@ -76,16 +70,10 @@ h6 {
   box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
 }
 
-/* Global Header on Scroll
-------------------------------*/
 .scrolled .header {
   --background-color: rgba(0, 0, 0, 0.8);
 }
 
-/*--------------------------------------------------------------
-# Navigation Menu
---------------------------------------------------------------*/
-/* Desktop Navigation */
 @media (min-width: 1200px) {
   .navmenu {
     padding: 0;
@@ -343,9 +331,6 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Global Footer
---------------------------------------------------------------*/
 .footer {
   color: #fafafa;
   background-color: #000000;
@@ -429,9 +414,6 @@ h6 {
   padding-top: 5px;
 }
 
-/*--------------------------------------------------------------
-# Preloader
---------------------------------------------------------------*/
 #preloader {
   position: fixed;
   inset: 0;
@@ -465,9 +447,6 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Scroll Top Button
---------------------------------------------------------------*/
 .scroll-top {
   position: fixed;
   visibility: hidden;
@@ -504,18 +483,12 @@ h6 {
   bottom: 15px;
 }
 
-/*--------------------------------------------------------------
-# Disable aos animation delay on mobile devices
---------------------------------------------------------------*/
 @media screen and (max-width: 768px) {
   [data-aos-delay] {
     transition-delay: 0 !important;
   }
 }
 
-/*--------------------------------------------------------------
-# Global Page Titles & Breadcrumbs
---------------------------------------------------------------*/
 .page-title {
   color: #fafafa;
   background-color: #000000;
@@ -557,9 +530,6 @@ h6 {
   color: color-mix(in srgb, #fafafa, transparent 70%);
 }
 
-/*--------------------------------------------------------------
-# Global Sections
---------------------------------------------------------------*/
 section,
 .section {
   color: #fafafa;
@@ -577,9 +547,6 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# Global Section Titles
---------------------------------------------------------------*/
 .section-title {
   padding-bottom: 60px;
   position: relative;
@@ -616,9 +583,6 @@ section,
   font-family: ;
 }
 
-/*--------------------------------------------------------------
-# Hero Section
---------------------------------------------------------------*/
 .hero {
   width: 100%;
   min-height: 70vh; /* Perpendek tinggi vertikal */
@@ -671,9 +635,6 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# About Section
---------------------------------------------------------------*/
 .about .content h2 {
   font-weight: 700;
   font-size: 24px;
@@ -703,9 +664,6 @@ section,
   line-height: 1; /* Pastikan tidak ada spasi vertikal ekstra */
 }
 
-/*--------------------------------------------------------------
-# Stats Section
---------------------------------------------------------------*/
 .stats i {
   background-color: #1a1a1a;
   color: #18d26e;
@@ -748,9 +706,6 @@ section,
   font-size: 16px;
 }
 
-/*--------------------------------------------------------------
-# Interests Section
---------------------------------------------------------------*/
 .interests .features-item {
   background-color: #1a1a1a;
   display: flex;
@@ -788,9 +743,6 @@ section,
   color: #18d26e;
 }
 
-/*--------------------------------------------------------------
-# Resume Section
---------------------------------------------------------------*/
 .resume .resume-title {
   color: #ffffff;
   font-size: 26px;
@@ -1002,9 +954,6 @@ section,
   border: 2px solid #0671ff; /* Merah muda terang untuk border item ketujuh */
 }
 
-/*--------------------------------------------------------------
-# Services Section
---------------------------------------------------------------*/
 .services .service-item {
   background-color: #1a1a1a;
   text-align: center;
@@ -1113,9 +1062,6 @@ section,
   transition: text-shadow 0.3s ease-out, color 0.3s ease-out;
 }
 
-/*--------------------------------------------------------------
-# Button
---------------------------------------------------------------*/
 button {
     font-size: 1.2em;
     padding: 10px 23px;
@@ -1168,9 +1114,6 @@ button:active::before {
     filter: blur(0.2em);
 }
 
-/*--------------------------------------------------------------
-# Clients Section
---------------------------------------------------------------*/
 .backed-by-slider {
     overflow: hidden;
     position: relative;
@@ -1223,9 +1166,6 @@ button:active::before {
     }
   }
 
-/*--------------------------------------------------------------
-# Team Section
---------------------------------------------------------------*/
 .team .team-member {
   position: relative;
   background-color: #111111;
