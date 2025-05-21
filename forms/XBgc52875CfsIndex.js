@@ -1,4 +1,4 @@
-document.getElementById("XBgc52875CfsIndex").innerHTML = `
+document.getElementById("XBgc52875Cfs").innerHTML = `
     
     <section id="hero" class="hero section dark-background">
 
