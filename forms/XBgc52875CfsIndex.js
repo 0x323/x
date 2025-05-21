@@ -1,5 +1,5 @@
 document.getElementById("XBgc52875CfsIndex").innerHTML = `
-    <!-- Hero Section -->
+    
     <section id="hero" class="hero section dark-background">
 
       <img src="img/hero.jpg" alt="Lotto Chain" data-aos="fade-in">
@@ -38,11 +38,10 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
         </form>
       </div>
       
-    </section><!-- /Hero Section -->
+    </section>
 
   </main>
 
-  <!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <div class="heading">
         <div class="container">
@@ -54,9 +53,8 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
           </div>
         </div>
       </div>
-    </div><!-- End Page Title -->
+    </div>
 
-  <!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <div class="heading">
         <div class="container">
@@ -67,9 +65,8 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
           </div>
         </div>
       </div>
-    </div><!-- End Page Title -->
+    </div>
 
-    <!-- Services Section -->
     <section id="services" class="services section">
 
       <div class="container">
@@ -84,7 +81,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>Select Market & Bet</h3>
               <p>Players choose the desired market (Hong Kong, Singapore, Sydney, China, Cambodia, or Bull Eye) and place a bet.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="service-item position-relative">
@@ -94,7 +91,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>Official Results</h3>
               <p>The draw results are taken directly from the official sources of each market, ensuring full transparency.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="service-item position-relative">
@@ -104,7 +101,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>Blockchain Security</h3>
               <p>All transactions are recorded in the blockchain, decentralized, ensuring no manipulation or alteration of data.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
             <div class="service-item position-relative">
@@ -114,7 +111,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>Anonymity & Privacy</h3>
               <p>Players can participate without having to reveal personal identity, and without KYC, player privacy remains intact.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
             <div class="service-item position-relative">
@@ -124,7 +121,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>Fast & Efficient</h3>
               <p>Without the involvement of a third party, transactions are fast and costs are lower than conventional lotteries.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
             <div class="service-item position-relative">
@@ -134,15 +131,14 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
                 <h3>No Initial Deposit</h3>
               <p>Lotto Chain allows you to place bets without any initial deposit. Simply use the MetaMask wallet app, and you can start betting right away.</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
         </div>
 
       </div>
 
-    </section><!-- /Services Section -->
+    </section>
 
-    <!-- About Section -->
     <section id="about" class="about section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -175,9 +171,8 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
 
       </div>
 
-    </section><!-- /About Section -->
+    </section>
 
-    <!-- Team Section -->
     <section id="team" class="team section light-background">
 
       <center><h2>Team Overview</h2></center><br>
@@ -221,7 +216,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
       <p>With 7 years of experience in blockchain architecture since 2019 and 4 years in Web3 ecosystems, Cipher Node I is the visionary architect behind our decentralized frameworks. A strategist with deep technical foresight, he shapes the foundation of every protocol with precision and resilience.</p>
     </div>
   </div>
-</div><!-- End Team Member -->
+</div>
 
 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
   <div class="team-member d-flex">
@@ -234,7 +229,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
       <p>A master of Solidity and Vyper, Eval Unescape brings over 5 years of experience crafting robust smart contracts. Specializing in security and gas optimization, he writes clean, audited code that powers our on-chain logic with surgical precision.</p>
     </div>
   </div>
-</div><!-- End Team Member -->
+</div>
 
 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
   <div class="team-member d-flex">
@@ -247,7 +242,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
       <p>PolyMorph designs seamless Web3 user experiences, with 4 years of expertise in React, Next.js, and Ethers.js. Known for transforming complex logic into intuitive interfaces, he connects users to decentralized networks with style and speed.</p>
     </div>
   </div>
-</div><!-- End Team Member -->
+</div>
 
 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
   <div class="team-member d-flex">
@@ -260,7 +255,7 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
       <p>The silent guardian of our community, InitVoid manages moderation across multiple platforms. With a watchful eye and calm demeanor, they uphold order, guide new users, and filter noise to maintain a healthy decentralized discourse.</p>
     </div>
   </div>
-</div><!-- End Team Member -->
+</div>
 
         <center><h4>Our Commitment</h4></center>
         <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
@@ -274,9 +269,8 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
 
       </div>
 
-    </section><!-- /Team Section -->
+    </section>
 
-    <!-- Backed By Section -->
 <section id="backed-by" class="clients section">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <h2 class="text-center mb-5">Backed By</h2>
@@ -327,7 +321,6 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
   </div>
 </section>
 
-<!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <div class="heading">
         <div class="container">
@@ -338,9 +331,8 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
           </div>
         </div>
       </div>
-    </div><!-- End Page Title -->
+    </div>
 
-    <!-- Resume Section -->
     <section id="resume" class="resume section">
 
       <div class="container">
@@ -352,87 +344,87 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
             <div class="resume-item">
               <h4>I</h4>
               <p>Functional development and testing.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>II</h4>
               <p>The launch of the public communication Beta (Testnet) has been planned. The Beta stage of communication will be present on the testnet network.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
             
             <div class="resume-item">
               <h4>III</h4>
               <p>Mainnet launch and international market integration.</p>
-            </div><!-- Edn Resume Item -->
-
+            </div>
+            
             <div class="resume-item">
               <h4>IV</h4>
               <p>Introduction to the project and various services.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>V</h4>
               <p>Notifications. The system will send automatic notifications to users who win bets. These notifications can be in the form of sound or visual elements that appear on the interface in real-time.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
             
             <div class="resume-item">
               <h4>VI</h4>
               <p>Smart contract optimization and network scalability enhancement.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>VII</h4>
               <p>Social Decentralizer Feature (Like). Users can give likes to certain betting activities or entries. This feature uses a decentralized approach, allowing social interaction without centralized control.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>VIII</h4>
               <p>To create a decentralized platform for secure and transparent lottery and betting games on blockchain.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>IX</h4>
               <p>Social Decentralizer Feature (Comments). Users can leave comments on certain betting entries or results, creating an open and transparent community discussion space.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>X</h4>
               <p>Statistics & Data. Provides a statistics panel that displays important data such as bet amounts, total payouts, active players, recent winners, and average bet analysis. These statistics will be rendered visually and updated in real-time.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>XI</h4>
               <p>To develop a blockchain-based ecosystem that ensures fairness and transparency in betting and lottery games.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
             
             <div class="resume-item">
               <h4>XII</h4>
               <p>To implement a decentralized lottery and betting system that provides provably fair and verifiable outcomes.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>XIII</h4>
               <p>To build a fully decentralized gambling experience on blockchain that guarantees security, transparency, and fairness.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>XIV</h4>
               <p>To enhance the integrity of online betting and lottery through blockchain technology.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
             
             <div class="resume-item">
               <h4>XV</h4>
               <p>Addition of multi-chain features and ecosystem expansion.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
             
             <div class="resume-item">
               <h4>XVI</h4>
               <p>Development of innovative features and global partnerships to enhance the ecosystem.</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
             <div class="resume-item">
               <h4>XVII</h4>
               <p>Coming Soon...</p>
-            </div><!-- Edn Resume Item -->
+            </div>
 
           </div>
 
@@ -440,14 +432,13 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
 
       </div>
 
-    </section><!-- /Resume Section -->
+    </section>
 
     <footer id="footer" class="footer dark-background">
     <div class="container">
       <h2 class="sitename">Contact Us</h2><br>
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 13px; max-width: 1000px; margin: auto;">
 
-  <!-- Kolom Email -->
     <div style="width: 45%; text-align: left; margin-bottom: 20px;">
     <h4 style="margin-bottom: 10px; font-size: 13px;">Support</h4>
     <h5 style="font-size: 12px;"><i class="bi bi-envelope-at"></i> Support:<br><a href="mailto:support@lottochain.xyz">support@lottochain.xyz</a></h5>
@@ -457,7 +448,6 @@ document.getElementById("XBgc52875CfsIndex").innerHTML = `
     <h5 style="font-size: 12px;"><i class="bi bi-envelope-at"></i> Admin:<br><a href="mailto:0x@lottochain.xyz">0x@lottochain.xyz</a></h5>
   </div>
 
-  <!-- Kolom Docs -->
 <div style="text-align: left; margin-left: auto; max-width: 400px;">
   <h4 style="margin-bottom: 10px; font-size: 13px;">Docs</h4>
   <h5 style="font-size: 12px;"><i class="bi bi-filetype-doc"></i> <a href="cs" target="_blank">Menu</a></h5>
