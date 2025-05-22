@@ -48,14 +48,6 @@
     });
   }
 
-  AOS.init();
-
-    function clearEmail(form) {
-        setTimeout(() => {
-          form.reset();
-        }, 5000);
-    }
-
   let scrollTop = document.querySelector('.scroll-top');
 
   function toggleScrollTop() {
