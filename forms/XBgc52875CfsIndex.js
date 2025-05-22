@@ -463,7 +463,7 @@ document.getElementById("XBgc52875Cfs").innerHTML = `
         <a href="https://x.com/LottoChainXyz" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter-x"></i></a>
         <a href="https://t.me/LottoChainXyZ" target="_blank" rel="noopener noreferrer"><i class="bi bi-telegram"></i></a>
         <a href="https://facebook.com/LottoChainXyz" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
-        <a href="mailto:service@lottochain.xyz" target="_blank" rel="noopener noreferrer"><i class="bi bi-envelope"></i></a>
+        <a href="https://discord.gg/6uMYTdCZwJ" target="_blank" rel="noopener noreferrer"><i class="bi bi-discord"></i></a>
       </div>
       <div class="container">
         <div class="copyright">
