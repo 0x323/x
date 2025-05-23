@@ -1,158 +1,283 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kebijakan Hak Cipta - Lotto Chain</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DMCA Policy – Lotto Chain</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+    body.light {
       background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      color: #222;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
-    h1 {
-      font-size: 28px;
-      color: #1a73e8;
+    body.light .container {
+      background-color: #FBFAFF;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    body.light h1, body.light h2, body.light h3, body.light h4 {
+      color: #222;
+    }
+    body.light h2 {
+      border-bottom: 1px solid #999;
+    }
+
+    /* Tema Dark */
+    body.dark {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    body.dark .container {
+      background-color: #2a2a2a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark h1, body.dark h2, body.dark h3, body.dark h4 {
+      color: #e0e0e0;
+    }
+    body.dark h2 {
+      border-bottom: 1px solid #555;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 10px;
+    }
+    h1, h2, h3, h4 {
       text-align: center;
-      margin-bottom: 20px;
+      font-family: 'Ubuntu', sans-serif;
     }
     h2 {
-      font-size: 22px;
-      color: #333;
-      margin-top: 25px;
+      margin-top: 40px;
+      padding-bottom: 5px;
     }
-    h3 {
-      font-size: 18px;
-      color: #555;
-      margin-top: 15px;
-    }
-    p, li {
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 12px;
+    p {
+      margin-bottom: 16px;
     }
     ul {
-      padding-left: 25px;
+      margin-left: 20px;
     }
-    a {
-      color: #1a73e8;
-      text-decoration: none;
+
+    .toggle-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
     }
-    a:hover {
-      text-decoration: underline;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
     }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-      font-size: 12px;
-      margin-top: 30px;
-      border-radius: 0 0 8px 8px;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    @media only screen and (max-width: 600px) {
-      .container { padding: 15px; }
-      h1 { font-size: 22px; }
-      h2 { font-size: 18px; }
-      h3 { font-size: 16px; }
-      p, li { font-size: 14px; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .toggle-container {
+        top: 8px;
+        right: 8px;
+      }
+      .switch {
+        width: 40px;
+        height: 24px;
+      }
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+      }
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+      .theme-icon {
+        width: 16px;
+        height: 16px;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Kebijakan Hak Cipta</h1>
-    <p><strong>Terakhir diperbarui: 23 Mei 2025</strong></p>
-
-    <h2>1. Pendahuluan</h2>
-    <p>
-      <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("Kami", "Lotto Chain") menghormati hak kekayaan intelektual dan berkomitmen melindungi konten di Platform sesuai dengan hukum global, termasuk <strong>Digital Millennium Copyright Act (DMCA)</strong>, <strong>Konvensi Berne</strong>, dan <strong>Perjanjian TRIPS</strong>. Kebijakan ini menjelaskan kepemilikan hak cipta kami dan prosedur untuk menangani pelanggaran hak cipta.
-    </p>
-
-    <h2>2. Kepemilikan Hak Cipta</h2>
-    <p>
-      Semua konten di Platform, termasuk kode sumber, desain, logo, teks, kontrak pintar (misalnya, di Base Sepolia), dan materi lainnya, dimiliki oleh Lotto Chain atau pemberi lisensinya. Konten ini dilindungi oleh:
-    </p>
-    <ul>
-      <li><strong>Konvensi Berne</strong>: Memberikan perlindungan otomatis untuk karya perangkat lunak dan konten digital.</li>
-      <li><strong>DMCA</strong>: Mengatur penegakan hak cipta di AS dan diakui secara global.</li>
-      <li><strong>TRIPS</strong>: Menetapkan standar minimum perlindungan hak cipta internasional.</li>
-    </ul>
-    <p>
-      Pengguna dilarang menyalin, mereproduksi, memodifikasi, atau mendistribusikan konten tanpa izin tertulis dari Lotto Chain.
-    </p>
-
-    <h2>3. Konten yang Dibuat Pengguna</h2>
-    <p>
-      Jika Pengguna mengunggah konten (misalnya, posting sosial atau data taruhan), Pengguna menyatakan bahwa mereka memiliki hak atas konten tersebut atau telah memperoleh izin yang diperlukan. Lotto Chain tidak bertanggung jawab atas pelanggaran hak cipta oleh konten Pengguna.
-    </p>
-
-    <h2>4. Prosedur Penanganan Pelanggaran Hak Cipta</h2>
-    <h3>4.1. Pemberitahuan DMCA</h3>
-    <p>
-      Jika Anda yakin konten di Platform melanggar hak cipta Anda, kirimkan pemberitahuan DMCA ke <a href="mailto:dmca@lottochain.com">dmca@lottochain.com</a> dengan informasi berikut:
-    </p>
-    <ul>
-      <li>Identifikasi karya berhak cipta yang dilanggar.</li>
-      <li>Lokasi konten yang dianggap melanggar (misalnya, URL atau ID posting).</li>
-      <li>Informasi kontak Anda (nama, alamat, email, nomor telepon).</li>
-      <li>Pernyataan bahwa Anda memiliki keyakinan baik bahwa penggunaan tersebut tidak diizinkan oleh pemilik hak cipta.</li>
-      <li>Pernyataan bahwa informasi dalam pemberitahuan akurat, dengan risiko hukuman perjury.</li>
-      <li>Tanda tangan fisik atau elektronik.</li>
-    </ul>
-    <h3>4.2. Proses Peninjauan</h3>
-    <p>
-      Kami akan meninjau pemberitahuan dalam waktu 7 hari kerja. Jika valid, kami akan menghapus atau membatasi akses ke konten yang melanggar. Pengguna yang mengunggah konten akan diberi tahu tentang penghapusan.
-    </p>
-    <h3>4.3. Kontra-Pemberitahuan</h3>
-    <p>
-      Jika Anda yakin konten Anda dihapus secara keliru, kirimkan kontra-pemberitahuan ke <a href="mailto:dmca@lottochain.com">dmca@lottochain.com</a> dengan:
-    </p>
-    <ul>
-      <li>Identifikasi konten yang dihapus dan lokasinya.</li>
-      <li>Alasan mengapa konten tidak melanggar.</li>
-      <li>Informasi kontak Anda.</li>
-      <li>Pernyataan bahwa Anda setuju dengan yurisdiksi pengadilan federal di [misalnya, Delaware, AS].</li>
-      <li>Tanda tangan fisik atau elektronik.</li>
-    </ul>
-    <p>
-      Kami akan memproses kontra-pemberitahuan dalam 10 hari kerja dan dapat memulihkan konten jika sesuai.
-    </p>
-
-    <h2>5. Hak Cipta dan Blockchain</h2>
-    <p>
-      Kontrak pintar dan kode sumber di Base Sepolia dilindungi sebagai karya perangkat lunak. Namun, data on-chain (misalnya, transaksi token) bersifat publik dan tidak dapat dihapus. Pelanggaran hak cipta terkait kode smart contract akan ditangani sesuai DMCA.
-    </p>
-
-    <h2>6. Konsekuensi Pelanggaran Berulang</h2>
-    <p>
-      Pengguna yang berulang kali melanggar hak cipta dapat diblokir dari Platform, sesuai kebijakan penghentian akses kami.
-    </p>
-
-    <h2>7. Perubahan Kebijakan</h2>
-    <p>
-      Kami dapat memperbarui Kebijakan Hak Cipta ini untuk mencerminkan perubahan hukum atau operasional. Pembaruan akan dipublikasikan di Platform.
-    </p>
-
-    <h2>8. Kontak</h2>
-    <p>Untuk pertanyaan atau pemberitahuan DMCA:</p>
-    <ul>
-      <li><strong>Email</strong>: <a href="mailto:dmca@lottochain.com">dmca@lottochain.com</a></li>
-      <li><strong>Situs Web</strong>: <a href="https://www.lottochain.com">www.lottochain.com</a></li>
-    </ul>
-
-    <div class="footer">
-      <p>Powered By Lotto Chain 2025 All Rights Reserved</p>
-    </div>
+<body class="light">
+  <div class="toggle-container">
+    <img src="img/sun.svg" class="theme-icon" id="theme-icon">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
+      <span class="slider"></span>
+    </label>
   </div>
+
+  <div class="container">
+        <header>
+            <h1>Documentation</h1>
+            <p>DMCA Policy</p>
+        </header>
+
+        <section class="dmca">
+
+        <p><strong>Last Updated: May 23, 2025</strong></p>
+
+<h2>1. Introduction</h2>
+<p>
+  <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("We", "Lotto Chain") respects intellectual property rights and is committed to protecting content on our Platform in accordance with international laws, including the <strong>Digital Millennium Copyright Act (DMCA)</strong>, the <strong>Berne Convention</strong>, and the <strong>TRIPS Agreement</strong>. This policy outlines our copyright ownership and the procedures for addressing copyright infringement.
+</p>
+
+<h2>2. Copyright Ownership</h2>
+<p>
+  All content on the Platform, including source code, designs, logos, text, smart contracts (e.g., on EVM multi chain), and other materials, is owned by Lotto Chain or its licensors. This content is protected under:
+</p>
+<ul>
+  <li><strong>Berne Convention</strong>: Provides automatic protection for software and digital works.</li>
+  <li><strong>DMCA</strong>: Governs copyright enforcement in the U.S. and is recognized globally.</li>
+  <li><strong>TRIPS Agreement</strong>: Sets minimum international standards for copyright protection.</li>
+</ul>
+<p>
+  Users are strictly prohibited from copying, reproducing, modifying, or distributing any content without written permission from Lotto Chain.
+</p>
+
+<h2>3. User-Generated Content</h2>
+<p>
+  If Users upload content (e.g., social posts or betting data), they affirm that they own the rights to such content or have obtained the necessary permissions. Lotto Chain is not liable for any copyright violations arising from user-submitted content.
+</p>
+
+<h2>4. Copyright Infringement Procedure</h2>
+<h3>4.1. DMCA Notice</h3>
+<p>
+  If you believe that content on our Platform infringes your copyright, please send a DMCA notice to <a href="mailto:dmca@lottochain.com">dmca@lottochain.com</a> including the following information:
+</p>
+<ul>
+  <li>Identification of the copyrighted work claimed to be infringed.</li>
+  <li>The location of the allegedly infringing content (e.g., URL or post ID).</li>
+  <li>Your contact information (name, address, email, phone number).</li>
+  <li>A statement that you have a good faith belief that the use is not authorized by the copyright owner.</li>
+  <li>A statement that the information in the notice is accurate and made under penalty of perjury.</li>
+  <li>Your physical or electronic signature.</li>
+</ul>
+
+<h3>4.2. Review Process</h3>
+<p>
+  We will review DMCA notices within 7 business days. If the notice is valid, we will remove or restrict access to the infringing content. The user who uploaded the content will be notified of the takedown.
+</p>
+
+<h3>4.3. Counter-Notification</h3>
+<p>
+  If you believe your content was removed in error, you may submit a counter-notification to <a href="mailto:dmca@lottochain.com">dmca@lottochain.com</a> including:
+</p>
+<ul>
+  <li>Identification of the removed content and its prior location.</li>
+  <li>Reasons why the content does not infringe copyright.</li>
+  <li>Your contact information.</li>
+  <li>A statement consenting to the jurisdiction of a federal court in [e.g., Delaware, USA].</li>
+  <li>Your physical or electronic signature.</li>
+</ul>
+<p>
+  We will review the counter-notification within 10 business days and may restore the content if appropriate.
+</p>
+
+<h2>5. Copyright and Blockchain</h2>
+<p>
+  Smart contracts and source code deployed on Base Sepolia are protected as software works. However, on-chain data (e.g., token transactions) is public and cannot be removed. Copyright violations related to smart contract code will be addressed under the DMCA.
+</p>
+
+<h2>6. Repeat Infringement</h2>
+<p>
+  Users who repeatedly infringe copyright may be banned from the Platform in accordance with our access termination policy.
+</p>
+
+<h2>7. Policy Updates</h2>
+<p>
+  We may update this Copyright Policy to reflect changes in legal or operational requirements. Updates will be published on the Platform.
+</p>
+
+<h2>8. Contact</h2>
+<p>For questions or DMCA notices, please contact us at:</p>
+<ul>
+  <li><strong>Email</strong>: <a href="mailto:support@lottochain.xyz">support@lottochain.xyz</a></li>
+  <li><strong>Website</strong>: <a href="https://lottochain.xyz">www.lottochain.xyz</a></li>
+</ul>
+          
+            <br><br><center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+        </section>
+  </div>
+  
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        toggle.checked = true;
+        themeIcon.src = 'img/moon.svg';
+        themeIcon.alt = 'Dark Mode';
+      } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        toggle.checked = false;
+        themeIcon.src = 'img/sun.svg';
+        themeIcon.alt = 'Light Mode';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('change', () => {
+      setTheme(toggle.checked ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+    };
+  </script>
 </body>
 </html>
