@@ -1,169 +1,293 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perjanjian Lisensi Pengguna Akhir - Lotto Chain</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>End-User License Agreement – Lotto Chain</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+    body.light {
       background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      color: #222;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
-    h1 {
-      font-size: 28px;
-      color: #1a73e8;
+    body.light .container {
+      background-color: #FBFAFF;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    body.light h1, body.light h2, body.light h3, body.light h4 {
+      color: #222;
+    }
+    body.light h2 {
+      border-bottom: 1px solid #999;
+    }
+
+    /* Tema Dark */
+    body.dark {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    body.dark .container {
+      background-color: #2a2a2a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark h1, body.dark h2, body.dark h3, body.dark h4 {
+      color: #e0e0e0;
+    }
+    body.dark h2 {
+      border-bottom: 1px solid #555;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 10px;
+    }
+    h1, h2, h3, h4 {
       text-align: center;
-      margin-bottom: 20px;
+      font-family: 'Ubuntu', sans-serif;
     }
     h2 {
-      font-size: 22px;
-      color: #333;
-      margin-top: 25px;
+      margin-top: 40px;
+      padding-bottom: 5px;
     }
-    h3 {
-      font-size: 18px;
-      color: #555;
-      margin-top: 15px;
-    }
-    p, li {
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 12px;
+    p {
+      margin-bottom: 16px;
     }
     ul {
-      padding-left: 25px;
+      margin-left: 20px;
     }
-    a {
-      color: #1a73e8;
-      text-decoration: none;
+
+    .toggle-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
     }
-    a:hover {
-      text-decoration: underline;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
     }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-      font-size: 12px;
-      margin-top: 30px;
-      border-radius: 0 0 8px 8px;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    @media only screen and (max-width: 600px) {
-      .container { padding: 15px; }
-      h1 { font-size: 22px; }
-      h2 { font-size: 18px; }
-      h3 { font-size: 16px; }
-      p, li { font-size: 14px; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .toggle-container {
+        top: 8px;
+        right: 8px;
+      }
+      .switch {
+        width: 40px;
+        height: 24px;
+      }
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+      }
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+      .theme-icon {
+        width: 16px;
+        height: 16px;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Perjanjian Lisensi Pengguna Akhir</h1>
-    <p><strong>Terakhir diperbarui: 23 Mei 2025</strong></p>
-
-    <h2>1. Pendahuluan</h2>
-    <p>
-      Perjanjian Lisensi Pengguna Akhir ini ("EULA") mengatur penggunaan perangkat lunak, aplikasi, kontrak pintar, dan Layanan digital lainnya yang disediakan oleh <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("Kami", "Lotto Chain"). EULA ini merupakan perjanjian hukum yang mengikat antara Anda ("Pengguna") dan Lotto Chain, sesuai dengan hukum global seperti <strong>Konvensi Berne</strong> dan <strong>Perjanjian TRIPS</strong>.
-    </p>
-    <p>
-      Dengan mengakses atau menggunakan Layanan, Anda menyetujui EULA ini. Jika tidak setuju, harap hentikan penggunaan segera.
-    </p>
-
-    <h2>2. Pemberian Lisensi</h2>
-    <h3>2.1. Cakupan Lisensi</h3>
-    <p>
-      Lotto Chain memberikan Anda lisensi terbatas, non-eksklusif, tidak dapat dipindahtangankan, dan dapat dicabut untuk menggunakan perangkat lunak, aplikasi, atau kontrak pintar (misalnya, di Base Sepolia) hanya untuk tujuan yang dimaksudkan, seperti taruhan terdesentralisasi atau interaksi sosial Web3.
-    </p>
-    <h3>2.2. Hak yang Diizinkan</h3>
-    <ul>
-      <li>Mengakses Platform untuk berpartisipasi dalam taruhan atau fitur sosial.</li>
-      <li>Menjalankan transaksi melalui kontrak pintar sesuai aturan Platform.</li>
-      <li>Menggunakan antarmuka pengguna untuk melihat data, seperti daftar pemegang token.</li>
-    </ul>
-    <h3>2.3. Larangan</h3>
-    <ul>
-      <li>Menyalin, memodifikasi, atau mendistribusikan perangkat lunak atau kode smart contract.</li>
-      <li>Melakukan reverse engineering, dekompilasi, atau pembongkaran perangkat lunak.</li>
-      <li>Menggunakan Layanan untuk tujuan ilegal atau tidak sah.</li>
-    </ul>
-
-    <h2>3. Kepemilikan Intelektual</h2>
-    <p>
-      Semua perangkat lunak, kode sumber, kontrak pintar, desain, dan konten di Platform dimiliki oleh Lotto Chain atau pemberi lisensinya, dilindungi oleh:
-    </p>
-    <ul>
-      <li><strong>Konvensi Berne</strong>: Perlindungan otomatis untuk karya perangkat lunak.</li>
-      <li><strong>TRIPS</strong>: Standar global untuk hak cipta dan paten.</li>
-      <li><strong>DMCA</strong>: Penegakan hak cipta untuk kode dan konten digital.</li>
-    </ul>
-    <p>
-      Pengguna tidak memperoleh hak kepemilikan atas Layanan, hanya hak penggunaan terbatas sesuai EULA ini.
-    </p>
-
-    <h2>4. Batasan Tanggung Jawab</h2>
-    <p>
-      Perangkat lunak disediakan "sebagaimana adanya" tanpa jaminan. Lotto Chain tidak bertanggung jawab atas:
-    </p>
-    <ul>
-      <li><strong>Kegagalan Teknis</strong>: Gangguan jaringan blockchain atau server.</li>
-      <li><strong>Kesalahan Pengguna</strong>: Kehilangan kunci pribadi atau transaksi yang salah.</li>
-      <li><strong>Kerugian Finansial</strong>: Kerugian akibat taruhan atau volatilitas token.</li>
-    </ul>
-    <p>
-      Dalam batas maksimum hukum, tanggung jawab kami terbatas pada jumlah yang dibayarkan Pengguna untuk Layanan, jika ada.
-    </p>
-
-    <h2>5. Penggunaan yang Dilarang</h2>
-    <p>Pengguna dilarang:</p>
-    <ul>
-      <li>Memanipulasi kontrak pintar untuk keuntungan tidak sah.</li>
-      <li>Menggunakan bot atau skrip otomatis untuk mengeksploitasi Platform.</li>
-      <li>Menyebarkan malware atau melakukan serangan siber terhadap Layanan.</li>
-      <li>Menggunakan perangkat lunak untuk tujuan di luar taruhan atau sosial Web3.</li>
-    </ul>
-
-    <h2>6. Penghentian Lisensi</h2>
-    <p>
-      Kami dapat mencabut lisensi dan menghentikan akses Anda jika Anda melanggar EULA ini, terlibat dalam aktivitas ilegal, atau merugikan Platform. Penghentian tidak memengaruhi transaksi on-chain yang sudah tercatat.
-    </p>
-
-    <h2>7. Kepatuhan dengan Hukum</h2>
-    <p>
-      Pengguna bertanggung jawab memastikan bahwa penggunaan Layanan sesuai dengan hukum lokal, termasuk regulasi perjudian dan blockchain. Lotto Chain tidak bertanggung jawab atas pelanggaran hukum oleh Pengguna.
-    </p>
-
-    <h2>8. Hukum yang Berlaku</h2>
-    <p>
-      EULA ini diatur oleh hukum internasional, termasuk <strong>Konvensi Berne</strong> dan <strong>TRIPS</strong>. Sengketa akan diselesaikan melalui arbitrase di bawah aturan <strong>International Chamber of Commerce (ICC)</strong> di Singapura, kecuali disepakati lain.
-    </p>
-
-    <h2>9. Perubahan EULA</h2>
-    <p>
-      Kami dapat memperbarui EULA ini, dan pembaruan akan dipublikasikan di Platform. Penggunaan berkelanjutan dianggap sebagai persetujuan.
-    </p>
-
-    <h2>10. Kontak</h2>
-    <p>Untuk pertanyaan tentang EULA ini:</p>
-    <ul>
-      <li><strong>Email</strong>: <a href="mailto:support@lottochain.com">support@lottochain.com</a></li>
-      <li><strong>Situs Web</strong>: <a href="https://www.lottochain.com">www.lottochain.com</a></li>
-    </ul>
-
-    <div class="footer">
-      <p>Powered By Lotto Chain 2025 All Rights Reserved</p>
-    </div>
+<body class="light">
+  <div class="toggle-container">
+    <img src="img/sun.svg" class="theme-icon" id="theme-icon">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
+      <span class="slider"></span>
+    </label>
   </div>
+
+  <div class="container">
+        <header>
+            <h1>Documentation</h1>
+            <p>End-User License Agreement</p>
+        </header>
+
+        <section class="eula">
+            <p><strong>Last Updated: May 23, 2025</strong></p>
+
+<h2>1. Introduction</h2>
+<p>
+  This End-User License Agreement ("EULA") governs your use of the software, applications, smart contracts, and other digital services provided by <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("we," "us," or "Lotto Chain"). This EULA constitutes a legally binding agreement between you ("User") and Lotto Chain, in accordance with international regulations such as the <strong>Berne Convention</strong> and the <strong>TRIPS Agreement</strong>.
+</p>
+<p>
+  By accessing or using our Services, you agree to be bound by this EULA. If you do not agree to these terms, please discontinue use immediately.
+</p>
+
+<h2>2. License Grant</h2>
+<h3>2.1. Scope of License</h3>
+<p>
+  Lotto Chain grants you a limited, non-exclusive, non-transferable, and revocable license to use its software, applications, or smart contracts (e.g., deployed on Base Sepolia) solely for their intended purposes, such as decentralized betting or Web3 social engagement.
+</p>
+
+<h3>2.2. Permitted Uses</h3>
+<ul>
+  <li>Accessing the Platform to participate in betting activities or social features.</li>
+  <li>Executing transactions via smart contracts in accordance with Platform rules.</li>
+  <li>Utilizing the user interface to view data such as token holder lists.</li>
+</ul>
+
+<h3>2.3. Restrictions</h3>
+<ul>
+  <li>Copying, modifying, or distributing the software or smart contract code.</li>
+  <li>Reverse engineering, decompiling, or disassembling the software.</li>
+  <li>Using the Services for any unlawful or unauthorized purposes.</li>
+</ul>
+
+<h2>3. Intellectual Property</h2>
+<p>
+  All software, source code, smart contracts, designs, and content on the Platform are owned by Lotto Chain or its licensors, and are protected by:
+</p>
+<ul>
+  <li><strong>Berne Convention</strong>: Automatic protection for software works.</li>
+  <li><strong>TRIPS Agreement</strong>: International standards for copyright and patents.</li>
+  <li><strong>DMCA</strong>: Enforcement of copyright for digital code and content.</li>
+</ul>
+<p>
+  Users do not acquire any ownership rights in the Services—only a limited right to use them under the terms of this EULA.
+</p>
+
+<h2>4. Limitation of Liability</h2>
+<p>
+  The software is provided "as is" without warranties of any kind. Lotto Chain shall not be liable for:
+</p>
+<ul>
+  <li><strong>Technical Failures</strong>: Interruptions in blockchain networks or server outages.</li>
+  <li><strong>User Errors</strong>: Loss of private keys or incorrect transactions.</li>
+  <li><strong>Financial Losses</strong>: Damages arising from betting outcomes or token volatility.</li>
+</ul>
+<p>
+  To the fullest extent permitted by law, our liability is limited to the amount the User has paid (if any) for the Services.
+</p>
+
+<h2>5. Prohibited Uses</h2>
+<p>Users may not:</p>
+<ul>
+  <li>Manipulate smart contracts for unfair advantage.</li>
+  <li>Use bots or automated scripts to exploit the Platform.</li>
+  <li>Distribute malware or carry out cyberattacks against the Services.</li>
+  <li>Use the software for purposes unrelated to decentralized betting or Web3 social interaction.</li>
+</ul>
+
+<h2>6. Termination of License</h2>
+<p>
+  We reserve the right to revoke your license and restrict access to the Services if you violate this EULA, engage in unlawful activities, or harm the Platform. Termination does not affect on-chain transactions that have already been executed.
+</p>
+
+<h2>7. Legal Compliance</h2>
+<p>
+  Users are responsible for ensuring that their use of the Services complies with local laws, including regulations on gambling and blockchain technology. Lotto Chain is not liable for any legal violations committed by the User.
+</p>
+
+<h2>8. Governing Law</h2>
+<p>
+  This EULA is governed by international laws, including the <strong>Berne Convention</strong> and the <strong>TRIPS Agreement</strong>. Any disputes shall be resolved through arbitration under the rules of the <strong>International Chamber of Commerce (ICC)</strong> in Singapore, unless otherwise agreed.
+</p>
+
+<h2>9. Changes to the EULA</h2>
+<p>
+  We may update this EULA from time to time. All updates will be posted on the Platform. Continued use of the Services constitutes acceptance of the updated terms.
+</p>
+
+<h2>10. Contact</h2>
+<p>If you have any questions regarding this EULA, please contact us:</p>
+<ul>
+  <li><strong>Email</strong>: <a href="mailto:support@lottochain.xyz">support@lottochain.xyz</a></li>
+  <li><strong>Website</strong>: <a href="https://lottochain.xyz">www.lottochain.com</a></li>
+</ul>
+              
+              <br><br><center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+        </section>
+  </div>
+  
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        toggle.checked = true;
+        themeIcon.src = 'img/moon.svg';
+        themeIcon.alt = 'Dark Mode';
+      } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        toggle.checked = false;
+        themeIcon.src = 'img/sun.svg';
+        themeIcon.alt = 'Light Mode';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('change', () => {
+      setTheme(toggle.checked ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+    };
+  </script>
 </body>
 </html>
