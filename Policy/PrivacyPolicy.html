@@ -176,12 +176,15 @@
     display: none;
   }
 
-  .table tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    padding: 10px;
-    background: #fff;
-  }
+  body.light .table tr {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+body.dark .table tr {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
 
   .table td {
     position: relative;
