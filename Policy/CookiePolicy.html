@@ -1,197 +1,367 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kebijakan Cookie - Lotto Chain</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cookie Policy – Lotto Chain</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+    body.light {
       background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      color: #222;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
-    h1 {
-      font-size: 28px;
-      color: #1a73e8;
+    body.light .container {
+      background-color: #FBFAFF;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    body.light h1, body.light h2, body.light h3, body.light h4 {
+      color: #222;
+    }
+    body.light h2 {
+      border-bottom: 1px solid #999;
+    }
+
+    /* Tema Dark */
+    body.dark {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    body.dark .container {
+      background-color: #2a2a2a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark h1, body.dark h2, body.dark h3, body.dark h4 {
+      color: #e0e0e0;
+    }
+    body.dark h2 {
+      border-bottom: 1px solid #555;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 10px;
+    }
+    h1, h2, h3, h4 {
       text-align: center;
-      margin-bottom: 20px;
+      font-family: 'Ubuntu', sans-serif;
     }
     h2 {
-      font-size: 22px;
-      color: #333;
-      margin-top: 25px;
+      margin-top: 40px;
+      padding-bottom: 5px;
     }
-    h3 {
-      font-size: 18px;
-      color: #555;
-      margin-top: 15px;
-    }
-    p, li {
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 12px;
+    p {
+      margin-bottom: 16px;
     }
     ul {
-      padding-left: 25px;
+      margin-left: 20px;
     }
-    a {
-      color: #1a73e8;
-      text-decoration: none;
+
+    .toggle-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
     }
-    a:hover {
-      text-decoration: underline;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
     }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-      font-size: 12px;
-      margin-top: 30px;
-      border-radius: 0 0 8px 8px;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .toggle-container {
+        top: 8px;
+        right: 8px;
+      }
+      .switch {
+        width: 40px;
+        height: 24px;
+      }
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+      }
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+      .theme-icon {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
-      margin: 15px 0;
+      margin-bottom: 1rem;
+      font-size: 1rem;
     }
+
     .table th, .table td {
-      border: 1px solid #ddd;
-      padding: 10px;
+      border: 1px solid #ccc;
+      padding: 0.75rem;
       text-align: left;
     }
-    .table th {
-      background-color: #f4f4f4;
-    }
-    @media only screen and (max-width: 600px) {
-      .container { padding: 15px; }
-      h1 { font-size: 22px; }
-      h2 { font-size: 18px; }
-      h3 { font-size: 16px; }
-      p, li { font-size: 14px; }
+
+    /* Responsif untuk layar <= 768px (tablet & ponsel) */
+    @media screen and (max-width: 768px) {
+      .table,
+      .table thead,
+      .table tbody,
+      .table tr,
+      .table th,
+      .table td {
+        display: block;
+        width: 100%;
+      }
+
+      .table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+      }
+
+      .table thead {
+        display: none;
+      }
+
+      .table td {
+        position: relative;
+        padding-left: 50%;
+        border: none;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0.75rem;
+        font-weight: bold;
+        white-space: nowrap;
+        width: 50%;
+        background-color: #f9f9f9;
+        border-right: 1px solid #ccc;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Kebijakan Cookie</h1>
-    <p><strong>Terakhir diperbarui: 23 Mei 2025</strong></p>
-
-    <h2>1. Pendahuluan</h2>
-    <p>
-      <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("Kami", "Lotto Chain") menggunakan cookie dan teknologi pelacakan serupa untuk mengoptimalkan pengalaman pengguna di Platform. Kebijakan ini menjelaskan jenis cookie, tujuan penggunaannya, dan hak Anda untuk mengelolanya, sesuai dengan <strong>General Data Protection Regulation (GDPR)</strong>, <strong>ePrivacy Directive</strong> Uni Eropa, dan standar privasi global lainnya.
-    </p>
-    <p>
-      Dengan menggunakan Platform, Anda menyetujui penggunaan cookie sebagaimana diuraikan, kecuali Anda menonaktifkannya melalui pengaturan browser atau popup persetujuan.
-    </p>
-
-    <h2>2. Apa Itu Cookie?</h2>
-    <p>
-      Cookie adalah file teks kecil yang disimpan di perangkat Anda saat mengakses Platform. Cookie memungkinkan kami mengenali perangkat Anda, menyimpan preferensi, dan menganalisis interaksi untuk meningkatkan Layanan. Teknologi serupa, seperti piksel pelacakan atau penyimpanan lokal, juga digunakan untuk tujuan yang sama.
-    </p>
-
-    <h2>3. Jenis Cookie yang Digunakan</h2>
-    <p>Kami menggunakan cookie dalam kategori berikut:</p>
-    <table class="table">
-      <tr>
-        <th>Jenis Cookie</th>
-        <th>Tujuan</th>
-        <th>Durasi</th>
-        <th>Pihak Ketiga</th>
-      </tr>
-      <tr>
-        <td>Cookie Esensial</td>
-        <td>Mengaktifkan fungsi inti, seperti autentikasi dompet Web3 dan navigasi.</td>
-        <td>Sesi atau hingga 1 tahun</td>
-        <td>Tidak</td>
-      </tr>
-      <tr>
-        <td>Cookie Analitik</td>
-        <td>Mengukur performa dan perilaku pengguna melalui alat seperti Google Analytics.</td>
-        <td>Hingga 2 tahun</td>
-        <td>Ya (Google)</td>
-      </tr>
-      <tr>
-        <td>Cookie Iklan</td>
-        <td>Menayangkan iklan yang relevan melalui mitra seperti AdSense.</td>
-        <td>Hingga 18 bulan</td>
-        <td>Ya (Google, Meta)</td>
-      </tr>
-      <tr>
-        <td>Cookie Fungsional</td>
-        <td>Menyimpan preferensi, seperti bahasa atau tema tampilan.</td>
-        <td>Hingga 1 tahun</td>
-        <td>Tidak</td>
-      </tr>
-    </table>
-
-    <h2>4. Tujuan Penggunaan Cookie</h2>
-    <p>Cookie digunakan untuk:</p>
-    <ul>
-      <li><strong>Operasional Platform</strong>: Memastikan autentikasi dompet Web3, sesi taruhan, dan navigasi berjalan lancar.</li>
-      <li><strong>Analisis Performa</strong>: Mengumpulkan data tentang jumlah pengunjung, durasi sesi, dan pola taruhan untuk optimasi.</li>
-      <li><strong>Personalisasi</strong>: Menyesuaikan konten, seperti menampilkan riwayat taruhan atau rekomendasi sosial.</li>
-      <li><strong>Iklan</strong>: Menyediakan iklan yang relevan berdasarkan minat Anda (jika berlaku).</li>
-      <li><strong>Keamanan</strong>: Mendeteksi aktivitas mencurigakan, seperti upaya login berulang.</li>
-    </ul>
-
-    <h2>5. Cookie dan Blockchain</h2>
-    <p>
-      Cookie tidak digunakan untuk mengumpulkan data on-chain (misalnya, transaksi di Base Sepolia), karena data ini bersifat publik dan dikelola oleh kontrak pintar. Namun, cookie dapat menyimpan alamat dompet publik untuk mempermudah interaksi dengan smart contract.
-    </p>
-
-    <h2>6. Pilihan dan Pengelolaan Cookie</h2>
-    <h3>6.1. Popup Persetujuan</h3>
-    <p>
-      Sesuai GDPR, kami menyediakan popup persetujuan cookie saat Anda pertama kali mengakses Platform. Anda dapat menerima, menolak, atau menyesuaikan preferensi cookie (kecuali cookie esensial yang diperlukan untuk operasi).
-    </p>
-    <h3>6.2. Pengaturan Browser</h3>
-    <p>
-      Anda dapat menonaktifkan cookie melalui pengaturan browser, tetapi ini dapat mengganggu fungsi Platform, seperti autentikasi Web3. Panduan untuk browser populer:
-    </p>
-    <ul>
-      <li><a href="https://support.google.com/chrome/answer/95647">Google Chrome</a></li>
-      <li><a href="https://support.mozilla.org/id/kb/cookies-information-websites-store-on-your-computer">Mozilla Firefox</a></li>
-      <li><a href="https://support.apple.com/id-id/guide/safari/sfri11471/mac">Safari</a></li>
-    </ul>
-    <h3>6.3. Do Not Track (DNT)</h3>
-    <p>
-      Platform kami menghormati sinyal DNT jika diaktifkan di browser Anda, membatasi pelacakan untuk analitik atau iklan.
-    </p>
-
-    <h2>7. Pihak Ketiga</h2>
-    <p>
-      Cookie pihak ketiga (misalnya, Google Analytics, AdSense) diatur oleh kebijakan privasi masing-masing penyedia. Kami menyarankan Anda untuk membaca kebijakan mereka:
-    </p>
-    <ul>
-      <li><a href="https://policies.google.com/privacy">Kebijakan Privasi Google</a></li>
-      <li><a href="https://www.facebook.com/privacy/explanation">Kebijakan Privasi Meta</a></li>
-    </ul>
-
-    <h2>8. Perubahan Kebijakan</h2>
-    <p>
-      Kami dapat memperbarui Kebijakan Cookie ini untuk mencerminkan perubahan teknologi atau hukum. Pembaruan akan dipublikasikan di Platform, dan Anda akan diberi tahu untuk perubahan material.
-    </p>
-
-    <h2>9. Kontak</h2>
-    <p>Untuk pertanyaan tentang Kebijakan Cookie:</p>
-    <ul>
-      <li><strong>Email</strong>: <a href="mailto:privacy@lottochain.com">privacy@lottochain.com</a></li>
-      <li><strong>Situs Web</strong>: <a href="https://www.lottochain.com">www.lottochain.com</a></li>
-    </ul>
-
-    <div class="footer">
-      <p>Powered By Lotto Chain 2025 All Rights Reserved</p>
-    </div>
+<body class="light">
+  <div class="toggle-container">
+    <img src="img/sun.svg" class="theme-icon" id="theme-icon">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
+      <span class="slider"></span>
+    </label>
   </div>
+
+  <div class="container">
+        <header>
+            <h1>Documentation</h1>
+            <p>Cookie Policy</p>
+        </header>
+
+        <section class="terms">
+
+          <p><strong>Last Updated: May 23, 2025</strong></p>
+
+<h2>1. Introduction</h2>
+<p>
+  <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("we", "Lotto Chain") uses cookies and similar tracking technologies to optimize your experience on our Platform. This policy explains the types of cookies we use, their purposes, and your rights to manage them, in accordance with the <strong>General Data Protection Regulation (GDPR)</strong>, the European Union’s <strong>ePrivacy Directive</strong>, and other global privacy standards.
+</p>
+<p>
+  By using our Platform, you agree to our use of cookies as described in this policy, unless you choose to disable them through your browser settings or the consent popup.
+</p>
+
+<h2>2. What Are Cookies?</h2>
+<p>
+  Cookies are small text files stored on your device when you access the Platform. They allow us to recognize your device, remember your preferences, and analyze interactions to improve our services. Similar technologies, such as tracking pixels or local storage, are also used for the same purposes.
+</p>
+
+<h2>3. Types of Cookies We Use</h2>
+<p>We use cookies in the following categories:</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Type of Cookie</th>
+      <th>Purpose</th>
+      <th>Duration</th>
+      <th>Third Party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Type of Cookie">Essential Cookies</td>
+      <td data-label="Purpose">Enable core functionalities such as Web3 wallet authentication and navigation.</td>
+      <td data-label="Duration">Session-based or up to 1 year</td>
+      <td data-label="Third Party">No</td>
+    </tr>
+    <tr>
+      <td data-label="Type of Cookie">Analytics Cookies</td>
+      <td data-label="Purpose">Measure performance and user behavior through tools like Google Analytics.</td>
+      <td data-label="Duration">Up to 2 years</td>
+      <td data-label="Third Party">Yes (Google)</td>
+    </tr>
+    <tr>
+      <td data-label="Type of Cookie">Advertising Cookies</td>
+      <td data-label="Purpose">Deliver relevant ads via partners such as AdSense.</td>
+      <td data-label="Duration">Up to 18 months</td>
+      <td data-label="Third Party">Yes (Google, Meta)</td>
+    </tr>
+    <tr>
+      <td data-label="Type of Cookie">Functional Cookies</td>
+      <td data-label="Purpose">Remember preferences such as language or display theme.</td>
+      <td data-label="Duration">Up to 1 year</td>
+      <td data-label="Third Party">No</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. Purposes of Cookie Use</h2>
+<p>Cookies are used to:</p>
+<ul>
+  <li><strong>Platform Operation</strong>: Ensure smooth Web3 wallet authentication, betting sessions, and navigation.</li>
+  <li><strong>Performance Analysis</strong>: Collect data on visitor counts, session durations, and betting patterns for optimization.</li>
+  <li><strong>Personalization</strong>: Customize content such as displaying betting history or social recommendations.</li>
+  <li><strong>Advertising</strong>: Serve relevant ads based on your interests (where applicable).</li>
+  <li><strong>Security</strong>: Detect suspicious activity, such as repeated login attempts.</li>
+</ul>
+
+<h2>5. Cookies and Blockchain</h2>
+<p>
+  Cookies are not used to collect on-chain data (e.g., transactions on Base Sepolia), as such data is public and managed by smart contracts. However, cookies may store public wallet addresses to facilitate interaction with smart contracts.
+</p>
+
+<h2>6. Cookie Choices and Management</h2>
+<h3>6.1. Consent Popup</h3>
+<p>
+  In accordance with GDPR, we provide a cookie consent popup upon your first visit to the Platform. You may accept, reject, or customize your cookie preferences (excluding essential cookies, which are required for operation).
+</p>
+<h3>6.2. Browser Settings</h3>
+<p>
+  You may disable cookies through your browser settings, though this may impact the functionality of the Platform, such as Web3 authentication. Guides for popular browsers:
+</p>
+<ul>
+  <li><a href="https://support.google.com/chrome/answer/95647">Google Chrome</a></li>
+  <li><a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer">Mozilla Firefox</a></li>
+  <li><a href="https://support.apple.com/en-us/guide/safari/sfri11471/mac">Safari</a></li>
+</ul>
+<h3>6.3. Do Not Track (DNT)</h3>
+<p>
+  Our Platform respects DNT signals if enabled in your browser, limiting tracking for analytics or advertising purposes.
+</p>
+
+<h2>7. Third Parties</h2>
+<p>
+  Third-party cookies (e.g., Google Analytics, AdSense) are governed by the privacy policies of their respective providers. We recommend reviewing their policies:
+</p>
+<ul>
+  <li><a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+  <li><a href="https://www.facebook.com/privacy/explanation">Meta Privacy Policy</a></li>
+</ul>
+
+<h2>8. Policy Updates</h2>
+<p>
+  We may update this Cookie Policy to reflect changes in technology or legal requirements. Updates will be published on the Platform, and you will be notified of any material changes.
+</p>
+
+<h2>9. Contact</h2>
+<p>For inquiries regarding this Cookie Policy:</p>
+<ul>
+  <li><strong>Email</strong>: <a href="mailto:support@lottochain.xyz">support@lottochain.xyz</a></li>
+  <li><strong>Website</strong>: <a href="https://lottochain.xyz">www.lottochain.xyz</a></li>
+</ul>
+              
+              <br><br><center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+        </section>
+  </div>
+  
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        toggle.checked = true;
+        themeIcon.src = 'img/moon.svg';
+        themeIcon.alt = 'Dark Mode';
+      } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        toggle.checked = false;
+        themeIcon.src = 'img/sun.svg';
+        themeIcon.alt = 'Light Mode';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('change', () => {
+      setTheme(toggle.checked ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+    };
+  </script>
 </body>
 </html>
