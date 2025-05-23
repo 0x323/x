@@ -146,60 +146,119 @@
     }
 
     .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
-      font-size: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+body.dark .table th,
+body.dark .table td {
+  border-color: #555;
+}
+
+body.dark .table td::before {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+/* Responsive for screens <= 768px (tablet & mobile) */
+@media screen and (max-width: 768px) {
+  .table {
+    display: block;
+    width: 100%;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody,
+  .table tr {
+    display: block;
+  }
+
+  .table tr {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  body.dark .table tr {
+    border-color: #555;
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+    font-size: 0.9rem;
+  }
+
+  body.dark .table td {
+    border-bottom-color: #444;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40%;
+    padding: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: left;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+
+  body.dark .table td::before {
+    background-color: #333;
+    border-right-color: #555;
+    border-bottom-color: #444;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Ensure long content wraps properly */
+  .table td {
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Adjust padding for smaller screens */
+  @media screen and (max-width: 480px) {
+    .table td {
+      font-size: 0.85rem;
+      padding: 0.5rem;
     }
-
-    .table th, .table td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
-      text-align: left;
+    .table td::before {
+      font-size: 0.85rem;
+      padding: 0.5rem;
     }
-
-    /* Responsif untuk layar <= 768px (tablet & ponsel) */
-    @media screen and (max-width: 768px) {
-      .table,
-      .table thead,
-      .table tbody,
-      .table tr,
-      .table th,
-      .table td {
-        display: block;
-        width: 100%;
-      }
-
-      .table tr {
-        margin-bottom: 1rem;
-        border: 1px solid #ccc;
-        padding: 0.5rem;
-      }
-
-      .table thead {
-        display: none;
-      }
-
-      .table td {
-        position: relative;
-        padding-left: 50%;
-        border: none;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        top: 0;
-        padding: 0.75rem;
-        font-weight: bold;
-        white-space: nowrap;
-        width: 50%;
-        background-color: #f9f9f9;
-        border-right: 1px solid #ccc;
-      }
-    }
+  }
+}
   </style>
 </head>
 <body class="light">
