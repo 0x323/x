@@ -1,168 +1,258 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pemberitahuan Kekayaan Intelektual - Lotto Chain</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intellectual Property Notice – Lotto Chain</title>
+  <link href="img/logo.svg" rel="icon">
+  <link href="img/logo.svg" rel="apple-touch-icon">
+  
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
+    body.light {
       background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #222;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
-    h1 {
-      font-size: 24px;
-      color: #1a73e8;
+    body.light .container {
+      background-color: #FBFAFF;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    body.light h1, body.light h2, body.light h3, body.light h4 {
+      color: #222;
+    }
+    body.light h2 {
+      border-bottom: 1px solid #999;
+    }
+
+    /* Tema Dark */
+    body.dark {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    body.dark .container {
+      background-color: #2a2a2a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark h1, body.dark h2, body.dark h3, body.dark h4 {
+      color: #e0e0e0;
+    }
+    body.dark h2 {
+      border-bottom: 1px solid #555;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 10px;
+    }
+    h1, h2, h3, h4 {
       text-align: center;
-      margin-bottom: 20px;
+      font-family: 'Ubuntu', sans-serif;
     }
     h2 {
-      font-size: 20px;
-      color: #333;
-      margin-top: 20px;
+      margin-top: 40px;
+      padding-bottom: 5px;
     }
-    p, li {
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 10px;
+    p {
+      margin-bottom: 16px;
     }
     ul {
-      padding-left: 20px;
+      margin-left: 20px;
     }
-    a {
-      color: #1a73e8;
-      text-decoration: none;
+
+    .toggle-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
     }
-    a:hover {
-      text-decoration: underline;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
     }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-      font-size: 12px;
-      margin-top: 20px;
-      border-radius: 0 0 8px 8px;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    @media only screen and (max-width: 600px) {
-      .container {
-        padding: 10px;
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .toggle-container {
+        top: 8px;
+        right: 8px;
       }
-      h1 {
-        font-size: 20px;
+      .switch {
+        width: 40px;
+        height: 24px;
       }
-      h2 {
-        font-size: 18px;
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
       }
-      p, li {
-        font-size: 14px;
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+      .theme-icon {
+        width: 16px;
+        height: 16px;
       }
     }
   </style>
 </head>
-<body>
+<body class="light">
+  <div class="toggle-container">
+    <img src="img/sun.svg" class="theme-icon" id="theme-icon">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" aria-label="Toggle between light and dark mode">
+      <span class="slider"></span>
+    </label>
+  </div>
+
   <div class="container">
-    <h1>Pemberitahuan Kekayaan Intelektual</h1>
-    <h2>"Powered By Lotto Chain 2025 All Rights Reserved"</h2>
+        <header>
+            <h1>Documentation</h1>
+            <p>Intellectual Property Notice</p>
+        </header>
 
-    <h2>1. Latar Belakang</h2>
-    <p>
-      Pernyataan <strong>"Powered By Lotto Chain 2025 All Rights Reserved"</strong> digunakan pada footer platform digital, aplikasi, situs web, email HTML, atau materi pemasaran yang dikembangkan oleh Lotto Chain. Pemberitahuan ini bertujuan untuk:
-    </p>
-    <ul>
-      <li>Menegaskan kepemilikan kekayaan intelektual Lotto Chain atas konten, teknologi, kode, desain, dan merek.</li>
-      <li>Melindungi hak cipta, merek dagang, dan kekayaan intelektual lainnya dari penggunaan tanpa izin.</li>
-      <li>Memberi tahu pengguna di seluruh dunia bahwa semua elemen yang terkait dengan Lotto Chain dilindungi oleh hukum internasional.</li>
-    </ul>
-    <p>
-      Pernyataan ini selaras dengan standar kekayaan intelektual global, khususnya <strong>Konvensi Berne untuk Perlindungan Karya Seni dan Sastra (1886, terakhir diubah 1979)</strong>.
-    </p>
+        <section class="terms">
+          
+            <h2>"Powered By Lotto Chain 2025 All Rights Reserved"</h2>
 
-    <h2>2. Makna Pernyataan</h2>
-    <ul>
-      <li><strong>"Powered By Lotto Chain"</strong>: Menunjukkan bahwa platform, teknologi, atau layanan diciptakan, didukung, atau dikelola oleh Lotto Chain, entitas yang bertanggung jawab atas pengembangan dan operasionalnya.</li>
-      <li><strong>"2025"</strong>: Merujuk pada tahun pembuatan, pembaruan, atau publikasi karya, sebagai acuan periode perlindungan hak cipta.</li>
-      <li><strong>"All Rights Reserved"</strong>: Menyatakan bahwa semua hak cipta, merek dagang, dan kekayaan intelektual lainnya atas karya Lotto Chain dimiliki secara eksklusif oleh pencipta atau pemegang hak. Penggunaan, reproduksi, modifikasi, atau distribusi tanpa izin dilarang.</li>
-    </ul>
+<h2>1. Background</h2>
+<p>
+  The statement <strong>"Powered By Lotto Chain 2025 All Rights Reserved"</strong> appears in the footer of digital platforms, applications, websites, HTML emails, or marketing materials developed by Lotto Chain. Its purpose is to:
+</p>
+<ul>
+  <li>Affirm Lotto Chain’s intellectual property rights over its content, technology, code, design, and brand.</li>
+  <li>Protect copyrights, trademarks, and other intellectual assets from unauthorized use.</li>
+  <li>Inform global users that all elements associated with Lotto Chain are protected under international law.</li>
+</ul>
+<p>
+  This notice aligns with global intellectual property standards, particularly the <strong>Berne Convention for the Protection of Literary and Artistic Works (1886, as amended in 1979)</strong>.
+</p>
 
-    <h2>3. Kerangka Hukum Global</h2>
-    <p>Pernyataan ini didasarkan pada kerangka hukum internasional berikut:</p>
-    <ul>
-      <li><strong>Konvensi Berne (1886, diubah 1979)</strong>:
-        <ul>
-          <li>Pasal 5(2): Perlindungan hak cipta otomatis tanpa registrasi formal di negara anggota.</li>
-          <li>Pasal 7: Hak cipta berlaku minimal 50 tahun setelah kematian pencipta (atau lebih lama di beberapa yurisdiksi, misalnya 70 tahun di AS dan UE).</li>
-          <li>Pasal 8: Meliputi karya sastra, seni, dan teknologi, termasuk perangkat lunak, kode sumber, dan antarmuka pengguna.</li>
-        </ul>
-      </li>
-      <li><strong>Perjanjian TRIPS (1994)</strong>:
-        <ul>
-          <li>Menetapkan standar minimum perlindungan hak cipta dan merek dagang untuk anggota WTO.</li>
-          <li>Pasal 9-14: Melindungi perangkat lunak, desain digital, dan merek seperti "Lotto Chain."</li>
-        </ul>
-      </li>
-      <li><strong>Perjanjian Hak Cipta WIPO (1996)</strong>:
-        <ul>
-          <li>Mengakui perangkat lunak, kode komputer, dan basis data sebagai karya yang dilindungi hak cipta.</li>
-          <li>Memberikan perlindungan terhadap penyalinan atau distribusi tanpa izin di lingkungan digital.</li>
-        </ul>
-      </li>
-      <li><strong>Praktik Hukum Umum</strong>: Di yurisdiksi seperti AS, Inggris, dan negara Persemakmuran, "All Rights Reserved" diakui sebagai pemberitahuan formal kepemilikan hak cipta, meskipun tidak wajib berdasarkan Konvensi Berne.</li>
-    </ul>
+<h2>2. Meaning of the Statement</h2>
+<ul>
+  <li><strong>"Powered By Lotto Chain"</strong>: Indicates that the platform, technology, or service was created, supported, or managed by Lotto Chain—the entity responsible for its development and operations.</li>
+  <li><strong>"2025"</strong>: Refers to the year the work was created, updated, or published, serving as a reference for copyright duration.</li>
+  <li><strong>"All Rights Reserved"</strong>: Declares that all copyrights, trademarks, and other intellectual property rights are exclusively held by the creator or rights holder. Unauthorized use, reproduction, modification, or distribution is prohibited.</li>
+</ul>
 
-    <h2>4. Lingkup Perlindungan</h2>
-    <p>Pernyataan <strong>"All Rights Reserved"</strong> mencakup:</p>
+<h2>3. Global Legal Framework</h2>
+<p>This statement is supported by the following international legal frameworks:</p>
+<ul>
+  <li><strong>Berne Convention (1886, amended 1979)</strong>:
     <ul>
-      <li><strong>Kode Sumber dan Perangkat Lunak</strong>: Semua kode HTML, CSS, JavaScript, dan kontrak pintar yang digunakan di platform Lotto Chain, termasuk kode blockchain (misalnya, di Base Sepolia).</li>
-      <li><strong>Desain Visual</strong>: Logo, ikon, antarmuka pengguna, gambar, dan elemen grafis lainnya.</li>
-      <li><strong>Konten Digital</strong>: Teks, dokumen, materi pemasaran, dan email HTML yang dihasilkan oleh Lotto Chain.</li>
-      <li><strong>Merek Dagang</strong>: Nama "Lotto Chain" dan elemen branding terkait, baik terdaftar maupun tidak.</li>
-      <li><strong>Data dan Informasi</strong>: Data yang dihasilkan platform, seperti daftar pemegang token, selama tidak melanggar regulasi privasi (misalnya, GDPR).</li>
+      <li>Article 5(2): Copyright is automatically granted without formal registration in member countries.</li>
+      <li>Article 7: Copyright extends for a minimum of 50 years after the creator’s death (or longer in some jurisdictions, e.g., 70 years in the U.S. and EU).</li>
+      <li>Article 8: Covers literary, artistic, and technological works, including software, source code, and user interfaces.</li>
     </ul>
+  </li>
+  <li><strong>TRIPS Agreement (1994)</strong>:
+    <ul>
+      <li>Sets minimum standards for copyright and trademark protection among WTO members.</li>
+      <li>Articles 9–14: Provide protection for software, digital designs, and brands such as “Lotto Chain.”</li>
+    </ul>
+  </li>
+  <li><strong>WIPO Copyright Treaty (1996)</strong>:
+    <ul>
+      <li>Recognizes software, computer code, and databases as protected works.</li>
+      <li>Provides safeguards against unauthorized copying or distribution in digital environments.</li>
+    </ul>
+  </li>
+  <li><strong>Common Law Practices</strong>: In jurisdictions such as the U.S., U.K., and Commonwealth countries, “All Rights Reserved” is recognized as a formal copyright notice, even though it is not required under the Berne Convention.</li>
+</ul>
 
-    <h2>5. Penggunaan yang Diizinkan</h2>
-    <ul>
-      <li><strong>Pengguna Berlisensi</strong>: Pihak yang mendapat izin tertulis dari Lotto Chain melalui perjanjian lisensi atau kontrak dapat menggunakan elemen tertentu sesuai ketentuan.</li>
-      <li><strong>Atribusi</strong>: Jika diizinkan, pengguna harus mencantumkan kredit seperti <strong>"Powered By Lotto Chain"</strong> sesuai panduan branding.</li>
-      <li><strong>Akses Publik</strong>: Pengguna platform dapat mengakses layanan sesuai syarat dan ketentuan, tetapi tidak boleh menyalin, memodifikasi, atau mendistribusikan konten tanpa izin.</li>
-    </ul>
+<h2>4. Scope of Protection</h2>
+<p>The phrase <strong>"All Rights Reserved"</strong> applies to:</p>
+<ul>
+  <li><strong>Source Code and Software</strong>: All HTML, CSS, JavaScript, and smart contracts used on the Lotto Chain platform, including blockchain code (e.g., on Base Sepolia).</li>
+  <li><strong>Visual Design</strong>: Logos, icons, user interfaces, images, and other graphical elements.</li>
+  <li><strong>Digital Content</strong>: Texts, documents, marketing materials, and HTML emails generated by Lotto Chain.</li>
+  <li><strong>Trademarks</strong>: The “Lotto Chain” name and related branding elements, whether registered or unregistered.</li>
+  <li><strong>Data and Information</strong>: Platform-generated data such as token holder lists, provided such use complies with privacy regulations (e.g., GDPR).</li>
+</ul>
 
-    <h2>6. Larangan Penggunaan</h2>
-    <p>Tanpa izin tertulis dari Lotto Chain, dilarang:</p>
-    <ul>
-      <li>Menyalin, mereproduksi, atau mendistribusikan kode sumber, desain, atau konten.</li>
-      <li>Memodifikasi atau membuat karya turunan dari platform, termasuk kontrak pintar atau antarmuka pengguna.</li>
-      <li>Menggunakan merek "Lotto Chain" untuk tujuan komersial tanpa persetujuan.</li>
-      <li>Mengekstrak atau menggunakan data platform (misalnya, daftar pemegang token) untuk tujuan tidak diizinkan.</li>
-    </ul>
+<h2>5. Permitted Use</h2>
+<ul>
+  <li><strong>Licensed Users</strong>: Parties with written authorization from Lotto Chain via a license or contract may use certain elements under agreed terms.</li>
+  <li><strong>Attribution</strong>: When permitted, users must provide proper credit such as <strong>"Powered By Lotto Chain"</strong> in accordance with branding guidelines.</li>
+  <li><strong>Public Access</strong>: Users may access platform services under the applicable terms and conditions but may not copy, alter, or redistribute content without permission.</li>
+</ul>
 
-    <h2>7. Konsekuensi Pelanggaran</h2>
-    <p>Pelanggaran hak kekayaan intelektual Lotto Chain dapat mengakibatkan:</p>
-    <ul>
-      <li><strong>Tindakan Perdata</strong>: Gugatan untuk ganti rugi, perintah pengadilan, atau penghentian penggunaan tanpa izin, sesuai hukum yurisdiksi terkait (misalnya, DMCA di AS, Direktif Hak Cipta UE).</li>
-      <li><strong>Sanksi Pidana</strong>: Di beberapa yurisdiksi, pelanggaran hak cipta dapat dikenakan denda atau hukuman penjara, tergantung pada skala dan dampak.</li>
-      <li><strong>Pemblokiran Akses</strong>: Penghentian akses ke platform Lotto Chain untuk pelaku pelanggaran.</li>
-    </ul>
+<h2>6. Prohibited Use</h2>
+<p>Without written consent from Lotto Chain, the following actions are prohibited:</p>
+<ul>
+  <li>Copying, reproducing, or distributing source code, designs, or content.</li>
+  <li>Modifying or creating derivative works of the platform, including smart contracts or user interfaces.</li>
+  <li>Using the “Lotto Chain” brand for commercial purposes without approval.</li>
+  <li>Extracting or using platform data (e.g., token holder lists) for unauthorized purposes.</li>
+</ul>
 
-    <h2>8. Implementasi dalam Footer</h2>
-    <p>Pernyataan <strong>"Powered By Lotto Chain 2025 All Rights Reserved"</strong> diterapkan pada:</p>
-    <ul>
-      <li><strong>Situs Web dan Aplikasi</strong>: Ditampilkan di bagian bawah halaman web, aplikasi, atau antarmuka pengguna.</li>
-      <li><strong>Email HTML</strong>: Disertakan dalam footer email, seperti pada daftar pemegang token, dengan inline CSS untuk kompatibilitas.</li>
-      <li><strong>Materi Pemasaran</strong>: Digunakan pada iklan digital, brosur, atau dokumen resmi.</li>
-    </ul>
-    <p>Contoh dalam email HTML:</p>
-    <pre style="background-color: #f4f4f4; padding: 10px; border-radius: 4px;">
+<h2>7. Consequences of Violation</h2>
+<p>Violations of Lotto Chain’s intellectual property rights may result in:</p>
+<ul>
+  <li><strong>Civil Actions</strong>: Lawsuits for damages, court injunctions, or cease-and-desist orders under relevant laws (e.g., DMCA in the U.S., EU Copyright Directive).</li>
+  <li><strong>Criminal Penalties</strong>: In certain jurisdictions, copyright infringement may lead to fines or imprisonment depending on the severity and impact.</li>
+  <li><strong>Access Restrictions</strong>: Suspension or termination of access to the Lotto Chain platform for violators.</li>
+</ul>
+
+<h2>8. Footer Implementation</h2>
+<p>The statement <strong>"Powered By Lotto Chain 2025 All Rights Reserved"</strong> is implemented in:</p>
+<ul>
+  <li><strong>Websites and Applications</strong>: Displayed at the bottom of web pages, applications, or user interfaces.</li>
+  <li><strong>HTML Emails</strong>: Included in email footers (e.g., token holder updates) with inline CSS for compatibility.</li>
+  <li><strong>Marketing Materials</strong>: Used in digital advertisements, brochures, or official documents.</li>
+</ul>
+<p>Example in an HTML email:</p>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 4px;">
 <table style="width: 100%; max-width: 600px; margin: 0 auto;">
   <tr>
     <td style="text-align: center; padding: 20px; background-color: #f4f4f4; font-size: 12px;">
@@ -170,35 +260,63 @@
     </td>
   </tr>
 </table>
-    </pre>
+</pre>
 
-    <h2>9. Kontak untuk Izin</h2>
-    <p>Untuk permintaan izin penggunaan atau informasi lebih lanjut:</p>
-    <ul>
-      <li><strong>Email</strong>: <a href="mailto:legal@lottochain.com">legal@lottochain.com</a></li>
-      <li><strong>Situs Web</strong>: <a href="https://www.lottochain.com">www.lottochain.com</a></li>
-      <li><strong>Prosedur</strong>: Kirim permintaan tertulis dengan rincian penggunaan yang diusulkan, lingkup, dan durasi.</li>
-    </ul>
+<h2>9. Contact for Permissions</h2>
+<p>For permission requests or additional information:</p>
+<ul>
+  <li><strong>Email</strong>: <a href="mailto:support@lottochain.xyz">support@lottochain.xyz</a></li>
+  <li><strong>Website</strong>: <a href="https://www.lottochain.xyz">www.lottochain.xyz</a></li>
+  <li><strong>Procedure</strong>: Submit a written request outlining the intended use, scope, and duration.</li>
+</ul>
 
-    <h2>10. Catatan Tambahan</h2>
-    <ul>
-      <li><strong>Perlindungan Otomatis</strong>: Berdasarkan Konvensi Berne, hak cipta berlaku otomatis saat karya diciptakan di sebagian besar yurisdiksi.</li>
-      <li><strong>Blockchain dan Kontrak Pintar</strong>: Kode kontrak pintar (misalnya, di Base Sepolia) dilindungi sebagai perangkat lunak. Data on-chain (misalnya, daftar pemegang token) bersifat publik, tetapi kode dan antarmuka tetap proprietary.</li>
-      <li><strong>Kepatuhan Data</strong>: Jika menangani data pribadi (misalnya, alamat dompet), patuhi regulasi seperti GDPR (UE) atau CCPA (California).</li>
-      <li><strong>Pembaruan</strong>: Pemberitahuan ini dapat diperbarui sesuai kebutuhan bisnis atau perubahan hukum internasional.</li>
-    </ul>
+<h2>10. Additional Notes</h2>
+<ul>
+  <li><strong>Automatic Protection</strong>: Under the Berne Convention, copyright is automatically granted upon creation in most jurisdictions.</li>
+  <li><strong>Blockchain and Smart Contracts</strong>: Smart contract code (e.g., on Base Sepolia) is protected as software. On-chain data (e.g., token holder lists) is public, but code and interfaces remain proprietary.</li>
+  <li><strong>Data Compliance</strong>: When handling personal data (e.g., wallet addresses), comply with regulations such as the GDPR (EU) or CCPA (California).</li>
+  <li><strong>Updates</strong>: This notice may be updated as needed to reflect business requirements or changes in international law.</li>
+</ul>
 
-    <h2>11. Rekomendasi</h2>
-    <ul>
-      <li><strong>Pendaftaran Merek Dagang</strong>: Daftarkan merek "Lotto Chain" di yurisdiksi utama (misalnya, USPTO di AS, EUIPO di UE) untuk perlindungan tambahan.</li>
-      <li><strong>Syarat dan Ketentuan</strong>: Sertakan tautan ke "Syarat Penggunaan" atau "Kebijakan Privasi" di footer untuk transparansi.</li>
-      <li><strong>Konsultasi Hukum</strong>: Libatkan pengacara kekayaan intelektual yang paham hukum global untuk memastikan kepatuhan lintas yurisdiksi.</li>
-      <li><strong>Kompatibilitas Email</strong>: Uji footer email HTML di klien seperti Gmail, Outlook, dan Yahoo menggunakan alat seperti Litmus atau Email on Acid.</li>
-    </ul>
-
-    <div class="footer">
-      <p>Powered By Lotto Chain 2025 All Rights Reserved</p>
-    </div>
+<h2>11. Recommendations</h2>
+<ul>
+  <li><strong>Trademark Registration</strong>: Consider registering the "Lotto Chain" trademark in major jurisdictions (e.g.,...)</li>
+</ul>
+              
+              <br><br><center><strong>© Powered by Lotto Chain 2025. All Rights Reserved.</strong></center></p><br>
+        </section>
   </div>
+  
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        toggle.checked = true;
+        themeIcon.src = 'img/moon.svg';
+        themeIcon.alt = 'Dark Mode';
+      } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        toggle.checked = false;
+        themeIcon.src = 'img/sun.svg';
+        themeIcon.alt = 'Light Mode';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('change', () => {
+      setTheme(toggle.checked ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+    };
+  </script>
 </body>
 </html>
