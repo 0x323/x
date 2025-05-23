@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Terms and Conditions – Lotto Chain 2025</title>
+  <title>Terms and Conditions – Lotto Chain</title>
   <link href="img/logo.svg" rel="icon">
   <link href="img/logo.svg" rel="apple-touch-icon">
   
   <style>
-    /* Tema Light (default) */
     body.light {
       background-color: #fff;
       color: #222;
@@ -48,7 +47,6 @@
       border-bottom: 1px solid #555;
     }
 
-    /* Kontainer Umum */
     .container {
       max-width: 1200px;
       margin: 50px auto;
@@ -70,7 +68,6 @@
       margin-left: 20px;
     }
 
-    /* Toggle Switch */
     .toggle-container {
       position: fixed;
       top: 10px;
@@ -78,12 +75,12 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      z-index: 1000; /* Pastikan toggle di atas konten lain */
+      z-index: 1000;
     }
     .switch {
       position: relative;
       display: inline-block;
-      width: 50px; /* Ukuran lebih kecil */
+      width: 50px;
       height: 28px;
     }
     .switch input {
@@ -124,7 +121,6 @@
       height: 20px;
     }
 
-    /* Responsivitas untuk layar kecil */
     @media (max-width: 600px) {
       .toggle-container {
         top: 8px;
@@ -151,7 +147,6 @@
   </style>
 </head>
 <body class="light">
-  <!-- Toggle Switch di Pojok Kanan Atas -->
   <div class="toggle-container">
     <img src="img/sun.svg" class="theme-icon" id="theme-icon">
     <label class="switch">
@@ -267,30 +262,27 @@
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
 
-    // Fungsi untuk mengatur tema dan ikon
     function setTheme(theme) {
       if (theme === 'dark') {
         body.classList.remove('light');
         body.classList.add('dark');
         toggle.checked = true;
-        themeIcon.src = 'https://lottochain.xyz/img/moon.svg';
+        themeIcon.src = 'img/moon.svg';
         themeIcon.alt = 'Dark Mode';
       } else {
         body.classList.remove('dark');
         body.classList.add('light');
         toggle.checked = false;
-        themeIcon.src = 'https://lottochain.xyz/img/sun.svg';
+        themeIcon.src = 'img/sun.svg';
         themeIcon.alt = 'Light Mode';
       }
       localStorage.setItem('theme', theme);
     }
 
-    // Event listener untuk toggle
     toggle.addEventListener('change', () => {
       setTheme(toggle.checked ? 'dark' : 'light');
     });
 
-    // Muat tema dari localStorage saat halaman dimuat
     window.onload = () => {
       const savedTheme = localStorage.getItem('theme') || 'light';
       setTheme(savedTheme);
