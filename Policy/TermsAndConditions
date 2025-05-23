@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syarat dan Ketentuan - Lotto Chain</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      color: #1a73e8;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 20px;
+      color: #333;
+      margin-top: 20px;
+    }
+    p, li {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+      font-size: 12px;
+      margin-top: 20px;
+      border-radius: 0 0 8px 8px;
+    }
+    @media only screen and (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      p, li {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Syarat dan Ketentuan</h1>
+    <h2>Platform Lotto Chain Decentralized Betting Web3 Social</h2>
+    <p>Terakhir diperbarui: 23 Mei 2025</p>
+
+    <h2>1. Pendahuluan</h2>
+    <p>
+      Selamat datang di <strong>Lotto Chain Decentralized Betting Web3 Social</strong> ("Platform", "Kami", atau "Lotto Chain"), sebuah platform taruhan terdesentralisasi berbasis teknologi Web3. Syarat dan Ketentuan ini ("Ketentuan") mengatur penggunaan Anda atas situs web, aplikasi, kontrak pintar, dan layanan terkait yang disediakan oleh Lotto Chain.
+    </p>
+    <p>
+      Dengan mengakses atau menggunakan Platform, Anda setuju untuk terikat oleh Ketentuan ini, yang merupakan perjanjian hukum yang mengikat antara Anda ("Pengguna") dan Lotto Chain. Jika Anda tidak setuju, harap jangan mengakses atau menggunakan Platform.
+    </p>
+
+    <h2>2. Definisi</h2>
+    <ul>
+      <li><strong>Layanan</strong>: Semua fitur, fungsi, aplikasi, kontrak pintar, dan konten yang disediakan oleh Lotto Chain, termasuk taruhan terdesentralisasi, interaksi sosial Web3, dan daftar pemegang token.</li>
+      <li><strong>Pengguna</strong>: Setiap individu atau entitas yang mengakses atau menggunakan Platform.</li>
+      <li><strong>Konten</strong>: Teks, gambar, kode, desain, data blockchain, atau materi lain yang tersedia di Platform.</li>
+      <li><strong>Kontrak Pintar</strong>: Kode berbasis blockchain yang di-deploy di jaringan seperti Base Sepolia untuk mengelola taruhan atau fungsi lainnya.</li>
+      <li><strong>Token</strong>: Aset digital yang digunakan dalam ekosistem Lotto Chain untuk taruhan atau hadiah.</li>
+    </ul>
+
+    <h2>3. Penggunaan Layanan</h2>
+    <p>Pengguna setuju untuk menggunakan Layanan sesuai dengan hukum yang berlaku dan Ketentuan ini. Pengguna dilarang:</p>
+    <ul>
+      <li>Melakukan aktivitas ilegal, termasuk penipuan, pencucian uang, atau pelanggaran hukum perjudian.</li>
+      <li>Menggunakan bot, skrip otomatis, atau metode curang untuk memanipulasi taruhan atau kontrak pintar.</li>
+      <li>Mengirim spam, konten ofensif, atau materi yang melanggar hak pihak ketiga.</li>
+      <li>Mencoba meretas, mengganggu, atau mengeksploitasi kelemahan Platform.</li>
+    </ul>
+    <p><strong>Batas Usia</strong>: Pengguna harus berusia minimal 18 tahun untuk berpartisipasi dalam taruhan atau aktivitas yang melibatkan token. Pengguna di bawah 18 tahun hanya boleh mengakses fitur sosial dengan izin orang tua atau wali.</p>
+
+    <h2>4. Akun Pengguna</h2>
+    <p>Jika Layanan memerlukan akun (misalnya, dompet Web3 atau login):</p>
+    <ul>
+      <li>Pengguna bertanggung jawab menjaga kerahasiaan kunci pribadi, kata sandi, atau kredensial akun.</li>
+      <li>Pengguna bertanggung jawab atas semua aktivitas yang dilakukan melalui akun mereka, termasuk transaksi di blockchain.</li>
+      <li>Lotto Chain tidak bertanggung jawab atas kehilangan akses akun akibat kelalaian Pengguna (misalnya, kehilangan kunci pribadi).</li>
+      <li>Pengguna harus memberikan informasi yang akurat saat mendaftar dan segera memberi tahu kami jika ada pelanggaran keamanan.</li>
+    </ul>
+
+    <h2>5. Kepemilikan dan Hak Kekayaan Intelektual</h2>
+    <p>
+      Semua konten, kode sumber, desain, logo, merek dagang, dan kontrak pintar di Platform dimiliki oleh Lotto Chain atau pemberi lisensinya, dilindungi oleh hukum hak cipta dan merek dagang internasional, termasuk <strong>Konvensi Berne (1886)</strong> dan <strong>Perjanjian TRIPS (1994)</strong>.
+    </p>
+    <ul>
+      <li>Pengguna dilarang menyalin, mereproduksi, memodifikasi, atau mendistribusikan konten tanpa izin tertulis dari Lotto Chain.</li>
+      <li>Nama "Lotto Chain" dan elemen branding terkait adalah merek dagang Lotto Chain, baik terdaftar maupun tidak.</li>
+      <li>Kode kontrak pintar (misalnya, di Base Sepolia) dianggap karya perangkat lunak yang dilindungi hak cipta.</li>
+    </ul>
+
+    <h2>6. Konten Pengguna</h2>
+    <p>Jika Pengguna dapat mengunggah konten (misalnya, posting sosial, data taruhan):</p>
+    <ul>
+      <li>Pengguna tetap memiliki hak atas konten yang mereka unggah, kecuali dinyatakan lain.</li>
+      <li>Dengan mengunggah konten, Pengguna memberikan Lotto Chain lisensi non-eksklusif, bebas royalti, dan seluruh dunia untuk menampilkan, menyimpan, dan menggunakan konten tersebut untuk keperluan operasional Platform.</li>
+      <li>Pengguna bertanggung jawab memastikan konten yang diunggah tidak melanggar hukum, hak pihak ketiga, atau Ketentuan ini.</li>
+      <li>Lotto Chain berhak menghapus konten Pengguna yang dianggap tidak pantas atau melanggar.</li>
+    </ul>
+
+    <h2>7. Pembatasan Tanggung Jawab</h2>
+    <p>
+      Layanan disediakan "sebagaimana adanya" tanpa jaminan, tersurat maupun tersirat, termasuk jaminan keakuratan, keandalan, atau ketersediaan. Lotto Chain tidak bertanggung jawab atas:
+    </p>
+    <ul>
+      <li>Kerugian finansial, data, atau lainnya akibat penggunaan Platform.</li>
+      <li>Gangguan layanan akibat masalah teknis, seperti kegagalan jaringan blockchain (misalnya, Base Sepolia).</li>
+      <li>Kesalahan Pengguna, seperti kehilangan kunci pribadi atau transaksi blockchain yang salah.</li>
+      <li>Konten atau tindakan pihak ketiga yang terhubung dengan Platform.</li>
+    </ul>
+    <p>
+      Dalam batas maksimum yang diizinkan oleh hukum, tanggung jawab Lotto Chain terbatas pada jumlah yang dibayarkan Pengguna untuk Layanan, jika ada.
+    </p>
+
+    <h2>8. Penghentian Akses</h2>
+    <p>Lotto Chain berhak menghentikan atau membatasi akses Pengguna ke Platform, dengan atau tanpa pemberitahuan, jika:</p>
+    <ul>
+      <li>Pengguna melanggar Ketentuan ini.</li>
+      <li>Ada aktivitas mencurigakan, penipuan, atau pelanggaran hukum.</li>
+      <li>Pengguna menggunakan Layanan untuk tujuan yang merugikan Platform atau pihak lain.</li>
+    </ul>
+    <p>Penghentian akses tidak memengaruhi transaksi blockchain yang sudah tercatat, karena sifatnya yang tidak dapat diubah.</p>
+
+    <h2>9. Perubahan Ketentuan</h2>
+    <p>
+      Lotto Chain berhak memperbarui atau mengubah Ketentuan ini kapan saja. Perubahan akan berlaku segera setelah dipublikasikan di Platform. Kami akan berusaha memberi tahu Pengguna tentang perubahan material melalui email, notifikasi di Platform, atau metode lain yang sesuai.
+    </p>
+    <p>Penggunaan berkelanjutan setelah perubahan dianggap sebagai persetujuan atas Ketentuan yang diperbarui.</p>
+
+    <h2>10. Kebijakan Pengembalian Dana</h2>
+    <p>
+      Karena sifat taruhan terdesentralisasi dan transaksi blockchain yang tidak dapat dibatalkan, Lotto Chain tidak menawarkan pengembalian dana untuk transaksi yang telah dikonfirmasi di blockchain (misalnya, taruhan atau pembelian token).
+    </p>
+    <ul>
+      <li><strong>Pembayaran</strong>: Pembayaran untuk Layanan (jika ada) dilakukan melalui token atau metode yang ditentukan di Platform. Semua pembayaran bersifat final.</li>
+      <li><strong>Kesalahan Pengguna</strong>: Lotto Chain tidak bertanggung jawab atas kerugian akibat kesalahan Pengguna, seperti mengirim token ke alamat yang salah.</li>
+      <li><strong>Pengecualian</strong>: Dalam kasus tertentu (misalnya, kegagalan teknis Platform), Lotto Chain dapat mempertimbangkan pengembalian dana sesuai kebijakan internal dan hukum yang berlaku.</li>
+    </ul>
+
+    <h2>11. Hukum yang Berlaku</h2>
+    <p>
+      Ketentuan ini diatur oleh prinsip hukum internasional, termasuk <strong>Konvensi Berne</strong> dan <strong>Perjanjian TRIPS</strong>, serta hukum umum yang berlaku di yurisdiksi internasional. Jika terjadi sengketa, para pihak setuju untuk menyelesaikannya melalui negosiasi atau mediasi terlebih dahulu. Jika tidak terselesaikan, sengketa akan dibawa ke arbitrase internasional di bawah aturan <strong>International Chamber of Commerce (ICC)</strong>, dengan tempat arbitrase di [tentukan lokasi, misalnya, Singapura].
+    </p>
+    <p>
+      Karena sifat terdesentralisasi Platform, transaksi blockchain tunduk pada hukum yurisdiksi jaringan (misalnya, Base Sepolia) dan tidak dapat diubah setelah dikonfirmasi.
+    </p>
+
+    <h2>12. Kontak</h2>
+    <p>Jika Anda memiliki pertanyaan, keluhan, atau permintaan terkait Ketentuan ini, silakan hubungi:</p>
+    <ul>
+      <li><strong>Email</strong>: <a href="mailto:support@lottochain.com">support@lottochain.com</a></li>
+      <li><strong>Situs Web</strong>: <a href="https://www.lottochain.com">www.lottochain.com</a></li>
+      <li><strong>Formulir Kontak</strong>: Tersedia di halaman "Hubungi Kami" di Platform.</li>
+    </ul>
+
+    <div class="footer">
+      <p>Powered By Lotto Chain 2025 All Rights Reserved</p>
+    </div>
+  </div>
+</body>
+</html>
