@@ -558,6 +558,8 @@
       <div class="input-group">
       <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
         <center><button id="copyLink">Copy Link</button></center>
+        <button onclick="handleReferralFromURL()">Set Referral (Debug)</button>
+        <button onclick="setAutomaticReferralId()">Set My Referral ID (Debug)</button>
       <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
       <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
       </div>
@@ -794,37 +796,58 @@
 };
     const setAutomaticReferralId = async () => {
   if (!userAccount) return;
+
   try {
     const currentReferralId = await contract.methods.referralIdOf(userAccount).call();
-    if (!currentReferralId) {
+
+    // Periksa apakah user belum punya referral ID
+    const hasNoReferralId = !currentReferralId || currentReferralId === "0" || currentReferralId === "0x0" || currentReferralId === "0x0000000000000000000000000000000000000000";
+
+    if (hasNoReferralId) {
       const newReferralId = generateUID();
 
-      // Ambil gas fee dinamis
-      const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
-      const latestBlock = await web3.eth.getBlock('pending');
-      const baseFee = latestBlock.baseFeePerGas;
-      const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+      let tx;
+      try {
+        // Coba gunakan dynamic fee (EIP-1559)
+        const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+        const latestBlock = await web3.eth.getBlock("pending");
+        const baseFee = latestBlock.baseFeePerGas;
+        const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-      console.log("Set Referral ID gas fee:", {
-        baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-        priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
-        maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-      });
+        console.log("Mengirim TX dengan EIP-1559:", {
+          baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+          priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+          maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+        });
 
-      await contract.methods.setReferralId(newReferralId).send({
-        from: userAccount,
-        maxFeePerGas,
-        maxPriorityFeePerGas: priorityFee,
-        gas: 97880
-      });
+        tx = await contract.methods.setReferralId(newReferralId).send({
+          from: userAccount,
+          maxFeePerGas,
+          maxPriorityFeePerGas: priorityFee,
+          gas: 100000
+        });
+      } catch (eipError) {
+        console.warn("EIP-1559 gagal, fallback ke gasPrice:", eipError.message);
+
+        const gasPrice = await web3.eth.getGasPrice();
+
+        tx = await contract.methods.setReferralId(newReferralId).send({
+          from: userAccount,
+          gasPrice,
+          gas: 100000
+        });
+      }
+
+      console.log("Referral ID berhasil diset:", tx);
+    } else {
+      console.log("User sudah punya referral ID:", currentReferralId);
     }
   } catch (error) {
-    console.error("Error setting referral ID:", error);
+    console.error("Gagal set referral ID:", error);
   }
 };
 
-    // Set Referral ID automatically if user has no referrer
-const handleReferralFromURL = async () => {
+    const handleReferralFromURL = async () => {
   if (!userAccount) return;
 
   try {
@@ -835,26 +858,38 @@ const handleReferralFromURL = async () => {
       const hasReferrer = await contract.methods.referredBy(userAccount).call();
 
       if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-        // Fetch dynamic gas fee
-        const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
-        const latestBlock = await web3.eth.getBlock('pending');
-        const baseFee = latestBlock.baseFeePerGas;
-        const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+        let tx;
 
-        // Log for debug
-        console.log("Referral TX gas fee:", {
-          baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-          priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
-          maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-        });
+        try {
+          // Dynamic fee (EIP-1559)
+          const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+          const latestBlock = await web3.eth.getBlock('pending');
+          const baseFee = latestBlock.baseFeePerGas;
+          const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-        // Send referral transaction
-        await contract.methods.setReferralById(referrerId).send({
-          from: userAccount,
-          maxFeePerGas,
-          maxPriorityFeePerGas: priorityFee,
-          gas: 150000
-        });
+          console.log("Sending referral TX with EIP-1559 gas...");
+
+          tx = await contract.methods.setReferralById(referrerId).send({
+            from: userAccount,
+            maxFeePerGas,
+            maxPriorityFeePerGas: priorityFee,
+            gas: 150000
+          });
+        } catch (eipError) {
+          console.warn("EIP-1559 failed, falling back to legacy gasPrice:", eipError.message);
+
+          const gasPrice = await web3.eth.getGasPrice();
+
+          tx = await contract.methods.setReferralById(referrerId).send({
+            from: userAccount,
+            gasPrice,
+            gas: 150000
+          });
+        }
+
+        console.log("Referral TX sent successfully:", tx);
+      } else {
+        console.log("User already has a referrer:", hasReferrer);
       }
     }
   } catch (error) {
