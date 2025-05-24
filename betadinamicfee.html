@@ -1400,19 +1400,19 @@ function renderCheckInPagination(currentPage) {
   // Reset Status
   betStatus.innerHTML = "";
 
-  // Validate number (must be 2-4 digits and 0-9999)
+  // Validate number
   if (!number || isNaN(number) || number.length < 2 || number.length > 4 || parseInt(number) < 0 || parseInt(number) > 9999) {
     betStatus.innerHTML = `<small style="color: red;">❌ Please enter a valid number (2-4 digits).</small>`;
     return;
   }
 
-  // Validate times (only 1-5 allowed)
+  // Validate times
   if (!times || times < 1 || times > 5) {
     betStatus.innerHTML = `<small style="color: red;">❌ Multiplication must be between 1× and 5×.</small>`;
     return;
   }
 
-  // Validate payoutAmount (must be exactly 10)
+  // Validate payoutAmount
   if (payoutAmount !== 10) {
     betStatus.innerHTML = `<small style="color: red;">❌ Reward amount must be exactly 10 points.</small>`;
     return;
@@ -1422,39 +1422,39 @@ function renderCheckInPagination(currentPage) {
   document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
 
   try {
-    // Display transaction status
     betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
 
-    // Get current recommended priority fee
-    const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+    let tx;
+    try {
+      // Dynamic gas (EIP-1559)
+      const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+      const latestBlock = await web3.eth.getBlock('pending');
+      const baseFee = latestBlock.baseFeePerGas;
+      const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-    // Get latest block to fetch base fee
-    const latestBlock = await web3.eth.getBlock('pending');
-    const baseFee = latestBlock.baseFeePerGas;
+      console.log("Using EIP-1559 gas");
+      tx = await contract.methods.placeBet(number, times, payoutAmount).send({
+        from: userAccount,
+        maxFeePerGas,
+        maxPriorityFeePerGas: priorityFee,
+        gas: 350000
+      });
+    } catch (eipError) {
+      console.warn("EIP-1559 failed, falling back to legacy gasPrice...", eipError.message);
+      const gasPrice = await web3.eth.getGasPrice();
 
-    // Calculate maxFeePerGas = baseFee + (priorityFee * 2) for safety
-    const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
-
-    // Log fee data for debugging
-    console.log("Gas Fee Details:", {
-      baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-      priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
-      maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-    });
-
-    // Send transaction with dynamic gas fees
-    await contract.methods.placeBet(number, times, payoutAmount).send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas: priorityFee,
-      gas: 350000
-    });
+      tx = await contract.methods.placeBet(number, times, payoutAmount).send({
+        from: userAccount,
+        gasPrice,
+        gas: 350000
+      });
+    }
 
     // Success
     betStatus.innerHTML = `<small style="color: #00ff14;">✅ Submit Ticket Successfully!</small>`;
     numberInput.value = "";
     timesInput.value = "";
-    payoutInput.value = "10"; // Reset back to 10
+    payoutInput.value = "10";
     document.getElementById("betCost").innerText = "-";
 
     await fetchBetEvents();
