@@ -441,6 +441,52 @@
       <p id="ethBalance" class="info-text">Loading...</p>
       <p id="tokenBalance" class="info-text"></p></small>
     </div>
+
+    <div class="section hidden">
+  <h2>Task Mandatory</h2>
+
+  <div class="task">
+    <p>1. Follow Twitter</p>
+    <a href="https://twitter.com/youraccount" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+
+  <div class="task">
+    <p>2. RT, Like & Comment 'GM'</p>
+    <a href="https://twitter.com/youraccount/status/1234567890" target="_blank" onclick="showCheckbox(this)">Verify</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+
+  <div class="task">
+    <p>3. Join Discord Server</p>
+    <a href="https://discord.gg/yourinvite" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+
+  <div class="task">
+    <p>4. Join Telegram Channel</p>
+    <a href="https://t.me/yourchannel" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+
+  <div class="task">
+    <p>5. Join Telegram Group</p>
+    <a href="https://t.me/yourgroup" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+
+  <div class="task">
+    <p>6. Follow Facebook & Share Post</p>
+    <a href="https://facebook.com/yourpage" target="_blank" onclick="showCheckbox(this)">Verify</a>
+    <input type="checkbox" style="display:none;" onchange="completeTask(this)">
+    <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
+  </div>
+</div>
   
     <!-- Check-In -->
     <div class="section hidden">
@@ -1591,6 +1637,23 @@ globalHistoryContainer.addEventListener("scroll", async () => {
     function toggleMenu() {
       document.getElementById("navMenu").classList.toggle("show");
     }
+  </script>
+
+  <script>
+  function showCheckbox(link) {
+    const parent = link.parentElement;
+    const checkbox = parent.querySelector('input[type="checkbox"]');
+    checkbox.style.display = "inline";
+  }
+
+  function completeTask(checkbox) {
+    const checkmark = checkbox.nextElementSibling;
+    if (checkbox.checked) {
+      checkmark.style.display = "inline";
+    } else {
+      checkmark.style.display = "none";
+    }
+  }
   </script>
 
 </body>
