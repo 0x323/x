@@ -1210,50 +1210,51 @@ const loadRefereeList = async () => {
 };
 
     // Check-In dengan konfirmasi transaksi
-const checkIn = async () => {
+    const checkIn = async () => {
   if (!userAccount) {
     alert("Please connect your wallet first.");
     return;
   }
-  document.getElementById("checkInStatus").innerHTML = "<center><small>Processing check-in...</small></center>";
-try {
-  console.log("Initiating check-in transaction");
 
-  // Get current recommended priority fee
-  const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+  const statusEl = document.getElementById("checkInStatus");
+  statusEl.innerHTML = "<center><small>Processing check-in...</small></center>";
 
-  // Get latest pending block to obtain base fee
-  const latestBlock = await web3.eth.getBlock('pending');
-  const baseFee = latestBlock.baseFeePerGas;
+  try {
+    console.log("Initiating check-in transaction");
 
-  // Calculate maxFeePerGas = baseFee + (priorityFee × 2)
-  const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+    // Get current recommended priority fee
+    const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
 
-  // Log for debug
-  console.log("Gas Fee Details:", {
-    baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-    priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
-    maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-  });
+    // Get latest pending block to obtain base fee
+    const latestBlock = await web3.eth.getBlock('pending');
+    const baseFee = latestBlock.baseFeePerGas;
 
-  // Send check-in transaction with dynamic gas fees
-  const tx = await contract.methods.checkIn().send({
-    from: userAccount,
-    maxFeePerGas,
-    maxPriorityFeePerGas: priorityFee,
-    gas: 200000
-  });
+    // Calculate maxFeePerGas = baseFee + (priorityFee × 2)
+    const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-  console.log("Check-in transaction sent, hash:", tx.transactionHash);
-  document.getElementById("checkInStatus").innerHTML = "<center><small style='color:#aaffaa;'>Check-in successful!</small></center>";
-} catch (err) {
-  console.error("Check-in failed:", err);
-  document.getElementById("checkInStatus").innerHTML = "<center><small style='color:#ffaaaa;'>Check-in failed.</small></center>";
-}
-    // Polling untuk konfirmasi transaksi
+    // Log for debug
+    console.log("Gas Fee Details:", {
+      baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+      priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+      maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+    });
+
+    // Send check-in transaction with dynamic gas fees
+    const tx = await contract.methods.checkIn().send({
+      from: userAccount,
+      maxFeePerGas,
+      maxPriorityFeePerGas: priorityFee,
+      gas: 200000
+    });
+
+    console.log("Check-in transaction sent, hash:", tx.transactionHash);
+    statusEl.innerHTML = "<center><small style='color:#aaffaa;'>Check-in transaction sent, waiting confirmation...</small></center>";
+
+    // Polling for transaction receipt
     const maxAttempts = 10;
     let attempt = 0;
     let receipt = null;
+
     while (!receipt && attempt < maxAttempts) {
       console.log(`Polling for transaction receipt (attempt ${attempt + 1}/${maxAttempts})`);
       receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
@@ -1262,26 +1263,35 @@ try {
         attempt++;
       }
     }
+
     if (!receipt) {
       throw new Error("Transaction not confirmed after multiple attempts");
     }
+
     console.log("Transaction confirmed, receipt:", receipt);
 
-    document.getElementById("checkInStatus").innerHTML = "<center><small>Faucet Check-in successful! You earned 1 Point!</small></center>";
-    console.log("Waiting for blockchain sync");
+    statusEl.innerHTML = "<center><small style='color:#00ff14;'>Faucet Check-in successful! You earned 1 Point!</small></center>";
+
+    // Small delay for blockchain sync
     await new Promise(resolve => setTimeout(resolve, 3000));
+
     await loadCriticalData();
     await loadCheckInHistory();
+
     console.log("Check-in completed and UI updated");
+
   } catch (error) {
     console.error("Error checking in:", error);
+
     let errorMessage = "Failed to check in faucet. Please try again.";
+
     if (error.message.includes("already checked in faucet")) {
       errorMessage = "You have already checked in faucet today.";
     } else if (error.message.includes("Transaction not confirmed")) {
       errorMessage = "Transaction timed out. Please check Basescan and try again.";
     }
-    document.getElementById("checkInStatus").innerHTML = `<center><small>${errorMessage}</small></center>`;
+
+    statusEl.innerHTML = `<center><small style="color:red;">${errorMessage}</small></center>`;
     alert(errorMessage);
   }
 };
@@ -1367,7 +1377,7 @@ function renderCheckInPagination(currentPage) {
 }
     
     // Place Bet
-const placeBet = async () => {
+    const placeBet = async () => {
   if (!userAccount) {
     alert("Please connect your wallet first.");
     return;
@@ -1407,38 +1417,33 @@ const placeBet = async () => {
   document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
 
   try {
-  // Display transaction status
-  betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
+    // Display transaction status
+    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
 
-  // Get current recommended priority fee
-  const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+    // Get current recommended priority fee
+    const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
 
-  // Get latest block to fetch base fee
-  const latestBlock = await web3.eth.getBlock('pending');
-  const baseFee = latestBlock.baseFeePerGas;
+    // Get latest block to fetch base fee
+    const latestBlock = await web3.eth.getBlock('pending');
+    const baseFee = latestBlock.baseFeePerGas;
 
-  // Calculate maxFeePerGas = baseFee + (priorityFee * 2) for safety
-  const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+    // Calculate maxFeePerGas = baseFee + (priorityFee * 2) for safety
+    const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-  // Log fee data for debugging
-  console.log("Gas Fee Details:", {
-    baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-    priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
-    maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-  });
+    // Log fee data for debugging
+    console.log("Gas Fee Details:", {
+      baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+      priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+      maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+    });
 
-  // Send transaction with dynamic gas fees
-  await contract.methods.placeBet(number, times, payoutAmount).send({
-    from: userAccount,
-    maxFeePerGas,
-    maxPriorityFeePerGas: priorityFee,
-    gas: 350000
-  });
-
-} catch (err) {
-  console.error("Transaction failed:", err);
-  betStatus.innerHTML = `<small style="color: #ffaaaa;">Transaction failed.</small>`;
-  }
+    // Send transaction with dynamic gas fees
+    await contract.methods.placeBet(number, times, payoutAmount).send({
+      from: userAccount,
+      maxFeePerGas,
+      maxPriorityFeePerGas: priorityFee,
+      gas: 350000
+    });
 
     // Success
     betStatus.innerHTML = `<small style="color: #00ff14;">✅ Submit Ticket Successfully!</small>`;
