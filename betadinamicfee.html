@@ -799,13 +799,22 @@
     if (!currentReferralId) {
       const newReferralId = generateUID();
 
-      const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
-      const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
+      // Ambil gas fee dinamis
+      const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+      const latestBlock = await web3.eth.getBlock('pending');
+      const baseFee = latestBlock.baseFeePerGas;
+      const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+
+      console.log("Set Referral ID gas fee:", {
+        baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+        priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+        maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+      });
 
       await contract.methods.setReferralId(newReferralId).send({
         from: userAccount,
         maxFeePerGas,
-        maxPriorityFeePerGas,
+        maxPriorityFeePerGas: priorityFee,
         gas: 97880
       });
     }
@@ -814,22 +823,36 @@
   }
 };
 
-    // Set Referral ID otomatis dengan pengunci
-    const handleReferralFromURL = async () => {
+    // Set Referral ID automatically if user has no referrer
+const handleReferralFromURL = async () => {
   if (!userAccount) return;
+
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get("uid");
+
     if (referrerId) {
       const hasReferrer = await contract.methods.referredBy(userAccount).call();
-      if (hasReferrer === "0x0000000000000000000000000000000000000000") {
-        const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
-        const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
 
+      if (hasReferrer === "0x0000000000000000000000000000000000000000") {
+        // Fetch dynamic gas fee
+        const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+        const latestBlock = await web3.eth.getBlock('pending');
+        const baseFee = latestBlock.baseFeePerGas;
+        const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+
+        // Log for debug
+        console.log("Referral TX gas fee:", {
+          baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+          priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+          maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+        });
+
+        // Send referral transaction
         await contract.methods.setReferralById(referrerId).send({
           from: userAccount,
           maxFeePerGas,
-          maxPriorityFeePerGas,
+          maxPriorityFeePerGas: priorityFee,
           gas: 150000
         });
       }
@@ -1192,22 +1215,41 @@ const checkIn = async () => {
     alert("Please connect your wallet first.");
     return;
   }
-  document.getElementById("checkInStatus").innerHTML = "<center><small>Processing check-in...</center></small>";
-  try {
-    console.log("Initiating check-in transaction");
+  document.getElementById("checkInStatus").innerHTML = "<center><small>Processing check-in...</small></center>";
+try {
+  console.log("Initiating check-in transaction");
 
-    const maxFeePerGas = web3.utils.toWei('0.001', 'gwei');
-    const maxPriorityFeePerGas = web3.utils.toWei('0.00098', 'gwei');
+  // Get current recommended priority fee
+  const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
 
-    const tx = await contract.methods.checkIn().send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      gas: 200000
-    });
+  // Get latest pending block to obtain base fee
+  const latestBlock = await web3.eth.getBlock('pending');
+  const baseFee = latestBlock.baseFeePerGas;
 
-    console.log("Check-in transaction sent, hash:", tx.transactionHash);
+  // Calculate maxFeePerGas = baseFee + (priorityFee × 2)
+  const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
+  // Log for debug
+  console.log("Gas Fee Details:", {
+    baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+    priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+    maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+  });
+
+  // Send check-in transaction with dynamic gas fees
+  const tx = await contract.methods.checkIn().send({
+    from: userAccount,
+    maxFeePerGas,
+    maxPriorityFeePerGas: priorityFee,
+    gas: 200000
+  });
+
+  console.log("Check-in transaction sent, hash:", tx.transactionHash);
+  document.getElementById("checkInStatus").innerHTML = "<center><small style='color:#aaffaa;'>Check-in successful!</small></center>";
+} catch (err) {
+  console.error("Check-in failed:", err);
+  document.getElementById("checkInStatus").innerHTML = "<center><small style='color:#ffaaaa;'>Check-in failed.</small></center>";
+}
     // Polling untuk konfirmasi transaksi
     const maxAttempts = 10;
     let attempt = 0;
@@ -1365,19 +1407,38 @@ const placeBet = async () => {
   document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
 
   try {
-    // Show processing
-    betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
+  // Display transaction status
+  betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
 
-    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
-    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
+  // Get current recommended priority fee
+  const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
 
-    console.log("Initiating placeBet transaction");
-    await contract.methods.placeBet(number, times, payoutAmount).send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      gas: 350000
-    });
+  // Get latest block to fetch base fee
+  const latestBlock = await web3.eth.getBlock('pending');
+  const baseFee = latestBlock.baseFeePerGas;
+
+  // Calculate maxFeePerGas = baseFee + (priorityFee * 2) for safety
+  const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+
+  // Log fee data for debugging
+  console.log("Gas Fee Details:", {
+    baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+    priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+    maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+  });
+
+  // Send transaction with dynamic gas fees
+  await contract.methods.placeBet(number, times, payoutAmount).send({
+    from: userAccount,
+    maxFeePerGas,
+    maxPriorityFeePerGas: priorityFee,
+    gas: 350000
+  });
+
+} catch (err) {
+  console.error("Transaction failed:", err);
+  betStatus.innerHTML = `<small style="color: #ffaaaa;">Transaction failed.</small>`;
+  }
 
     // Success
     betStatus.innerHTML = `<small style="color: #00ff14;">✅ Submit Ticket Successfully!</small>`;
