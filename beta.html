@@ -447,46 +447,52 @@
 
   <div class="task">
     <p>1. Follow Twitter</p>
-    <a href="https://twitter.com/youraccount" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <button onclick="openLinkThenVerify(this, 'https://twitter.com/youraccount')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
 
   <div class="task">
     <p>2. RT, Like & Comment 'GM'</p>
-    <a href="https://twitter.com/youraccount/status/1234567890" target="_blank" onclick="showCheckbox(this)">Verify</a>
+    <button onclick="openLinkThenVerify(this, 'https://twitter.com/youraccount/status/1234567890')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
 
   <div class="task">
     <p>3. Join Discord Server</p>
-    <a href="https://discord.gg/yourinvite" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <button onclick="openLinkThenVerify(this, 'https://discord.gg/yourinvite')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
 
   <div class="task">
     <p>4. Join Telegram Channel</p>
-    <a href="https://t.me/yourchannel" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <button onclick="openLinkThenVerify(this, 'https://t.me/yourchannel')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
 
   <div class="task">
     <p>5. Join Telegram Group</p>
-    <a href="https://t.me/yourgroup" target="_blank" onclick="showCheckbox(this)">Join</a>
+    <button onclick="openLinkThenVerify(this, 'https://t.me/yourgroup')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
 
   <div class="task">
     <p>6. Follow Facebook & Share Post</p>
-    <a href="https://facebook.com/yourpage" target="_blank" onclick="showCheckbox(this)">Verify</a>
+    <button onclick="openLinkThenVerify(this, 'https://facebook.com/yourpage')">Join</button>
+    <button style="display:none;" onclick="showCheckbox(this)">Verifikasi</button>
     <input type="checkbox" style="display:none;" onchange="completeTask(this)">
     <img src="check-icon.png" class="checkmark" style="display:none;" alt="Done">
   </div>
-</div>
+    </div>
   
     <!-- Check-In -->
     <div class="section hidden">
@@ -1640,19 +1646,22 @@ globalHistoryContainer.addEventListener("scroll", async () => {
   </script>
 
   <script>
-  function showCheckbox(link) {
-    const parent = link.parentElement;
-    const checkbox = parent.querySelector('input[type="checkbox"]');
-    checkbox.style.display = "inline";
+  function openLinkThenVerify(btn, url) {
+    window.open(url, '_blank');
+    btn.style.display = 'none';
+    const verifyBtn = btn.nextElementSibling;
+    verifyBtn.style.display = 'inline-block';
+  }
+
+  function showCheckbox(btn) {
+    btn.style.display = 'none';
+    const checkbox = btn.nextElementSibling;
+    checkbox.style.display = 'inline-block';
   }
 
   function completeTask(checkbox) {
     const checkmark = checkbox.nextElementSibling;
-    if (checkbox.checked) {
-      checkmark.style.display = "inline";
-    } else {
-      checkmark.style.display = "none";
-    }
+    checkmark.style.display = checkbox.checked ? 'inline-block' : 'none';
   }
   </script>
 
