@@ -1221,47 +1221,54 @@ const loadRefereeList = async () => {
 
   try {
     console.log("Initiating check-in transaction");
+    console.log("User Account:", userAccount);
+    console.log("Contract Address:", contract.options.address);
 
-    // Get current recommended priority fee
-    const priorityFeeRaw = await web3.eth.getMaxPriorityFeePerGas();
+    let tx;
 
-    // Get latest pending block to obtain base fee
-    const latestBlock = await web3.eth.getBlock('pending');
-    const baseFeeRaw = latestBlock.baseFeePerGas;
+    try {
+      // Coba ambil EIP-1559 fees
+      const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+      const latestBlock = await web3.eth.getBlock('pending');
+      const baseFee = latestBlock.baseFeePerGas;
+      const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-    // Calculate maxFeePerGas = baseFee + (priorityFee × 2)
-    const baseFeeBN = web3.utils.toBN(baseFeeRaw);
-    const priorityFeeBN = web3.utils.toBN(priorityFeeRaw);
-    const maxFeePerGasBN = baseFeeBN.add(priorityFeeBN.muln(2));
+      console.log("Gas Fee Details:", {
+        baseFee: web3.utils.fromWei(baseFee, 'gwei'),
+        priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+        maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
+      });
 
-    const maxFeePerGas = maxFeePerGasBN.toString(); // Convert to string (wei)
-    const maxPriorityFeePerGas = priorityFeeBN.toString(); // Convert to string (wei)
+      // Kirim transaksi dengan EIP-1559
+      tx = await contract.methods.checkIn().send({
+        from: userAccount,
+        maxFeePerGas,
+        maxPriorityFeePerGas: priorityFee,
+        gas: 200000
+      });
+    } catch (gasError) {
+      console.warn("EIP-1559 failed or unsupported, retrying with legacy gas...");
+      
+      // Fallback: Kirim transaksi dengan gas legacy (gasPrice)
+      const gasPrice = await web3.eth.getGasPrice();
 
-    // Log gas values in Gwei for debugging
-    console.log("Gas Fee Details:", {
-      baseFee: web3.utils.fromWei(baseFeeRaw, 'gwei'),
-      priorityFee: web3.utils.fromWei(priorityFeeRaw, 'gwei'),
-      maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
-    });
-
-    // Send check-in transaction
-    const tx = await contract.methods.checkIn().send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      gas: 200000
-    });
+      tx = await contract.methods.checkIn().send({
+        from: userAccount,
+        gasPrice,
+        gas: 200000
+      });
+    }
 
     console.log("Check-in transaction sent, hash:", tx.transactionHash);
-    statusEl.innerHTML = "<center><small style='color:#aaffaa;'>Check-in transaction sent, waiting confirmation...</small></center>";
+    statusEl.innerHTML = "<center><small style='color:#aaffaa;'>Transaction sent. Waiting for confirmation...</small></center>";
 
-    // Polling for transaction receipt
+    // Polling untuk receipt
     const maxAttempts = 10;
     let attempt = 0;
     let receipt = null;
 
     while (!receipt && attempt < maxAttempts) {
-      console.log(`Polling for transaction receipt (attempt ${attempt + 1}/${maxAttempts})`);
+      console.log(`Polling for receipt (attempt ${attempt + 1}/${maxAttempts})`);
       receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
       if (!receipt) {
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1269,24 +1276,20 @@ const loadRefereeList = async () => {
       }
     }
 
-    if (!receipt) {
-      throw new Error("Transaction not confirmed after multiple attempts");
-    }
+    if (!receipt) throw new Error("Transaction not confirmed after multiple attempts");
 
-    console.log("Transaction confirmed, receipt:", receipt);
+    console.log("Transaction confirmed:", receipt);
     statusEl.innerHTML = "<center><small style='color:#00ff14;'>Faucet Check-in successful! You earned 1 Point!</small></center>";
 
-    await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for sync
+    await new Promise(resolve => setTimeout(resolve, 3000));
     await loadCriticalData();
     await loadCheckInHistory();
-
-    console.log("Check-in completed and UI updated");
-
+    console.log("UI updated after check-in");
+    
   } catch (error) {
-    console.error("Error checking in:", error);
+    console.error("Error checking in:", error.message, error);
 
     let errorMessage = "Failed to check in faucet. Please try again.";
-
     if (error.message.includes("already checked in faucet")) {
       errorMessage = "You have already checked in faucet today.";
     } else if (error.message.includes("Transaction not confirmed")) {
