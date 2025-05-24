@@ -1223,27 +1223,32 @@ const loadRefereeList = async () => {
     console.log("Initiating check-in transaction");
 
     // Get current recommended priority fee
-    const priorityFee = await web3.eth.getMaxPriorityFeePerGas();
+    const priorityFeeRaw = await web3.eth.getMaxPriorityFeePerGas();
 
     // Get latest pending block to obtain base fee
     const latestBlock = await web3.eth.getBlock('pending');
-    const baseFee = latestBlock.baseFeePerGas;
+    const baseFeeRaw = latestBlock.baseFeePerGas;
 
     // Calculate maxFeePerGas = baseFee + (priorityFee × 2)
-    const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
+    const baseFeeBN = web3.utils.toBN(baseFeeRaw);
+    const priorityFeeBN = web3.utils.toBN(priorityFeeRaw);
+    const maxFeePerGasBN = baseFeeBN.add(priorityFeeBN.muln(2));
 
-    // Log for debug
+    const maxFeePerGas = maxFeePerGasBN.toString(); // Convert to string (wei)
+    const maxPriorityFeePerGas = priorityFeeBN.toString(); // Convert to string (wei)
+
+    // Log gas values in Gwei for debugging
     console.log("Gas Fee Details:", {
-      baseFee: web3.utils.fromWei(baseFee, 'gwei'),
-      priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
+      baseFee: web3.utils.fromWei(baseFeeRaw, 'gwei'),
+      priorityFee: web3.utils.fromWei(priorityFeeRaw, 'gwei'),
       maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
     });
 
-    // Send check-in transaction with dynamic gas fees
+    // Send check-in transaction
     const tx = await contract.methods.checkIn().send({
       from: userAccount,
       maxFeePerGas,
-      maxPriorityFeePerGas: priorityFee,
+      maxPriorityFeePerGas,
       gas: 200000
     });
 
@@ -1269,12 +1274,9 @@ const loadRefereeList = async () => {
     }
 
     console.log("Transaction confirmed, receipt:", receipt);
-
     statusEl.innerHTML = "<center><small style='color:#00ff14;'>Faucet Check-in successful! You earned 1 Point!</small></center>";
 
-    // Small delay for blockchain sync
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for sync
     await loadCriticalData();
     await loadCheckInHistory();
 
