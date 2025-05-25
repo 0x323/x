@@ -1182,6 +1182,7 @@ const loadRefereeList = async () => {
 };
 
     // Check-In dengan konfirmasi transaksi
+// Check-In dengan konfirmasi transaksi
 const checkIn = async () => {
   if (!userAccount) {
     alert("Please connect your wallet first.");
@@ -1191,14 +1192,8 @@ const checkIn = async () => {
   try {
     console.log("Initiating check-in transaction");
 
-    const maxFeePerGas = web3.utils.toWei('0.001', 'gwei');
-    const maxPriorityFeePerGas = web3.utils.toWei('0.00098', 'gwei');
-
     const tx = await contract.methods.checkIn().send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      gas: 200000
+      from: userAccount
     });
 
     console.log("Check-in transaction sent, hash:", tx.transactionHash);
@@ -1238,7 +1233,7 @@ const checkIn = async () => {
     alert(errorMessage);
   }
 };
-
+    
     // Load Check-In History with Pagination
 const loadCheckInHistory = async (page = 1) => {
   if (!userAccount) return;
@@ -1363,15 +1358,10 @@ const placeBet = async () => {
     // Show processing
     betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
 
-    const maxFeePerGas = web3.utils.toWei('0.0011', 'gwei');
-    const maxPriorityFeePerGas = web3.utils.toWei('0.001', 'gwei');
-
     console.log("Initiating placeBet transaction");
+
     await contract.methods.placeBet(number, times, payoutAmount).send({
-      from: userAccount,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      gas: 350000
+      from: userAccount
     });
 
     // Success
