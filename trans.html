@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contoh Penerjemah Google Translate</title>
+  <style>
+    /* Tambahkan gaya untuk posisi & tampilan dropdown */
+    #google_translate_element {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 9999;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="google_translate_element"></div>
+
+  <h1>Selamat datang!</h1>
+  <p>Ini adalah contoh halaman dengan fitur penerjemah Google Translate.</p>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: 'id',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+      );
+    }
+  </script>
+
+  <script type="text/javascript"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  </script>
+
+</body>
+</html>
