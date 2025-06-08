@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="5000" zoomAndPan="magnify" viewBox="0 0 3750 3749.999967" height="5000" preserveAspectRatio="xMidYMid meet" version="1.2">
+  <defs>
+    <clipPath id="ab1a6f1ca3">
+      <path d="M 36.824219 36.824219 L 3713.324219 36.824219 L 3713.324219 3713.324219 L 36.824219 3713.324219 Z M 36.824219 36.824219"/>
+    </clipPath>
+    <clipPath id="5bdaca209e">
+      <path d="M 3713.324219 1933.125 C 3682.195312 2921.65625 2871.179688 3713.324219 1875.074219 3713.324219 C 859.621094 3713.324219 36.824219 2889.6875 36.824219 1874.230469 C 36.824219 878.96875 828.492188 67.953125 1816.183594 36.824219 L 1816.183594 1682.414062 C 1816.183594 1821.230469 1928.917969 1933.964844 2067.730469 1933.964844 L 3713.324219 1933.964844 Z M 3713.324219 1933.125"/>
+    </clipPath>
+    <linearGradient x1="218.47701" gradientTransform="matrix(8.413044,0,0,8.413044,36.82351,36.8236)" y1="436.999954" x2="218.47701" gradientUnits="userSpaceOnUse" y2="-0.000000781443" id="b485227795">
+      <stop style="stop-color:#000000;stop-opacity:1;" offset="0"/>
+      <stop style="stop-color:#333333;stop-opacity:1;" offset="0.25"/>
+      <stop style="stop-color:#666666;stop-opacity:1;" offset="0.5"/>
+      <stop style="stop-color:#999999;stop-opacity:1;" offset="0.75"/>
+      <stop style="stop-color:#FFFFFF;stop-opacity:1;" offset="1"/>
+    </linearGradient>
+    <clipPath id="02ee561d81">
+      <path d="M 1933 36.824219 L 3713.324219 36.824219 L 3713.324219 1816 L 1933 1816 Z M 1933 36.824219"/>
+    </clipPath>
+    <clipPath id="77391574eb">
+      <path d="M 1933.964844 36.824219 C 2903.148438 67.109375 3682.195312 847 3713.324219 1815.339844 L 2067.730469 1815.339844 C 1994.539062 1815.339844 1933.964844 1755.609375 1933.964844 1681.574219 Z M 1933.964844 36.824219"/>
+    </clipPath>
+    <linearGradient x1="331.24701" gradientTransform="matrix(8.413044,0,0,8.413044,36.82351,36.8236)" y1="211.399992" x2="331.24701" gradientUnits="userSpaceOnUse" y2="-0.000000781443" id="8de6dcd353">
+      <stop style="stop-color:#FFFFFF;stop-opacity:1;" offset="0"/>
+      <stop style="stop-color:#999999;stop-opacity:1;" offset="0.25"/>
+      <stop style="stop-color:#666666;stop-opacity:1;" offset="0.5"/>
+      <stop style="stop-color:#333333;stop-opacity:1;" offset="0.75"/>
+      <stop style="stop-color:#000000;stop-opacity:1;" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="1e75f27661">
+    <g clip-rule="nonzero" clip-path="url(#ab1a6f1ca3)">
+      <g clip-rule="nonzero" clip-path="url(#5bdaca209e)">
+        <path style="stroke:none;fill-rule:nonzero;fill:url(#b485227795);" d="M 36.824219 36.824219 L 36.824219 3713.324219 L 3713.324219 3713.324219 L 3713.324219 36.824219 Z M 36.824219 36.824219"/>
+      </g>
+    </g>
+    <g clip-rule="nonzero" clip-path="url(#02ee561d81)">
+      <g clip-rule="nonzero" clip-path="url(#77391574eb)">
+        <path style="stroke:none;fill-rule:nonzero;fill:url(#8de6dcd353);" d="M 1933.964844 36.824219 L 1933.964844 1815.339844 L 3713.324219 1815.339844 L 3713.324219 36.824219 Z M 1933.964844 36.824219"/>
+      </g>
+    </g>
+  </g>
+</svg>
