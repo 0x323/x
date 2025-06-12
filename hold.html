@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <title>Daftar Pemegang Token</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+    </style>
+  </head>
+  <body>
+    <h1>Daftar Pemegang Token</h1>
+    <table id="holdersTable">
+      <thead>
+        <tr>
+          <th>Peringkat</th>
+          <th>Alamat</th>
+          <th>Jumlah Token</th>
+        </tr>
+      </thead>
+      <tbody id="holdersBody">
+        <!-- Data pemegang token akan ditampilkan di sini -->
+      </tbody>
+    </table>
+
+    <!-- Sertakan Ether.js -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
+    <script>
+      // Ganti dengan alamat kontrak Anda yang sebenarnya
+const contractAddress = "0xYourContractAddress";
+
+// ABI minimum yang diperlukan (hanya event Transfer dan fungsi balanceOf jika ingin validasi)
+const contractABI = [
+  "event Transfer(address indexed from, address indexed to, uint256 value)"
+];
+
+/**
+ * Fungsi untuk mengambil data pemegang token secara otomatis
+ * dengan memproses seluruh event Transfer dari kontrak.
+ *
+ * Catatan:
+ * Untuk demo, kita ambil event dari blok 0 hingga "latest". Pada aplikasi nyata,
+ * batasi pencarian berdasarkan blok deploy kontrak agar lebih efisien.
+ */
+async function getHoldersData() {
+  let provider;
+  if (window.ethereum) {
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    try {
+      await provider.send("eth_requestAccounts", []);
+    } catch (error) {
+      console.error("Akses akun ditolak:", error);
+      return [];
+    }
+  } else {
+    provider = ethers.getDefaultProvider();
+  }
+
+  // Inisialisasi kontrak
+  const contract = new ethers.Contract(contractAddress, contractABI, provider);
+
+  // Ambil event Transfer dari kontrak
+  // Untuk meningkatkan performa, sebaiknya ganti `0` dengan blok deploy kontrak.
+  const fromBlock = 0;
+  let transferLogs = [];
+  try {
+    transferLogs = await contract.queryFilter("Transfer", fromBlock, "latest");
+    console.log(`Total event Transfer: ${transferLogs.length}`);
+  } catch (error) {
+    console.error("Gagal mengambil event Transfer:", error);
+    return [];
+  }
+
+  // Buat peta untuk menyimpan saldo setiap alamat (menggunakan BigNumber)
+  const holdersMap = {};
+
+  // Proses setiap event Transfer
+  transferLogs.forEach((log) => {
+    const from = log.args.from;
+    const to = log.args.to;
+    const amount = log.args.value;
+
+    // Jika dari alamat nol (minting), tambahkan saldo ke penerima
+    if (from === ethers.constants.AddressZero) {
+      if (!holdersMap[to]) {
+        holdersMap[to] = ethers.BigNumber.from(0);
+      }
+      holdersMap[to] = holdersMap[to].add(amount);
+    }
+    // Jika ke alamat nol (pengurangan token seperti di placeBet)
+    else if (to === ethers.constants.AddressZero) {
+      if (!holdersMap[from]) {
+        holdersMap[from] = ethers.BigNumber.from(0);
+      }
+      holdersMap[from] = holdersMap[from].sub(amount);
+    }
+    // Jika ada transfer biasa (meskipun transfer dinonaktifkan pada kontrak ini)
+    else {
+      if (!holdersMap[from]) {
+        holdersMap[from] = ethers.BigNumber.from(0);
+      }
+      if (!holdersMap[to]) {
+        holdersMap[to] = ethers.BigNumber.from(0);
+      }
+      holdersMap[from] = holdersMap[from].sub(amount);
+      holdersMap[to] = holdersMap[to].add(amount);
+    }
+  });
+
+  // Susun data pemegang token dari peta
+  const holdersData = [];
+  for (const address in holdersMap) {
+    // Hanya tampilkan alamat dengan saldo > 0
+    if (holdersMap[address].gt(0)) {
+      const balance = parseFloat(
+        ethers.utils.formatUnits(holdersMap[address], 18)
+      );
+      holdersData.push({ address, balance });
+    }
+  }
+
+  // Urutkan data berdasarkan saldo tertinggi (peringkat 1 adalah yang paling tinggi)
+  holdersData.sort((a, b) => b.balance - a.balance);
+  return holdersData;
+}
+
+/**
+ * Fungsi untuk merender data pemegang token ke dalam tabel HTML.
+ */
+function renderTable(holders) {
+  const tbody = document.getElementById("holdersBody");
+  tbody.innerHTML = "";
+  holders.forEach((holder, index) => {
+    const row = document.createElement("tr");
+
+    const rankCell = document.createElement("td");
+    rankCell.textContent = index + 1;
+    row.appendChild(rankCell);
+
+    const addressCell = document.createElement("td");
+    addressCell.textContent = holder.address;
+    row.appendChild(addressCell);
+
+    const balanceCell = document.createElement("td");
+    balanceCell.textContent = holder.balance;
+    row.appendChild(balanceCell);
+
+    tbody.appendChild(row);
+  });
+}
+
+/**
+ * Inisialisasi pengambilan data dan render tabel saat halaman dimuat.
+ */
+async function loadData() {
+  const holdersData = await getHoldersData();
+  renderTable(holdersData);
+}
+
+window.onload = loadData;
+    </script>
+  </body>
+</html>
