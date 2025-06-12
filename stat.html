@@ -1,312 +1,426 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistik Kontrak</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Reset default margin dan padding */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Menentukan font dasar */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 20px;
-}
-
-/* Container utama */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Tombol untuk menghubungkan wallet */
-#connectWalletBtn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-#connectWalletBtn:hover {
-    background-color: #0056b3;
-}
-
-/* Teks informasi wallet address */
-#walletAddress h3 {
-    font-size: 18px;
-    font-weight: normal;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-/* Statistik kontrak */
-#stats {
-    margin-top: 20px;
-}
-
-#stats h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-#stats div {
-    margin-bottom: 10px;
-}
-
-#stats div strong {
-    font-weight: bold;
-    color: #007bff;
-}
-
-/* Daftar bettors dan check-in logs */
-ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-ul li {
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-ul li:nth-child(even) {
-    background-color: #f0f0f0;
-}
-
-/* Menyembunyikan elemen sampai wallet terkoneksi */
-#walletAddress, #stats {
-    display: none;
-}
-
-/* Statistik global */
-#globalStats {
-    margin-top: 20px;
-}
-
-#globalStats h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-#globalStats div {
-    margin-bottom: 10px;
-}
-
-#globalStats div strong {
-    font-weight: bold;
-    color: #007bff;
-}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dasbor CheckInPoint</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <button id="connectWalletBtn">Connect Wallet</button>
-        <div id="walletAddress" style="display:none;">
-            <h3>Wallet Address: <span id="address"></span></h3>
+  <header>
+    <h1>Dasbor CheckInPoint</h1>
+    <div id="walletStatus" class="wallet-status"></div>
+    <button id="connectWallet" class="btn">Hubungkan Wallet</button>
+  </header>
+
+  <main>
+    <!-- Informasi Token -->
+    <section class="dashboard-section">
+      <h2>Informasi Token</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>Nama Token</h3>
+          <p id="tokenName">Memuat...</p>
         </div>
-
-        <div id="stats" style="display:none;">
-    <h3>Contract Statistics:</h3>
-    <div>
-        <strong>Total Bet Count:</strong> <span id="betCount"></span>
-    </div>
-    <div>
-        <strong>Total Check-In Count:</strong> <span id="checkInCount"></span>
-    </div>
-    <div>
-        <strong>Referral Count:</strong> <span id="referralCount"></span>
-    </div>
-    <div>
-        <strong>Bettors List:</strong>
-        <ul id="bettorsList"></ul>
-    </div>
-    <div>
-        <strong>Check-In Log:</strong>
-        <ul id="checkInLog"></ul>
-    </div>
-    <div>
-        <strong>Referral Rewards:</strong> <span id="referralRewards"></span>
-    </div>
-    
-    <!-- Global Statistics Section -->
-    <div>
-        <h3>Global Statistics:</h3>
-        <div>
-            <strong>Total Users:</strong> <span id="totalUsers"></span>
+        <div class="card">
+          <h3>Simbol</h3>
+          <p id="tokenSymbol">Memuat...</p>
         </div>
-        <div>
-            <strong>Total Transactions:</strong> <span id="totalTransactions"></span>
+        <div class="card">
+          <h3>Total Supply</h3>
+          <p id="totalSupply">Memuat...</p>
         </div>
-        <div>
-            <strong>Total Referrals:</strong> <span id="totalReferrals"></span>
+        <div class="card">
+          <h3>Saldo Anda</h3>
+          <p id="userBalance">Memuat...</p>
         </div>
-    </div>
-            <strong>Total Users:</strong> <span id="totalUsers"></span>
-    </div>
-    <div>
-        <strong>Total Bets Placed:</strong> <span id="totalBets"></span>
-    </div>
-    <div>
-        <strong>Total Referral Rewards:</strong> <span id="totalReferralRewards"></span>
-    </div>
-    </div>
+      </div>
+    </section>
+
+    <!-- Pemegang Token -->
+    <section class="dashboard-section">
+      <h2>Pemegang Token</h2>
+      <div id="holdersError" class="error"></div>
+      <table id="holdersTable">
+        <thead>
+          <tr>
+            <th>Peringkat</th>
+            <th>Alamat</th>
+            <th>Jumlah Token</th>
+          </tr>
+        </thead>
+        <tbody id="holdersBody"></tbody>
+      </table>
+    </section>
+
+    <!-- Statistik Check-In -->
+    <section class="dashboard-section">
+      <h2>Statistik Check-In</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>Jumlah Check-In Anda</h3>
+          <p id="checkInCount">Memuat...</p>
         </div>
+        <div class="card">
+          <h3>Poin per Check-In</h3>
+          <p id="pointsPerCheckIn">Memuat...</p>
+        </div>
+      </div>
+      <div id="checkInError" class="error"></div>
+      <table id="checkInTable">
+        <thead>
+          <tr>
+            <th>Hari UTC</th>
+            <th>Waktu</th>
+            <th>Hadiah</th>
+          </tr>
+        </thead>
+        <tbody id="checkInBody"></tbody>
+      </table>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
-    <script>
-        const contractAddress = '0x12802A911BE5B96202e15901d91F371a7d7747fC';
-        const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
-        
-        let provider;
-        let signer;
-        let contract;
+    <!-- Statistik Taruhan -->
+    <section class="dashboard-section">
+      <h2>Statistik Taruhan</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>Jumlah Taruhan Anda</h3>
+          <p id="betCount">Memuat...</p>
+        </div>
+        <div class="card">
+          <h3>Biaya Taruhan</h3>
+          <p id="betCost">Memuat...</p>
+        </div>
+        <div class="card">
+          <h3>Hadiah Taruhan</h3>
+          <p id="betReward">Memuat...</p>
+        </div>
+      </div>
+      <div id="betError" class="error"></div>
+      <table id="betTable">
+        <thead>
+          <tr>
+            <th>Nomor</th>
+            <th>Biaya</th>
+            <th>Hadiah</th>
+            <th>Waktu</th>
+          </tr>
+        </thead>
+        <tbody id="betBody"></tbody>
+      </table>
+    </section>
 
-        // Mendapatkan dom elemen
-        const connectWalletBtn = document.getElementById('connectWalletBtn');
-        const walletAddressDiv = document.getElementById('walletAddress');
-        const walletAddressSpan = document.getElementById('address');
-        const statsDiv = document.getElementById('stats');
-        const betCountSpan = document.getElementById('betCount');
-        const checkInCountSpan = document.getElementById('checkInCount');
-        const referralCountSpan = document.getElementById('referralCount');
-        const bettorsList = document.getElementById('bettorsList');
-        const checkInLog = document.getElementById('checkInLog');
-        const referralRewardsSpan = document.getElementById('referralRewards');
+    <!-- Statistik Referral -->
+    <section class="dashboard-section">
+      <h2>Statistik Referral</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>Referral ID Anda</h3>
+          <p id="referralId">Memuat...</p>
+        </div>
+        <div class="card">
+          <h3>Jumlah Referee</h3>
+          <p id="refereeCount">Memuat...</p>
+        </div>
+        <div class="card">
+          <h3>Hadiah Referral</h3>
+          <p id="referralRewards">Memuat...</p>
+        </div>
+        <div class="card">
+          <h3>Referrer Anda</h3>
+          <p id="referrer">Memuat...</p>
+        </div>
+      </div>
+      <div id="referralError" class="error"></div>
+      <table id="refereeTable">
+        <thead>
+          <tr>
+            <th>Alamat Referee</th>
+          </tr>
+        </thead>
+        <tbody id="refereeBody"></tbody>
+      </table>
+    </section>
+  </main>
 
-        // Fungsi untuk menghubungkan wallet
-        async function connectWallet() {
-            if (typeof window.ethereum === 'undefined') {
-                alert('Metamask tidak terdeteksi!');
-                return;
-            }
+  <!-- Ethers.js dari Cloudflare CDNJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+      // Pastikan ethers tersedia
+if (typeof ethers === 'undefined') {
+  document.getElementById('errorMessage').textContent = 'Gagal memuat Ethers.js. Periksa koneksi internet atau CDN.';
+  throw new Error('Ethers.js tidak dimuat');
+}
 
-            try {
-                // Request akun dari Metamask
-                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                const account = accounts[0];
-                
-                // Setup provider, signer dan contract
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                signer = provider.getSigner();
-                contract = new ethers.Contract(contractAddress, abi, signer);
+// Konfigurasi kontrak dan jaringan
+const contractAddress = '0xA9cedF1fc66a841a80Ad7e4A2a2D138378FE5cB8';
+const deployBlock = 25386491; // Ganti dengan nomor blok deploy yang benar
+const rpcUrl = 'https://base-sepolia.infura.io/v3/2WwEhGgJUncXKc88mqFsKpCTsh1'; // Ganti dengan API key Alchemy Anda
 
-                // Tampilkan alamat wallet
-                walletAddressDiv.style.display = 'block';
-                walletAddressSpan.textContent = account;
+// ABI minimal (hanya bagian yang diperlukan untuk statistik)
+const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"CheckIn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"dayUTC","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"CheckInLogCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"number","type":"string"},{"indexed":false,"internalType":"uint256","name":"cost","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"PlaceBet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"ReferralIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"ReferralReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"string","name":"referralId","type":"string"}],"name":"Referred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenMinted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"BET_COST","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BET_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"POINTS_PER_CHECKIN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_REWARD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastBetDayUTC","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_lastCheckIn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"betHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkIn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"checkInHistory","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"a","type":"string"},{"internalType":"string","name":"b","type":"string"}],"name":"compareStrings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBetHistoryLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCheckInCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getCheckInLog","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"dayUTC","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"}],"internalType":"struct CheckInPoint.CheckInLog","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getRefereeCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"getReferees","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserBet","outputs":[{"components":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct CheckInPoint.Bet","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserBetCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_number","type":"string"},{"internalType":"uint256","name":"_times","type":"uint256"},{"internalType":"uint256","name":"_payoutAmount","type":"uint256"}],"name":"placeBet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"referees","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralIdOf","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralInfo","outputs":[{"internalType":"string","name":"referralId","type":"string"},{"internalType":"string","name":"referrerId","type":"string"},{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint256","name":"referralBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referredBy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralById","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"referralId","type":"string"}],"name":"setReferralId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"str","type":"string"},{"internalType":"uint256","name":"startIndex","type":"uint256"},{"internalType":"uint256","name":"endIndex","type":"uint256"}],"name":"substring","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userBets","outputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"string","name":"number","type":"string"},{"internalType":"uint256","name":"cost","type":"uint256"},{"internalType":"uint256","name":"reward","type":"uint256"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"userByReferralId","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
 
-                // Ambil dan tampilkan statistik kontrak
-                loadStats();
-            } catch (err) {
-                console.error(err);
-            }
-        }
+let provider, contract, userAddress;
 
-        // Fungsi untuk memuat statistik kontrak
-        async function loadStats() {
-    try {
-        const betCount = await contract.getBetHistoryLength();
-        betCountSpan.textContent = betCount.toString();
-
-        const checkInCount = await contract.getCheckInCount(walletAddressSpan.textContent);
-        checkInCountSpan.textContent = checkInCount.toString();
-
-        const referralCount = await contract.getRefereeCount(walletAddressSpan.textContent);
-        referralCountSpan.textContent = referralCount.toString();
-
-        // Ambil bettors list
-        const bettorsLength = betCount.toNumber(); // karena sama dengan betCount
-        bettorsList.innerHTML = ''; // Clear list
-        for (let i = 0; i < bettorsLength; i++) {
-            const bet = await contract.getBet(i);
-            const costFormatted = ethers.utils.formatUnits(bet.cost, 18); // asumsi 18 desimal
-            const rewardFormatted = ethers.utils.formatUnits(bet.reward, 18);
-
-            const listItem = document.createElement('li');
-            listItem.textContent = `${bet.user}: Bet Number ${bet.number}, Cost: ${costFormatted}, Reward: ${rewardFormatted}`;
-            bettorsList.appendChild(listItem);
-        }
-
-        // Ambil check-in log
-        const checkInLogsLength = checkInCount.toNumber();
-        checkInLog.innerHTML = ''; // Clear log
-        for (let i = 0; i < checkInLogsLength; i++) {
-            const checkIn = await contract.getCheckInLog(walletAddressSpan.textContent, i);
-            const rewardFormatted = ethers.utils.formatUnits(checkIn.reward, 18);
-
-            const logItem = document.createElement('li');
-            logItem.textContent = `Day: ${checkIn.dayUTC}, Reward: ${rewardFormatted}`;
-            checkInLog.appendChild(logItem);
-        }
-
-        // Ambil referral rewards
-        const referralRewards = await contract.referralRewards(walletAddressSpan.textContent);
-        const referralRewardsFormatted = ethers.utils.formatUnits(referralRewards, 18);
-
-        referralRewardsSpan.textContent = referralRewardsFormatted;
-
-        statsDiv.style.display = 'block';
-    } catch (err) {
-        console.error(err);
+// Inisialisasi provider dan kontrak
+async function initProvider() {
+  try {
+    if (window.ethereum) {
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      const network = await provider.getNetwork();
+      if (network.chainId !== 84532) {
+        throw new Error('Silakan hubungkan MetaMask ke Base Sepolia (Chain ID: 84532)');
+      }
+      const accounts = await provider.send('eth_requestAccounts', []);
+      userAddress = accounts[0];
+      document.getElementById('walletStatus').textContent = `Terhubung: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+      document.getElementById('connectWallet').style.display = 'none';
+    } else {
+      provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+      document.getElementById('walletStatus').textContent = 'Menggunakan RPC tanpa wallet';
     }
-}
-        // Fungsi untuk mengambil statistik global
-async function fetchGlobalStats() {
-    const contract = new ethers.Contract(contractAddress, abi, provider);
 
-    try {
-        const totalUsers = await contract.getTotalUsers(); // Contoh fungsi kontrak untuk jumlah pengguna
-        const totalBets = await contract.getTotalBets(); // Fungsi kontrak untuk total taruhan
-        const totalReferralRewards = await contract.getTotalReferralRewards(); // Fungsi kontrak untuk total hadiah referral
+    contract = new ethers.Contract(contractAddress, contractABI, provider);
 
-        document.getElementById('totalUsers').textContent = totalUsers.toString();
-        document.getElementById('totalBets').textContent = totalBets.toString();
-        document.getElementById('totalReferralRewards').textContent = ethers.utils.formatEther(totalReferralRewards); // Format jika dalam Ether
-
-        // Menampilkan statistik global
-        document.getElementById('globalStats').style.display = 'block';
-    } catch (error) {
-        console.error('Error fetching global statistics:', error);
+    // Verifikasi kontrak
+    const code = await provider.getCode(contractAddress);
+    if (code === '0x') {
+      throw new Error('Kontrak tidak ditemukan di alamat yang diberikan');
     }
+  } catch (error) {
+    document.getElementById('errorMessage').textContent = `Gagal inisialisasi: ${error.message}`;
+    console.error('Init error:', error);
+  }
 }
 
-// Panggil fungsi untuk mengambil statistik global setelah wallet terkoneksi
-async function fetchData() {
-    await fetchGlobalStats();
-    // Fungsi lainnya untuk menampilkan statistik kontrak
-}
-
-document.getElementById('connectWalletBtn').addEventListener('click', async () => {
-    // Kode untuk menghubungkan wallet
-    // Setelah wallet terkoneksi, panggil fetchData
-    fetchData();
+// Hubungkan wallet
+document.getElementById('connectWallet').addEventListener('click', async () => {
+  await initProvider();
+  loadAllData();
 });
 
-        // Menambahkan event listener ke tombol "Connect Wallet"
-        connectWalletBtn.addEventListener('click', connectWallet);
-    </script>
+// Ambil dan render informasi token
+async function loadTokenInfo() {
+  try {
+    const name = await contract.name();
+    const symbol = await contract.symbol();
+    const totalSupply = await contract.totalSupply();
+    const balance = userAddress ? await contract.balanceOf(userAddress) : ethers.BigNumber.from(0);
+
+    document.getElementById('tokenName').textContent = name;
+    document.getElementById('tokenSymbol').textContent = symbol;
+    document.getElementById('totalSupply').textContent = `${parseFloat(ethers.utils.formatUnits(totalSupply, 18)).toFixed(2)} Point`;
+    document.getElementById('userBalance').textContent = userAddress
+      ? `${parseFloat(ethers.utils.formatUnits(balance, 18)).toFixed(2)} Point`
+      : 'Hubungkan wallet untuk melihat saldo';
+  } catch (error) {
+    document.getElementById('errorMessage').textContent = `Gagal memuat info token: ${error.message}`;
+  }
+}
+
+// Ambil dan render pemegang token
+async function loadHolders() {
+  try {
+    const transferLogs = await contract.queryFilter('Transfer', deployBlock, 'latest');
+    const holdersMap = {};
+    transferLogs.forEach((log) => {
+      const from = log.args.from;
+      const to = log.args.to;
+      const amount = log.args.value;
+      if (from === ethers.constants.AddressZero) {
+        holdersMap[to] = (holdersMap[to] || ethers.BigNumber.from(0)).add(amount);
+      } else if (to === ethers.constants.AddressZero) {
+        holdersMap[from] = (holdersMap[from] || ethers.BigNumber.from(0)).sub(amount);
+      } else {
+        holdersMap[from] = (holdersMap[from] || ethers.BigNumber.from(0)).sub(amount);
+        holdersMap[to] = (holdersMap[to] || ethers.BigNumber.from(0)).add(amount);
+      }
+    });
+
+    const holdersData = [];
+    for (const address in holdersMap) {
+      if (holdersMap[address].gt(0)) {
+        const balance = await contract.balanceOf(address);
+        if (balance.gt(0)) {
+          holdersData.push({
+            address,
+            balance: parseFloat(ethers.utils.formatUnits(balance, 18)).toFixed(2)
+          });
+        }
+      }
+    }
+
+    holdersData.sort((a, b) => b.balance - a.balance);
+    const tbody = document.getElementById('holdersBody');
+    tbody.innerHTML = '';
+    if (holdersData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3">Tidak ada data pemegang token.</td></tr>';
+    } else {
+      holdersData.forEach((holder, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${holder.address.slice(0, 6)}...${holder.address.slice(-4)}</td>
+          <td>${holder.balance} Point</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+  } catch (error) {
+    document.getElementById('holdersError').textContent = `Gagal memuat pemegang token: ${error.message}`;
+  }
+}
+
+// Ambil dan render statistik check-in
+async function loadCheckInStats() {
+  try {
+    if (!userAddress) {
+      document.getElementById('checkInCount').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('checkInBody').innerHTML = '<tr><td colspan="3">Hubungkan wallet untuk melihat riwayat.</td></tr>';
+      return;
+    }
+
+    const pointsPerCheckIn = await contract.POINTS_PER_CHECKIN();
+    const checkInCount = await contract.getCheckInCount(userAddress);
+    const checkInLogs = [];
+
+    for (let i = 0; i < checkInCount; i++) {
+      const log = await contract.getCheckInLog(userAddress, i);
+      checkInLogs.push({
+        dayUTC: log.dayUTC.toString(),
+        timestamp: new Date(log.timestamp * 1000).toLocaleString('id-ID'),
+        reward: ethers.utils.formatUnits(log.reward, 18)
+      });
+    }
+
+    document.getElementById('pointsPerCheckIn').textContent = `${ethers.utils.formatUnits(pointsPerCheckIn, 18)} Point`;
+    document.getElementById('checkInCount').textContent = checkInCount.toString();
+
+    const tbody = document.getElementById('checkInBody');
+    tbody.innerHTML = '';
+    if (checkInLogs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3">Belum ada check-in.</td></tr>';
+    } else {
+      checkInLogs.forEach((log) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${log.dayUTC}</td>
+          <td>${log.timestamp}</td>
+          <td>${log.reward} Point</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+  } catch (error) {
+    document.getElementById('checkInError').textContent = `Gagal memuat statistik check-in: ${error.message}`;
+  }
+}
+
+// Ambil dan render statistik taruhan
+async function loadBetStats() {
+  try {
+    if (!userAddress) {
+      document.getElementById('betCount').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('betBody').innerHTML = '<tr><td colspan="4">Hubungkan wallet untuk melihat riwayat.</td></tr>';
+      return;
+    }
+
+    const betCost = await contract.BET_COST();
+    const betReward = await contract.BET_REWARD();
+    const betCount = await contract.getUserBetCount(userAddress);
+    const userBets = [];
+
+    for (let i = 0; i < betCount; i++) {
+      const bet = await contract.getUserBet(userAddress, i);
+      userBets.push({
+        number: bet.number,
+        cost: ethers.utils.formatUnits(bet.cost, 18),
+        reward: ethers.utils.formatUnits(bet.reward, 18),
+        timestamp: new Date(bet.timestamp * 1000).toLocaleString('id-ID')
+      });
+    }
+
+    document.getElementById('betCost').textContent = `${ethers.utils.formatUnits(betCost, 18)} Point`;
+    document.getElementById('betReward').textContent = `${ethers.utils.formatUnits(betReward, 18)} Point`;
+    document.getElementById('betCount').textContent = betCount.toString();
+
+    const tbody = document.getElementById('betBody');
+    tbody.innerHTML = '';
+    if (userBets.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4">Belum ada taruhan.</td></tr>';
+    } else {
+      userBets.forEach((bet) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${bet.number}</td>
+          <td>${bet.cost} Point</td>
+          <td>${bet.reward} Point</td>
+          <td>${bet.timestamp}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+  } catch (error) {
+    document.getElementById('betError').textContent = `Gagal memuat statistik taruhan: ${error.message}`;
+  }
+}
+
+// Ambil dan render statistik referral
+async function loadReferralStats() {
+  try {
+    if (!userAddress) {
+      document.getElementById('referralId').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('refereeCount').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('referralRewards').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('referrer').textContent = 'Hubungkan wallet untuk melihat';
+      document.getElementById('refereeBody').innerHTML = '<tr><td>Hubungkan wallet untuk melihat riwayat.</td></tr>';
+      return;
+    }
+
+    const referralId = await contract.referralIdOf(userAddress);
+    const refereeCount = await contract.getRefereeCount(userAddress);
+    const referralRewards = await contract.referralRewards(userAddress);
+    const referrer = await contract.referredBy(userAddress);
+    const referees = await contract.getReferees(userAddress);
+
+    document.getElementById('referralId').textContent = referralId || 'Belum diatur';
+    document.getElementById('refereeCount').textContent = refereeCount.toString();
+    document.getElementById('referralRewards').textContent = `${ethers.utils.formatUnits(referralRewards, 18)} Point`;
+    document.getElementById('referrer').textContent = referrer === ethers.constants.AddressZero ? 'Tidak ada' : `${referrer.slice(0, 6)}...${referrer.slice(-4)}`;
+
+    const tbody = document.getElementById('refereeBody');
+    tbody.innerHTML = '';
+    if (referees.length === 0) {
+      tbody.innerHTML = '<tr><td>Belum ada referee.</td></tr>';
+    } else {
+      referees.forEach((referee) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${referee.slice(0, 6)}...${referee.slice(-4)}</td>`;
+        tbody.appendChild(row);
+      });
+    }
+  } catch (error) {
+    document.getElementById('referralError').textContent = `Gagal memuat statistik referral: ${error.message}`;
+  }
+}
+
+// Muat semua data
+async function loadAllData() {
+  await loadTokenInfo();
+  await loadHolders();
+  await loadCheckInStats();
+  await loadBetStats();
+  await loadReferralStats();
+}
+
+// Inisialisasi saat halaman dimuat
+window.onload = async () => {
+  await initProvider();
+  if (provider) {
+    loadAllData();
+  }
+};
+  </script>
 </body>
 </html>
