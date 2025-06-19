@@ -1167,15 +1167,18 @@ button:active::before {
   }
 
 .team .team-member {
-  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
   background-color: #111111;
-  border: 1px solid color-mix(in srgb, #000000, transparent 90%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   transition: 0.3s;
+  margin-bottom: 30px;
 }
 
 .team .team-member:hover {
-  border-color: color-mix(in srgb, #fff, transparent 70%);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .team .team-member .member-img {
@@ -1192,35 +1195,34 @@ button:active::before {
 }
 
 .team .team-member .member-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 25px;
   text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 8px 8px 0;
 }
 
 .team .team-member .member-info h4 {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 5px;
-  color: ;
+  color: #ffffff;
 }
 
 .team .team-member .member-info span {
   font-size: 0.9rem;
   font-weight: 400;
-  color: color-mix(in srgb, #fff, transparent 30%);
+  color: rgba(255, 255, 255, 0.7);
   display: block;
   margin-bottom: 15px;
 }
 
 .team .team-member .member-info p {
   font-size: 0.9rem;
-  margin-bottom: 20px;
-  color: color-mix(in srgb, #fff, transparent 20%);
-}
-
-.team .team-member .member-info {
-  color: #123456;
-  border-color: #654321;
-  background: color-mix(in srgb, #f0f0f0, transparent 95%);
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 @media (max-width: 767px) {
@@ -1228,21 +1230,15 @@ button:active::before {
     flex-direction: column;
   }
 
-  .team .team-member .member-img {
-    flex: auto;
-  }
-
   .team .team-member .member-img img {
     width: 100%;
+    height: auto;
     border-radius: 8px 8px 0 0;
   }
 
   .team .team-member .member-info {
     text-align: center;
-  }
-
-  .team .team-member .member-info {
-    justify-content: center;
+    border-radius: 0 0 8px 8px;
   }
 }
 `;
