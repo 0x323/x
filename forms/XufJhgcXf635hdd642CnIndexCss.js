@@ -1166,79 +1166,87 @@ button:active::before {
     }
   }
 
+/* Styling untuk setiap team member */
 .team .team-member {
-  display: flex;
-  align-items: stretch;
-  gap: 20px;
-  background-color: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  transition: 0.3s;
-  margin-bottom: 30px;
+  display: flex; /* Flexbox untuk menyusun gambar dan teks */
+  align-items: flex-start; /* Menjaga gambar dan teks sejajar di atas */
+  gap: 20px; /* Spasi antara gambar dan informasi */
+  background-color: #111111; /* Warna latar belakang untuk setiap anggota tim */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Border tipis */
+  border-radius: 8px; /* Sudut melengkung */
+  transition: 0.3s; /* Transisi halus ketika hover */
+  margin-bottom: 30px; /* Jarak antar anggota tim */
+  flex-wrap: nowrap; /* Tidak membungkus elemen jika terlalu panjang */
+  min-height: 260px; /* Menjamin semua kotak memiliki tinggi minimal yang sama */
 }
 
+/* Efek hover pada member */
 .team .team-member:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.3); /* Border lebih terang saat hover */
 }
 
+/* Styling untuk gambar anggota tim */
 .team .team-member .member-img {
-  flex: 0 0 200px;
-  overflow: hidden;
+  flex: 0 0 200px; /* Gambar tetap ukuran 200px */
+  overflow: hidden; /* Menyembunyikan bagian gambar yang keluar */
 }
 
 .team .team-member .member-img img {
-  width: 200px;
-  height: 100%;
-  object-fit: cover;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  width: 100%; /* Lebar gambar mengikuti kontainer */
+  height: auto; /* Menjaga proporsi gambar */
+  object-fit: cover; /* Memastikan gambar terpotong dengan rapi */
+  border-top-left-radius: 8px; /* Sudut melengkung pada sisi kiri atas */
+  border-bottom-left-radius: 8px; /* Sudut melengkung pada sisi kiri bawah */
+  display: block; /* Menjaga gambar tampil sebagai blok */
 }
 
+/* Styling untuk informasi anggota tim */
 .team .team-member .member-info {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column; /* Mengatur teks dalam kolom */
+  justify-content: center; /* Menjaga teks berada di tengah secara vertikal */
   padding: 25px;
-  text-align: left;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 0 8px 8px 0;
+  text-align: left; /* Text alignment kiri */
+  background: rgba(255, 255, 255, 0.02); /* Latar belakang transparan */
+  border-radius: 0 8px 8px 0; /* Sudut melengkung pada sisi kanan */
 }
 
 .team .team-member .member-info h4 {
-  font-size: 1.2rem;
+  font-size: 1.2rem; /* Ukuran font judul */
   font-weight: 700;
   margin-bottom: 5px;
-  color: #ffffff;
+  color: #ffffff; /* Warna teks */
 }
 
 .team .team-member .member-info span {
-  font-size: 0.9rem;
+  font-size: 0.9rem; /* Ukuran font untuk posisi */
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7); /* Warna teks untuk posisi */
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Spasi bawah */
 }
 
 .team .team-member .member-info p {
-  font-size: 0.9rem;
-  margin-bottom: 0;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem; /* Ukuran font deskripsi */
+  margin-bottom: 0; /* Menghilangkan margin bawah */
+  color: rgba(255, 255, 255, 0.85); /* Warna teks deskripsi */
 }
 
+/* Styling untuk responsivitas pada layar lebih kecil (Mobile) */
 @media (max-width: 767px) {
   .team .team-member {
-    flex-direction: column;
+    flex-direction: column; /* Mengubah layout ke vertikal di mobile */
   }
 
   .team .team-member .member-img img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px 8px 0 0;
+    width: 100%; /* Membuat gambar lebar 100% */
+    height: auto; /* Menjaga tinggi gambar tetap proporsional */
+    border-radius: 8px 8px 0 0; /* Sudut atas kiri dan kanan melengkung */
   }
 
   .team .team-member .member-info {
-    text-align: center;
-    border-radius: 0 0 8px 8px;
+    text-align: center; /* Menyusun teks ke tengah */
+    border-radius: 0 0 8px 8px; /* Sudut bawah melengkung */
   }
 }
 `;
