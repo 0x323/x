@@ -174,89 +174,94 @@ document.getElementById("XBgc52875Cfs").innerHTML = `
     </section>
 
     <section id="team" class="team section light-background">
+  <center><h2>Team Overview</h2></center><br>
 
-      <center><h2>Team Overview</h2></center><br>
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-12" data-aos="fade-up" data-aos-delay="100">
+        <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
+          Meet the minds behind the Lotto Chain project anonymously united by a shared vision.
+        </h5><br>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <center><h4>Our Vision</h4></center><br>
+        <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
+          Lotto Chain is an innovative blockchain-based project designed to revolutionize 
+          the <strong>transparent and decentralized lottery experience</strong>. We are a dedicated team of professionals including developers, strategists, and visionaries collaborating to build secure, scalable, and inclusive solutions 
+          for the future of decentralized gaming and rewards.
+        </h5><br>
 
-        <div class="row gy-4">
+        <center><h4>Pseudonymous Approach</h4></center><br>
+        <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
+          In order to keep the focus on the technology and long-term vision of the project, 
+          the Lotto Chain team operates under pseudonyms. This approach protects individual privacy while allowing 
+          our work, results, and integrity to speak for themselves. Identities may be disclosed selectively to strategic 
+          partners, such as venture capital firms or key backers, under strict non-disclosure agreements (NDAs) 
+          to ensure transparency where necessary without compromising personal security.
+        </h5><br>
 
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-          <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
-  Meet the minds behind the Lotto Chain project anonymously united by a shared vision.
-</h5><br>
+        <center><h4>Core Team Members</h4></center><br>
+        <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
+          Our core contributors, identified by pseudonyms, bring diverse expertise to Lotto Chain:
+        </h5><br><br>
+      </div>
 
-<center><h4>Our Vision</h4></center><br>
-<h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
-  Lotto Chain is an innovative blockchain-based project designed to revolutionize 
-  the <strong>transparent and decentralized lottery experience</strong>. We are a dedicated team of professionals including developers, strategists, and visionaries collaborating to build secure, scalable, and inclusive solutions 
-  for the future of decentralized gaming and rewards.
-</h5><br>
+      <!-- Team Member 1 -->
+      <div class="col-lg-6">
+        <div class="team-member d-flex">
+          <div class="member-img">
+            <img src="img/tm1.png" class="img-fluid" alt="" loading="lazy">
+          </div>
+          <div class="member-info flex-grow-1">
+            <h4>Cipher Node I</h4>
+            <span style="color: #00b7ff;">Chief Executive Officer (CEO)</span>
+            <p>With 7 years of experience in blockchain architecture since 2019 and 4 years in Web3 ecosystems, Cipher Node I is the visionary architect behind our decentralized frameworks. A strategist with deep technical foresight, he shapes the foundation of every protocol with precision and resilience.</p>
+          </div>
+        </div>
+      </div>
 
-<center><h4>Pseudonymous Approach</h4></center><br>
-<h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
-  In order to keep the focus on the technology and long-term vision of the project, 
-  the Lotto Chain team operates under pseudonyms. This approach protects individual privacy while allowing 
-  our work, results, and integrity to speak for themselves. Identities may be disclosed selectively to strategic 
-  partners, such as venture capital firms or key backers, under strict non-disclosure agreements (NDAs) 
-  to ensure transparency where necessary without compromising personal security.
-</h5><br>
+      <!-- Team Member 2 -->
+      <div class="col-lg-6">
+        <div class="team-member d-flex">
+          <div class="member-img">
+            <img src="img/tm2.png" class="img-fluid" alt="" loading="lazy">
+          </div>
+          <div class="member-info flex-grow-1">
+            <h4>Eval Unescape</h4>
+            <span style="color: #00b7ff;">Smart Contract Engineer</span>
+            <p>A master of Solidity and Vyper, Eval Unescape brings over 5 years of experience crafting robust smart contracts. Specializing in security and gas optimization, he writes clean, audited code that powers our on-chain logic with surgical precision.</p>
+          </div>
+        </div>
+      </div>
 
-<center><h4>Core Team Members</h4></center><br>
-<h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
-  Our core contributors, identified by pseudonyms, bring diverse expertise to Lotto Chain:
-</h5><br><br>
-  <div class="team-member d-flex">
-    <div class="member-img">
-    <img src="img/tm1.png" class="img-fluid" alt="" loading="lazy">
-    </div>
-    <div class="member-info flex-grow-1">
-      <h4>Cipher Node I</h4>
-      <span style="color: #00b7ff;">Chief Executive Officer (CEO)</span>
-      <p>With 7 years of experience in blockchain architecture since 2019 and 4 years in Web3 ecosystems, Cipher Node I is the visionary architect behind our decentralized frameworks. A strategist with deep technical foresight, he shapes the foundation of every protocol with precision and resilience.</p>
-    </div>
-  </div>
-</div>
+      <!-- Team Member 3 -->
+      <div class="col-lg-6">
+        <div class="team-member d-flex">
+          <div class="member-img">
+            <img src="img/tm3.png" class="img-fluid" alt="" loading="lazy">
+          </div>
+          <div class="member-info flex-grow-1">
+            <h4>PolyMorph</h4>
+            <span style="color: #00b7ff;">Frontend Engineer (CTO)</span>
+            <p>PolyMorph designs seamless Web3 user experiences, with 4 years of expertise in React, Next.js, and Ethers.js. Known for transforming complex logic into intuitive interfaces, he connects users to decentralized networks with style and speed.</p>
+          </div>
+        </div>
+      </div>
 
-<div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-  <div class="team-member d-flex">
-    <div class="member-img">
-    <img src="img/tm2.png" class="img-fluid" alt="" loading="lazy">
-    </div>
-    <div class="member-info flex-grow-1">
-      <h4>Eval Unescape</h4>
-      <span style="color: #00b7ff;">Smart Contract Engineer</span>
-      <p>A master of Solidity and Vyper, Eval Unescape brings over 5 years of experience crafting robust smart contracts. Specializing in security and gas optimization, he writes clean, audited code that powers our on-chain logic with surgical precision.</p>
-    </div>
-  </div>
-</div>
+      <!-- Team Member 4 -->
+      <div class="col-lg-6">
+        <div class="team-member d-flex">
+          <div class="member-img">
+            <img src="img/tm4.png" class="img-fluid" alt="" loading="lazy">
+          </div>
+          <div class="member-info flex-grow-1">
+            <h4>InitVoid</h4>
+            <span style="color: #00b7ff;">Admin & Moderator</span>
+            <p>The silent guardian of our community, InitVoid manages moderation across multiple platforms. With a watchful eye and calm demeanor, they uphold order, guide new users, and filter noise to maintain a healthy decentralized discourse.</p>
+          </div>
+        </div>
+      </div>
 
-<div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-  <div class="team-member d-flex">
-    <div class="member-img">
-    <img src="img/tm3.png" class="img-fluid" alt="" loading="lazy">
-    </div>
-    <div class="member-info flex-grow-1">
-      <h4>PolyMorph</h4>
-      <span style="color: #00b7ff;">Frontend Engineer (CTO)</span>
-      <p>PolyMorph designs seamless Web3 user experiences, with 4 years of expertise in React, Next.js, and Ethers.js. Known for transforming complex logic into intuitive interfaces, he connects users to decentralized networks with style and speed.</p>
-    </div>
-  </div>
-</div>
-
-<div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-  <div class="team-member d-flex">
-    <div class="member-img">
-    <img src="img/tm4.png" class="img-fluid" alt="" loading="lazy">
-    </div>
-    <div class="member-info flex-grow-1">
-      <h4>InitVoid</h4>
-      <span style="color: #00b7ff;">Admin & Moderator</span>
-      <p>The silent guardian of our community, InitVoid manages moderation across multiple platforms. With a watchful eye and calm demeanor, they uphold order, guide new users, and filter noise to maintain a healthy decentralized discourse.</p>
-    </div>
-  </div>
-</div>
-
+      <div class="col-12">
         <center><h4>Our Commitment</h4></center>
         <h5 style="font-size: 13px; padding-inline: 16px; color: #F1F1F1;">
           While our team chooses to remain pseudonymous, our commitment to transparency, measurable outcomes, and active engagement 
@@ -264,12 +269,10 @@ document.getElementById("XBgc52875Cfs").innerHTML = `
           ensuring legal compliance and operational professionalism. For vetted partners such as VCs or infrastructure collaborators, 
           we offer identity verification under NDA to establish trust without compromising team privacy.
         </h5>
-          
-        </div>
-
       </div>
-
-    </section>
+    </div>
+  </div>
+</section>
 
 <section id="backed-by" class="clients section">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
