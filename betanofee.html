@@ -10,57 +10,74 @@
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
   <style>
-    body {
-      width: 100%;
-      background-color: #000000;
-      font-family: 'Ubuntu', sans-serif;
-      min-height: 100vh;
-      color: #f1f1f1;
-      padding-top: 70px;
-    }
+    html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
 
-    .container {
+body {
+  width: 100%;
+  background-color: #000000;
+  font-family: 'Ubuntu', sans-serif;
+  min-height: 100vh;
+  color: #f1f1f1;
+  padding-top: 70px;
+  box-sizing: border-box;
+}
+
+.container {
   width: 100%;
   max-width: 1024px;
-  margin: auto;
+  margin: 0 auto;
   padding: 4rem;
   background: #000000;
   margin-top: 20px;
-    }
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    h1, h2 {
-      background: linear-gradient(90deg, #03a9f4, #f441a5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-    }
+.section {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto 2rem auto;
+  background-color: #101010;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
+  box-sizing: border-box;
+  text-align: center;
+}
 
-    h3, h4 {
-      color: #F0F0F0;
-      text-shadow: 0px 0px 10px #00aaff, 0px 0px 20px #0088ff;
-      text-align: center;
-    }
+.section > * {
+  margin: 0 auto;
+  text-align: center;
+}
 
-    h5, h6 {
-      color: #F0F0F0;
-      text-align: center;
-    }
+h1, h2 {
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
 
-    a {
-      color: #1a88ff;
-      text-decoration: none;
-    }
+h3, h4 {
+  color: #F0F0F0;
+  text-shadow: 0px 0px 10px #00aaff, 0px 0px 20px #0088ff;
+  text-align: center;
+}
 
-    .section {
-      width: 100%;
-      max-width: 1024px;
-      margin: 0 auto 2rem auto;
-      background-color: #101010;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
-      box-sizing: border-box;
-    }
+h5, h6 {
+  color: #F0F0F0;
+  text-align: center;
+}
+
+a {
+  color: #1a88ff;
+  text-decoration: none;
+}
 
     .hidden {
       display: none;
