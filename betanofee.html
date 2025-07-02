@@ -51,7 +51,7 @@ body {
 }
 
 /* Pastikan teks di dalam section (kecuali heading) rata kiri atau default */
-.section p, .section div, .section span, .section li, .referralLink, .refereeCount, .referralReward {
+.section p, .section div, .section span, .section li {
   text-align: left; /* Atur rata kiri untuk elemen umum */
 }
 
@@ -572,10 +572,10 @@ a {
     <div class="section hidden">
       <h2>Referral</h2>
       <div class="input-group">
-      <small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
-        <center><button id="copyLink">Copy Link</button></center>
+      <center><small><p id="referralLink" class="info-text">Your Referral Link: Loading...</p></small>
+        <button id="copyLink">Copy Link</button>
       <small><p id="refereeCount" class="info-text">Invited Friends: Loading...</p></small>
-      <small><p id="referralReward" class="info-text">Reward: Loading...</p></small>
+      <small><p id="referralReward" class="info-text">Reward: Loading...</p></small></center>
       </div>
       <br><h4>Your Invited Friends List</h4><br>
     <small><ul id="refereeList" class="info-text"></ul></small>
