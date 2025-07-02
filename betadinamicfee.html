@@ -393,6 +393,14 @@
       color: #ffb833;
       text-align: center;
 
+          @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  p[style*="animation: blink"] {
+    animation: blink 2s infinite;
+  }
   </style>
 </head>
 <body>
@@ -590,8 +598,8 @@
           <td style="color: #1a88ff; font-weight: bold;">0.25 USDT</td>
         </tr>
       </table>
-      <br><p>
-        Note: Prizes can be claimed after accumulation of 3× wins 2D 3D or 4D.
+      <br><p style="color: red; text-align: center; font-size: 12px; font-weight: bold; animation: blink 2s infinite; opacity: 1;">
+  Note: Prizes can be claimed after accumulation of 3× wins 2D 3D or 4D.
       </p>
     </div>
 
