@@ -48,7 +48,11 @@ body {
   border-radius: 1rem;
   box-shadow: 0 0 14px rgba(0, 153, 255, 0.1725), 0 0 28.75px rgba(0, 153, 255, 0.115);
   box-sizing: border-box;
-  text-align: center;
+}
+
+/* Pastikan teks di dalam section (kecuali heading) rata kiri atau default */
+.section p, .section div, .section span, .section li {
+  text-align: left; /* Atur rata kiri untuk elemen umum */
 }
 
 h1, h2 {
