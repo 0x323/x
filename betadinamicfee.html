@@ -823,7 +823,7 @@
         const baseFee = latestBlock.baseFeePerGas;
         const maxFeePerGas = web3.utils.toBN(baseFee).add(web3.utils.toBN(priorityFee).muln(2));
 
-        console.log("Mengirim TX dengan EIP-1559:", {
+        console.log("Sending TX with EIP-1559:", {
           baseFee: web3.utils.fromWei(baseFee, 'gwei'),
           priorityFee: web3.utils.fromWei(priorityFee, 'gwei'),
           maxFeePerGas: web3.utils.fromWei(maxFeePerGas, 'gwei')
@@ -836,7 +836,7 @@
           gas: 100000
         });
       } catch (eipError) {
-        console.warn("EIP-1559 gagal, fallback ke gasPrice:", eipError.message);
+        console.warn("EIP-1559 failed, fallback to gasPrice:", eipError.message);
 
         const gasPrice = await web3.eth.getGasPrice();
 
@@ -847,12 +847,12 @@
         });
       }
 
-      console.log("Referral ID berhasil diset:", tx);
+      console.log("Referral ID successfully set:", tx);
     } else {
-      console.log("User sudah punya referral ID:", currentReferralId);
+      console.log("User already has a referral ID:", currentReferralId);
     }
   } catch (error) {
-    console.error("Gagal set referral ID:", error);
+    console.error("Failed to set referral ID:", error);
   }
 };
 
@@ -1052,7 +1052,7 @@
           document.getElementById("tokenBalance").innerHTML = `<small>Point:</small> <span style="color: #32cd32;">${(balance / 10 ** cache.decimals).toFixed(2)}<span> ${cache.symbol}`;
           document.getElementById("referralLink").innerHTML = `<small>Your Referral Link:<br><span style="color: #ffa500;">${BASE_URL}?uid=${userReferralId}</span></small>`;
           document.getElementById("refereeCount").innerHTML = `<small>Invited Friends:</small> <span style="color: #bd80ff;">${refereeCount}</span>`;
-          document.getElementById("referralReward").innerHTML = `<small>Reward:</small> <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span><small> Lpoints</small>`;
+          document.getElementById("referralReward").innerHTML = `<small>Reward:</small> <span style="color: #32cd32;">${(referralReward / 10 ** cache.decimals).toFixed(2)}</span><small> Points</small>`;
 
           await loadRefereeList();
           console.log("Critical data loaded successfully");
@@ -1463,7 +1463,7 @@ function renderCheckInPagination(currentPage) {
   }
 
   const totalCost = costPerBet * times;
-  document.getElementById("betCost").innerText = `${totalCost} Lpoint`;
+  document.getElementById("betCost").innerText = `${totalCost} Point`;
 
   try {
     betStatus.innerHTML = `<small style="color: #aaffaa;">⏳ Processing Your Ticket...</small>`;
