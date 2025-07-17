@@ -1200,11 +1200,8 @@ textarea:focus {
         <a href="hkcore"><img src="img/core.svg"> Core</a>
       </div>
     </div>
-        </div><br>
-        <input type="text" id="betNumber" placeholder="ex: 5/32/17/56/9" oninput="validateBetNumber()"><br>
-        <input type="number" id="betTimes" placeholder="1 / 69" min="1" max="26" oninput="validateBetTimes()">
-        <label style="font-weight: bold;">Lottoplay</label><br>
-        <input type="checkbox" id="lottoplay" onchange="updateBetPrice()"> x2<br>
+        <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
+        <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
         <p id="betWarning" style="color: red;"></p>
         <p id="betPrice" style="color: #00FF66; font-weight: bold;">Cost: 0.000000 ETH</p>
         <button onclick="placeBet()">Submit Ticket</button>
@@ -1218,7 +1215,7 @@ textarea:focus {
            oninput="searchBetHistory()" 
            style="border: none; outline: none; width: 100%; font-size: 14px; background: transparent; color: white;">
   </div>
-</div>
+       </div>
 <div id="searchStatus" style="min-height: 24px;"></div><br>
        <hr style="background-color: #222222; height: 1px; border: none;">
        <div id="betHistoryContainer" style="position: relative;">
@@ -1823,11 +1820,12 @@ async function updateBalance() {
         }
        
 function updateBetPrice() {
-  const isLottoplay = document.getElementById("lottoplay").checked;
-  let ethPrice = isLottoplay ? (0.000256 * 2).toFixed(6) : (0.000256).toFixed(6);
-  document.getElementById("betPrice").innerText = `Cost: ${ethPrice} ETH`;
+    let betTimes = document.getElementById("betTimes").value;
+    let ethPrice = (betTimes * 0.000256).toFixed(6); // Hitung harga ETH
+    document.getElementById("betPrice").innerText = `Cost: ${ethPrice} ETH`;
 }
 
+// **Place Bet**
 async function placeBet() {
     if (!userAccount) {
         alert("Please connect your wallet first!");
@@ -1835,48 +1833,30 @@ async function placeBet() {
     }
 
     const number = document.getElementById("betNumber").value;
-    const parts = number.split("/").filter(p => p.trim() !== "");
-    const times = parts.length;
+    const times = parseInt(document.getElementById("betTimes").value);
+    const betPrice = web3.utils.toWei("0.000256", "ether");
+    const totalCost = betPrice * times;
 
-    // Validasi angka input
-    const isValid = parts.every(part => {
-        const num = parseInt(part);
-        return !isNaN(num) && num >= 1 && num <= 69;
-    });
-
-    if (
-        times < 1 ||
-        times > 5 ||
-        !isValid
-    ) {
+    if (!number || number.length < 1 || number.length > 4 || isNaN(times) || times < 1) {
         alert("Invalid bet input!");
         return;
     }
-
-    // Cek apakah checkbox Lottoplay dicentang
-    const lottoplayChecked = document.getElementById("lottoplay").checked;
-    const multiplier = lottoplayChecked ? 2 : 1;
-
-    const betPrice = web3.utils.toWei("0.000256", "ether");
-    const totalCost = BigInt(betPrice) * BigInt(multiplier); // Sesuaikan sesuai kebutuhan
-
+    
     try {
         document.getElementById("betStatus").innerHTML = `
             <img src="img/load.svg" width="20" height="20" style="vertical-align: middle;">
             <span style="color: #aaffaa; font-size: 12px;">Your ticket transaction is in progress...</span>
         `;
 
-        const estimatedGas = await contract.methods.placeBet(number, times, true, 0).estimateGas({
-            from: userAccount,
-            value: totalCost.toString()
-        });
+        // Estimasi gas sebelum transaksi
+        const estimatedGas = await contract.methods.placeBet(number, times, true, 0).estimateGas({ from: userAccount, value: totalCost });
 
         await contract.methods.placeBet(number, times, true, 0).send({
             from: userAccount,
-            value: totalCost.toString(),
-            gas: estimatedGas + 50000,
-            maxFeePerGas: web3.utils.toWei("0.0015", "gwei"),
-            maxPriorityFeePerGas: web3.utils.toWei("0.0014", "gwei")
+            value: totalCost,
+            gas: estimatedGas + 50000, // Tambahkan buffer 50.000 untuk keamanan
+            maxFeePerGas: web3.utils.toWei("0.0015", "gwei"),  // Gas Fee maksimum
+            maxPriorityFeePerGas: web3.utils.toWei("0.0014", "gwei") // Fee Prioritas
         });
 
         document.getElementById("betStatus").innerHTML = `
@@ -1921,33 +1901,22 @@ function validateBetNumber() {
     }
 }
 
-function validateBetNumber() {
-  const input = document.getElementById("betNumber");
-  let result = "";
-  const raw = input.value;
+function validateBetTimes() {
+    let betTimesInput = document.getElementById("betTimes");
+    let warning = document.getElementById("betWarning");
 
-  for (let char of raw) {
-    if (!isNaN(char) && char !== " ") {
-      result += char;
-    } else if (char === "/") {
-      result += "/";
+    let value = parseInt(betTimesInput.value, 10); // Konversi ke angka
+
+    if (value < 1) {
+        betTimesInput.value = 1;
+        warning.innerText = "Bet times must be between 1 and 99!";
+    } else if (value > 99) {
+        betTimesInput.value = 99;
+        warning.innerText = "Bet times must be between 1 and 99!";
     } else {
-      result += "/"; // huruf atau simbol lain langsung jadi /
+        warning.innerText = "";
     }
-  }
-
-  const parts = result.split("/").map(p => p.trim());
-
-  const fixedParts = parts.map(part => {
-    if (part.length === 0) return "";
-    if (part.length > 2) return "/"; // kalau lebih dari 2 digit langsung jadi /
-    const num = parseInt(part);
-    if (isNaN(num) || num < 1 || num > 69) return "/";
-    return num.toString();
-  });
-
-  input.value = fixedParts.join("/").replace(/\/+/g, "/"); // hapus double slash
-}
+            }
     
 // **Load User Bets (with Pagination & Last 7 Days Filter)**
 async function loadUserBets() {
