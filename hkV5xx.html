@@ -1167,39 +1167,41 @@ textarea:focus {
         <p id="walletBalance" style="display:none; color: #00ca09;">Balance: 0 ETH</p><br>
         <hr style="background-color: #333333; height: 1px; border: none;">
         <h2>Place Bet</h2><br>
-        <div class="button-contain">
-    <!-- Dropdown Pools -->
-    <div class="dropdown">
-      <button class="dropbtn" onclick="toggleDropdown(this)">
-        Pools <span class="arrow">▼</span>
-      </button>
-      <div class="dropdown-content">
-        <a href="hk"><img src="img/hk.svg"> Hongkong (HK)</a>
-        <a href="sgp"><img src="img/sgp.svg"> Singapore (SGP)</a>
-        <a href="syd"><img src="img/syd.svg"> Sydney (SYD)</a>
-        <a href="chi"><img src="img/chi.svg"> China (CHI)</a>
-        <a href="mc"><img src="img/mc.svg"> Cambodia (MC)</a>
-        <a href="be"><img src="img/be.svg"> Bull Eye (BE)</a>
-      </div>
-    </div>
 
-    <!-- Dropdown Select Chain -->
-    <div class="dropdown">
-      <button class="dropbtn" onclick="toggleDropdown(this)">
-        Select Chain <span class="arrow">▼</span>
-      </button>
-      <div class="dropdown-content">
-        <a href="hk"><img src="img/base.svg"> Base</a>
-        <a href="hkbnb"><img src="img/opbnb.svg"> Smart Chain</a>
-        <a href="hkarb"><img src="img/arb.svg"> Arbitrum</a>
-        <a href="hkop"><img src="img/op.svg"> Optimis</a>
-        <a href="hkpl"><img src="img/polygon.svg"> Polygon</a>
-        <a href="hkavax"><img src="img/avax.svg"> Avalance</a>
-        <a href="hkopbnb"><img src="img/opbnb.svg"> OpBNB</a>
-        <a href="hketh"><img src="img/eth.svg"> Ethereum</a>
-        <a href="hkcore"><img src="img/core.svg"> Core</a>
-      </div>
+  <div class="button-contain">
+  <!-- Dropdown Pools -->
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(this)">
+      Pools <img class="arrow" src="img/arrow.svg" />
+    </button>
+    <div class="dropdown-content">
+      <a href="hk"><img src="img/hk.svg" /> Hongkong (HK)</a>
+      <a href="sgp"><img src="img/sgp.svg" /> Singapore (SGP)</a>
+      <a href="syd"><img src="img/syd.svg" /> Sydney (SYD)</a>
+      <a href="chi"><img src="img/chi.svg" /> China (CHI)</a>
+      <a href="mc"><img src="img/mc.svg" /> Cambodia (MC)</a>
+      <a href="be"><img src="img/be.svg" /> Bull Eye (BE)</a>
     </div>
+  </div>
+
+  <!-- Dropdown Select Chain -->
+  <div class="dropdown">
+    <button class="dropbtn" onclick="toggleDropdown(this)">
+      Select Chains <img class="arrow" src="img/arrow.svg" />
+    </button>
+    <div class="dropdown-content">
+      <a href="hk"><img src="img/base.svg" /> Base</a>
+      <a href="hkbnb"><img src="img/opbnb.svg" /> Smart Chain</a>
+      <a href="hkarb"><img src="img/arb.svg" /> Arbitrum</a>
+      <a href="hkop"><img src="img/op.svg" /> Optimism</a>
+      <a href="hkpl"><img src="img/polygon.svg" /> Polygon</a>
+      <a href="hkavax"><img src="img/avax.svg" /> Avalance</a>
+      <a href="hkopbnb"><img src="img/opbnb.svg" /> OpBNB</a>
+      <a href="hketh"><img src="img/eth.svg" /> Ethereum</a>
+      <a href="hkcore"><img src="img/core.svg" /> Core</a>
+    </div>
+  </div>
+  </div><br>
         <input type="number" id="betNumber" placeholder="4D 3D or 2D" oninput="validateBetNumber()"><br>
         <input type="number" id="betTimes" placeholder="x1 / x99" min="1" max="99" oninput="validateBetTimes(); updateBetPrice()">
         <p id="betWarning" style="color: red;"></p>
@@ -1215,12 +1217,12 @@ textarea:focus {
            oninput="searchBetHistory()" 
            style="border: none; outline: none; width: 100%; font-size: 14px; background: transparent; color: white;">
   </div>
-       </div>
+</div>
 <div id="searchStatus" style="min-height: 24px;"></div><br>
-       <hr style="background-color: #222222; height: 1px; border: none;">
+       <hr style="background-color: #333333; height: 1px; border: none;">
        <div id="betHistoryContainer" style="position: relative;">
-  <button id="refreshButton" style="position: absolute; top: 0; right: 0; background: #000000; border: none; cursor: pointer;">
-    <img src="img/refresh.svg" class="refresh-icon" style="width: 15px; height: 15px;" />
+  <button id="refreshButton" style="display: none; position: absolute; top: 0; right: 0; background: #000000; border: none; cursor: pointer;">
+  <img src="img/refresh.svg" class="refresh-icon" style="width: 15px; height: 15px;" />
   </button>
   <div id="betHistory" style="padding-top: 30px;"></div>
        </div>
@@ -1231,6 +1233,7 @@ textarea:focus {
      src="img/up.svg" 
      onclick="scrollToTop()" 
      style="
+        display: none;
         width: 25px;
         height: 25px;
         position: fixed;
@@ -1279,7 +1282,8 @@ textarea:focus {
     <button onclick="openModal('myModal')"><img src="img/mybet.svg" alt="Lotto">Ticket</button>
     <button onclick="openModal('resultModal')"><img src="img/results.svg" alt="Lotto"> Results</button>
     <button onclick="window.open('claim', '_blank')"><img src="img/claim.svg" alt="Lotto" style="width: 28px; height: 28px;">Claim</button>
-</div> <!-- Penutupan <div> harus ada di sini -->
+
+</div>
        
         <!-- Modal MyBets -->
 <div id="myModal" class="modal">
